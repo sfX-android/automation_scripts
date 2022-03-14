@@ -1,1 +1,1 @@
-# automation_scripts
+# Script-Server scripts
