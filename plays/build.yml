@@ -3,12 +3,6 @@
 - name: "Build {{ target_model }}"
   hosts: buildserver
   gather_facts: false
- 
-#  tasks:
-#    - name: "test"
-#      debug:
-#        msg: "hi"
         
   roles:
-    - hotdog_a10
-#    - {{ target_model }}_{{ android_shortversion }}
+    - {{ target_model }}_{{ android_shortversion }}
