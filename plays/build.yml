@@ -5,4 +5,4 @@
   gather_facts: false
   
   roles:
-    - {{ target_model }}_{{ android_shortversion }}
+    - hotdog_a10
