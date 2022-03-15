@@ -1,4 +1,5 @@
 ---
 
 - include: setvars.yml
+- include: ../../common/tasks/clean.yml
 - include: sync.yml
