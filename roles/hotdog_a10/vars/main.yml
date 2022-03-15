@@ -16,4 +16,4 @@ kernel_cl: "- kernel: [commits](https://github.com/sfX-android/android_kernel_on
 dtree_cl: ""
 dl_links: ""
 cdtree_cl: "- Common Device tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q)\n"
-ota_hint: "\nOTA Update:\n_(only if u don\'t want to wait for the automatic OTA popup)_\n1. Open Settings —> System\n2. Expand Advanced & select Updater\n3. Refresh if not listed already\n4. Update & Enjoy!"
+ota_hint: \nOTA Update:\n_(only if u don\'t want to wait for the automatic OTA popup)_\n1. Open Settings -> System\n2. Expand Advanced & select Updater\n3. Refresh if not listed already\n4. Update & Enjoy!
