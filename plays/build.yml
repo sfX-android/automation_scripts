@@ -10,4 +10,5 @@
 #        msg: "hi"
         
   roles:
-    - {{ target_model }}_{{ android_shortversion }}
+    - hotdog_a10
+#    - {{ target_model }}_{{ android_shortversion }}
