@@ -1,0 +1,22 @@
+---
+# dynamic variables based on given pipeline vars
+
+- set_fact:
+    dtree_cl: "- Device tree: [commits](https://github.com/sfX-android/android_device_oneplus_hotdog/commits/eos-q_lockedbl)\n"
+  when: EOS_RELEASE_TYPE == "CUSTOM"
+
+- set_fact:
+    dtree_cl: "- Device tree: [commits](https://github.com/sfX-android/android_device_oneplus_hotdog/commits/eos-q)\n"
+  when: EOS_RELEASE_TYPE != "CUSTOM"
+
+- set_fact:
+    dl_links: "\n***Downloads:***\n- OnePlus 7T pro - [hotdog](https://leech.binbash.rocks:8008/e-os/{{ android_shortversion }}_rooted/{{ target_model }}/)\n"
+    keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}_rooted'
+    rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}_rooted/{{ target_model }}"
+  when: PREROOT_BOOT == true
+
+- set_fact:
+    dl_links: "\n***Downloads:***\n- OnePlus 7T pro - [hotdog](https://leech.binbash.rocks:8008/e-os/{{ android_shortversion }}/{{ target_model }}/)\n"
+    keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
+    rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ target_model }}/"
+  when: PREROOT_BOOT != true
