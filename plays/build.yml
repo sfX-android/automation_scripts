@@ -1,0 +1,8 @@
+---
+
+- name: "Build {{ target_model }}"
+  hosts: buildserver
+  gather_facts: false
+  
+  roles:
+    - {{ target_model }}_{{ android_shortversion }}
