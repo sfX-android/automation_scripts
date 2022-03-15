@@ -1,0 +1,27 @@
+---
+
+- name: "Clean-Up"
+  file:
+    state: absent
+    path: "{{ SRCPATH }}/{{ item }}"
+  loop:
+    - device/
+    - kernel/
+    - vendor/lineage
+    - vendor/fdroid
+    - vendor/cm
+    - vendor/nxp
+    - hardware/qcom/sm8150/
+    - hardware/qcom-caf
+    - hardware/qcom/Android.mk
+    - packages/apps/Trebuchet
+    - hardware/marvell
+    - frameworks/av
+    - frameworks/native
+    - frameworks/ml
+    - packages/apps/Updater
+    - system/core
+    - system/sepolicy
+    - build/make
+    - system/security
+    - test/
