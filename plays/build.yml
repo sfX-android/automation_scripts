@@ -4,10 +4,10 @@
   hosts: buildserver
   gather_facts: false
  
-  tasks:
-    - name: "test"
-      debug:
-        msg: "hi"
+#  tasks:
+#    - name: "test"
+#      debug:
+#        msg: "hi"
         
-#  roles:
-#    - {{ target_model }}_{{ android_shortversion }}
+  roles:
+    - {{ target_model }}_{{ android_shortversion }}
