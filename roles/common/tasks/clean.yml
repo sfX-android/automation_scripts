@@ -1,6 +1,6 @@
 ---
 
-- name: "Clean-Up"
+- name: "Basic Clean-Up"
   file:
     state: absent
     path: "{{ SRCPATH }}/{{ item }}"
@@ -26,3 +26,28 @@
     - system/security
     - test/
     - hardware/qcom/Android.mk
+
+- name: "Clean-Up out/ (1/2)"
+  file:
+    path: "{{ item }}"
+  loop:
+    - "{{ SRCPATH }}/out"
+  when: clean_out is defined and clean_out == true
+  
+- name: "Clean-Up out/ (2/2)"
+  file:
+    path: "{{ item }}"
+  loop:
+    - "{{ SEPARATE_OUT_DIR }}"
+  when: 
+    - clean_out is defined and clean_out == true
+    - SEPARATE_OUT_DIR is defined
+
+- name: "Re-do out/ linking"
+  file:
+    src: "{{ SEPARATE_OUT_DIR }}"
+    dest: "{{ SRCPATH }}/out"
+    state: link
+  when: 
+    - clean_out is defined and clean_out == true
+    - SEPARATE_OUT_DIR is defined
