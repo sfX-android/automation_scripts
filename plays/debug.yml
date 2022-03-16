@@ -5,6 +5,6 @@
   gather_facts: false
   
   tasks:
-    - setup:
+    #- setup:
     - debug: var=vars
     - debug: var=hostvars[inventory_hostname]
