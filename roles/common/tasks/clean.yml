@@ -55,7 +55,7 @@
 - name: "Re-create out/ ({{ SEPARATE_OUT_DIR }})"
   file:
     path: "{{ SEPARATE_OUT_DIR }}"
-    state: present
+    state: directory
   when: 
     - clean_out is defined and clean_out == true
     - SEPARATE_OUT_DIR is defined
