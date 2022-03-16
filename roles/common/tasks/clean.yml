@@ -25,3 +25,4 @@
     - build/make
     - system/security
     - test/
+    - hardware/qcom/Android.mk
