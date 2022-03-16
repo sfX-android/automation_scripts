@@ -52,3 +52,8 @@
   when: 
     - clean_out is defined and clean_out == true
     - SEPARATE_OUT_DIR is defined
+
+- name: "Reset state for all projects"
+  shell: "{{ repo_bin }} forall -j{{ max_processes }} -vc 'git remote -v | head -n1; git reset --hard' || echo 'SKIPPING WITH ERRORCODE: $?'"
+  args:
+    chdir: "{{ SRCPATH }}"
