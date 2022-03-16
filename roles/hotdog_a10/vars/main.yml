@@ -9,6 +9,7 @@ REPOBRANCH: "v1-q"
 RELEASEPATH: "nowhere"
 EOS_KEYS_DIR: "none"
 JKZIPDIR: "/ssd/tmp/eos/zips/hotdog"
+SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
 
 # notification vars
 rom_cl: "***Changes:***\n- eOS: [changelog](https://gitlab.e.foundation/e/os/releases/-/releases)\n"
