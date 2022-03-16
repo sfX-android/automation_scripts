@@ -1,20 +1,15 @@
 ---
 
 # build vars
-BUILDIDENT: "{{ ansible_date_time.date | regex_replace('-','') }}-{{ semaphore_vars.task_details.target_version }}"
 BDEVICE: "hotdog"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
 PREFIXFNAME: "e-"
 REPOBRANCH: "v1-q"
-RELEASEPATH: "nowhere"
-EOS_KEYS_DIR: "none"
-JKZIPDIR: "/ssd/tmp/eos/zips/hotdog"
 SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
+JKZIPDIR: "/ssd/tmp/eos/zips/hotdog"
 
 # notification vars
 rom_cl: "***Changes:***\n- eOS: [changelog](https://gitlab.e.foundation/e/os/releases/-/releases)\n"
 kernel_cl: "- kernel: [commits](https://github.com/sfX-android/android_kernel_oneplus_sm8150/commits/android-10.0)\n"
-dtree_cl: ""
-dl_links: ""
 cdtree_cl: "- Common Device tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q)\n"
 ota_hint: \nOTA Update:\n_(only if u don\'t want to wait for the automatic OTA popup)_\n1. Open Settings -> System\n2. Expand Advanced & select Updater\n3. Refresh if not listed already\n4. Update & Enjoy!
