@@ -5,27 +5,28 @@
     state: absent
     path: "{{ SRCPATH }}/{{ item }}"
   loop:
+    - build
     - device/
+    - frameworks/av
+    - frameworks/ml
+    - frameworks/native
+    - frameworks/support
+    - hardware/marvell    
+    - hardware/qcom/sm8150/
+    - hardware/qcom-caf
+    - hardware/qcom/Android.mk    
     - kernel/
+    - packages/apps/Trebuchet
+    - packages/apps/Updater
+    - system/core
+    - system/security
+    - system/sepolicy
+    - test/
     - vendor/lineage
     - vendor/fdroid
     - vendor/cm
     - vendor/nxp
-    - hardware/qcom/sm8150/
-    - hardware/qcom-caf
-    - hardware/qcom/Android.mk
-    - packages/apps/Trebuchet
-    - hardware/marvell
-    - frameworks/av
-    - frameworks/native
-    - frameworks/ml
-    - packages/apps/Updater
-    - system/core
-    - system/sepolicy
-    - build/make
-    - system/security
-    - test/
-    - hardware/qcom/Android.mk
+    - .repo/local_manifests
 
 - name: "Clean-Up out/ (1/2)"
   file:
