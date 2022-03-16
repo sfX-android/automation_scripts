@@ -1,0 +1,10 @@
+---
+
+- name: "Debug"
+  hosts: buildserver
+  gather_facts: false
+  
+  tasks:
+    - setup:
+    - debug: var=vars
+    - debug: var=hostvars[inventory_hostname]
