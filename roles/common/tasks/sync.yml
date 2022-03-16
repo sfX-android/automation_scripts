@@ -2,3 +2,5 @@
   
 - name: "Sync"
   shell: "{{ repo_bin }} sync -c -j{{ max_processes }} --force-sync --no-tags --no-clone-bundle"
+  args:
+    chdir: "{{ SRCPATH }}"
