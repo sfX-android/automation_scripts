@@ -1,6 +1,6 @@
 ---
 
-- name: "Basic Clean-Up"
+- name: "Basic Clean-Up (1/2)"
   file:
     state: absent
     path: "{{ SRCPATH }}/{{ item }}"
@@ -28,23 +28,40 @@
     - vendor/nxp
     - .repo/local_manifests
 
-- name: "Clean-Up out/ (1/2)"
-  file:
-    path: "{{ item }}"
+- name: "Basic Clean-Up (2/2)"
+  shell: "find out -name {{ item }} -delete || true"
   loop:
-    - "{{ SRCPATH }}/out"
+    - build.prop
+    - boot.img
+    - recovery.img
+    - blrecovery.img
+  when: clean_out is undefined or clean_out == false
+
+- name: "Clean-Up out/"
+  file:
+    path: "{{ SRCPATH }}/out"
+    state: absent
   when: clean_out is defined and clean_out == true
   
-- name: "Clean-Up out/ (2/2)"
+- name: "Clean-Up out/ ({{ SEPARATE_OUT_DIR }})"
   file:
-    path: "{{ item }}"
-  loop:
-    - "{{ SEPARATE_OUT_DIR }}"
+    path: "{{ SEPARATE_OUT_DIR }}"
+    state: absent
+  register: rm_other_out
   when: 
     - clean_out is defined and clean_out == true
     - SEPARATE_OUT_DIR is defined
 
-- name: "Re-do out/ linking"
+- name: "Re-create out/ ({{ SEPARATE_OUT_DIR }})"
+  file:
+    path: "{{ SEPARATE_OUT_DIR }}"
+    state: present
+  when: 
+    - clean_out is defined and clean_out == true
+    - SEPARATE_OUT_DIR is defined
+    - rm_other_out.changed == true
+
+- name: "Re-create out/ (link)"
   file:
     src: "{{ SEPARATE_OUT_DIR }}"
     dest: "{{ SRCPATH }}/out"
