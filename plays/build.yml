@@ -3,6 +3,9 @@
 - name: "Build {{ target_model }}"
   hosts: buildserver
   gather_facts: false
-        
+
+  include_vars:
+    dir: ../roles/common/vars/main.yml
+
   roles:
     - "{{ target_model }}_{{ android_shortversion }}"
