@@ -1,0 +1,9 @@
+---
+
+# build vars
+BDEVICE: "sunfish"
+SRCPATH: "/home/androidsource/do-not-touch/graphene_sunfish"
+PREFIXFNAME: "secureOS"
+REPOBRANCH: "12"
+SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
+JKZIPDIR: "//ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/zips"
