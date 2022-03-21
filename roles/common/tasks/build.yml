@@ -4,3 +4,9 @@
   shell: "source build/envsetup.sh && prebuilts/sdk/tools/jack-admin kill-server || SLEEP=0"
   args:
     chdir: "{{ SRCPATH }}"
+
+- name: "EXTENDROM: get prebuilts"
+  shell: "source build/envsetup.sh && vendor/extendrom/get_prebuilts.sh"
+  args:
+    chdir: "{{ SRCPATH }}"
+  when: ansible_env.ENABLE_EXTENDROM == true
