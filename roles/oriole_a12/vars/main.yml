@@ -1,0 +1,9 @@
+---
+
+# build vars
+BDEVICE: "oriole"
+SRCPATH: "/home/androidsource/do-not-touch/graphene"
+PREFIXFNAME: "secureOS"
+REPOBRANCH: "12"
+SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
+JKZIPDIR: "//ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/zips"
