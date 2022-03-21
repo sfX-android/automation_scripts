@@ -1,6 +1,6 @@
 ---
 
-- name: kill any jack-admin
+- name: "kill any jack-admin"
   shell: "source build/envsetup.sh && prebuilts/sdk/tools/jack-admin kill-server || SLEEP=0"
   args:
     chdir: "{{ SRCPATH }}"
@@ -11,30 +11,30 @@
     chdir: "{{ SRCPATH }}"
   when: "{{ ansible_env.ENABLE_EXTENDROM }} == true"
 
-- name: build
+- name: "build"
   shell: "source build/envsetup.sh && {{ BUILD_CMD }}"
   args:
     chdir: "{{ SRCPATH }}"
     
-- name: post-build
+- name: "post-build"
   shell: "source build/envsetup.sh && {{ BUILD_CMD_POST }}"
   args:
     chdir: "{{ SRCPATH }}"
   when: BUILD_CMD_POST is defined
   
-- name: post-build: sign APK
+- name: "post-build: sign APK"
   shell: "source build/envsetup.sh && {{ BUILD_CMD_SIGN_APK }}"
   args:
     chdir: "{{ SRCPATH }}"
   when: BUILD_CMD_SIGN_APK is defined
   
-- name: post-build: sign OTA
+- name: "post-build: sign OTA"
   shell: "source build/envsetup.sh && {{ BUILD_CMD_SIGN_OTA }}"
   args:
     chdir: "{{ SRCPATH }}"
   when: BUILD_CMD_SIGN_OTA is defined
 
-- name: kill any jack-admin
+- name: "kill any jack-admin"
   shell: "source build/envsetup.sh && prebuilts/sdk/tools/jack-admin kill-server || SLEEP=0"
   args:
     chdir: "{{ SRCPATH }}"
