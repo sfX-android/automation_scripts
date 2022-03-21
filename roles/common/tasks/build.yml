@@ -9,4 +9,4 @@
   shell: "source build/envsetup.sh && vendor/extendrom/get_prebuilts.sh"
   args:
     chdir: "{{ SRCPATH }}"
-  when: ansible_env.ENABLE_EXTENDROM == true
+  when: "{{ ansible_env.ENABLE_EXTENDROM }} == true"
