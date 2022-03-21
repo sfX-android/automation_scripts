@@ -1,0 +1,6 @@
+---
+
+- name: kill any jack-admin
+  shell: "source build/envsetup.sh && prebuilts/sdk/tools/jack-admin kill-server || SLEEP=0"
+  args:
+    chdir: "{{ SRCPATH }}"
