@@ -9,7 +9,7 @@
   shell: "source build/envsetup.sh && vendor/extendrom/get_prebuilts.sh"
   args:
     chdir: "{{ SRCPATH }}"
-  when: "{{ lookup('env', 'ENABLE_EXTENDROM') }} is defined and {{ lookup('env', 'ENABLE_EXTENDROM') }} == true"
+  when: "{{ lookup('env', 'ENABLE_EXTENDROM') | default('false', True) }} == true"
 
 - name: "build"
   shell: "source build/envsetup.sh && {{ BUILD_CMD }}"
