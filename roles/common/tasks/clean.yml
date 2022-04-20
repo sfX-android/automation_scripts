@@ -27,7 +27,7 @@
     - vendor/cm
     - vendor/nxp
     - .repo/local_manifests
-  when: clean_basic is undefined or clean_basic == true
+  when: clean_basic is undefined or clean_basic == "true"
 
 - name: "Basic Clean-Up (2/2)"
   shell: "find out -name {{ item }} -delete || true"
@@ -36,13 +36,13 @@
     - boot.img
     - recovery.img
     - blrecovery.img
-  when: clean_out is undefined or clean_out == false
+  when: clean_out is undefined or clean_out == "false"
 
 - name: "Clean-Up out/"
   file:
     path: "{{ SRCPATH }}/out"
     state: absent
-  when: clean_out is defined and clean_out == true
+  when: clean_out is defined and clean_out == "true"
   
 - name: "Clean-Up out/ ({{ SEPARATE_OUT_DIR }})"
   file:
@@ -50,7 +50,7 @@
     state: absent
   register: rm_other_out
   when: 
-    - clean_out is defined and clean_out == true
+    - clean_out is defined and clean_out == "true"
     - SEPARATE_OUT_DIR is defined
 
 - name: "Re-create out/ ({{ SEPARATE_OUT_DIR }})"
@@ -58,7 +58,7 @@
     path: "{{ SEPARATE_OUT_DIR }}"
     state: directory
   when: 
-    - clean_out is defined and clean_out == true
+    - clean_out is defined and clean_out == "true"
     - SEPARATE_OUT_DIR is defined
     - rm_other_out.changed == true
 
@@ -68,7 +68,7 @@
     dest: "{{ SRCPATH }}/out"
     state: link
   when: 
-    - clean_out is defined and clean_out == true
+    - clean_out is defined and clean_out == "true"
     - SEPARATE_OUT_DIR is defined
 
 - name: "Reset state for all projects"
