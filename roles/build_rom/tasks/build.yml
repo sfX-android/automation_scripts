@@ -4,3 +4,5 @@
   shell: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1"
   async: 10800
   poll: 30
+  register: buildresult
+  ignore_errors: true
