@@ -8,4 +8,4 @@
     - ../roles/common/vars/main.yml
 
   roles:
-    - "{{ target_model }}_{{ android_shortversion }}"
+    - "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
