@@ -1,0 +1,6 @@
+---
+
+- name: Fetch build log
+  fetch:
+    src: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+    dest: /tmp/
