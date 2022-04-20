@@ -27,6 +27,7 @@
     - vendor/cm
     - vendor/nxp
     - .repo/local_manifests
+  when: clean_basic is undefined or clean_basic == true
 
 - name: "Basic Clean-Up (2/2)"
   shell: "find out -name {{ item }} -delete || true"
