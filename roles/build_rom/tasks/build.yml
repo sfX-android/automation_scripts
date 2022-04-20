@@ -1,6 +1,6 @@
 ---
 
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: 3 hours)"
-  shell: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
+  shell: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1"
   async: 10800
   poll: 30
