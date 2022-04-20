@@ -1,0 +1,6 @@
+---
+
+- name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: 3 hours)"
+  shell: ./build.sh
+  async: 10800
+  poll: 30
