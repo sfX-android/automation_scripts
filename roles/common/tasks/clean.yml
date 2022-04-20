@@ -2,6 +2,8 @@
 
 - name: "Basic Clean-Up (props, images)"
   shell: "find out/ -name {{ item }} -delete || true"
+  args:
+    chdir: "{{ SRCPATH }}"
   loop:
     - build.prop
     - boot.img
