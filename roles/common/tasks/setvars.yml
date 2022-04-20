@@ -1,0 +1,4 @@
+---
+
+- set_fact:
+    BUILDIDENT: "{{ '%Y%m%d' | strftime }}"
