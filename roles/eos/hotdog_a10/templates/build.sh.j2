@@ -13,17 +13,17 @@ source build/envsetup.sh
 
 if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
 
-	# this will be a user build!
-	lunch lineage_hotdog-user
+    # this will be a user build!
+    lunch lineage_hotdog-user
 
-	# enable & use extendrom
-	export ENABLE_EXTENDROM=true
+    # enable & use extendrom
+    export ENABLE_EXTENDROM=true
     export EOS_GESTURES=true
     if [ "{{ PREROOT_BOOT }}" == "true" ];then
-    	export EXTENDROM_PREROOT_BOOT=true
-      export EXTENDROM_PACKAGES="noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky SignMagisk"        
+        export EXTENDROM_PREROOT_BOOT=true
+        export EXTENDROM_PACKAGES="noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky SignMagisk"        
     else
-    	export EXTENDROM_PACKAGES="noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+        export EXTENDROM_PACKAGES="noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
     fi
     
     # all the extendrom MAGIC!!
