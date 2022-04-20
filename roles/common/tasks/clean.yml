@@ -1,7 +1,7 @@
 ---
 
 - name: "Basic Clean-Up (props, images)"
-  shell: "find out -name {{ item }} -delete || true"
+  shell: "find out/ -name {{ item }} -delete || true"
   loop:
     - build.prop
     - boot.img
