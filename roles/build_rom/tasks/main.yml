@@ -1,4 +1,3 @@
 ---
 
-- include: copy.yml
-#- include: build.yml
+- include: build.yml
