@@ -1,0 +1,7 @@
+---
+
+- name: Upload build script
+  template:
+    src: build.sh.j2
+    dest: build.sh
+    mode: 0700
