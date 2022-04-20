@@ -1,3 +1,5 @@
 ---
 
 - include: build.yml
+- include: grab_log.yml
+- include: end_build.yml
