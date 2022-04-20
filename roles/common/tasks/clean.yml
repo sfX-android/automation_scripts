@@ -1,6 +1,16 @@
 ---
 
-- name: "Basic Clean-Up (1/2)"
+- name: "Basic Clean-Up (props, images)"
+  shell: "find out -name {{ item }} -delete || true"
+  loop:
+    - build.prop
+    - boot.img
+    - recovery.img
+    - blrecovery.img
+  when:
+    - clean_out != "true" or (override_clean_out is defined and override_clean_out != "true")
+
+- name: "Basic Clean-Up (cross-version incompatible paths)"
   file:
     state: absent
     path: "{{ SRCPATH }}/{{ item }}"
@@ -27,22 +37,15 @@
     - vendor/cm
     - vendor/nxp
     - .repo/local_manifests
-  when: clean_basic is undefined or clean_basic == "true"
-
-- name: "Basic Clean-Up (2/2)"
-  shell: "find out -name {{ item }} -delete || true"
-  loop:
-    - build.prop
-    - boot.img
-    - recovery.img
-    - blrecovery.img
-  when: clean_out is undefined or clean_out == "false"
+  when:
+    - (override_clean_basic is undefined and clean_basic == "true") or (override_clean_basic is defined and override_clean_basic == "true")
 
 - name: "Clean-Up out/"
   file:
     path: "{{ SRCPATH }}/out"
     state: absent
-  when: clean_out is defined and clean_out == "true"
+  when:
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
   
 - name: "Clean-Up out/ ({{ SEPARATE_OUT_DIR }})"
   file:
@@ -50,7 +53,7 @@
     state: absent
   register: rm_other_out
   when: 
-    - clean_out is defined and clean_out == "true"
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
     - SEPARATE_OUT_DIR is defined
 
 - name: "Re-create out/ ({{ SEPARATE_OUT_DIR }})"
@@ -58,7 +61,7 @@
     path: "{{ SEPARATE_OUT_DIR }}"
     state: directory
   when: 
-    - clean_out is defined and clean_out == "true"
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
     - SEPARATE_OUT_DIR is defined
     - rm_other_out.changed == true
 
@@ -68,10 +71,12 @@
     dest: "{{ SRCPATH }}/out"
     state: link
   when: 
-    - clean_out is defined and clean_out == "true"
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
     - SEPARATE_OUT_DIR is defined
 
 - name: "Reset state for all projects"
   shell: "{{ repo_bin }} forall -j{{ max_processes }} -vc 'git remote -v | head -n1; git reset --hard' || echo 'SKIPPING WITH ERRORCODE: $?'"
   args:
     chdir: "{{ SRCPATH }}"
+  when:
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
