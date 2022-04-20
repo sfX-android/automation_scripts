@@ -4,7 +4,7 @@ export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
 export JKZIPDIR="{{ JKZIPDIR }}"
 {% if PREROOT_BOOT %}
 export EOS_KEYS_DIR=/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ BDEVICE }}_rooted
-{% else % }
+{% else %}
 export EOS_KEYS_DIR=/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ BDEVICE }}
 {% endif %}
     
