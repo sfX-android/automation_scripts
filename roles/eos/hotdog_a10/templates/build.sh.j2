@@ -7,18 +7,17 @@ export EOS_KEYS_DIR=/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ BD
 {% else % }
 export EOS_KEYS_DIR=/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ BDEVICE }}
 {% endif %}
-
     
 cd {{ SRCPATH }}
 source build/envsetup.sh
 
 if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
 
-	  # this will be a user build!
-	  lunch lineage_hotdog-user
-    
-    # enable & use extendrom
-	  export ENABLE_EXTENDROM=true
+	# this will be a user build!
+	lunch lineage_hotdog-user
+
+	# enable & use extendrom
+	export ENABLE_EXTENDROM=true
     export EOS_GESTURES=true
     if [ "{{ PREROOT_BOOT }}" == "true" ];then
     	export EXTENDROM_PREROOT_BOOT=true
@@ -30,7 +29,7 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     # all the extendrom MAGIC!!
     vendor/extendrom/get_prebuilts.sh
 
-	  # Three build steps needed: build, sign, create & sign OTA
+	# Three build steps needed: build, sign, create & sign OTA
     # step 1/3:
     # build the ROM + otatools needed for signing
     mka target-files-package otatools
@@ -41,14 +40,14 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     
     # get the build ver
     VERSION_MAJOR=$(grep "PRODUCT_VERSION_MAJOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " ")
-	  VERSION_MINOR=$(grep "PRODUCT_VERSION_MINOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " ")
+	VERSION_MINOR=$(grep "PRODUCT_VERSION_MINOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " ")
     
     # step 3/3:
     # build & sign the OTA
     ./build/tools/releasetools/ota_from_target_files -k user-keys/releasekey --block {{ JKZIPDIR }}/signed-target_files.zip {{ JKZIPDIR }}/{{ PREFIXFNAME }}${VERSION_MAJOR}.${VERSION_MINOR}-q-{{ BUILDIDENT }}-{{ EOS_RELEASE_TYPE }}-{{ BDEVICE }}-signed.zip
     rm -v {{ JKZIPDIR }}/signed-target_files.zip
 else
-	  # userdebug build is what the majority uses
+	# userdebug build is what the majority uses
     lunch lineage_{{ BDEVICE }}-userdebug
     mka eos
 fi
