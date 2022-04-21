@@ -4,7 +4,7 @@
   copy:
     src: "{{ item }}"
     dest: "{{ rempath }}"
-  delegate_to: "{{ vault_REMSRV }}"
+  delegate_to: "{{ vault_RELEASESVR }}"
   loop:
     - ROMFILE.stdout
     - "{{ ROMFILE.stdout }}.sha256sum"
