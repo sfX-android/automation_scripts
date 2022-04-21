@@ -1,0 +1,10 @@
+
+---
+
+- name: "Dummy"
+  hosts: buildserver
+  gather_facts: false
+  
+  tasks:
+    - debug:
+        msg: "dummy"
