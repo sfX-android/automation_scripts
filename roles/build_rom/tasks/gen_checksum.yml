@@ -1,0 +1,17 @@
+---
+
+- set_fact:
+    LOCFILE: "{{ PREFIXFNAME }}'[0-9]+\.[0-9]+-.*-'{{ RELEASE_TYPE }}'.*\.zip'"
+
+- name: "Get current ROM filename"
+  shell: "find {{ JKZIPDIR }} -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\n'"
+  register: ROMFILE
+
+- name: "Generate hash for {{ ROMFILE.stdout }}"
+  stat:
+    path: "{{ ROMFILE.stdout }}"
+    checksum_algorithm: sha256
+  register: hash
+
+- name: "Write hash {{ ROMFILE.stdout }}.sha256sum"
+  shell: "echo {{ hash.stat.checksum }} > {{ ROMFILE.stdout }}.sha256sum"
