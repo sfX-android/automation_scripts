@@ -14,6 +14,8 @@
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
       - include_role:
           name: build_rom
+      -include_role:
+          name: release_rom
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
           #tg_group_id: "{{ vault_tg_group_id_automation }}"
