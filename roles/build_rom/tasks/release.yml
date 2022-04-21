@@ -1,5 +1,0 @@
----
-
-- name: "Releasing ROM for {{ BDEVICE}}"
-  debug:
-    msg: "TBD"
