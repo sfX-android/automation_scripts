@@ -13,6 +13,6 @@
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
       - include_role:
           name: build_rom
-    - always:
+      always:
       - include_role:
           name: notify
