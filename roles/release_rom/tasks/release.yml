@@ -1,0 +1,10 @@
+---
+
+- name:" Release ROM for {{ BDEVICE }}"
+  copy:
+    src: "{{ item }}"
+    dest: "{{ rempath }}"
+  delegate_to: "{{ vault_REMSRV }}"
+  loop:
+    - ROMFILE.stdout
+    - "{{ ROMFILE.stdout }}.sha256sum"
