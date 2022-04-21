@@ -7,6 +7,12 @@
   vars_files:
     - ../roles/common/vars/main.yml
 
-  roles:
-    - "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
-    - build_rom
+  tasks:
+    - block:
+      - include_role:
+          name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
+      - include_role:
+          name: build_rom
+    - always:
+      - include_role:
+          name: notify
