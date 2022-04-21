@@ -5,3 +5,5 @@
 - include: grab_log.yml
 # failure checking of build
 - include: end_build.yml
+# generate sha hash
+- include: gen_checksum.yml
