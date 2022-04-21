@@ -8,6 +8,7 @@ REPOBRANCH: "v1-q"
 SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
 JKZIPDIR: "/ssd/tmp/eos/zips/hotdog"
 custom_release_script: true
+custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
 
 # notification vars
 rom_cl: "***Changes:***\n- eOS: [changelog](https://gitlab.e.foundation/e/os/releases/-/releases)\n"
