@@ -19,7 +19,7 @@
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
           #tg_group_id: "{{ vault_tg_group_id_automation }}"
-          tg_output: '{{ ICON_GOOD }} New build _*{{ BUILDIDENT }}*_ has finished SUCCESSFULLY!\n\n{{ rom_cl }}{{ kernel_cl }}{{ dtree_cl }}{{ cdtree_cl }}{{ dl_links }}\nSHA256:\n{{ hash }}\n{{ ota_hint }}'
+          tg_output: '{{ ICON_GOOD }} New build _*{{ BUILDIDENT }}*_ has finished SUCCESSFULLY!\n\n{{ rom_cl }}{{ kernel_cl }}{{ dtree_cl }}{{ cdtree_cl }}{{ dl_links }}\nSHA256:\n{{ hash.stat.checksum }}\n{{ ota_hint }}'
       - include_role:
           name: notify
       rescue:
