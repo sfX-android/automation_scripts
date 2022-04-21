@@ -1,0 +1,10 @@
+---
+
+- name: "Notify by Telegram"
+  community.general.telegram:
+    token: "{{ vault_tg_token }}"
+    api_args:
+      chat_id: "{{ tg_group_id }}"
+      parse_mode: "markdown"
+      text: "{{ tg_output }}"
+      disable_web_page_preview: True
