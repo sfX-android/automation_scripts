@@ -1,6 +1,6 @@
 ---
 
-- name:" Release ROM for {{ BDEVICE }}"
+- name: "Release ROM for {{ BDEVICE }}"
   copy:
     src: "{{ item }}"
     dest: "{{ rempath }}"
