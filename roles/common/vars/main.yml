@@ -6,6 +6,10 @@ max_processes: 15
 
 BDEVICE: "{{ target_model }}"
 
+CCACHE_EXEC: /usr/bin/ccache
+CCACHE_COMPRESS: 1
+CCACHE_DIR: /ssd/ccache/jenkins/{{ target_model }}-undef
+
 leech_server: "https://leech.binbash.rocks:8008"
 
 ICON_GOOD: 🎉
