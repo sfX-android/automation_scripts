@@ -1,2 +1,2 @@
 [buildserver]
-sfxdevsrv-droid
+sfxdevsrv-droid ansible_port=22227
