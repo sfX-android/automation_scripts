@@ -4,5 +4,7 @@ BUILDIDENT: "{{ ansible_date_time.date | regex_replace('-','') }}-{{ semaphore_v
 repo_bin: /home/androidsource/bin/repo
 max_processes: 15
 
+leech_server: "https://leech.binbash.rocks:8008"
+
 ICON_GOOD: 🎉
 ICON_BAD: ☠️
