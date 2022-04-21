@@ -5,7 +5,3 @@
 - include: grab_log.yml
 # failure checking of build
 - include: end_build.yml
-
-# release if not failed before and not using a custom release script
-- include: release.yml
-  when: custom_release_script is undefined or custom_release_script != true
