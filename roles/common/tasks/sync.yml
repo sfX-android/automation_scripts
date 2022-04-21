@@ -4,3 +4,8 @@
   shell: "{{ repo_bin }} sync -c -j{{ max_processes }} --force-sync --no-tags --no-clone-bundle"
   args:
     chdir: "{{ SRCPATH }}"
+
+- name: "Sync LFS"
+  shell: "{{ repo_bin }} forall -j{{ max_processes }} -c 'git lfs pull'"
+  args:
+    chdir: "{{ SRCPATH }}"
