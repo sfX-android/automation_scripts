@@ -2,7 +2,6 @@
 
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
-BDEVICE: "hotdog"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
 PREFIXFNAME: "e-"
 REPOBRANCH: "v1-q"
