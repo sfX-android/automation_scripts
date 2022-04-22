@@ -37,10 +37,9 @@
     url: https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument
     method: POST
     body_format: form-multipart
-    headers:
-      chat_id: "{{ tg_group_id }}"
     body:
-        document: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+      chat_id: "{{ tg_group_id }}"
+      document: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
   when: 
     - buildresult.rc is undefined or buildresult.rc != 0
     - tg_group_id == vault_tg_group_id_failing
