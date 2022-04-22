@@ -39,5 +39,4 @@ case {{ sub_model }} in
     ;;
 esac
 
-cd out/target/product/{{ sub_model }}
-mv lineage_{{ sub_model }}*.zip {{ ROM_FLAVOR }}-{{ android_shortversion }}-{{ BUILDIDENT }}-UNOFFICIAL-{{ sub_model }}.zip
+mv out/target/product/{{ sub_model }}/lineage_{{ sub_model }}*.zip {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}-{{ BUILDIDENT }}-UNOFFICIAL-{{ sub_model }}.zip
