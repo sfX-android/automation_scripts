@@ -12,9 +12,9 @@
       disable_web_page_preview: True
 
 - stat:
-  connection: local
     path: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
   register: logfile
+  connection: local
  
 - name: "Telegram: attach log (on errors)"
   connection: local
