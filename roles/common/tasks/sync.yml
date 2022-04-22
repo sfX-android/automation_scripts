@@ -3,7 +3,7 @@
 - name: "Get local manifests (if set)"
   git:
     repo: "{{ git_repo_local_manifests }}"
-    dest: "{{ SRCPATH }}.repo/local_manifests"
+    dest: "{{ SRCPATH }}/.repo/local_manifests"
     version: "{{ REPOBRANCH }}"
     force: true
   when: git_repo_local_manifests is defined
