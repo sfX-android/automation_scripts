@@ -1,4 +1,7 @@
 ---
+# git
+git_repo_main_manifests: "https://github.com/LineageOS/android.git"
+git_repo_local_manifests: "git@github.com:LGgFour/local_manifests.git"
 
 # build vars
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
@@ -10,7 +13,6 @@ keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }}/"
 USE_CCACHE: 1
 CCACHE_DIR: /ssd/ccache/jenkins/android-10.0
-git_repo_local_manifests: "git@github.com:LGgFour/local_manifests.git"
 
 # extendrom stuff
 use_extendrom: "true"
