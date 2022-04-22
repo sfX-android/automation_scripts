@@ -4,7 +4,7 @@
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 REPOBRANCH: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 PREFIXFNAME: "{{ REPOBRANCH }}"
-SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
+SEPARATE_OUT_DIR: "/ssd/{{ BDEVICE }}/{{ PREFIXFNAME }}/out"
 JKZIPDIR: "/ssd/tmp/{{ REPOBRANCH }}/zips/{{ BDEVICE }}"
 keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }}/"
