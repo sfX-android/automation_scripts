@@ -1,10 +1,15 @@
 ---
+- set_fact:
+    ansible_host: vault_RELEASESVR
 
 - name: "Release ROM for {{ BDEVICE }}"
   copy:
     src: "{{ item }}"
     dest: "{{ rempath }}"
-  delegate_to: "{{ vault_RELEASESVR }}"
+  delegate_to: inventory_hostname
   loop:
     - ROMFILE.stdout
     - "{{ ROMFILE.stdout }}.sha256sum"
+
+- set_fact:
+    ansible_host: inventory_hostname
