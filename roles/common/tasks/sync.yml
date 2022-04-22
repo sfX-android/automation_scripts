@@ -1,5 +1,18 @@
 ---
-  
+
+- name: "Get local manifests (if set)"
+  git:
+    repo: "{{ git_repo_local_manifests }}"
+    dest: .repo/local_manifests
+    version: "{{ REPOBRANCH }}"
+    force: true
+  when: git_repo_local_manifests is defined
+
+- name: "Init Android sources"
+  shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ REPOBRANCH }}"
+  args:
+    chdir: "{{ SRCPATH }}"
+
 - name: "Sync"
   shell: "{{ repo_bin }} sync -c -j{{ max_processes }} --force-sync --no-tags --no-clone-bundle"
   args:
