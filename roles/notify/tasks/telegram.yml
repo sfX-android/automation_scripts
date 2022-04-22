@@ -22,7 +22,7 @@
     token: "{{ vault_tg_token }}"
     api_args:
       chat_id: "{{ tg_group_id }}"
-      text: 'build_{{ target_model | replace("(-|.)","\\\1") }}_{{ android_shortversion | replace("(-|.)","\\\1") }}_{{ ROM_FLAVOR | replace("(-|.)","\\\1") }}\.log'
+      text: 'build log file'
       document: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
       disable_web_page_preview: True
       parse_mode: "MarkdownV2"
