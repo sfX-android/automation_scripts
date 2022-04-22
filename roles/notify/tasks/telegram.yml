@@ -31,19 +31,30 @@
 #    - tg_group_id == vault_tg_group_id_failing
 #    - logfile.stat.isreg is defined
 
+# works BUT file content will always be base64 encoded, see:
+# https://github.com/ansible/ansible/issues/73621#issuecomment-780650153
+#- name: "Telegram: attach log (on errors)"
+#  connection: local
+#  uri:
+#    url: https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument
+#    method: POST
+#    body_format: form-multipart
+#    body:
+#      chat_id: "{{ tg_group_id }}"
+#      document:
+#        filename: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+#        mime_type: text/plain
+#  when: 
+#    - buildresult.rc is undefined or buildresult.rc != 0
+#    - tg_group_id == vault_tg_group_id_failing
+#    - logfile.stat.isreg is defined
+
 - name: "Telegram: attach log (on errors)"
   connection: local
-  uri:
-    url: https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument
-    method: POST
-    #body_format: form-multipart
-    headers:
-      Content-Type: multipart/form-data
-    body:
-      chat_id: "{{ tg_group_id }}"
-      document:
-        filename: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
-        mime_type: text/plain
+  shell: |
+     curl -F document=@/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log \ 
+     -H "Content-Type:multipart/form-data" \ 
+     "https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument?chat_id={{ tg_group_id }}"
   when: 
     - buildresult.rc is undefined or buildresult.rc != 0
     - tg_group_id == vault_tg_group_id_failing
