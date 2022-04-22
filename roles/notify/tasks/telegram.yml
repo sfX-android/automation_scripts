@@ -16,10 +16,15 @@
   register: logfile
   connection: local
 
+- archive:
+    path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+    remove: yes
+  when: logfile.stat.isreg is defined
+    
 - name: "Telegram: attach log (on errors)"
   connection: local
   shell: |
-     curl -F document=@/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log \ 
+     curl -F document=@/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.gz \ 
      -H "Content-Type:multipart/form-data" \ 
      "https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument?chat_id={{ tg_group_id }}"
   when: 
