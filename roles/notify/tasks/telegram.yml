@@ -15,15 +15,32 @@
     path: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
   register: logfile
   connection: local
- 
+
+# uploading via multipart/form-data seems to not work
+# https://core.telegram.org/bots/api#senddocument
+#- name: "Telegram: attach log (on errors)"
+#  connection: local
+#  community.general.telegram:
+#    token: "{{ vault_tg_token }}"
+#    api_method: sendDocument
+#    api_args:
+#      chat_id: "{{ tg_group_id }}"
+#      document: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+#  when: 
+#    - buildresult.rc is undefined or buildresult.rc != 0
+#    - tg_group_id == vault_tg_group_id_failing
+#    - logfile.stat.isreg is defined
+
 - name: "Telegram: attach log (on errors)"
   connection: local
-  community.general.telegram:
-    token: "{{ vault_tg_token }}"
-    api_method: sendDocument
-    api_args:
-      chat_id: "{{ tg_group_id }}"
-      document: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+  uri:
+    url: https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument
+    method: POST
+    body_format: form-multipart
+    body:
+      api_args:
+        chat_id: "{{ tg_group_id }}"
+        document: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
   when: 
     - buildresult.rc is undefined or buildresult.rc != 0
     - tg_group_id == vault_tg_group_id_failing
