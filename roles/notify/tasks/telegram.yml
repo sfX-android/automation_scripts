@@ -39,7 +39,8 @@
     body_format: form-multipart
     body:
       chat_id: "{{ tg_group_id }}"
-      document: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+      document:
+        filename: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
   when: 
     - buildresult.rc is undefined or buildresult.rc != 0
     - tg_group_id == vault_tg_group_id_failing
