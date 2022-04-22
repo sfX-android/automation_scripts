@@ -12,9 +12,20 @@
       disable_web_page_preview: True
 
 - stat:
-    path: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+    path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
   register: logfile
   connection: local
+
+- name: "Telegram: attach log (on errors)"
+  connection: local
+  shell: |
+     curl -F document=@/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log \ 
+     -H "Content-Type:multipart/form-data" \ 
+     "https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument?chat_id={{ tg_group_id }}"
+  when: 
+    - buildresult.rc is undefined or buildresult.rc != 0
+    - tg_group_id == vault_tg_group_id_failing
+    - logfile.stat.isreg is defined
 
 # uploading via multipart/form-data seems to not work
 # https://core.telegram.org/bots/api#senddocument
@@ -48,14 +59,3 @@
 #    - buildresult.rc is undefined or buildresult.rc != 0
 #    - tg_group_id == vault_tg_group_id_failing
 #    - logfile.stat.isreg is defined
-
-- name: "Telegram: attach log (on errors)"
-  connection: local
-  shell: |
-     curl -F document=@/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log \ 
-     -H "Content-Type:multipart/form-data" \ 
-     "https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument?chat_id={{ tg_group_id }}"
-  when: 
-    - buildresult.rc is undefined or buildresult.rc != 0
-    - tg_group_id == vault_tg_group_id_failing
-    - logfile.stat.isreg is defined
