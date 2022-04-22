@@ -65,7 +65,6 @@
   when: 
     - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
     - SEPARATE_OUT_DIR is defined
-    - rm_other_out.changed == true
 
 - name: "Re-create out/ (link)"
   file:
