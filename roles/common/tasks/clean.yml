@@ -89,6 +89,11 @@
   when:
     - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
 
+- name: "Setup patch indicators dir"
+  file:
+    path: "{{ SRCPATH }}/.tmp/"
+    state: directory
+
 - name: "Cleanup local manifests"
   file:
     path: "{{ SRCPATH }}/.repo/local_manifests"
