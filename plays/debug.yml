@@ -24,3 +24,5 @@
                 \- Build id: _{{ BUILDIDENT | replace("-","\-") }}_
         - import_role:
             name: notify
+        - fail:
+            msg: failed
