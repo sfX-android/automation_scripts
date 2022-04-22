@@ -19,7 +19,8 @@
             tg_group_id: "{{ vault_tg_group_id_failing }}"
             tg_output: |
                 {{ ICON_BAD }} ***ERROR:*** Last build failed\!
-                \- Device: ***BDEVICE***
-                \- Build id: _{{ BUILDIDENT | replace("-","\-") }}_
+                
+                * Device: ***BDEVICE***
+                * Build id: _{{ BUILDIDENT | replace("-","\-") }}_
         - import_role:
             name: notify
