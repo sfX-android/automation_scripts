@@ -37,6 +37,8 @@
     url: https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument
     method: POST
     #body_format: form-multipart
+    headers:
+      Content-Type: multipart/form-data
     body:
       chat_id: "{{ tg_group_id }}"
       document:
