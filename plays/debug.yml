@@ -2,7 +2,7 @@
 
 - name: "Debug"
   hosts: buildserver
-  #gather_facts: false
+  gather_facts: false
   
   vars_files:
     - ../roles/common/vars/main.yml
