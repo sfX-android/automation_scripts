@@ -43,3 +43,5 @@
                 \- Build id: _{{ BUILDIDENT | replace("-","\-") }}_
         - include_role:
             name: notify
+        - fail:
+            msg: "build failure occured. check log."
