@@ -17,7 +17,7 @@ lunch lineage_{{ sub_model }}-userdebug
 # extendrom
 export ENABLE_EXTENDROM={{ use_extendrom }}
 vendor/extendrom/get_prebuilts.sh
-export EXTENDROM_PACKAGES={{ extendrom_package_list }}
+export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
 
 # build
 mka otapackage
