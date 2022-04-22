@@ -4,6 +4,9 @@
   hosts: buildserver
   gather_facts: false
   
+  vars_files:
+    - ../roles/common/vars/main.yml
+    
   tasks:
     #- setup:
     #- debug: var=vars
