@@ -89,3 +89,9 @@
   when:
     - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
 
+- name: "Cleanup local manifests"
+  file:
+    path: ".repo/local_manifests"
+    state: absent
+  when:
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
