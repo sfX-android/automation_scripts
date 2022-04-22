@@ -9,6 +9,10 @@
       text: "{{ tg_output }}"
       disable_web_page_preview: True
 
+- stat:
+    path: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+  register: logfile
+ 
 - name: "Telegram: attach log (on errors)"
   community.general.telegram:
     token: "{{ vault_tg_token }}"
@@ -20,3 +24,4 @@
   when: 
     - buildresult.rc is undefined or buildresult.rc != 0
     - tg_group_id == vault_tg_group_id_failing
+    - logfile.stat.isreg
