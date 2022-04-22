@@ -16,7 +16,7 @@
           msg: "foo"
       rescue:
         - set_fact:
-            tg_group_id: "\{{ vault_tg_group_id_failing }}"
+            tg_group_id: "\\{{ vault_tg_group_id_failing }}"
             tg_output: '{{ ICON_BAD }} ***ERROR:*** Last build failed\!\n\n\- Device: ***BDEVICE***\n\- Build id: _{{ BUILDIDENT }}_'
         - import_role:
             name: notify
