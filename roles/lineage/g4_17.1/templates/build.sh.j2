@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 export USE_CCACHE={{ USE_CCACHE }}
 if [ "{{ USE_CCACHE }}" -eq 1 ];then
     export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
