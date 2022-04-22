@@ -20,12 +20,10 @@
   connection: local
   community.general.telegram:
     token: "{{ vault_tg_token }}"
+    api_method: sendDocument
     api_args:
       chat_id: "{{ tg_group_id }}"
-      text: 'build log file'
       document: "/tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
-      disable_web_page_preview: True
-      parse_mode: "MarkdownV2"
   when: 
     - buildresult.rc is undefined or buildresult.rc != 0
     - tg_group_id == vault_tg_group_id_failing
