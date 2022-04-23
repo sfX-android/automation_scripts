@@ -32,6 +32,7 @@
     - buildresult.rc is undefined or buildresult.rc != 0
     - tg_group_id == vault_tg_group_id_failing
     - logfile.stat.isreg is defined
+  no_log: true
 
 # uploading via multipart/form-data seems to not work
 # https://core.telegram.org/bots/api#senddocument
