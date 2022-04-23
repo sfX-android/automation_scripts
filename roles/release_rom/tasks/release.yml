@@ -1,6 +1,10 @@
 ---
 - set_fact:
+    pre_ansible_port: "{{ ansible_port }}"
+    
+- set_fact:
     ansible_host: "{{ vault_RELEASESVR }}"
+    ansible_port: "{{ RELEASESVR_port }}"
 
 - name: "Release ROM for {{ BDEVICE }}"
   copy:
@@ -13,3 +17,4 @@
 
 - set_fact:
     ansible_host: "{{ inventory_hostname }}"
+    ansible_port: "{{ pre_ansible_port }}"
