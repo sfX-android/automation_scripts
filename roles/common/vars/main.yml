@@ -1,16 +1,30 @@
 ---
+# misc common vars used for all tasks
 
+# build identifier used in e.g. the filename later
 BUILDIDENT: "{{ ansible_date_time.date | regex_replace('-','') }}-{{ semaphore_vars.task_details.target_version | default(semaphore_vars.task_details.incoming_version) }}"
+
+# full path to the repo binary
 repo_bin: /home/androidsource/bin/repo
+
+# number of threads used e.g. with repo binary etc
 max_processes: 15
 
+# ssh port where the release server is reachable (coming from the build server)
+RELEASESVR_port: 22
+
+# backwards compatible var specifying the build device (e.g. hotdog etc)
+# should not be changed
 BDEVICE: "{{ target_model }}"
 
+# ccache defaults
 CCACHE_EXEC: /usr/bin/ccache
 CCACHE_COMPRESS: 1
 CCACHE_DIR: /ssd/ccache/jenkins/{{ target_model }}-undef
 
+# base url where the user can download released ROMs etc
 leech_server: "https://leech.binbash.rocks:8008"
 
+# notification icons
 ICON_GOOD: 🎉
 ICON_BAD: ☠️
