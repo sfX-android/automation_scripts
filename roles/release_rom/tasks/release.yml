@@ -1,20 +1,10 @@
 ---
-- set_fact:
-    pre_ansible_port: "{{ ansible_port }}"
-    
-- set_fact:
-    ansible_host: "{{ vault_RELEASESVR }}"
-    ansible_port: "{{ RELEASESVR_port }}"
 
 - name: "Release ROM for {{ BDEVICE }}"
-  copy:
+  synchronize:
     src: "{{ item }}"
     dest: "{{ rempath }}"
-  delegate_to: "{{ inventory_hostname }}"
+  delegate_to: "{{ groups.buildserver[0] }}"
   loop:
     - ROMFILE.stdout
     - "{{ ROMFILE.stdout }}.sha256sum"
-
-- set_fact:
-    ansible_host: "{{ inventory_hostname }}"
-    ansible_port: "{{ pre_ansible_port }}"
