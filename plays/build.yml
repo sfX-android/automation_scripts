@@ -73,3 +73,5 @@
             name: notify
         - fail:
             msg: "release-build failure occured. check log."
+      when:
+        - release_build == "true" or (override_release_build is defined and override_release_build == "true")
