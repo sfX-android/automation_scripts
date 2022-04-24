@@ -23,6 +23,8 @@
         {{ hash.stat.checksum }}
 
         {{ ota_hint }}
+        
+        This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) + [Semaphore](https://ansible-semaphore.com) with <3 
 
     tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last build failed\!
