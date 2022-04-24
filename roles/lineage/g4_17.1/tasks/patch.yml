@@ -1,19 +1,19 @@
 ---
 
 - name: "Apply bionic patch (cam fix)"
-  shell: "patch -p1 < ../external/patches/platform_bionic.patch && touch .tmp/bionic.patched"
+  shell: "patch -p1 < ../external/patches/platform_bionic.patch && touch {{ SRCPATH }}/.tmp/bionic.patched"
   args:
     chdir: "{{ SRCPATH }}/bionic"
     creates: "{{ SRCPATH }}/.bionic.patched"
 
 - name: "Apply art patch (memfd fix)"
-  shell: "patch -p1 < ../external/patches/android_art.patch && touch .tmp/art.patched"
+  shell: "patch -p1 < ../external/patches/android_art.patch && touch {{ SRCPATH }}/.tmp/art.patched"
   args:
     chdir: "{{ SRCPATH }}/art"
     creates: "{{ SRCPATH }}/.tmp/art.patched"
 
 - name: "Patch vendor (keys)"
-  shell: "/home/androidsource/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR }} 10 && touch .tmp/vendor.patched"
+  shell: "/home/androidsource/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR }} 10 && touch {{ SRCPATH }}/.tmp/vendor.patched"
   args:
     chdir: "{{ SRCPATH }}"
     creates: "{{ SRCPATH }}/.tmp/vendor.patched"
