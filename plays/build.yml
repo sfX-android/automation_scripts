@@ -43,7 +43,7 @@
       rescue:
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
-            tg_output: tg_failed
+            tg_output: "{{ tg_failed }}"
         - include_role:
             name: notify
         - fail:
@@ -64,13 +64,13 @@
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
           #tg_group_id: "{{ vault_tg_group_id_automation }}"
-          tg_output: tg_success
+          tg_output: "{{ tg_success }}"
       - import_role:
           name: notify
       rescue:
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
-            tg_output: tg_failed
+            tg_output: "{{ tg_failed }}"
         - include_role:
             name: notify
         - fail:
