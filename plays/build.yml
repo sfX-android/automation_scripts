@@ -38,12 +38,6 @@
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
       - import_role:
           name: build_rom
-      - set_fact:
-          tg_group_id: "{{ vault_tg_group_id_failing }}"
-          #tg_group_id: "{{ vault_tg_group_id_automation }}"
-          tg_output: tg_success
-      - import_role:
-          name: notify
       rescue:
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
@@ -78,4 +72,4 @@
         - include_role:
             name: notify
         - fail:
-            msg: "build failure occured. check log."
+            msg: "release-build failure occured. check log."
