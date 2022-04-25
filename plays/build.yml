@@ -2,7 +2,7 @@
 
 - name: "Build {{ target_model }}"
   hosts: buildserver
-  gather_facts: false
+  gather_facts: true
 
   vars_files:
     - ../roles/common/vars/main.yml
@@ -24,7 +24,7 @@
 
 - name: "Release {{ ROM_FLAVOR}} for {{ target_model }}"
   hosts: leech
-  gather_facts: false
+  gather_facts: true
 
   vars_files:
     - ../roles/common/vars/main.yml
