@@ -1,15 +1,27 @@
 ---
 # doc: https://core.telegram.org/bots/api
 
-- name: "Telegram: Summary"
+- name: "Telegram: Summary (success)"
   connection: local
   community.general.telegram:
     token: "{{ vault_tg_token }}"
     api_args:
       chat_id: "{{ tg_group_id }}"
       parse_mode: "MarkdownV2"
-      text: "{{ tg_output }}"
+      text: "{{ tg_success }}"
       disable_web_page_preview: True
+   when: ansible_failed_result is undefined
+
+- name: "Telegram: Summary (failed)"
+  connection: local
+  community.general.telegram:
+    token: "{{ vault_tg_token }}"
+    api_args:
+      chat_id: "{{ tg_group_id }}"
+      parse_mode: "MarkdownV2"
+      text: "{{ tg_failed }}"
+      disable_web_page_preview: True
+   when: ansible_failed_result is defined
 
 - stat:
     path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
@@ -32,6 +44,7 @@
     - buildresult.rc is undefined or buildresult.rc != 0
     - tg_group_id == vault_tg_group_id_failing
     - logfile.stat.isreg is defined
+    - ansible_failed_result is defined
   no_log: true
 
 # uploading via multipart/form-data seems to not work
