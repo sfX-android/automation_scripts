@@ -24,7 +24,7 @@
 
 - name: "Release {{ ROM_FLAVOR}} for {{ target_model }}"
   hosts: leech
-  gather_facts: true
+  gather_facts: false
 
   #vars_files:
   #  - ../roles/common/vars/main.yml
