@@ -10,7 +10,7 @@
       parse_mode: "MarkdownV2"
       text: "{{ tg_success }}"
       disable_web_page_preview: True
-   when: ansible_failed_result is undefined
+  when: ansible_failed_result is undefined
 
 - name: "Telegram: Summary (failed)"
   connection: local
@@ -21,7 +21,7 @@
       parse_mode: "MarkdownV2"
       text: "{{ tg_failed }}"
       disable_web_page_preview: True
-   when: ansible_failed_result is defined
+  when: ansible_failed_result is defined
 
 - stat:
     path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
