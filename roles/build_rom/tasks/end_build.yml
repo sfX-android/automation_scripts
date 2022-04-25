@@ -1,6 +1,6 @@
 ---
 
 - fail:
-    msg: "Build FAILED! Check log for details: /tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+    msg: "Build FAILED! Check log for details: /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
   when:
     - buildresult.rc is undefined or buildresult.rc != 0
