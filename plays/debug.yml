@@ -16,4 +16,4 @@
     
   tasks:
     - debug:
-        var: vars[groups]
+        msg: "hui: {{ vars[groups['buildserver'][0]] }}"
