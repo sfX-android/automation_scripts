@@ -24,14 +24,14 @@
 
 - name: "Release {{ ROM_FLAVOR}} for {{ target_model }}"
   hosts: leech
-  gather_facts: true
-
-  vars_files:
-    - ../roles/common/vars/main.yml
+  gather_facts: false
 
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
+      - setup:
+        connection: local
+      - include_vars: ../roles/common/vars/main.yml
       - import_role:
           name: release_rom
         when:
