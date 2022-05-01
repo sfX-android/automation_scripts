@@ -3,12 +3,10 @@
 - name: "Debug"
   hosts: buildserver
   gather_facts: true
-  
-  vars_files:
-    - ../roles/common/vars/main.yml
-    
+      
   tasks:
-    - setup:
+    - include_role:
+        name: common
     - debug: var=vars
     - debug: var=hostvars[inventory_hostname]
 
