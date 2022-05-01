@@ -11,3 +11,11 @@
     - setup:
     - debug: var=vars
     - debug: var=hostvars[inventory_hostname]
+
+- name: "Debug2"
+  hosts: leech
+  gather_facts: false
+    
+  tasks:
+    - debug: var=vars
+    - debug: var=hostvars[inventory_hostname]
