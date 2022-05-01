@@ -16,4 +16,4 @@
     
   tasks:
     - debug:
-        var: hostvars[groups['buildserver'][0]]
+        var: vars[groups['buildserver']]
