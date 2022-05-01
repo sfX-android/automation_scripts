@@ -8,22 +8,6 @@
     - ../roles/common/vars/main.yml
     
   tasks:
-    #- setup:
-    #- debug: var=vars
-    #- debug: var=hostvars[inventory_hostname]
-    - block:
-       - fail:
-          msg: "foo"
-      rescue:
-        - set_fact:
-            tg_group_id: "{{ vault_tg_group_id_failing }}"
-            tg_output: |
-                {{ ICON_BAD }} ***ERROR:*** Last build failed\!
-                
-                \- ROM: {{ ROM_FLAVOR }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
-                \- Device: ***BDEVICE***
-                \- Build id: _{{ BUILDIDENT | replace("-","\-") }}_
-        - import_role:
-            name: notify
-        - fail:
-            msg: failed
+    - setup:
+    - debug: var=vars
+    - debug: var=hostvars[inventory_hostname]
