@@ -16,4 +16,4 @@
     
   tasks:
     - debug: var=vars
-    - debug: var=hostvars[inventory_hostname]
+    - debug: var=hostvars[groups['buildserver'][0]]
