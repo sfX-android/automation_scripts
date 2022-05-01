@@ -5,7 +5,7 @@
   gather_facts: true
       
   tasks:
-    - include_vars: ../../roles/common/main.yml
+    - include_vars: ../roles/common/main.yml
 #    - debug: var=vars
 #    - debug: var=hostvars[inventory_hostname]
 
