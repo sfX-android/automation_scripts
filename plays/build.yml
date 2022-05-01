@@ -24,10 +24,10 @@
 
 - name: "Release {{ ROM_FLAVOR}} for {{ target_model }}"
   hosts: leech
-  gather_facts: false
+  gather_facts: true
 
-  #vars_files:
-  #  - ../roles/common/vars/main.yml
+  vars_files:
+    - ../roles/common/vars/main.yml
 
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
