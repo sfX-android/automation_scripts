@@ -26,7 +26,7 @@ ota_hint: |
   OTA Update:
   _\(only if u do not want to wait for the automatic OTA popup\)_
   
-  1. Open Settings \-> System
+  1. Open Settings -> System
   2. Expand Advanced & select Updater
   3. Refresh if not listed already
   4. Update & Enjoy!
