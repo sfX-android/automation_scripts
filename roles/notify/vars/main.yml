@@ -5,11 +5,11 @@ tg_success: |
         \- Device: ***{{ BDEVICE | replace("-","\-") }}***
         \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
         {{ rom_cl }}
-#        {{ kernel_cl }}
-#        {{ dtree_cl }}
-#        {{ cdtree_cl }}
-#        {{ dl_links }}
-#        SHA256:
+        {{ kernel_cl }}
+        {{ dtree_cl }}
+        {{ cdtree_cl }}
+        {{ dl_links }}
+        SHA256:
 #        {{ hash.stat.checksum }}
 #        {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") }}
 #        
