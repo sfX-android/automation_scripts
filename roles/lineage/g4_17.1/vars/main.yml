@@ -23,8 +23,9 @@ extendrom_package_list: "F-Droid F-DroidPrivilegedExtension additional_repos.xml
 
 # notification vars
 ota_hint: |
-
-  \nOTA Update:\n_\(only if u do not want to wait for the automatic OTA popup\)_
+  OTA Update:
+  _\(only if u do not want to wait for the automatic OTA popup\)_
+  
   1. Open Settings \-> System
   2. Expand Advanced & select Updater
   3. Refresh if not listed already
