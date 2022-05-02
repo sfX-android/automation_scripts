@@ -2,7 +2,7 @@
 
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: 3 hours)"
   debug:
-    msg: "Build {{ BDEVICE }} - {{ ROM_FLAVOR }} has been started, lean back and let the CPUs burn"
+    msg: "Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ REPOBRANCH }} has been started, lean back and let the CPUs burn ..."
 
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
   shell: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1"
