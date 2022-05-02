@@ -36,7 +36,7 @@ kernel_cl: |
 dtree_cl: |
   \- g4 unified tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ REPOBRANCH }})\n
 cdtree_cl: |
-  \- g4-common tree: [commits](https://github.com/LGgFour/android_device_lge_g4-common/commits/{{ REPOBRANCH }})\n
+  \- g4\-common tree: [commits](https://github.com/LGgFour/android_device_lge_g4-common/commits/{{ REPOBRANCH }})\n
 dl_links: |
   \n***Download:***
   \- [{{ sub_model }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})\n
