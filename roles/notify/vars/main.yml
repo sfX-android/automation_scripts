@@ -1,22 +1,22 @@
 ---
 
 tg_success: |
-        {{ hostvars[groups['buildserver'][0]]['ICON_GOOD'] }} New build _*{{ hostvars[groups['buildserver'][0]]['BUILDIDENT'] }}*_ has finished SUCCESSFULLY!
-        \- Device: ***{{ hostvars[groups['buildserver'][0]]['BDEVICE'] }}***
-        \- ROM: {{ hostvars[groups['buildserver'][0]]['ROM_FLAVOR'] }} {{ hostvars[groups['buildserver'][0]]['android_shortversion'] | replace("-","\-") | replace(".","\.") }}
-        {{ hostvars[groups['buildserver'][0]]['rom_cl'] }}
-        {{ hostvars[groups['buildserver'][0]]['kernel_cl'] }}
-        {{ hostvars[groups['buildserver'][0]]['dtree_cl'] }}
-        {{ hostvars[groups['buildserver'][0]]['cdtree_cl'] }}
-        {{ hostvars[groups['buildserver'][0]]['dl_links'] }}
+        {{ ICON_GOOD }} New build _*{{ BUILDIDENT }}*_ has finished SUCCESSFULLY!
+        \- Device: ***{{ BDEVICE }}***
+        \- ROM: {{ ROM_FLAVOR }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
+        {{ rom_cl }}
+        {{ kernel_cl }}
+        {{ dtree_cl }}
+        {{ cdtree_cl }}
+        {{ dl_links }}
         SHA256:
-        {{ hostvars[groups['buildserver'][0]]['hash.stat.checksum'] }}
-        {{ hostvars[groups['buildserver'][0]]['ota_hin'] }}
+        {{ hash.stat.checksum }}
+        {{ ota_hint }}
         
         This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) + [Semaphore](https://ansible-semaphore.com) with <3 
 
 tg_failed: |
-        {{ hostvars[groups['buildserver'][0]]['ICON_BAD'] }} ***ERROR:*** Last build failed\!
-        \- ROM: {{ hostvars[groups['buildserver'][0]]['ROM_FLAVOR'] }} {{ hostvars[groups['buildserver'][0]]['android_shortversion'] | replace("-","\-") | replace(".","\.") }}
-        \- Device: ***{{ hostvars[groups['buildserver'][0]]['BDEVICE'] }}***
-        \- Build id: _{{ hostvars[groups['buildserver'][0]]['BUILDIDENT'] | replace("-","\-") }}_
+        {{ ICON_BAD }} ***ERROR:*** Last build failed\!
+        \- ROM: {{ ROM_FLAVOR }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
+        \- Device: ***{{ BDEVICE }}***
+        \- Build id: _{{ BUILDIDENT | replace("-","\-") }}_

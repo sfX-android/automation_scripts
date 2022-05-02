@@ -1,9 +1,9 @@
 ---
 
-- name: "Release ROM for {{ hostvars[groups['buildserver'][0]]['BDEVICE'] }}"
+- name: "Release ROM for {{ BDEVICE }}"
   synchronize:
     src: "{{ item }}"
-    dest: "{{ hostvars[groups['buildserver'][0]]['rempath'] }}"
+    dest: "{{ rempath }}"
   delegate_to: "{{ groups.buildserver[0] }}"
   loop:
     - ROMFILE.stdout

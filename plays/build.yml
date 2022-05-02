@@ -4,13 +4,12 @@
   hosts: buildserver
   gather_facts: true
 
-#  vars_files:
-#    - ../roles/common/vars/main.yml
+  vars_files:
+    - ../roles/common/vars/main.yml
 
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
-      - include_vars: ../roles/common/vars/main.yml
       - import_role:
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
       - import_role:
