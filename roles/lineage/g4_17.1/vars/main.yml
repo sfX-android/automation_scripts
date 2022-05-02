@@ -28,8 +28,15 @@ ota_hint: |
   2. Expand Advanced & select Updater
   3. Refresh if not listed already
   4. Update & Enjoy!
-rom_cl: "***Changes:***\n\- LineageOS: [Changelog](https://www.lineageoslog.com/17.1)\n"
-kernel_cl: "\- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/android-10.0)\n"
-dtree_cl: "\- g4 unified tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ REPOBRANCH }})\n"
-cdtree_cl: "\- g4-common tree: [commits](https://github.com/LGgFour/android_device_lge_g4-common/commits/{{ REPOBRANCH }})\n"
-dl_links: "\n***Download:***\n\- [{{ sub_model }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})\n"
+rom_cl: |
+  ***Changes:***
+  \- LineageOS: [Changelog](https://www.lineageoslog.com/17.1)\n
+kernel_cl: |
+  \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/android-10.0)\n
+dtree_cl: |
+  \- g4 unified tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ REPOBRANCH }})\n
+cdtree_cl: |
+  \- g4-common tree: [commits](https://github.com/LGgFour/android_device_lge_g4-common/commits/{{ REPOBRANCH }})\n
+dl_links: |
+  \n***Download:***
+  \- [{{ sub_model }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})\n
