@@ -11,7 +11,7 @@ tg_success: |
         {{ dl_links }}
         SHA256:
         {{ hash.stat.checksum }}
-        {{ ota_hint }}
+        {{ ota_hint | replace("!","\!") }}
         
         This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) + [Semaphore](https://ansible-semaphore.com) with <3 
 
