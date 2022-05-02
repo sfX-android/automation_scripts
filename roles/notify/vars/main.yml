@@ -18,7 +18,8 @@ tg_success: |
         
         {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         
-        This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) and [Semaphore](https://ansible-semaphore.com) with ❤️
+#        This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) and [Semaphore](https://ansible-semaphore.com) with ❤️
+
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last build failed\!
         \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
