@@ -31,7 +31,7 @@ ota_hint: |-
   3. Refresh if not listed already
   4. Update & Enjoy!
 device_cl: |-
-  \- Device: ***{{ BDEVICE }} - {{ sub_model }}***
+  \- Device: ***{{ BDEVICE }}: {{ sub_model }}***
 rom_cl: |-
   ***Changes:***
   \- LineageOS: [Changelog](https://www.lineageoslog.com/17.1)
