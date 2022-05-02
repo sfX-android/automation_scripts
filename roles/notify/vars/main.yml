@@ -17,6 +17,6 @@ tg_success: |
 
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last build failed\!
-        \- ROM: {{ ROM_FLAVOR }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
-        \- Device: ***{{ BDEVICE }}***
+        \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
+        \- Device: ***{{ BDEVICE | replace("-","\-") }}***
         \- Build id: _{{ BUILDIDENT | replace("-","\-") }}_
