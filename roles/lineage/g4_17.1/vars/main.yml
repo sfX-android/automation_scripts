@@ -22,7 +22,7 @@ extendrom_package_list: "F-Droid F-DroidPrivilegedExtension additional_repos.xml
 #custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
 
 # notification vars
-ota_hint: "\nOTA Update:\n_(only if u do not want to wait for the automatic OTA popup)_\n1. Open Settings -> System\n2. Expand Advanced & select Updater\n3. Refresh if not listed already\n4. Update & Enjoy!"
+ota_hint: "\nOTA Update:\n_(only if u do not want to wait for the automatic OTA popup)_\n1. Open Settings \-> System\n2. Expand Advanced & select Updater\n3. Refresh if not listed already\n4. Update & Enjoy!"
 rom_cl: "***Changes:***\n- LineageOS: [Changelog](https://www.lineageoslog.com/17.1)\n"
 kernel_cl: "- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/android-10.0)\n"
 dtree_cl: "- g4 unified tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ REPOBRANCH }})\n"
