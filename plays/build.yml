@@ -10,10 +10,22 @@
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
+
       - import_role:
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
       - import_role:
           name: build_rom
+      - import_role:
+          name: release_rom
+        when:
+          - (override_release_build is undefined and release_build == "true") or (override_release_build is defined and override_release_build == "true")
+     - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_failing }}"
+          #tg_group_id: "{{ vault_tg_group_id_automation }}"
+      - import_role:
+          name: notify
+
+      # when any of the above fails notify always 
       rescue:
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
@@ -21,27 +33,3 @@
             name: notify
         - fail:
             msg: "build failure occured. check log."
-
-- name: "Release {{ ROM_FLAVOR}} for {{ target_model }}"
-  hosts: leech
-  gather_facts: false
-
-  tasks:
-    # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
-    - block:
-      - import_role:
-          name: release_rom
-        when:
-          - (override_release_build is undefined and release_build == "true") or (override_release_build is defined and override_release_build == "true")
-      - set_fact:
-          tg_group_id: "{{ vault_tg_group_id_failing }}"
-          #tg_group_id: "{{ vault_tg_group_id_automation }}"
-      - import_role:
-          name: notify
-      rescue:
-        - set_fact:
-            tg_group_id: "{{ vault_tg_group_id_failing }}"
-        - include_role:
-            name: notify
-        - fail:
-            msg: "release-build failure occured. check log."

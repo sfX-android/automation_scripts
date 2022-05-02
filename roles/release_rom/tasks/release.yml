@@ -1,10 +1,9 @@
 ---
 
 - name: "Release ROM for {{ BDEVICE }}"
-  synchronize:
-    src: "{{ item }}"
-    dest: "{{ rempath }}"
+  shell: "scp {{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
   delegate_to: "{{ groups.buildserver[0] }}"
   loop:
     - ROMFILE.stdout
     - "{{ ROMFILE.stdout }}.sha256sum"
+

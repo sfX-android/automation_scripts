@@ -1,5 +1,5 @@
 [buildserver]
 sfxdevsrv-droid ansible_port=22227
 
-[leech]
+[downloadserver]
 leechserver ansible_port=22
