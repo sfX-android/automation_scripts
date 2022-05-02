@@ -4,6 +4,7 @@ tg_success: |
         {{ ICON_GOOD }} New build _*{{ BUILDIDENT | replace("-","\-") }}*_ has finished SUCCESSFULLY\!
         
         \- Device: ***{{ BDEVICE | replace("-","\-") }}***
+        \- Model: {{ sub_model | d(BDEVICE | replace("-","\-")) }}
         \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
         
         {{ rom_cl }}
