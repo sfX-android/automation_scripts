@@ -20,8 +20,8 @@
         when:
           - (override_release_build is undefined and release_build == "true") or (override_release_build is defined and override_release_build == "true")
       - set_fact:
-          tg_group_id: "{{ vault_tg_group_id_failing }}"
-          #tg_group_id: "{{ vault_tg_group_id_automation }}"
+          #tg_group_id: "{{ vault_tg_group_id_failing }}"
+          tg_group_id: "{{ vault_tg_group_id_automation }}"
       - import_role:
           name: notify
 
