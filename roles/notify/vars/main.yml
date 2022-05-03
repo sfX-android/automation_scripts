@@ -3,7 +3,7 @@
 tg_success: |
         {{ ICON_GOOD }} New build {{ BUILDIDENT | replace("-","\-") }} has finished SUCCESSFULLY\!
         
-        { device_cl }
+        device_cl
         \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
         
         {{ rom_cl }}
