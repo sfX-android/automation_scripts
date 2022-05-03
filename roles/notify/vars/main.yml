@@ -5,12 +5,12 @@ tg_success: |
         
         {{ device_cl }}
         \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
-        \- Build#: {{ BUILDIDENT | replace("-","\-") }} 
+        \- Build\#: {{ BUILDIDENT | replace("-","\-") }} 
         
-#        {{ rom_cl }}
-#        {{ kernel_cl }}
-#        {{ dtree_cl }}
-#        {{ cdtree_cl }}
+        {{ rom_cl }}
+        {{ kernel_cl }}
+        {{ dtree_cl }}
+        {{ cdtree_cl }}
 #        
 #        {{ dl_links }}
 #        
