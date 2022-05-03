@@ -4,7 +4,7 @@
     LOCFILE: "{{ PREFIXFNAME }}-.*-{{ RELEASE_TYPE }}.*\\.zip"
 
 - name: "Get current ROM filename"
-  shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\n' | sed 's#^\./##g''"
+  shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\n' | sed 's#^\\./##g''"
   args:
     chdir: "{{ JKZIPDIR }}"
   register: ROMFILE
@@ -16,6 +16,6 @@
   register: hash
 
 - name: "Write hash {{ ROMFILE.stdout }}.sha256sum"
-  shell: "echo {{ hash.stat.checksum }} > {{ ROMFILE.stdout }}.sha256sum"
+  shell: "echo '{{ ROMFILE.stdout }}    {{ hash.stat.checksum }}' > {{ ROMFILE.stdout }}.sha256sum"
   args:
     chdir: "{{ JKZIPDIR }}"
