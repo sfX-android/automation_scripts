@@ -28,3 +28,6 @@ leech_server: "https://leech.binbash.rocks:8008"
 # notification icons
 ICON_GOOD: 🎉
 ICON_BAD: ☠️
+
+# default to false
+custom_release_script: false
