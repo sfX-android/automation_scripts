@@ -12,14 +12,14 @@ tg_success: |
         {{ dtree_cl }}
         {{ cdtree_cl }}
         
-        dllinks
+        {{ dl_links }}
         
         SHA256:
         {{ hash.stat.checksum | default("error getting hash") }}
         
         {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         
-        This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) and [Semaphore](https://ansible-semaphore.com) with ❤️
+        This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last build failed\!
