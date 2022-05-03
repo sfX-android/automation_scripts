@@ -11,7 +11,7 @@
 
 - name: "Generate hash for {{ ROMFILE.stdout }}"
   stat:
-    path: "{{ ROMFILE.stdout }}"
+    path: "{{ JKZIPDIR }}/{{ ROMFILE.stdout }}"
     checksum_algorithm: sha256
   register: hash
 
