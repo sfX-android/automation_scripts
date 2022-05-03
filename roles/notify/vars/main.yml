@@ -11,11 +11,11 @@ tg_success: |
         {{ kernel_cl }}
         {{ dtree_cl }}
         {{ cdtree_cl }}
-#        
-#        {{ dl_links }}
-#        
-#        SHA256:
-#        {{ hash.stat.checksum | default("error getting hash") }}
+        
+        {{ dl_links }}
+        
+        SHA256:
+        {{ hash.stat.checksum | default("error getting hash") }}
 #        
 #        {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
 #        
