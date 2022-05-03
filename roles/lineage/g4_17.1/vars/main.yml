@@ -23,11 +23,12 @@ extendrom_package_list: "F-Droid F-DroidPrivilegedExtension additional_repos.xml
 
 # notification vars
 ota_hint: |-
-  ***OTA Update:***  
-  1. Open Settings -> System
-  2. Expand Advanced & select Updater
-  3. Refresh if not listed already
-  4. Update & Enjoy!
+  ***OTA Update:*** supported
+
+#  1. Open Settings -> System
+#  2. Expand Advanced & select Updater
+#  3. Refresh if not listed already
+#  4. Update & Enjoy!
 
 device_cl: |-
   ***{{ BDEVICE }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
