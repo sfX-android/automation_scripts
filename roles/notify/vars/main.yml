@@ -3,22 +3,22 @@
 tg_success: |
         {{ ICON_GOOD }} New build {{ BUILDIDENT | replace("-","\-") }} has finished SUCCESSFULLY\!
         
-        device_cl
-        \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
-        
-        {{ rom_cl }}
-        {{ kernel_cl }}
-        {{ dtree_cl }}
-        {{ cdtree_cl }}
-        
-        {{ dl_links }}
-        
-        SHA256:
-        
-        
-        {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
-        
-        This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) and [Semaphore](https://ansible-semaphore.com) with ❤️
+        {{ device_cl }}
+ #       \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
+ #       
+ #       {{ rom_cl }}
+ #       {{ kernel_cl }}
+ #       {{ dtree_cl }}
+ #       {{ cdtree_cl }}
+ #       
+ #       {{ dl_links }}
+ #       
+ #       SHA256:
+ #       {{ hash.stat.checksum | default("error getting hash") }}
+ #       
+ #       {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
+ #       
+ #       This build has been created by [Ansible](https://github.com/sfX-android/automation_scripts) and [Semaphore](https://ansible-semaphore.com) with ❤️
 
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last build failed\!
