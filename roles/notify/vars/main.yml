@@ -1,12 +1,11 @@
 ---
 
 tg_success: |
-        
         {{ ICON_GOOD }} ***New build has finished SUCCESSFULLY\!***
         
         {{ device_cl }}
-        \- ROM: ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
-        \- Build\#: {{ BUILDIDENT | replace("-","\-") }} 
+        ROM: ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
+        Build\#: {{ BUILDIDENT | replace("-","\-") }} 
         
         {{ rom_cl }}
         {{ kernel_cl }}
@@ -15,7 +14,7 @@ tg_success: |
         
         {{ dl_links }}
         
-        SHA256:
+        ***SHA256:***
         {{ hash.stat.checksum | default("error getting hash") }}
         
         {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
