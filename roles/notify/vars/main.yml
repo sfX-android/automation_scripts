@@ -14,7 +14,7 @@ tg_success: |
         {{ dl_links }}
         
         SHA256:
-
+        
         
         {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         
