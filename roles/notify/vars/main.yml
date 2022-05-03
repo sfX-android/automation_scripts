@@ -12,7 +12,7 @@ tg_success: |
         {{ dtree_cl }}
         {{ cdtree_cl }}
         
-        dl_links
+        dllinks
         
         SHA256:
         {{ hash.stat.checksum | default("error getting hash") }}
