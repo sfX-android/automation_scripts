@@ -23,16 +23,14 @@ extendrom_package_list: "F-Droid F-DroidPrivilegedExtension additional_repos.xml
 
 # notification vars
 ota_hint: |-
-  ***OTA Update:***
-  _\(only if u do not want to wait for the automatic OTA popup\)_
-  
+  ***OTA Update:***  
   1. Open Settings -> System
   2. Expand Advanced & select Updater
   3. Refresh if not listed already
   4. Update & Enjoy!
 
 device_cl: |-
-  \- Device: ***{{ BDEVICE }}*** \- ***{{ sub_model | replace("-","\-") | replace("_","\_") }}***
+  ***{{ BDEVICE }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
 
 rom_cl: |-
   ***Changes:***
@@ -48,5 +46,4 @@ cdtree_cl: |-
   \- g4\-common tree: [commits](https://github.com/LGgFour/android_device_lge_g4-common/commits/{{ REPOBRANCH }})
 
 dl_links: |-
-  ***Download:***
-  \- [{{ sub_model | replace("-","\-") | replace("_","\_") }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})
