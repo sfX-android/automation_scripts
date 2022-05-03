@@ -30,7 +30,8 @@ ota_hint: |-
   2. Expand Advanced & select Updater
   3. Refresh if not listed already
   4. Update & Enjoy!
-device_cl: "\\- Device: **{{ BDEVICE }}** \\- **{{ sub_model }}**"
+device_cl: |-
+  \- Device: **{{ BDEVICE }}** \- **{{ sub_model | replace("-","\-") | replace("_","\_") }}**
 rom_cl: |-
   ***Changes:***
   \- LineageOS: [Changelog](https://www.lineageoslog.com/17.1)
