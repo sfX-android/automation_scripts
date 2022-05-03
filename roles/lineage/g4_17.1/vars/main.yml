@@ -49,4 +49,4 @@ cdtree_cl: |-
 
 dl_links: |-
   ***Download:***
-  \- [{{ sub_model }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})
+  \- [{{ sub_model }}]({{ groups.downloadserver[0] }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})
