@@ -13,8 +13,8 @@
 
       - import_role:
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
-      #- import_role:
-      #    name: build_rom
+      - import_role:
+          name: build_rom
       - import_role:
           name: release_rom
         when:
