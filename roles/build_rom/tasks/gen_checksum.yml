@@ -4,7 +4,7 @@
     LOCFILE: "{{ PREFIXFNAME }}-.*-{{ RELEASE_TYPE }}.*\\.zip"
 
 - name: "Get current ROM filename"
-  shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\n'"
+  shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\n' | sed 's#^\./##g''"
   args:
     chdir: "{{ JKZIPDIR }}"
   register: ROMFILE
