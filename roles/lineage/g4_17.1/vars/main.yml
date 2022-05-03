@@ -30,17 +30,23 @@ ota_hint: |-
   2. Expand Advanced & select Updater
   3. Refresh if not listed already
   4. Update & Enjoy!
+
 device_cl: |-
-  \- Device: **{{ BDEVICE }}** \- **{{ sub_model | replace("-","\-") | replace("_","\_") }}**
+  \- Device: ***{{ BDEVICE }}*** \- ***{{ sub_model | replace("-","\-") | replace("_","\_") }}***
+
 rom_cl: |-
   ***Changes:***
   \- LineageOS: [Changelog](https://www.lineageoslog.com/17.1)
+
 kernel_cl: |-
   \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/android-10.0)
+
 dtree_cl: |-
   \- g4 unified tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ REPOBRANCH }})
+
 cdtree_cl: |-
   \- g4\-common tree: [commits](https://github.com/LGgFour/android_device_lge_g4-common/commits/{{ REPOBRANCH }})
+
 dl_links: |-
   ***Download:***
   \- [{{ sub_model }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})
