@@ -1,7 +1,7 @@
 ---
 
 - name: "Release ROM for {{ BDEVICE }}"
-  shell: "scp {{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
+  shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
   delegate_to: "{{ groups.buildserver[0] }}"
   loop:
     - "{{ ROMFILE.stdout }}"
