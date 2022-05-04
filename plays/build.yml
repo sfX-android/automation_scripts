@@ -20,8 +20,11 @@
         when:
           - (override_release_build is undefined and release_build == "true") or (override_release_build is defined and override_release_build == "true")
       - set_fact:
-          #tg_group_id: "{{ vault_tg_group_id_failing }}"
           tg_group_id: "{{ vault_tg_group_id_automation }}"
+        when: debug_build is not defined
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_failing }}"
+        when: debug_build is defined and debug_build == "true"
       - import_role:
           name: notify
 
