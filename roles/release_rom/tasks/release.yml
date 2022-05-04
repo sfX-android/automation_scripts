@@ -6,4 +6,4 @@
   loop:
     - "{{ ROMFILE.stdout }}"
     - "{{ ROMFILE.stdout }}.sha256sum"
-
+    - "{{ ROMFILE.stdout }}.prop"
