@@ -19,3 +19,6 @@
   shell: "echo '{{ ROMFILE.stdout }}    {{ hash.stat.checksum }}' > {{ ROMFILE.stdout }}.sha256sum"
   args:
     chdir: "{{ JKZIPDIR }}"
+
+- name: "Copy build.prop for OTA"
+  shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
