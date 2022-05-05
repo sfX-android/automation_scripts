@@ -23,6 +23,7 @@
     path: "{{ SRCPATH }}/{{ item }}"
   loop:
     - build
+    - cts
     - device/
     - frameworks/av
     - frameworks/ml
