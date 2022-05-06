@@ -22,4 +22,4 @@
   shell: "{{ repo_bin }} forall -j{{ max_processes }} -c 'git lfs pull'"
   args:
     chdir: "{{ SRCPATH }}"
-  when: "{{ ROM_FLAVOR }} == 'eos' or (sync_lfs is defined and sync_lfs == 'true')"
+  when: ROM_FLAVOR == 'eos' or (sync_lfs is defined and sync_lfs == 'true')
