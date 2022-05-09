@@ -23,3 +23,10 @@
   args:
     chdir: "{{ SRCPATH }}"
   when: ROM_FLAVOR == 'eos' or (sync_lfs is defined and sync_lfs == 'true')
+
+- name: "Ensure keys dir is set correctly"
+  shell: "external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR }} {{ android_shortversion }}"
+  args:
+    chdir: "{{ SRCPATH }}"
+  when: sign_build is defined and sign_build == "true"
+  
