@@ -28,7 +28,8 @@
   register: logfile
   connection: local
 
-- community.general.archive:
+- name: "Compress log"
+  archive:
     path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
     dest: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.gz"
   when: logfile.stat.isreg is defined
