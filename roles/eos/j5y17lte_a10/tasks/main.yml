@@ -1,0 +1,17 @@
+---
+
+- include: ../../common/tasks/setvars.yml
+- include: setvars.yml
+
+- include: ../../common/tasks/clean.yml
+
+- include: ../../common/tasks/sync.yml
+  when:
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+
+- include: patch.yml
+  when: 
+    - EOS_RELEASE_TYPE == "CUSTOM"
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+
+- include: copy.yml

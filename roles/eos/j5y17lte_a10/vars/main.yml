@@ -1,0 +1,53 @@
+---
+
+# build vars
+RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
+SRCPATH: "/home/androidsource/do-not-touch/e-os"
+PREFIXFNAME: "e-"
+REPOBRANCH: "v1-q"
+SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
+JKZIPDIR: "/ssd/tmp/eos/zips/{{ BDEVICE }}"
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
+
+# manifest
+git_repo_local_manifests: "https://code.binbash.rocks:8443/MVA-VoLTE/local_manifests.git"
+
+# build signing
+sign_build: true
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
+
+# extendrom stuff
+use_extendrom: "true"
+extendrom_package_list: "noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+
+# ccache
+USE_CCACHE: 1
+CCACHE_DIR: /ssd/ccache/jenkins/android-10
+
+# notification vars
+ota_hint: |-
+  ***OTA Update:*** supported
+
+device_cl: |-
+  ***{{ BDEVICE }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
+
+rom_cl: |-
+  ***Changes:***
+  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases)
+
+kernel_cl: |-
+  \- Kernel: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_kernel_samsung_exynos7870/commits/branch/android-10.0)
+
+dtree_cl: |-
+  \- Device tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_j5y17lte/commits/branch/eos-q)
+
+cdtree_cl: |-
+  \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
+
+dl_links: |-
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
+
+# custom release tools
+#custom_release_script: true
+#custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
+

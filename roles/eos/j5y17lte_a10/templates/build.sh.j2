@@ -1,0 +1,31 @@
+#!/bin/bash
+
+export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
+export JKZIPDIR="{{ JKZIPDIR }}"
+export EOS_KEYS_DIR="{{ keysdir }}"
+    
+export USE_CCACHE={{ USE_CCACHE }}
+if [ "{{ USE_CCACHE }}" -eq 1 ];then
+    export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
+    mkdir -p {{ CCACHE_DIR }}
+    {{ CCACHE_EXEC }} --max-size=10G
+fi
+
+cd {{ SRCPATH }}
+source build/envsetup.sh
+
+lunch lineage_{{ BDEVICE }}-userdebug
+
+if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
+
+    # enable & use extendrom
+    export ENABLE_EXTENDROM={{ use_extendrom }}
+    export EOS_GESTURES=true
+
+    export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+    
+    # all the extendrom MAGIC!!
+    vendor/extendrom/get_prebuilts.sh
+fi
+
+mka eos
