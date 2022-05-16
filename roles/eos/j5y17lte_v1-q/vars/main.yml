@@ -9,7 +9,8 @@ SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
 JKZIPDIR: "/ssd/tmp/eos/zips/{{ BDEVICE }}"
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 
-# manifest
+# manifests
+git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
 git_repo_local_manifests: "https://code.binbash.rocks:8443/MVA-VoLTE/local_manifests.git"
 git_repo_local_manifests_branch: "eos-q"
 
