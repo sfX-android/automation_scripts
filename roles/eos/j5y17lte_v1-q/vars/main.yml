@@ -11,6 +11,7 @@ rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ ta
 
 # manifest
 git_repo_local_manifests: "https://code.binbash.rocks:8443/MVA-VoLTE/local_manifests.git"
+git_repo_local_manifests_branch: "eos-q"
 
 # build signing
 sign_build: true
