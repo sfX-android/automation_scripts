@@ -4,7 +4,7 @@
   git:
     repo: "{{ git_repo_local_manifests }}"
     dest: "{{ SRCPATH }}/.repo/local_manifests"
-    version: "{{ REPOBRANCH }}"
+    version: "{{ git_repo_local_manifests_branch }}"
     force: true
   when: git_repo_local_manifests is defined
 
