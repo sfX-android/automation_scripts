@@ -4,7 +4,7 @@
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
 PREFIXFNAME: "e"
-REPOBRANCH: "{{ android_shortversion }}"
+REPOBRANCH: "{{ repo_branch }}"
 SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}-{{ BDEVICE }}/out"
 JKZIPDIR: "/ssd/tmp/eos/zips/{{ BDEVICE }}"
 rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
@@ -16,7 +16,7 @@ git_repo_local_manifests_branch: "eos-q"
 
 # build signing
 sign_build: true
-keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
 
 # extendrom stuff
 use_extendrom: "true"
@@ -31,11 +31,11 @@ ota_hint: |-
   ***OTA Update:*** supported
 
 device_cl: |-
-  ***{{ BDEVICE }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
+  ***{{ BDEVICE }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ repo_branch | replace("-","\-") | replace(".","\.") }}***
 
 rom_cl: |-
   ***Changes:***
-  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ android_shortversion }})
+  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ repo_branch }})
 
 kernel_cl: |-
   \- Kernel: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_kernel_samsung_exynos7870/commits/branch/android-10.0)
