@@ -47,9 +47,9 @@ cdtree_cl: |-
   \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
 
 dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/a10/{{ target_model }})
 
 # custom release tools
 #custom_release_script: true
-#custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
+#custom_release_script_yml: "path/to/release.yml"
 
