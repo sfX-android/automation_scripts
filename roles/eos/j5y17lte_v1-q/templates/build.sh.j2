@@ -16,7 +16,7 @@ source build/envsetup.sh
 
 lunch lineage_{{ BDEVICE }}-userdebug
 
-if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
+if [ "{{ use_extendrom }}" == "true" ];then
 
     # enable & use extendrom
     export ENABLE_EXTENDROM={{ use_extendrom }}
