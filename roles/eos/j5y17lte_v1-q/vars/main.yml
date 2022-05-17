@@ -31,7 +31,7 @@ ota_hint: |-
   ***OTA Update:*** supported
 
 device_cl: |-
-  ***{{ BDEVICE }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
+  ***{{ BDEVICE }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
 
 rom_cl: |-
   ***Changes:***
