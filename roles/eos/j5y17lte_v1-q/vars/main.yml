@@ -3,9 +3,9 @@
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
-PREFIXFNAME: "e-"
+PREFIXFNAME: "e"
 REPOBRANCH: "v1-q"
-SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
+SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}-{{ BDEVICE }}/out"
 JKZIPDIR: "/ssd/tmp/eos/zips/{{ BDEVICE }}"
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 
