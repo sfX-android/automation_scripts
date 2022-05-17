@@ -4,7 +4,7 @@
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
 PREFIXFNAME: "e"
-REPOBRANCH: "v1-q"
+REPOBRANCH: "{{ android_shortversion }}"
 SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}-{{ BDEVICE }}/out"
 JKZIPDIR: "/ssd/tmp/eos/zips/{{ BDEVICE }}"
 rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
@@ -35,7 +35,7 @@ device_cl: |-
 
 rom_cl: |-
   ***Changes:***
-  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases)
+  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ android_shortversion }})
 
 kernel_cl: |-
   \- Kernel: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_kernel_samsung_exynos7870/commits/branch/android-10.0)
