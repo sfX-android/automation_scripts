@@ -1,6 +1,9 @@
 ---
 # misc common vars used for all tasks
 
+# semaphore working/tmp dir
+semaphore_work_dir: /opt/scs-work
+
 # build identifier used in e.g. the filename later
 BUILDIDENT: "{{ ansible_date_time.date | regex_replace('-','') }}"
 
