@@ -8,9 +8,17 @@
     - ../roles/common/vars/main.yml
 
   tasks:
+    - name: "set semaphore running indicator"
+      connection: local
+      copy:
+        dest: "{{ semaphore_work_dir }}/.ansible_running"
+        content: |
+          date="{{ ansible_date_time }}"
+          play=build.yml
+          role="{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
+
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
-
       - import_role:
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
       - import_role:
@@ -27,6 +35,10 @@
         when: debug_build is defined and debug_build == "true"
       - import_role:
           name: notify
+      - name: "remove semaphore running indicator"
+        file:
+          path: "{{ semaphore_work_dir }}/.ansible_running"
+          state: absent
 
       # when any of the above fails notify always 
       rescue:
@@ -36,3 +48,7 @@
             name: notify
         - fail:
             msg: "build failure occured. check log."
+        - name: "remove semaphore running indicator"
+          file:
+            path: "{{ semaphore_work_dir }}/.ansible_running"
+            state: absent
