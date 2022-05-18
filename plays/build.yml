@@ -13,7 +13,7 @@
       copy:
         dest: "{{ semaphore_work_dir }}/.ansible_running"
         content: |
-          date="{{ ansible_date_time }}"
+          date="{{ ansible_date_time.iso8601 }}"
           play=build.yml
           role="{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
 
