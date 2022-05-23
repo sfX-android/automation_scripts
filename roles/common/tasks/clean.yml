@@ -44,7 +44,6 @@
     - vendor/fdroid
     - vendor/cm
     - vendor/nxp
-    - .repo/local_manifests
   when:
     - (override_clean_basic is undefined and clean_basic == "true") or (override_clean_basic is defined and override_clean_basic == "true")
 
@@ -99,3 +98,10 @@
   file:
     path: "{{ SRCPATH }}/.tmp/"
     state: directory
+
+- name: "Cleanup local manifests"
+  file:
+    path: "{{ SRCPATH }}/.repo/local_manifests"
+    state: absent
+  when:
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
