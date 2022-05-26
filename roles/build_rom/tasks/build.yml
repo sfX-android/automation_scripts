@@ -12,14 +12,14 @@
   ignore_errors: true
 
 - name: "Grab version from vendor dir"
-  shell: grep "PRODUCT_VERSION_MAJOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " "
+  shell: 'grep "PRODUCT_VERSION_MAJOR = " vendor/{{ vendor_version }}/config/common.mk | cut -d "=" -f 2 | tr -d " "'
   args:
     chdir: "{{ SRCPATH }}"
   register: version_major
   when: vendor_version is defined
 
 - name: "Grab version from vendor dir"
-  shell: grep "PRODUCT_VERSION_MINOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " "
+  shell: 'grep "PRODUCT_VERSION_MINOR = " vendor/{{ vendor_version }}/config/common.mk | cut -d "=" -f 2 | tr -d " "'
   args:
     chdir: "{{ SRCPATH }}"
   register: version_minor
