@@ -3,15 +3,46 @@
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
-PREFIXFNAME: "e-"
-REPOBRANCH: "v1-q"
+PREFIXFNAME: "e"
 SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
 JKZIPDIR: "/ssd/tmp/eos/zips/hotdog"
-#custom_release_script: true
-#custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
+rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
+
+# manifests
+git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
+REPOBRANCH: "{{ git_repo_main_branch }}"
+git_repo_local_manifests: "https://github.com/sfX-android/android_local_manifests_hotdog.git"
+#git_repo_local_manifests_branch: "eos-q"
+
+# build signing
+sign_build: true
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
+
+# extendrom stuff
+use_extendrom: "true"
+#eos_enable_gestures: "true"
+extendrom_package_list: "noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+
+# ccache
+USE_CCACHE: 1
+CCACHE_DIR: /ssd/ccache/jenkins/android-10
 
 # notification vars
-rom_cl: "***Changes:***\n- eOS: [changelog](https://gitlab.e.foundation/e/os/releases/-/releases)\n"
-kernel_cl: "- kernel: [commits](https://github.com/sfX-android/android_kernel_oneplus_sm8150/commits/android-10.0)\n"
-cdtree_cl: "- Common Device tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q)\n"
-ota_hint: "\nOTA Update:\n_(only if u do not want to wait for the automatic OTA popup)_\n1. Open Settings -> System\n2. Expand Advanced & select Updater\n3. Refresh if not listed already\n4. Update & Enjoy!"
+ota_hint: |-
+  ***OTA Update:*** supported
+device_cl: |-
+  ***{{ BDEVICE }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace(".","\.") }}***
+rom_cl: |-
+  ***Changes:***
+  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ git_repo_main_branch }})
+kernel_cl: |-
+  \- Kernel: [commits](https://github.com/sfX-android/android_kernel_oneplus_sm8150/commits/android-10.0)
+dtree_cl: |-
+  \- Device tree: [commits](https://github.com/sfX-android/android_device_oneplus_hotdog/commits/eos-q)
+cdtree_cl: |-
+  \- Common tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q)
+dl_links: |-
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/a10/{{ target_model }})
+
+#custom_release_script: true
+#custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
