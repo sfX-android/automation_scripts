@@ -16,7 +16,7 @@ git_repo_local_manifests: "https://github.com/sfX-android/android_local_manifest
 
 # build signing
 sign_build: true
-keysdir: '/home/androidsource/do-not-touch/KEYS/v1-q_hotdog'
+# keysdir is set in setvars.yml!
 
 # extendrom stuff
 use_extendrom: "true"
