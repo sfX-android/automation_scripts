@@ -12,15 +12,15 @@
   when: EOS_RELEASE_TYPE != "CUSTOM"
 
 - set_fact:
-    dl_links: "\n***Downloads:***\n- OnePlus 7T pro - [hotdog](https://leech.binbash.rocks:8008/e-os/{{ android_shortversion }}_rooted/{{ target_model }}/)\n"
-    keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}_rooted'
-    rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}_rooted/{{ target_model }}"
+    dl_links: "\n***Downloads:***\n- OnePlus 7T pro - [hotdog](https://leech.binbash.rocks:8008/e-os/a10_rooted/{{ target_model }}/)\n"
+    keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}_rooted'
+    rempath: "/home/nightlies/roms/e-os/a10_rooted/{{ target_model }}"
   connection: local
   when: PREROOT_BOOT == true
 
 - set_fact:
-    dl_links: "\n***Downloads:***\n- OnePlus 7T pro - [hotdog](https://leech.binbash.rocks:8008/e-os/{{ android_shortversion }}/{{ target_model }}/)\n"
-    keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
-    rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ target_model }}/"
+    dl_links: "\n***Downloads:***\n- OnePlus 7T pro - [hotdog](https://leech.binbash.rocks:8008/e-os/a10/{{ target_model }}/)\n"
+    keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
+    rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
   connection: local
   when: PREROOT_BOOT != true
