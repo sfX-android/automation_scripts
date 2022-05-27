@@ -14,7 +14,7 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
 
     # enable & use extendrom
     export ENABLE_EXTENDROM=true
-    export EOS_GESTURES=true
+    #export EOS_GESTURES="{{ eos_enable_gestures }}"
     if [ "{{ PREROOT_BOOT }}" == "true" ];then
         export EXTENDROM_PREROOT_BOOT=true
         export EXTENDROM_PACKAGES="noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky SignMagisk"        
