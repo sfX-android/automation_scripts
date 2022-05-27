@@ -11,7 +11,7 @@
     dest: /tmp/shrp.zip
     
 - name: "Extract recovery from SHRP zip"
-  archive:
+  unarchive:
     src: /tmp/shrp.zip
     remote_src: yes
     dest: /tmp/recovery/IMAGES/
