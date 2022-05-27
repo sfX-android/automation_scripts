@@ -9,6 +9,8 @@
   when:
     - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
 
+- include: fetch_recovery.yml
+
 - include: patch.yml
   when: 
     - EOS_RELEASE_TYPE == "CUSTOM"
