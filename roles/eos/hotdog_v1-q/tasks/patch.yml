@@ -16,12 +16,12 @@
     chdir: "{{ SRCPATH }}"
 
 - name: "Apply img and sign apk patches"
-  shell: "{{ repo_bin }} forall -j{{ max_processes }} -vc '{{ item }}'"
+  shell: "patch -p0 < '{{ item }}'"
   args:
     chdir: "{{ SRCPATH }}/build/make/tools/releasetools"
   loop:
-    - "patch -p0 < ../../../../sign_target_files_apks.patch"
-    - "patch -p0 < ../../../../add_img_to_target_files.patch"
+    - "../../../../sign_target_files_apks.patch"
+    - "../../../../add_img_to_target_files.patch"
     
 - name: "Apply {{ item }} on top of the Wunderment patches"
   shell: "git apply device/oneplus/hotdog/patches/build_make_core_Makefile_fixsigning.patch"
