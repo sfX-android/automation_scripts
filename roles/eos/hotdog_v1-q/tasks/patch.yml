@@ -10,12 +10,7 @@
     url: https://raw.githubusercontent.com/Wunderment/build_tasks/master/source/sign_target_files_apks.py-17.1.patch
     dest: "{{ SRCPATH }}/sign_target_files_apks.patch"
 
-- name: "Apply build_make_core_Makefile_fixsigning.patch"
-  shell: "git apply device/oneplus/hotdog/patches/build_make_core_Makefile_fixsigning.patch"
-  args:
-    chdir: "{{ SRCPATH }}"
-
-- name: "Apply img and sign apk patches"
+- name: "Apply Wunderment patches"
   shell: "patch -p0 < '{{ item }}'"
   args:
     chdir: "{{ SRCPATH }}/build/make/tools/releasetools"
@@ -23,8 +18,8 @@
     - "../../../../sign_target_files_apks.patch"
     - "../../../../add_img_to_target_files.patch"
     
-- name: "Apply {{ item }} on top of the Wunderment patches"
-  shell: "git apply device/oneplus/hotdog/patches/build_make_core_Makefile_fixsigning.patch"
+- name: "Apply signing fixes on top of the Wunderment patches"
+  shell: "git apply {{ item }}"
   args:
     chdir: "{{ SRCPATH }}"
   loop:
