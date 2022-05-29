@@ -33,11 +33,11 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     
     # step 2/3:
     # sign all APKs who demands it
-    ./build/tools/releasetools/sign_target_files_apks -o -d user-keys $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip $JKZIPDIR/signed-target_files.zip
+    ./build/tools/releasetools/sign_target_files_apks -o -d user-keys $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip {{ JKZIPDIR }}/signed-target_files.zip
     
     # get the build ver
     VERSION_MAJOR=$(grep "PRODUCT_VERSION_MAJOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " ")
-	VERSION_MINOR=$(grep "PRODUCT_VERSION_MINOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " ")
+    VERSION_MINOR=$(grep "PRODUCT_VERSION_MINOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " ")
     
     # step 3/3:
     # build & sign the OTA
