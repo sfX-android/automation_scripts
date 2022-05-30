@@ -19,12 +19,13 @@
     - "../../../../add_img_to_target_files.patch"
     
 - name: "Apply signing fixes on top of the Wunderment patches"
-  shell: "git apply {{ item }}"
+  shell: "git apply device/oneplus/hotdog/patches/{{ item }}"
   args:
     chdir: "{{ SRCPATH }}"
   loop:
-    - device/oneplus/hotdog/patches/build_make_tools_releasetools_sign_target_files_apks.patch
-    - device/oneplus/hotdog/patches/build_make_tools_releasetools_add_img_to_target_files.patch
+    - build_make_tools_releasetools_sign_target_files_apks.patch
+    - build_make_tools_releasetools_add_img_to_target_files.patch
+    - build_make_core_Makefile_fixsigning.patch
 
 - name: "Cleanup tmp patch files"
   file:
@@ -33,3 +34,4 @@
   loop:
     - add_img_to_target_files.patch
     - sign_target_files_apks.patch
+    - build_make_core_Makefile_fixsigning.patch
