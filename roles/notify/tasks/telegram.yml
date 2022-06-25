@@ -10,7 +10,7 @@
       parse_mode: "MarkdownV2"
       text: "{{ tg_success }}"
       disable_web_page_preview: True
-  when: buildresult.rc defined and buildresult.rc == 0
+  when: buildresult.rc is defined and buildresult.rc == 0
 
 - name: "Telegram: Summary (failed)"
   connection: local
