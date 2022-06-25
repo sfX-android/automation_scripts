@@ -4,10 +4,10 @@
   hosts: buildserver
   gather_facts: true
 
-  vars_files:
-    - ../roles/common/vars/main.yml
-
   tasks:
+    - include_role:
+        name: common
+        
     - name: "set semaphore running indicator"
       connection: local
       copy:
