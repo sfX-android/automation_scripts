@@ -10,7 +10,7 @@
       parse_mode: "MarkdownV2"
       text: "{{ tg_success }}"
       disable_web_page_preview: True
-  when: ansible_failed_result is undefined
+  when: buildresult.rc defined and buildresult.rc == 0
 
 - name: "Telegram: Summary (failed)"
   connection: local
@@ -21,7 +21,7 @@
       parse_mode: "MarkdownV2"
       text: "{{ tg_failed }}"
       disable_web_page_preview: True
-  when: ansible_failed_result is defined
+  when: buildresult.rc is undefined or buildresult.rc != 0
 
 - stat:
     path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
@@ -42,10 +42,9 @@
      -H "Content-Type:multipart/form-data" \ 
      "https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument?chat_id={{ tg_group_id }}"
   when: 
-    - buildresult.rc is undefined or buildresult.rc != 0
+    - (buildresult.rc is undefined or buildresult.rc != 0)
     - tg_group_id == vault_tg_group_id_failing
     - logfile.stat.isreg is defined
-    - ansible_failed_result is defined
   no_log: true
 
 # uploading via multipart/form-data seems to not work
