@@ -3,7 +3,7 @@
 export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
 export JKZIPDIR="{{ JKZIPDIR }}"
 export EOS_KEYS_DIR="{{ keysdir }}"
-    
+
 cd {{ SRCPATH }}
 source build/envsetup.sh
 
@@ -17,6 +17,7 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     export EOS_GESTURES="{{ eos_enable_gestures }}"
     
     if [ "{{ PREROOT_BOOT }}" == "true" ];then
+        export MAGISK_TARGET_ARCH=arm64
         export EXTENDROM_PREROOT_BOOT=true
         export EXTENDROM_PACKAGES="noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky SignMagisk"        
     else
