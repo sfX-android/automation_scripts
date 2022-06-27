@@ -41,8 +41,8 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     
     # step 3/3:
     # build & sign the OTA
-    ./build/tools/releasetools/ota_from_target_files -k user-keys/releasekey --block {{ JKZIPDIR }}/signed-target_files.zip {{ JKZIPDIR }}/{{ PREFIXFNAME }}${VERSION_MAJOR}.${VERSION_MINOR}-q-{{ BUILDIDENT }}-{{ EOS_RELEASE_TYPE }}-{{ BDEVICE }}-signed.zip
-    rm -v {{ JKZIPDIR }}/signed-target_files.zip
+    ./build/tools/releasetools/ota_from_target_files -k user-keys/releasekey --block {{ JKZIPDIR }}/signed-target_files.zip {{ JKZIPDIR }}/{{ PREFIXFNAME }}${VERSION_MAJOR}.${VERSION_MINOR}-q-{{ BUILDIDENT }}-{{ EOS_RELEASE_TYPE }}-{{ BDEVICE }}-signed.zip && \
+    	rm -v {{ JKZIPDIR }}/signed-target_files.zip
 else
 	# userdebug build is what the majority uses
     lunch lineage_{{ BDEVICE }}-userdebug
