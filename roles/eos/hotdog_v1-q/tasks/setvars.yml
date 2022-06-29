@@ -17,10 +17,10 @@
     keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}_rooted'
     rempath: "/home/nightlies/roms/e-os/a10_rooted/{{ target_model }}"
   connection: local
-  when: PREROOT_BOOT == true
+  when: PREROOT_BOOT == "true"
 
 - set_fact:
     keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
     rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
   connection: local
-  when: PREROOT_BOOT != true
+  when: PREROOT_BOOT != "true"
