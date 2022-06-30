@@ -13,7 +13,7 @@
 
 - set_fact:
     dl_links: |-
-        ***Download:*** [eOS \- {{ target_model }} \-rooted]({{ leech_server }}/e-os/a10_rooted/{{ target_model }})
+        ***Download:*** [{{ BUILDIDENT }} \- rooted]({{ leech_server }}/e-os/a10_rooted/{{ target_model }})
     keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}_rooted'
     rempath: "/home/nightlies/roms/e-os/a10_rooted/{{ target_model }}"
   connection: local
