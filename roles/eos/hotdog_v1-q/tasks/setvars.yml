@@ -12,6 +12,8 @@
   when: EOS_RELEASE_TYPE != "CUSTOM"
 
 - set_fact:
+    cdtree_cl: |-
+      \- Common tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q_lockedbl)
     dl_links: |-
         ***Download:*** [{{ BUILDIDENT }} \- rooted]({{ leech_server }}/e-os/a10_rooted/{{ target_model }})
     keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}_rooted'
@@ -20,6 +22,8 @@
   when: PREROOT_BOOT == "true"
 
 - set_fact:
+    cdtree_cl: |-
+      \- Common tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q)
     keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
     rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
   connection: local
