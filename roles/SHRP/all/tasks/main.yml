@@ -1,7 +1,6 @@
 ---
 
 - include: ../../common/tasks/setvars.yml
-- include_vars: "{{ target_model }}.yml"
 
 - include: ../../common/tasks/clean.yml
 

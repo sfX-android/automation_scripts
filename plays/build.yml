@@ -5,7 +5,7 @@
   gather_facts: true
 
   tasks:
-    - include_role:
+    - import_role:
         name: common
         
     - name: "set semaphore running indicator"
@@ -19,10 +19,12 @@
 
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
-      - include_role:
+      - import_role:
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
         when: unified_path is undefined
-      - include_role:
+      - include_vars: "{{ ROM_FLAVOR }}/{{ target_model }}/vars/shrp.yml"
+        when: ROM_FLAVOR == "SHRP"
+      - import_role:
           name: "{{ ROM_FLAVOR }}/{{ target_model }}"
         when: unified_path is defined and unified_path == "true"
       - import_role:
