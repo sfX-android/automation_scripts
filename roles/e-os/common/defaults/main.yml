@@ -13,10 +13,7 @@ SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
-SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 SEPARATE_OUT_DIR: "/ssd/{{ sub_model }}/{{ PREFIXFNAME }}/out"
-rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
-JKZIPDIR: "/ssd/tmp/{{ REPOBRANCH }}/zips/{{ BDEVICE }}"
 keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
 
 # notification vars

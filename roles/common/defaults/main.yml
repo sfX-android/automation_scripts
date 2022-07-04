@@ -34,3 +34,9 @@ ICON_BAD: ☠️
 
 # default to false
 custom_release_script: false
+
+# build vars
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
+JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ target_model }}"
+SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
+
