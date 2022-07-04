@@ -1,8 +1,11 @@
 ---
 
-- name: "Prepare build for {{ target_model }}"
+- name: "Build {{ target_model }}"
   hosts: buildserver
   gather_facts: true
+
+  vars:
+    device_path: common
 
   pre_tasks:
     - set_fact:
@@ -12,12 +15,6 @@
     - set_fact:
         device_path: "{{ ROM_FLAVOR }}/{{ target_model }}"
       when: unified_path is defined and unified_path == "true"
-
-- name: "Build {{ target_model }}"
-  hosts: buildserver
-  gather_facts: true
-
-  pre_tasks:
 
     - debug:
         var: device_path
