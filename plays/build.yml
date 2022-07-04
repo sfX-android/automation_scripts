@@ -22,7 +22,7 @@
       - include_role:
           name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
         when: unified_path is undefined
-      - import_role:
+      - include_role:
           name: "{{ ROM_FLAVOR }}/{{ target_model }}"
         when: unified_path is defined and unified_path == "true"
       - import_role:
