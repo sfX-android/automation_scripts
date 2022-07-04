@@ -7,7 +7,15 @@
   tasks:
     - import_role:
         name: common
-        
+
+    - set_fact:
+        device_path: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
+      when: unified_path is undefined
+
+    - set_fact:
+        device_path: "{{ ROM_FLAVOR }}/{{ target_model }}"
+      when: unified_path is defined and unified_path == "true"
+ 
     - name: "set semaphore running indicator"
       connection: local
       copy:
@@ -20,13 +28,9 @@
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
       - import_role:
-          name: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
-        when: unified_path is undefined
+          name: "{{ device_path }}"
       - include_vars: "{{ ROM_FLAVOR }}/{{ target_model }}/vars/shrp.yml"
         when: ROM_FLAVOR == "SHRP"
-      - import_role:
-          name: "{{ ROM_FLAVOR }}/{{ target_model }}"
-        when: unified_path is defined and unified_path == "true"
       - import_role:
           name: build_rom
       - import_role:
