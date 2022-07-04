@@ -9,6 +9,10 @@ export ALLOW_MISSING_DEPENDENCIES=true
 export DISABLE_APEX_LIBS_ABSENCE_CHECK=true
 export TEMPORARY_DISABLE_PATH_RESTRICTIONS=true
 
+# set source path
+export SRCPATH="{{ SRCPATH }}"
+
+# special handling for LG G4
 F_GETSPEC(){ grep IGNORE_MISC_WIPE_DATA out/target/product/g4/ramdisk-recovery.cpio | wc -l |tr -d '\n' ; }
 
 cd $SRCPATH
