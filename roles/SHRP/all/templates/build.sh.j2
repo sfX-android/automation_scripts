@@ -36,12 +36,12 @@ if [ "{{ target_model }}" == "gtexslte" ];then
 fi
 
 # prepare #
-export TW_DEVICE_VERSION="{{ twrpbuildver }}"
+export TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}"
 
 # BUILD #
 source build/envsetup.sh
 lunch $LUNCHTARGET
-TW_DEVICE_VERSION="{{ twrpbuildver }}" mka recoveryimage
+TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}" mka recoveryimage
 
 # special post-handling for LG G4
 if [ "{{ target_model }}" == "g4" ];then
