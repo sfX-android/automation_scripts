@@ -1,5 +1,8 @@
 ---
 
+# human readable model name
+target_model_full: "Samsung J5 - 2017"
+
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
