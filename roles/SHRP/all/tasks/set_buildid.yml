@@ -1,0 +1,8 @@
+---
+
+- set_fact:
+    PIPETWRPBUILDVER: "PREVIEW-{{ SEMAPHORE_WORKFLOW_NUMBER }}"
+    env_version: "{{ PIPETWRPBUILDVER }}"
+
+- debug:
+    msg: "SHRP version/buildid has been set to: {{ PIPETWRPBUILDVER }}"
