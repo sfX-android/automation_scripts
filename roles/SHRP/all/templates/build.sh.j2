@@ -60,5 +60,5 @@ fi
 
 # place recovery in a temp dir
 [ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-cp -v out/target/product/{{ target_model }}/SHRP_v*.zip {{ JKZIPDIR }}/
+cp -v out/target/product/{{ target_model | regex_replace('_lockedbl','') }}/SHRP_v*.zip {{ JKZIPDIR }}/
 
