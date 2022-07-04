@@ -44,7 +44,7 @@ export TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}"
 
 # BUILD #
 source build/envsetup.sh
-lunch $LUNCHTARGET
+lunch {{ LUNCHTARGET }}
 TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}" mka recoveryimage
 
 # special post-handling for LG G4
