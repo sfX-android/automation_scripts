@@ -1,0 +1,22 @@
+---
+
+- include: ../../common/tasks/setvars.yml
+- include_vars: {{ target_model }}.yml
+
+- include: ../../common/tasks/clean.yml
+
+- include: set_buildid.yml
+
+- include: ../../common/tasks/sync.yml
+  when:
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+
+- include: sync_dt.yml
+  when:
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+
+- include: patch.yml
+  when: 
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+
+- include: copy.yml

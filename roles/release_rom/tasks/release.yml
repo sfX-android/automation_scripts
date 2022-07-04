@@ -7,3 +7,15 @@
     - "{{ ROMFILE.stdout }}"
     - "{{ ROMFILE.stdout }}.sha256sum"
     - "{{ ROMFILE.stdout }}.prop"
+  when:
+    - ROM_FLAVOR is not "TWRP"
+    - ROM_FLAVOR is not "SHRP"
+
+- name: "Release RECOVERY for {{ BDEVICE }}"
+  shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
+  delegate_to: "{{ groups.buildserver[0] }}"
+  loop:
+    - "{{ ROMFILE.stdout }}"
+    - "{{ ROMFILE.stdout }}.sha256sum"
+  when:
+    - ROM_FLAVOR == "TWRP" or ROM_FLAVOR == "SHRP"

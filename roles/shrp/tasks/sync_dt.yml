@@ -1,0 +1,19 @@
+---
+
+- name: "Clone device tree"
+  git:
+    repo: "{{ DTURI }}"
+    dest: "{{ DTPATH }}/"
+    version: "{{ DTBRANCH }}"
+    force: true
+
+- name: "Clone kernel"
+  git:
+    repo: "{{ KERNGIT }}"
+    dest: "{{ KERNPATH }}/"
+    version: "{{ KERNBRANCH }}"
+    force: true
+  when: 
+    - KERNGIT is defined
+    - KERNPATH is defined
+    - KERNBRANCH is defined
