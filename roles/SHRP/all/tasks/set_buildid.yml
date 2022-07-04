@@ -1,7 +1,7 @@
 ---
 
 - set_fact:
-    PIPETWRPBUILDVER: "PREVIEW-{{ SEMAPHORE_WORKFLOW_NUMBER }}"
+    PIPETWRPBUILDVER: "PREVIEW-{{ semaphore_vars.target_version }}"
     env_version: "{{ PIPETWRPBUILDVER }}"
 
 - debug:
