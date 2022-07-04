@@ -11,6 +11,7 @@ DTBRANCH: "android-10_shrp_lockedbl"
 KERNPATH: "kernel/oneplus/hotdog"
 DTPATH: "{{ SRCPATH }}/device/oneplus/hotdog"
 
+RELEASE_TYPE: PREVIEW
 TWRPXML: default.xml
 
 # notification vars
