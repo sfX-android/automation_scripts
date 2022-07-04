@@ -3,7 +3,7 @@
 - set_fact:
     LOCFILE: "{{ PREFIXFNAME }}.*-{{ RELEASE_TYPE }}.*\\.zip"
   when:
-    - ROM_FLAVOR is not "TWRP"
+    - ROM_FLAVOR != "TWRP"
 
 - set_fact:
     LOCFILE: "{{ PREFIXFNAME }}.*-{{ RELEASE_TYPE }}.*\\.img"
