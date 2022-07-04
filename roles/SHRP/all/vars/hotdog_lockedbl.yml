@@ -12,7 +12,7 @@ KERNPATH: "kernel/oneplus/hotdog"
 DTPATH: "{{ SRCPATH }}/device/oneplus/hotdog"
 
 LUNCHTARGET: "omni_hotdog-eng"
-RELEASE_TYPE: PREVIEW
+RELEASE_TYPE: Official
 TWRPXML: default.xml
 
 # notification vars

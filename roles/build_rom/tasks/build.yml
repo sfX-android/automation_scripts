@@ -3,6 +3,8 @@
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: 3 hours)"
   debug:
     msg: |
+      #
+      
       Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ git_repo_main_branch | d(REPOBRANCH) }} has been started, lean back and let the CPUs burn ...
       
       Variables in use:
@@ -19,11 +21,12 @@
       use_extendrom: {{ use_extendrom | d(false) }}
       extendrom_package_list: {{ extendrom_package_list | d("N/A") }}
       
-      clean_basic: {{ clean_basic }}
-      clean_out: {{ clean_out }}
-      reset_git: {{ reset_git }}
-      release_build: {{ release_build }}
-
+      clean_basic: {{ override_clean_basic | d(clean_basic) }}
+      clean_out: {{ override_clean_out | d(clean_out) }}
+      reset_git: {{ override_reset_git | d(reset_git) }}
+      release_build: {{ override_release_build | d(release_build) }}
+      
+      #
 
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
   shell: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1"

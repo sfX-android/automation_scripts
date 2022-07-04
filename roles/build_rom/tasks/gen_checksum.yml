@@ -10,7 +10,7 @@
   when:
     - ROM_FLAVOR == "TWRP"
 
-- name: "Get current ROM filename"
+- name: "Get current build filename"
   shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"
   args:
     chdir: "{{ JKZIPDIR }}"
