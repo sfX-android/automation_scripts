@@ -8,8 +8,8 @@
     - "{{ ROMFILE.stdout }}.sha256sum"
     - "{{ ROMFILE.stdout }}.prop"
   when:
-    - ROM_FLAVOR is not "TWRP"
-    - ROM_FLAVOR is not "SHRP"
+    - ROM_FLAVOR != "TWRP"
+    - ROM_FLAVOR != "SHRP"
 
 - name: "Release RECOVERY for {{ BDEVICE }}"
   shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"

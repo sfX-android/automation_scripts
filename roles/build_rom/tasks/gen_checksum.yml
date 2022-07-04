@@ -30,5 +30,5 @@
 - name: "Copy build.prop for OTA"
   shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
   when:
-    - ROM_FLAVOR is not "TWRP"
-    - ROM_FLAVOR is not "SHRP"
+    - ROM_FLAVOR != "TWRP"
+    - ROM_FLAVOR != "SHRP"
