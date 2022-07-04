@@ -1,5 +1,8 @@
 ---
 
+# human readable model name
+target_model_full: "OnePlus 7T pro"
+
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
