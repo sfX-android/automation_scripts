@@ -57,3 +57,8 @@ if [ "{{ target_model }}" == "g4" ];then
     fi
    	echo "Return: $?"
 fi
+
+# place recovery in a temp dir
+[ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
+cp -v out/target/product/{{ target_model }}/SHRP_v*.zip {{ JKZIPDIR }}/
+
