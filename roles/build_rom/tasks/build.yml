@@ -2,7 +2,28 @@
 
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: 3 hours)"
   debug:
-    msg: "Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ REPOBRANCH }} has been started, lean back and let the CPUs burn ..."
+    msg: |
+      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ REPOBRANCH }} has been started, lean back and let the CPUs burn ...
+      
+      Variables in use:
+
+      BDEVICE: {{ BDEVICE }}
+      target_model_full: {{ target_model_full }} - target_model: {{ target_model }} - sub_model {{ sub_model |d("N/A") }}
+      
+      ROM_FLAVOR: {{ ROM_FLAVOR }}
+      RELEASE_TYPE: {{ RELEASE_TYPE }}
+      android_shortversion: {{ android_shortversion }}
+      sign_build: {{ sign_build | d(false) }}
+      USE_CCACHE: {{ USE_CCACHE }}
+      CCACHE_DIR: {{ CCACHE_DIR }}
+      use_extendrom: {{ use_extendrom | d(false) }}
+      extendrom_package_list: {{ extendrom_package_list | d("N/A") }}
+      
+      clean_basic: {{ clean_basic }}
+      clean_out: {{ clean_out }}
+      reset_git: {{ reset_git }}
+      release_build: {{ release_build }}
+
 
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
   shell: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1"
