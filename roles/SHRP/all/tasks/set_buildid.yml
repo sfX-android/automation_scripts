@@ -1,5 +1,8 @@
 ---
 
+- debug:
+    var: semaphore_vars
+
 - set_fact:
     PIPETWRPBUILDVER: "PREVIEW-{{ semaphore_vars['target_version'] }}"
     env_version: "{{ PIPETWRPBUILDVER }}"
