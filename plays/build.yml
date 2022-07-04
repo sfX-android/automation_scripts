@@ -4,10 +4,7 @@
   hosts: buildserver
   gather_facts: true
 
-  tasks:
-    - import_role:
-        name: common
-
+  pre_tasks:
     - set_fact:
         device_path: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
       when: unified_path is undefined
@@ -16,6 +13,10 @@
         device_path: "{{ ROM_FLAVOR }}/{{ target_model }}"
       when: unified_path is defined and unified_path == "true"
  
+  tasks:
+    - import_role:
+        name: common
+
     - name: "set semaphore running indicator"
       connection: local
       copy:
