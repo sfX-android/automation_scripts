@@ -1,0 +1,17 @@
+---
+
+- import_role:
+    name: eos/common
+
+- include: ../../common/tasks/setvars.yml
+- include: ../../common/tasks/clean.yml
+- include: prep.yml
+- include: ../../common/tasks/sync.yml
+  when:
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+
+- include: patch.yml
+  when:
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+
+- include: copy.yml

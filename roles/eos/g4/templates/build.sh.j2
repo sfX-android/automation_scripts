@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+export USE_CCACHE={{ USE_CCACHE }}
+if [ "{{ USE_CCACHE }}" -eq 1 ];then
+    export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
+    mkdir -p {{ CCACHE_DIR }}
+    {{ CCACHE_EXEC }} --max-size=10G
+fi
+
+# setup build env    
+cd {{ SRCPATH }}
+source build/envsetup.sh
+lunch lineage_{{ sub_model }}-userdebug
+
+# handle custom build accordingly
+if [ "$EOS_RELEASE_TYPE" == "CUSTOM" ];then
+    export ENABLE_EXTENDROM={{ use_extendrom }}
+    export EOS_GESTURES=true
+    export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+    vendor/extendrom/get_prebuilts.sh
+fi
+
+# build
+mka otapackage
+
+# check correct blobs from unified device tree
+rm /tmp/*_venuscheck.md5 || echo "no previous venus md5 found"
+case {{ sub_model }} in
+	h815|h815_usu|f500_usu|h819_usu)
+    	echo "d1f6fe863643b1e8d1e597762474928c out/target/product/{{ sub_model }}/system/etc/firmware/venus.mbn" > /tmp/{{ sub_model }}_venuscheck.md5
+    	md5sum -c /tmp/{{ sub_model }}_venuscheck.md5
+    ;;
+    h810_usu|h811|h812_usu|ls991_usu|us991_usu|vs986_usu)
+    	echo "78e5cf520d0de4a413ef1cfa7bbbe713 out/target/product/{{ sub_model }}/system/etc/firmware/venus.mbn" > /tmp/{{ sub_model }}_venuscheck.md5
+        md5sum -c /tmp/{{ sub_model }}_venuscheck.md5
+    ;;
+    *)
+    echo "FAILED TO VERIFY VENUS MD5 FOR {{ sub_model }}!! NO VALID MODEL FOUND FOR COMPARISON"
+    exit 99
+    ;;
+esac
+
+[ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
+mv out/target/product/{{ sub_model }}/lineage_{{ sub_model }}*.zip {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}-{{ BUILDIDENT }}-UNOFFICIAL-{{ sub_model }}.zip

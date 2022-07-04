@@ -1,0 +1,40 @@
+---
+
+# human readable model name
+target_model_full: "LG G4"
+
+# manifests
+git_repo_local_manifests: "git@github.com:LGgFour/local_manifests.git"
+git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
+
+# build signing
+# see roles/eos/common/defaults/main.yml for default keysdir
+sign_build: true
+
+# build vars
+USE_CCACHE: 1
+CCACHE_DIR: /ssd/ccache/jenkins/android-9
+
+# defaults override:
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }}/"
+
+# extendrom stuff
+#use_extendrom: "true" <-- must be set by Semaphore
+extendrom_package_list: "DNS66 noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+
+# notification vars
+device_cl: |-
+  ***{{ BDEVICE }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
+
+kernel_cl: |-
+  \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/android-9.0)
+
+dtree_cl: |-
+  \- g4 unified tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ git_repo_local_manifests_branch }})
+
+cdtree_cl: |-
+  \- g4\-common tree: [commits](https://github.com/LGgFour/android_device_lge_g4-common/commits/{{ git_repo_local_manifests_branch }})
+
+# defaults override:
+dl_links: |-
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})

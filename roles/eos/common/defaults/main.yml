@@ -1,0 +1,35 @@
+---
+
+# manifests
+PREFIXFNAME: "e-"
+git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
+REPOBRANCH: "{{ git_repo_main_branch }}"
+
+# build signing
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
+
+# build vars
+SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
+
+# build vars
+RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
+SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
+SEPARATE_OUT_DIR: "/ssd/{{ sub_model }}/{{ PREFIXFNAME }}/out"
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
+JKZIPDIR: "/ssd/tmp/{{ REPOBRANCH }}/zips/{{ BDEVICE }}"
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
+
+# notification vars
+ota_hint: |-
+  ***OTA Update:*** supported
+
+device_cl: |-
+  ***{{ BDEVICE }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace(".","\.") }}***
+
+rom_cl: |-
+  ***Changes:***
+  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ git_repo_main_branch }})
+
+dl_links: |-
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
+
