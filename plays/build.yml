@@ -12,6 +12,9 @@
     - set_fact:
         device_path: "{{ ROM_FLAVOR }}/{{ target_model }}"
       when: unified_path is defined and unified_path == "true"
+
+    - debug:
+        var: device_path
  
   tasks:
     - import_role:
