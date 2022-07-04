@@ -3,7 +3,7 @@
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: 3 hours)"
   debug:
     msg: |
-      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ REPOBRANCH }} has been started, lean back and let the CPUs burn ...
+      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ git_repo_main_branch | d(REPOBRANCH) }} has been started, lean back and let the CPUs burn ...
       
       Variables in use:
 
