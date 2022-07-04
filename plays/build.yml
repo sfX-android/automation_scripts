@@ -4,6 +4,9 @@
   hosts: buildserver
   gather_facts: true
 
+  vars:
+    device_path: undefined
+
   pre_tasks:
     - set_fact:
         device_path: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
