@@ -11,11 +11,11 @@
       target_model_full: {{ target_model_full }} - target_model: {{ target_model }} - sub_model {{ sub_model |d("N/A") }}
       
       ROM_FLAVOR: {{ ROM_FLAVOR }}
-      RELEASE_TYPE: {{ RELEASE_TYPE }}
+      RELEASE_TYPE: {{ RELEASE_TYPE | d("N/A") }}
       android_shortversion: {{ android_shortversion }}
       sign_build: {{ sign_build | d(false) }}
-      USE_CCACHE: {{ USE_CCACHE }}
-      CCACHE_DIR: {{ CCACHE_DIR }}
+      USE_CCACHE: {{ USE_CCACHE | d("N/A") }}
+      CCACHE_DIR: {{ CCACHE_DIR | d("N/A") }}
       use_extendrom: {{ use_extendrom | d(false) }}
       extendrom_package_list: {{ extendrom_package_list | d("N/A") }}
       
