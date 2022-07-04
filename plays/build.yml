@@ -5,7 +5,7 @@
   gather_facts: true
 
   tasks:
-    - import_role:
+    - include_role:
         name: common
         
     - name: "set semaphore running indicator"
