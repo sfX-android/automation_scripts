@@ -15,6 +15,8 @@ rom_cl: |-
   \- SHRP: [Changelog](https://shrp.github.io/#/changelogs)
 
 dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})
+
+#  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})
 
 
