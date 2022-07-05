@@ -45,5 +45,3 @@ kernel_cl: |-
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/a10/{{ target_model }})
 
-#custom_release_script: true
-#custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
