@@ -5,11 +5,15 @@
   gather_facts: true
 
   tasks:
-    - import_role:
+    - include_role:
         name: common
 
     - debug:
         var: vault_tg_group_id_failing
+
+    - fail:
+        msg: boo
+      when: vault_tg_group_id_failing is undefined
 
     - name: "set semaphore running indicator"
       connection: local
