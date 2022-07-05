@@ -24,7 +24,7 @@ extendrom_package_list: "DNS66 noEOSappstore Lawnchair-latest F-Droid F-DroidPri
 
 # notification vars
 device_cl: |-
-  ***{{ BDEVICE }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
+  ***{{ target_model_full }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
 
 kernel_cl: |-
   \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/android-9.0)
