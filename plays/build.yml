@@ -4,9 +4,6 @@
   hosts: buildserver
   gather_facts: true
 
-  vars_files:
-    - ../roles/common/defaults/main.yml
-
   tasks:
     - import_role:
         name: common
