@@ -19,6 +19,7 @@ tg_success: |
         {% if ota_hint is defined %}
         {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         {% endif %}
+        
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
 tg_failed: |
