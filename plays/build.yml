@@ -4,21 +4,6 @@
   hosts: buildserver
   gather_facts: true
 
-  vars:
-    device_path: common
-
-  pre_tasks:
-    - set_fact:
-        device_path: "{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
-      when: unified_path is undefined
-
-    - set_fact:
-        device_path: "{{ ROM_FLAVOR }}/{{ target_model }}"
-      when: unified_path is defined and unified_path == "true"
-
-    - debug:
-        var: device_path
- 
   tasks:
     - import_role:
         name: common
@@ -30,28 +15,36 @@
         content: |
           date="{{ ansible_date_time.iso8601 }}"
           play=build.yml
-          role="{{ ROM_FLAVOR }}/{{ target_model }}_{{ android_shortversion }}"
+          target={{ target_model }}
+          role="{{ ROM_FLAVOR }}/{{ target_model }}"
 
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
       - import_role:
-          name: "{{ device_path }}"
-      - include_vars: "{{ ROM_FLAVOR }}/{{ target_model }}/vars/shrp.yml"
+          name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
+
+      - include_vars: "roles/{{ ROM_FLAVOR }}/{{ target_model }}/vars/shrp.yml"
         when: ROM_FLAVOR == "SHRP"
+
       - import_role:
           name: build_rom
+
       - import_role:
           name: release_rom
         when:
           - (override_release_build is undefined and release_build == "true") or (override_release_build is defined and override_release_build == "true")
+
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
         when: debug_build is not defined or (debug_build is defined and debug_build == "false")
+
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
         when: debug_build is defined and debug_build == "true"
+
       - import_role:
           name: notify
+
       - name: "remove semaphore running indicator"
         file:
           path: "{{ semaphore_work_dir }}/.ansible_running"
@@ -61,11 +54,15 @@
       rescue:
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
+
         - include_role:
             name: notify
+
         - fail:
             msg: "build failure occured. check log."
+
         - name: "remove semaphore running indicator"
           file:
             path: "{{ semaphore_work_dir }}/.ansible_running"
             state: absent
+
