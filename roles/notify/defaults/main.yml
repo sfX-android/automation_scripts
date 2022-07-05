@@ -17,7 +17,7 @@ tg_success: |
         ***SHA256:***
         {{ hash.stat.checksum | default("error getting hash") }}
         {% if ota_hint is defined %}
-        {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") | }}
+        {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         {% endif %}
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
