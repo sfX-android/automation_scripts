@@ -8,15 +8,17 @@ tg_success: |
         {{ rom_cl }}
         {{ kernel_cl }}
         {{ dtree_cl }}
+        {% if cdtree_cl is defined %}
         {{ cdtree_cl }}
+        {% endif %}
         
         {{ dl_links }}
         
         ***SHA256:***
         {{ hash.stat.checksum | default("error getting hash") }}
-        
-        {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
-        
+        {% if ota_hint is defined %}
+        {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") | }}
+        {% endif %}
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
 tg_failed: |
