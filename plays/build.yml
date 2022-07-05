@@ -23,7 +23,7 @@
       - import_role:
           name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
 
-      - include_vars: "roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
+      - include_vars: "../roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
         when: ROM_FLAVOR == "SHRP"
 
       - import_role:
