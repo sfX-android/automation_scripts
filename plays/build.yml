@@ -8,6 +8,9 @@
     - import_role:
         name: common
 
+    - debug:
+        var: vault_tg_group_id_failing
+
     - name: "set semaphore running indicator"
       connection: local
       copy:
