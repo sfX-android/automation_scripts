@@ -20,11 +20,11 @@
 
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
+      - include_vars: "../roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
+        when: ROM_FLAVOR == "SHRP"
+
       - import_role:
           name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
-
-      - include_vars: "../roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
-#        when: ROM_FLAVOR == "SHRP"
 
       - import_role:
           name: build_rom
