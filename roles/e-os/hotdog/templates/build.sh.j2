@@ -30,7 +30,7 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     # Three build steps needed: build, sign, create & sign OTA
     # step 1/3:
     # build the ROM + otatools needed for signing
-    mka target-files-package otatools
+    mka target-files-package otatools dist
     
     # step 2/3:
     # sign all APKs who demands it
