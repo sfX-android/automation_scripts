@@ -53,7 +53,9 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     # BUT: this does not work on USER builds as avb-verity commands will be rejected.
     # so I found another solution which requires to build a factory image which creates a "super.img":
     # Basically it is just to set "PRODUCT_BUILD_SUPER_PARTITION := true" e.g. in your device.mk 
-    # (and ensure its not set to "false" anywhere else)
+    # (and ensure its not set to "false" anywhere else) 
+    # but ... on newer devices this alone is not enough, follow this to make it work:
+    # -> https://github.com/sfX-android/automation_scripts/commit/7ef07554fa31f15a75ea91c1b6fecf6edfd04ee4
     #mka superimage_dist
 else
     # userdebug build is what the majority uses
