@@ -30,7 +30,7 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     # Three build steps needed: build, sign, create & sign OTA
     # step 1/3:
     # build the ROM + otatools needed for signing
-    mka target-files-package otatools dist
+    mka target-files-package otatools
     
     # step 2/3:
     # sign all APKs who demands it
@@ -44,6 +44,17 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     # build & sign the OTA
     ./build/tools/releasetools/ota_from_target_files -k user-keys/releasekey --block {{ JKZIPDIR }}/signed-target_files.zip {{ JKZIPDIR }}/{{ PREFIXFNAME }}${VERSION_MAJOR}.${VERSION_MINOR}-q-{{ BUILDIDENT }}-{{ EOS_RELEASE_TYPE }}-{{ BDEVICE }}-signed.zip && \
     	rm -v {{ JKZIPDIR }}/signed-target_files.zip
+        
+    # step 4 (OPTIONAL):
+    # if you ever come into a situation where you cannot upgrade anymore due to a resize error
+    # you need to disable avb-verity and enable it again. The reason is that as soon as you have ever used 
+    # the "adb remount" command a partition named "scratch" will be created. Disabling verity and enabling it again
+    # will remove that partition and so fix that issue.
+    # BUT: this does not work on USER builds as avb-verity commands will be rejected.
+    # so I found another solution which requires to build a factory image which creates a "super.img":
+    # Basically it is just to set "PRODUCT_BUILD_SUPER_PARTITION := true" e.g. in your device.mk 
+    # (and ensure its not set to "false" anywhere else)
+    #mka superimage_dist
 else
     # userdebug build is what the majority uses
     lunch lineage_{{ BDEVICE }}-userdebug
