@@ -1,0 +1,7 @@
+---
+
+- name: "Starting service {{ blocking_service_name }} on {{ blocking_service_host }}"
+  service:
+    name: "{{ blocking_service_name }}"
+    state: started
+  delegate_to: "{{ blocking_service_host }}"
