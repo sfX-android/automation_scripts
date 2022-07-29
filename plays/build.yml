@@ -65,8 +65,8 @@
 
       # when any of the above fails notify always 
       rescue:
-      - import_role:
-          name: post_tasks
+        - import_role:
+            name: post_tasks
 
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
