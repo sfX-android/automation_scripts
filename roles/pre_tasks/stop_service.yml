@@ -1,6 +1,6 @@
 ---
 
-- name: "Stopping service {{ blocking_service_name }} on blocking_service_host"
+- name: "Stopping service {{ blocking_service_name }} on {{ blocking_service_host }}"
   service:
     name: "{{ blocking_service_name }}"
     state: stopped
