@@ -5,4 +5,4 @@ sfxdevsrv-droid ansible_port=22227
 leechserver ansible_port=22
 
 [misc]
-hotel ansible_port=22722 ansible_ssh_user={{ vault_hotel_ssh_user }}
+hotel ansible_port=22722 ansible_user={{ vault_hotel_ssh_user }} ansible_ssh_user={{ vault_hotel_ssh_user }}
