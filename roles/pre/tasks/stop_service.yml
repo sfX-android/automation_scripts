@@ -1,6 +1,7 @@
 ---
 
 - name: "Stopping service {{ blocking_service_name }} on {{ blocking_service_host }}"
+  remote_user: "{{ blocking_service_ssh_user }}"
   service:
     name: "{{ blocking_service_name }}"
     state: stopped
