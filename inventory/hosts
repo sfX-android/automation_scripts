@@ -1,8 +1,2 @@
-[buildserver]
-sfxdevsrv-droid ansible_port=22227
-
-[downloadserver]
-leechserver ansible_port=22
-
-[misc]
-hotel ansible_port=22722
+# disabled
+# use default_semaphore_hosted instead!
