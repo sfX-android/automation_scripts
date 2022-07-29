@@ -28,7 +28,7 @@
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
       - import_role:
-          name: pre_tasks
+          name: pre
           
       - include_vars: "../roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
         when: ROM_FLAVOR == "SHRP"
@@ -61,12 +61,12 @@
           state: absent
 
       - import_role:
-          name: post_tasks
+          name: post
 
       # when any of the above fails notify always 
       rescue:
         - import_role:
-            name: post_tasks
+            name: post
 
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
