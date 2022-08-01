@@ -7,8 +7,8 @@
   when:
     - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
 
-#- include: patch.yml
-#  when: 
-#    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+- include: patch.yml
+  when: 
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
 
 - include: copy.yml
