@@ -4,7 +4,7 @@
 PREFIXFNAME: "e-"
 git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
 REPOBRANCH: "{{ git_repo_main_branch }}"
-normalized_target_version: "{{ git_repo_main_branch | regex_replace('.*/','') }}"
+normalized_target_version: "{{ git_repo_main_branch | regex_replace('.*/','') | regex_replace('^v','') }}"
 
 # build vars
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
