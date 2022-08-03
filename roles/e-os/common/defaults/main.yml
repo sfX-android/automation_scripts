@@ -9,7 +9,7 @@ git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
 REPOBRANCH: "{{ git_repo_main_branch }}"
 
 # build vars
-SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
+SRCPATH: "/home/androidsource/do-not-touch/e-os"
 
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
