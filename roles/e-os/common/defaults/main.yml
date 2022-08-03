@@ -6,7 +6,8 @@ git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
 REPOBRANCH: "{{ git_repo_main_branch }}"
 
 # build signing
-keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
+#keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
 
 # build vars
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
