@@ -3,6 +3,7 @@
 export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
 export JKZIPDIR="{{ JKZIPDIR }}"
 export EOS_KEYS_DIR="{{ keysdir }}"
+export EOS_DEVICE="{{ sub_model }}"
 
 # setup build env    
 cd {{ SRCPATH }}
@@ -17,7 +18,7 @@ if [ "$EOS_RELEASE_TYPE" == "CUSTOM" ];then
 fi
 
 # build
-mka otapackage
+mka eos
 
 # check correct blobs from unified device tree
 rm /tmp/*_venuscheck.md5 || echo "no previous venus md5 found"
@@ -35,6 +36,3 @@ case {{ sub_model }} in
     exit 99
     ;;
 esac
-
-[ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-mv out/target/product/{{ sub_model }}/lineage_{{ sub_model }}*.zip {{ JKZIPDIR }}/{{ PREFIXFNAME }}{{ normalized_target_version }}{{ short_android_version_e }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}-{{ sub_model }}.zip
