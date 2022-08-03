@@ -3,6 +3,9 @@
 # human readable model name
 target_model_full: "LG G4"
 
+# convert to eos
+EOS_RELEASE_TYPE: "{{ RELEASE_TYPE }}"
+
 # manifests
 git_repo_local_manifests: "git@github.com:LGgFour/local_manifests.git"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
@@ -13,7 +16,7 @@ sign_build: true
 
 # build vars
 USE_CCACHE: 1
-CCACHE_DIR: /ssd/ccache/jenkins/android-9
+# cache dir defined in semaphore!
 
 # defaults override:
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }}/"
