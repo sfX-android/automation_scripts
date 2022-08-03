@@ -1,5 +1,8 @@
 ---
 
+# add e specific version appendix (e.g. required for OTA to work properly)
+short_android_version_e: "{{ parsed_target_version | regex_replace('(.*)(-*)','\\2') }}"
+
 # manifests
 PREFIXFNAME: "e-"
 git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
