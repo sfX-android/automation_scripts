@@ -4,6 +4,9 @@
 # semaphore working/tmp dir
 semaphore_work_dir: /opt/scs-work
 
+# ensure we have a normalized & clean version tag (e.g. removing slashes from a git tag etc)
+normalized_target_version: "{{ git_repo_main_branch | regex_replace('.*/','') | regex_replace('^v','') }}"
+
 # build identifier used in e.g. the filename later
 BUILDIDENT: "{{ ansible_date_time.date | regex_replace('-','') }}"
 
