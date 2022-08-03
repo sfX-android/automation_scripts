@@ -12,7 +12,7 @@ SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SEPARATE_OUT_DIR: "/ssd/{{ sub_model }}/{{ PREFIXFNAME }}/out"
 #keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
-keysdir: '/home/androidsource/do-not-touch/KEYS/{{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
 
 # notification vars
 ota_hint: |-
