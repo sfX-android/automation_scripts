@@ -15,6 +15,7 @@
       ROM_FLAVOR: {{ ROM_FLAVOR }}
       RELEASE_TYPE: {{ RELEASE_TYPE | d("N/A") }}
       android_shortversion: {{ android_shortversion }}
+      normalized_target_version: {{ normalized_target_version }}
       sign_build: {{ sign_build | d(false) }}
       USE_CCACHE: {{ USE_CCACHE | d("N/A") }}
       CCACHE_DIR: {{ CCACHE_DIR | d("N/A") }}
