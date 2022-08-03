@@ -1,7 +1,7 @@
 ---
 
 - import_role:
-    name: "e-os/common"
+    name: "eos/common"
 
 - include: ../../common/tasks/setvars.yml
 - include: ../../common/tasks/clean.yml
