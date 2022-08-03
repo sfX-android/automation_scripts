@@ -37,4 +37,4 @@ case {{ sub_model }} in
 esac
 
 [ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-mv out/target/product/{{ sub_model }}/lineage_{{ sub_model }}*.zip {{ JKZIPDIR }}/{{ PREFIXFNAME }}{{ normalized_target_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}-{{ sub_model }}.zip
+mv out/target/product/{{ sub_model }}/lineage_{{ sub_model }}*.zip {{ JKZIPDIR }}/{{ PREFIXFNAME }}{{ normalized_target_version }}{{ short_android_version_e }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}-{{ sub_model }}.zip
