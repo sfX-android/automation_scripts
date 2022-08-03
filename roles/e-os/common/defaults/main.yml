@@ -5,17 +5,14 @@ PREFIXFNAME: "e-"
 git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
 REPOBRANCH: "{{ git_repo_main_branch }}"
 
-# build signing
-#keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
-keysdir: '/home/androidsource/do-not-touch/KEYS/{{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
-
 # build vars
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SEPARATE_OUT_DIR: "/ssd/{{ sub_model }}/{{ PREFIXFNAME }}/out"
-keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
+#keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
 
 # notification vars
 ota_hint: |-
