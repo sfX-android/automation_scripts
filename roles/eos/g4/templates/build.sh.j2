@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# be strict on failures
+set -e
+
 # set required vars
 export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
 export JKZIPDIR="{{ JKZIPDIR }}"
