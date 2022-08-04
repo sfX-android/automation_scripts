@@ -3,12 +3,6 @@
 - import_role:
     name: "eos/common"
 
-- debug:
-    var: rom_cl
-
-- fail: 
-    msg: boooooooooooooooooo
-
 - include: ../../common/tasks/setvars.yml
 - include: ../../common/tasks/clean.yml
 #- include: prep.yml
