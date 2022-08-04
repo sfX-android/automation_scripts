@@ -5,17 +5,5 @@
   gather_facts: true
       
   tasks:
-    - include_vars: ../roles/common/vars/main.yml
-#    - debug: var=vars
-#    - debug: var=hostvars[inventory_hostname]
-
-- name: "Debug2"
-  hosts: leech
-  gather_facts: false
-    
-  tasks:
-    - debug:
-        msg: "hui: {{ hostvars[groups['buildserver'][0]]['ICON_GOOD'] }}"
-        
     - debug:
         var: semaphore_vars
