@@ -43,4 +43,4 @@ custom_release_script: false
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ target_model }}"
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
-
+post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
