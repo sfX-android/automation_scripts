@@ -24,7 +24,7 @@ USE_CCACHE: 1
 # defaults override:
 rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ sub_model }}/"
 SEPARATE_OUT_DIR: "/ssd/{{ sub_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
-post_cleanup_product_dir: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
+post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
 
 # extendrom stuff
 #use_extendrom: "true" <-- must be set by Semaphore
