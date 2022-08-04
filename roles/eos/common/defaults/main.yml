@@ -15,7 +15,7 @@ rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ target_model }
 
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
-SEPARATE_OUT_DIR: "/ssd/{{ sub_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
+SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
 #keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model }}'
 keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
 
