@@ -5,7 +5,7 @@
     msg: |
       #
       
-      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ git_repo_main_branch | d(REPOBRANCH) }} has been started, lean back and let the CPUs burn ...
+      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ git_repo_main_branch | d('!!! UNDEFINED !!!') }} has been started, lean back and let the CPUs burn ...
       
       Variables in use:
 
