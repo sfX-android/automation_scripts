@@ -4,10 +4,7 @@
     name: "eos/common"
 
 - debug:
-    var: short_android_version_e
-    
-- debug:
-    var: e_release_tag
+    var: rom_cl
 
 - fail: 
     msg: boooooooooooooooooo
