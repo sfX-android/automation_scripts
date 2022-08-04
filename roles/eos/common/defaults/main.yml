@@ -1,7 +1,7 @@
 ---
 
 # add e specific version appendix (e.g. required for OTA to work properly)
-short_android_version_e: "{{ parsed_target_version | regex_replace('(.*)(-*)','\\2') }}"
+short_android_version_e: "{{ parsed_target_version | regex_replace('(.*)(-.*)','\\2') }}"
 e_release_tag: "v{{ normalized_target_version }}{{ short_android_version_e }}"
 
 # manifests
