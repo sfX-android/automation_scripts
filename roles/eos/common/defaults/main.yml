@@ -11,6 +11,7 @@ REPOBRANCH: "{{ git_repo_main_branch }}"
 
 # build vars
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
+rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ target_model }}/"
 
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
