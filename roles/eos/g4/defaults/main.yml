@@ -22,7 +22,7 @@ USE_CCACHE: 1
 # cache dir defined in semaphore!
 
 # defaults override:
-rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }}/"
+rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ sub_model }}/"
 
 # extendrom stuff
 #use_extendrom: "true" <-- must be set by Semaphore
