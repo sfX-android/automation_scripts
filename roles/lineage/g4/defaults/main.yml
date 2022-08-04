@@ -17,7 +17,6 @@ keysdir: '/home/androidsource/do-not-touch/KEYS/{{ REPOBRANCH }}_{{ target_model
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }}/"
 USE_CCACHE: 1
 CCACHE_DIR: /ssd/ccache/jenkins/android-11
-SEPARATE_OUT_DIR: "/ssd/{{ sub_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
 
 # extendrom stuff
