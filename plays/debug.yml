@@ -16,3 +16,6 @@
   tasks:
     - debug:
         msg: "hui: {{ hostvars[groups['buildserver'][0]]['ICON_GOOD'] }}"
+        
+    - debug:
+        var: semaphore_vars
