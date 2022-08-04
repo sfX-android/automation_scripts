@@ -7,6 +7,13 @@ export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
 export JKZIPDIR="{{ JKZIPDIR }}"
 export EOS_KEYS_DIR="{{ keysdir }}"
 
+export USE_CCACHE={{ USE_CCACHE }}
+if [ "{{ USE_CCACHE }}" -eq 1 ];then
+    export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
+    mkdir -p {{ CCACHE_DIR }}
+    {{ CCACHE_EXEC }} --max-size=10G
+fi
+
 cd {{ SRCPATH }}
 source build/envsetup.sh
 
