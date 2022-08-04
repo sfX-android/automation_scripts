@@ -7,7 +7,6 @@ target_model_full: "OnePlus 7T pro"
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
 SRCPATH: "/home/androidsource/do-not-touch/e-os"
 PREFIXFNAME: "e-"
-SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}{{ BDEVICE }}/out"
 JKZIPDIR: "/ssd/tmp/eos/zips/hotdog"
 rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
 
