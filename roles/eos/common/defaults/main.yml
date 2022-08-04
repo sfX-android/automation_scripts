@@ -31,5 +31,5 @@ rom_cl: |-
   \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ e_release_tag }})
 
 dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/{{ android_shortversion }}/{{ target_model }})
 
