@@ -68,7 +68,6 @@
     path: "{{ SEPARATE_OUT_DIR }}"
     state: directory
   when: 
-    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
     - SEPARATE_OUT_DIR is defined
 
 - name: "Re-create out/ (link)"
@@ -77,7 +76,6 @@
     dest: "{{ SRCPATH }}/out"
     state: link
   when: 
-    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
     - SEPARATE_OUT_DIR is defined
 
 - name: "Reset state for all projects"
