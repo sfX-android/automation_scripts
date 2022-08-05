@@ -1,0 +1,27 @@
+---
+
+- name: "POST: Clean-Up out/ (post_cleanup_product_dir)"
+  file:
+    path: "{{ post_cleanup_product_dir }}"
+    state: absent
+  when:
+    - SEPARATE_OUT_DIR is not defined
+    - post_cleanup_product_override is not defined
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
+
+- name: "POST: Clean-Up out/ (SEPARATE_OUT_DIR)"
+  file:
+    path: "{{ SEPARATE_OUT_DIR }}/out/target/product/{{ target_model }}"
+    state: absent
+  when:
+    - SEPARATE_OUT_DIR is defined
+    - post_cleanup_product_override is not defined
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
+
+- name: "POST: Clean-Up out/ (post_cleanup_product_override)"
+  file:
+    path: "{{ post_cleanup_product_override }}"
+    state: absent
+  when:
+    - post_cleanup_product_override is defined
+    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true") or (post_cleanup is defined and post_cleanup == "true")
