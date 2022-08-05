@@ -1,7 +1,5 @@
 ---
 
-- include: cleanup.yml
-
 - include: start_service.yml
   when: 
     - blocking_service_name is defined
