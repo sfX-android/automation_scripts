@@ -17,3 +17,11 @@ rom_cl: |-
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})
 
+device_cl: |-
+  ***{{ target_model_full }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace("_","\_") | replace(".","\.") }}***
+
+kernel_cl: |-
+  \- Kernel: [commits]({{ KERNGIT | replace('.git','') }}/commits/{{ KERNBRANCH }})
+
+dtree_cl: |-
+  \- Device tree: [commits]({{ DTURI | replace('.git','') }}/commits/{{ DTBRANCH }})
