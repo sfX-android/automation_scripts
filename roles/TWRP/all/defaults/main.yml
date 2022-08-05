@@ -12,7 +12,7 @@ git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_mani
 # notification vars
 rom_cl: |-
   ***Changes:***
-  \- SHRP: [Changelog](https://twrp.me/)
+  \- TWRP: [Changelog](https://twrp.me/)
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})

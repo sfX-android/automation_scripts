@@ -1,6 +1,9 @@
 ---
 # misc common vars used for all tasks
 
+# fallback / legacy var
+REPOBRANCH: undefined
+
 # semaphore working/tmp dir
 semaphore_work_dir: /opt/scs-work
 

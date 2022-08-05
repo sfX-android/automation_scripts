@@ -7,4 +7,4 @@
     PIPETWRPBUILDVER: "{{ shrp_release_type | d('PREVIEW') }}-{{ semaphore_vars.task_details['target_version'] }}"
 
 - debug:
-    msg: "SHRP version/buildid has been set to: {{ PIPETWRPBUILDVER }}"
+    msg: "TWRP version/buildid has been set to: {{ PIPETWRPBUILDVER }}"
