@@ -1,0 +1,27 @@
+---
+# human readable model name
+target_model_full: "Samsung J5 - 2017"
+
+# SHRP repo branch
+git_repo_main_branch: "v3_9.0"
+
+# name of the repo manifest xml (likely not needed anymore)
+TWRPXML: default.xml
+
+# specify lunch target
+LUNCHTARGET: "omni_j5y17lte-eng"
+
+# device tree
+DTURI: "https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_j5y17lte"
+DTBRANCH: "android-9.0_shrp"
+DTPATH: "{{ SRCPATH }}/device/lge/j5y17lte"
+
+# kernel
+KERNPATH: "{{ SRCPATH }}/kernel/samsung/exynos7870"
+KERNGIT: "https://code.binbash.rocks:8443/MVA-VoLTE/android_kernel_samsung_exynos7870.git"
+KERNBRANCH: "android-10.0_permissive"
+
+# shrp_release_type can be set by Semaphore or here.
+# needed ONLY when shrp_release_type should NOT be "PREVIEW"
+shrp_release_type: Official
+RELEASE_TYPE: "{{ shrp_release_type }}"
