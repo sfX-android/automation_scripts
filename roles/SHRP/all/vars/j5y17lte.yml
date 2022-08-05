@@ -14,7 +14,7 @@ LUNCHTARGET: "omni_j5y17lte-eng"
 # device tree
 DTURI: "https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_j5y17lte"
 DTBRANCH: "android-9.0_shrp"
-DTPATH: "{{ SRCPATH }}/device/lge/j5y17lte"
+DTPATH: "{{ SRCPATH }}/device/samsung/j5y17lte"
 
 # kernel
 KERNPATH: "{{ SRCPATH }}/kernel/samsung/exynos7870"
