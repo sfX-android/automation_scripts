@@ -12,7 +12,7 @@ TWRPXML: default.xml
 LUNCHTARGET: "omni_g4-eng"
 
 # device tree
-DTURI: "https://github.com/steadfasterX/android_device_lge_g4.git"
+DTURI: "https://github.com/LGgFour/android_device_lge_g4_recovery.git"
 DTBRANCH: "android-9.0_shrp"
 DTPATH: "{{ SRCPATH }}/device/lge/g4"
 
