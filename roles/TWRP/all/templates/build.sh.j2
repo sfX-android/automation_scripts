@@ -22,12 +22,12 @@ cd $SRCPATH
 
 ####################
 # cherry-pick(s)
-#cd bootable/recovery
-#
-#if [ "{{ target_model }}" != "datamedia" ];then
-#	# allow to exclude the TWRP app (TW_EXCLUDE_TWRPAPP flag)
-#	git fetch "https://gerrit.twrp.me/android_bootable_recovery" refs/changes/73/1673/2 && git cherry-pick FETCH_HEAD
-#fi
+cd bootable/recovery
+
+if [ "{{ target_model }}" != "datamedia" ];then
+	# allow to exclude the TWRP app (TW_EXCLUDE_TWRPAPP flag)
+	git fetch "https://gerrit.twrp.me/android_bootable_recovery" refs/changes/73/1673/2 && git cherry-pick FETCH_HEAD
+fi
 ####################
 
 cd $SRCPATH
@@ -36,7 +36,7 @@ cd $SRCPATH
 if [ "{{ target_model }}" == "gtexslte" ];then
     cd bootable/
     rm recovery || echo skipped
-    ln -sf recovery-shrp recovery
+    ln -sf recovery-twrp recovery
     cd $SRCPATH
     export ANDROID_SET_JAVA_HOME=true 
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
@@ -60,8 +60,4 @@ if [ "{{ target_model }}" == "g4" ];then
     fi
    	echo "Return: $?"
 fi
-
-# place recovery in a temp dir
-[ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-cp -v out/target/product/{{ target_model | regex_replace('_lockedbl','') }}/SHRP_v*.zip {{ JKZIPDIR }}/
 

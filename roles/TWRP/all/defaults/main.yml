@@ -1,0 +1,27 @@
+---
+
+# build vars
+SRCPATH: "/home/androidsource/do-not-touch/twrp"
+PREFIXFNAME: "TWRP"
+SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}/{{ BDEVICE }}/out"
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
+
+# manifests
+git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git"
+
+# notification vars
+rom_cl: |-
+  ***Changes:***
+  \- SHRP: [Changelog](https://twrp.me/)
+
+dl_links: |-
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})
+
+device_cl: |-
+  ***{{ target_model_full | replace("-","\-") }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace("_","\_") | replace(".","\.") }}***
+
+kernel_cl: |-
+  \- Kernel: [commits]({{ KERNGIT | replace('.git','') }}/commits/{{ KERNBRANCH }})
+
+dtree_cl: |-
+  \- Device tree: [commits]({{ DTURI | replace('.git','') }}/commits/{{ DTBRANCH }})
