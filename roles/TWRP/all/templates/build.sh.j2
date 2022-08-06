@@ -61,9 +61,9 @@ if [ "{{ target_model }}" == "g4" ];then
    	echo "Return: $?"
 fi
 
-TWRPRELEASE=$(strings $SRCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.version |grep -v ro.twrp.version | tr -d "\n" |cut -d "-" -f1)
-
 LOCPATH="$SRCPATH/out/target/product/{{ target_model }}/"
+TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.version |grep -v ro.twrp.version | tr -d "\n" |cut -d "-" -f1)
 
 cd $LOCPATH
+[ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
 mv recovery.img {{ JKZIPDIR }}/twrp-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}.img
