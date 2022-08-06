@@ -66,4 +66,4 @@ TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.ve
 
 cd $LOCPATH
 [ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-mv recovery.img {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ BUILDIDENT }}_{{ target_model }}.img
+mv -v recovery.img {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ BUILDIDENT }}_{{ target_model }}.img
