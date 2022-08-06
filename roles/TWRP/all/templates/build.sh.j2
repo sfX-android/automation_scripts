@@ -66,4 +66,4 @@ TWRPRELEASE=$(strings $SRCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.ve
 LOCPATH="$SRCPATH/out/target/product/{{ target_model }}/"
 
 cd $LOCPATH
-mv recovery.img twrp-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}.img
+mv recovery.img {{ JKZIPDIR }}/twrp-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}.img
