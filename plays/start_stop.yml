@@ -6,6 +6,7 @@
       
   tasks:
     - name: "action: {{ servicename }} on {{ servicename }}"
+      become: yes
       service:
         name: "{{ servicename }}"
         state: "{{ servicename_state }}"
