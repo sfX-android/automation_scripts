@@ -1,0 +1,11 @@
+---
+
+- name: "Manage a service"
+  hosts: buildserver
+  gather_facts: true
+      
+  tasks:
+    - name: "action: {{ servicename }} on {{ servicename }}"
+      service:
+        name: "{{ servicename }}"
+        state: "{{ servicename_state }}"
