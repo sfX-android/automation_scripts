@@ -5,8 +5,10 @@
   gather_facts: true
       
   tasks:
-    - name: "action: {{ servicename }} on {{ servicename }}"
-      become: yes
-      service:
-        name: "{{ servicename }}"
-        state: "{{ servicename_state }}"
+  - name: "action: {{ servicename_state }} -> {{ servicename }} on {{ service_host }}"
+    remote_user: "{{ service_ssh_user }}"
+    become: yes
+    service:
+      name: "{{ servicename }}"
+      state: "{{ servicename_state }}"
+    delegate_to: "{{ service_host }}"
