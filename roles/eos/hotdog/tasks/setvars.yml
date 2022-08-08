@@ -3,15 +3,13 @@
 
 - set_fact:
     dtree_cl: "\\- Device tree: [commits](https://github.com/sfX-android/android_device_oneplus_hotdog/commits/eos-q_lockedbl)\n"
-    cdtree_cl: |-
-      \- Common tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q_lockedbl)
+    cdtree_cl: "\- Common tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q_lockedbl)"
   connection: local
   when: EOS_RELEASE_TYPE == "CUSTOM"
 
 - set_fact:
     dtree_cl: "\\- Device tree: [commits](https://github.com/sfX-android/android_device_oneplus_hotdog/commits/eos-q)\n"
-    cdtree_cl: |-
-      \- Common tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q)
+    cdtree_cl: "\- Common tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/eos-q)"
   connection: local
   when: EOS_RELEASE_TYPE != "CUSTOM"
 
