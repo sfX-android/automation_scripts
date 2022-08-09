@@ -22,6 +22,7 @@
   shell: "{{ repo_bin }} forall -j{{ max_processes }} -c 'git lfs pull'"
   args:
     chdir: "{{ SRCPATH }}"
+  ignore_errors: yes
   when: ROM_FLAVOR == 'eos' or (sync_lfs is defined and sync_lfs == 'true')
 
 - name: "Ensure keys dir is set correctly"
