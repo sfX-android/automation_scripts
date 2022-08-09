@@ -27,7 +27,7 @@ post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_mod
 
 # extendrom stuff
 #use_extendrom: "true" <-- must be set by Semaphore
-extendrom_package_list: "DNS66 noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+#extendrom_package_list:  <-- must be set by Semaphore
 
 # notification vars
 device_cl: |-
