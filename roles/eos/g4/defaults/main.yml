@@ -34,7 +34,7 @@ device_cl: |-
   ***{{ target_model_full }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
 
 kernel_cl: |-
-  \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/android-9.0)
+  \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/{{ git_kernel_branch }})
 
 dtree_cl: |-
   \- g4 unified tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ git_repo_local_manifests_branch }})
