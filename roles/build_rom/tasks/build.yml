@@ -22,10 +22,10 @@
       use_extendrom: {{ use_extendrom | d(false) }}
       extendrom_package_list: {{ extendrom_package_list | d("N/A") }}
       
-      clean_basic: {{ override_clean_basic | d(clean_basic) }}
-      clean_out: {{ override_clean_out | d(clean_out) }}
-      reset_git: {{ override_reset_git | d(reset_git) }}
-      release_build: {{ override_release_build | d(release_build) }}
+      clean_basic: {{ clean_basic | d("N/A") }} | override_clean_basic: {{ override_clean_basic | d("N/A") }}
+      clean_out: {{ clean_out | d("N/A") }} | override_clean_out: {{ override_clean_out | d("N/A") }}
+      reset_git: {{ reset_git | d("N/A") }} | override_reset_git: {{ override_reset_git | d("N/A") }}
+      release_build: {{ release_build | d("N/A") }} | override_release_build: {{ override_release_build | d("N/A") }}
       
       #
 
