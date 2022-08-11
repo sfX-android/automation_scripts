@@ -38,7 +38,7 @@ rom_cl: |-
   \- LineageOS: [Changelog](https://www.lineageoslog.com/18.1)
 
 kernel_cl: |-
-  \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/android-11)
+  \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/{{ git_kernel_branch }})
 
 dtree_cl: |-
   \- g4 unified tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ REPOBRANCH }})
