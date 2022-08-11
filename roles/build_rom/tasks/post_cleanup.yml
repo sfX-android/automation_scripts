@@ -25,3 +25,8 @@
   when:
     - post_cleanup_product_override is defined
     - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true") or (post_cleanup is defined and post_cleanup == "true")
+
+- name: "POST: Clean-Up build script"
+  file:
+    path: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
+    state: absent
