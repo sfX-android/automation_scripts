@@ -6,7 +6,7 @@
 # set override defaults
 - set_fact:
     override_clean_basic: "false"
-  when: override_clean_basic == ""
+  when: override_clean_basic undefined
 
 - set_fact:
     override_clean_out: "false"
