@@ -4,9 +4,9 @@
   no_log: true
 
 # set override defaults
-- debug:
+- fail:
     msg: "override_clean_basic: >{{ override_clean_basic }}<"
-  #when: override_clean_basic is undefined
+  when: override_clean_basic is undefined
 
 - set_fact:
     override_clean_out: "false"
