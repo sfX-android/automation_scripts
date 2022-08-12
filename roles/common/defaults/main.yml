@@ -49,9 +49,3 @@ JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ target_model }}"
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
-
-# set override defaults
-override_clean_basic: 'false'
-override_clean_out: 'false'
-override_reset_git: 'false'
-override_release_build: 'false'
