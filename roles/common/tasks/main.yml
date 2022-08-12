@@ -6,7 +6,7 @@
 # set override defaults
 - fail:
     msg: "override_clean_basic: >{{ override_clean_basic }}<"
-  when: override_clean_basic is undefined
+  when: override_clean_basic is defined
 
 - set_fact:
     override_clean_out: "false"
