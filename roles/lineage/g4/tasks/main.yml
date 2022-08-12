@@ -5,11 +5,11 @@
 - include: prep.yml
 - include: ../../common/tasks/sync.yml
   when:
-    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true") or (override_sync is defined and override_sync == "true")
 
 - include: patch_a9.yml
   when:
-    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true") or (override_sync is defined and override_sync == "true")
     - android_shortversion == "pie" or android_shortversion == "16.0" or android_shortversion == "a9"
 
 - include: copy.yml
