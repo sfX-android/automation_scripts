@@ -29,8 +29,9 @@
     - frameworks/ml
     - frameworks/native
     - frameworks/support
-    - hardware/marvell    
-    - hardware/qcom/sm8150/
+    - hardware/marvell
+    - hardware/qcom
+    - hardware/qcom/sm8150
     - hardware/qcom-caf
     - hardware/qcom/Android.mk    
     - kernel/
