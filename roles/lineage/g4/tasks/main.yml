@@ -7,8 +7,9 @@
   when:
     - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
 
-- include: patch.yml
-  when: 
+- include: patch_a9.yml
+  when:
     - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+    - android_shortversion == "pie" or android_shortversion == "16.0" or android_shortversion == "a9"
 
 - include: copy.yml
