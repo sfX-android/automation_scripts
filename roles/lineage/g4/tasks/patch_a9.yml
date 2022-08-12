@@ -1,0 +1,29 @@
+---
+
+- name: "Apply Bluetooth patch (audio fix)"
+  shell: "patch -p1 < ../../../../../external/patches/vendor_qcom_opensource_packages_apps_Bluetooth.patch && touch {{ SRCPATH }}/.tmp/bt.patched"
+  args:
+    chdir: "{{ SRCPATH }}/vendor/qcom_opensource/packages/apps/Bluetooth"
+    creates: "{{ SRCPATH }}/.bt.patched"
+
+- set_fact:
+    SECPATCH_DATE: "2022-08"
+
+- name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
+  shell: "source build/envsetup.sh && echo 'applying {{ item }}:' && repopick -t {{ item }}"
+  args:
+    chdir: "{{ SRCPATH }}"
+  loop:
+    - "P_asb_2022-02"
+    - "P_asb_2022-03"
+    - "P_asb_2022-04"
+    - "P_asb_2022-05"
+    - "P_asb_2022-06"
+    - "P_asb_2022-07"
+    - "P_asb_2022-08"
+    
+- name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
+  lineinfile:
+    path: "{{ SRCPATH }}/build/core/version_defaults.mk"
+    regexp: "PLATFORM_SECURITY_PATCH := .*"
+    line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE }}-05"
