@@ -15,7 +15,7 @@
     - recovery.img
     - blrecovery.img
   when:
-    - clean_out != "true" or (override_clean_out is defined and override_clean_out != "true")
+    - clean_out != "true" or (override_clean_out != "true")
 
 - name: "Basic Clean-Up (cross-version incompatible paths)"
   file:
@@ -48,14 +48,14 @@
     - vendor/cm
     - vendor/nxp
   when:
-    - (override_clean_basic is undefined and clean_basic == "true") or (override_clean_basic is defined and override_clean_basic == "true")
+    - (override_clean_basic == "false" and clean_basic == "true") or (override_clean_basic == "true")
 
 - name: "Clean-Up out/"
   file:
     path: "{{ SRCPATH }}/out"
     state: absent
   when:
-    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
+    - (override_clean_out == "false" and clean_out == "true") or (override_clean_out == "true")
   
 - name: "Clean-Up out/ ({{ SEPARATE_OUT_DIR }})"
   file:
@@ -63,7 +63,7 @@
     state: absent
   register: rm_other_out
   when: 
-    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
+    - (override_clean_out == "false" and clean_out == "true") or (override_clean_out == "true")
     - SEPARATE_OUT_DIR is defined
 
 - name: "Re-create out/ ({{ SEPARATE_OUT_DIR }})"
@@ -86,14 +86,14 @@
   args:
     chdir: "{{ SRCPATH }}"
   when:
-    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+    - (override_reset_git == "false" and reset_git == "true") or (override_reset_git == "true")
 
 - name: "Cleanup patch indicators"
   file:
     path: "{{ SRCPATH }}/.tmp/"
     state: absent
   when:
-    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
+    - (override_clean_out == "false" and clean_out == "true") or (override_clean_out == "true")
 
 - name: "Setup patch indicators dir"
   file:
@@ -105,4 +105,4 @@
     path: "{{ SRCPATH }}/.repo/local_manifests"
     state: absent
   when:
-    - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
+    - (override_clean_out == "false" and clean_out == "true") or (override_clean_out == "true")
