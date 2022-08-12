@@ -6,17 +6,17 @@
 # set override defaults
 - name: set default overrides
   set_fact:
-    override_clean_basic: "false"
-  when: override_clean_basic != "true" and override_clean_basic != "false"
+    override_clean_basic: 'false'
+  when: override_clean_basic != "true"
 
 - set_fact:
-    override_clean_out: "false"
+    override_clean_out: 'false'
   when: override_clean_out != "true" 
 
 - set_fact:
-    override_reset_git: "false"
-  when: override_reset_git == ""
+    override_reset_git: 'false'
+  when: override_reset_git != "true"
 
 - set_fact:
-    override_release_build: "false"
-  when: override_release_build == ""
+    override_release_build: 'false'
+  when: override_release_build != "true"
