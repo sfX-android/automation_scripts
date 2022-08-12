@@ -13,6 +13,7 @@
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
   shell: "source build/envsetup.sh && echo 'applying {{ item }}:' && repopick -t {{ item }}"
   args:
+    executable: /bin/bash
     chdir: "{{ SRCPATH }}"
   loop:
     - "P_asb_2022-02"
