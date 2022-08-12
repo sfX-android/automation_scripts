@@ -4,8 +4,8 @@
   no_log: true
 
 # set override defaults
-- fail:
-    msg: "override_clean_basic: >{{ override_clean_basic }}<"
+- set_fact:
+    override_clean_basic: "false"
   when: override_clean_basic != "true" and override_clean_basic != "false"
 
 - set_fact:
