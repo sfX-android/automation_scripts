@@ -5,6 +5,7 @@
   args:
     chdir: "{{ SRCPATH }}/vendor/qcom_opensource/packages/apps/Bluetooth"
     creates: "{{ SRCPATH }}/.bt.patched"
+  when: apply_bt_app_patch is defined and apply_bt_app_patch == "true"
 
 - set_fact:
     SECPATCH_DATE: "2022-08"
