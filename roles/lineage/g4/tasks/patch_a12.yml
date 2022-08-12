@@ -12,8 +12,10 @@
     - "318097/1"    # memfd: art
     - "287706/8"    # memfd: external/perfetto
 
-- name: "A12: reverting specific patch(es)"
-  shell: "cd vendor/lineage && git revert 8f67d055b36d992f2f09aa6f733aa06ee3d5b917"
+- name: "A12: manual adjustments"
+  shell: "{{ item }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
+  loop:
+    - "cd vendor/lineage && git revert 8f67d055b36d992f2f09aa6f733aa06ee3d5b917"
