@@ -35,7 +35,7 @@ device_cl: |-
 
 rom_cl: |-
   ***Changes:***
-  \- LineageOS: [Changelog](https://www.lineageoslog.com/18.1)
+  \- LineageOS: [Changelog](https://www.lineageoslog.com/{{ android_shortversion }})
 
 kernel_cl: |-
   \- kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/{{ git_kernel_branch }})
