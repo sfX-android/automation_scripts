@@ -30,8 +30,10 @@
     - frameworks/native
     - frameworks/support
     - hardware/marvell
-    - hardware/qcom
+    - hardware/qcom/sm7150
+    - hardware/qcom/sm7250
     - hardware/qcom/sm8150
+    - hardware/qcom/sm8150p
     - hardware/qcom-caf
     - hardware/qcom/Android.mk    
     - kernel/
