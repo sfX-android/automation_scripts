@@ -6,11 +6,11 @@
 # set override defaults
 - fail:
     msg: "override_clean_basic: >{{ override_clean_basic }}<"
-  when: override_clean_basic is defined
+  when: override_clean_basic != "true" and override_clean_basic != "false"
 
 - set_fact:
     override_clean_out: "false"
-  when: override_clean_out == ""
+  when: override_clean_out != "true" 
 
 - set_fact:
     override_reset_git: "false"
