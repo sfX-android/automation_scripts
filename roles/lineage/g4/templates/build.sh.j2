@@ -7,6 +7,7 @@ if [ "{{ USE_CCACHE }}" -eq 1 ];then
     export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
     mkdir -p {{ CCACHE_DIR }}
     {{ CCACHE_EXEC }} --max-size=10G
+    export CCACHE_DIR="{{ CCACHE_DIR }}"
 fi
 
 # setup build env    
