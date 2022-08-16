@@ -7,6 +7,15 @@
     creates: "{{ SRCPATH }}/.bt.patched"
   when: apply_bt_app_patch is defined and apply_bt_app_patch == "true"
 
+- name: "PIE: applying misc patches"
+  shell: "source build/envsetup.sh && echo 'applying misc patch:' && {{ item }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  loop:
+    - "repopick -f 307334/2 -P frameworks/base/"                      # scale font patch
+    - "git apply external/patches/frameworks_base_shadercache.patch"  # always use shader cache
+
 - set_fact:
     SECPATCH_DATE: "2022-08"
 
