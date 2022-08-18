@@ -15,6 +15,7 @@
   loop:
     - "repopick -f 307334/2 -P frameworks/base/"                      # scale font patch
     - "git apply external/patches/frameworks_base_shadercache.patch"  # always use shader cache
+    - "cd kernel/lge/msm8992 && git reset --hard 5111999f7182a828dd0adad72a38a17a57933d72"
 
 - set_fact:
     SECPATCH_DATE: "2022-08"
