@@ -8,6 +8,9 @@
     - debug:
         var: semaphore_vars
 
+    - import_role:
+        name: common
+
     - name: "Telegram TEST notify"
       connection: local
       community.general.telegram:
