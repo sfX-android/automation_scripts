@@ -8,7 +8,7 @@
     - debug:
         var: semaphore_vars
 
-    - name: "Telegram: TEST notify"
+    - name: "Telegram TEST notify"
       connection: local
       community.general.telegram:
         token: "{{ vault_tg_token }}"
