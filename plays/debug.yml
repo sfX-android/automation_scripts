@@ -7,3 +7,13 @@
   tasks:
     - debug:
         var: semaphore_vars
+
+    - name: "Telegram: TEST notify"
+      connection: local
+      community.general.telegram:
+        token: "{{ vault_tg_token }}"
+        api_args:
+          chat_id: "{{ vault_tg_group_id_failing }}"
+          parse_mode: "MarkdownV2"
+          text: "This is a test"
+          disable_web_page_preview: True
