@@ -48,14 +48,14 @@
     - vendor/cm
     - vendor/nxp
   when:
-    - (override_clean_basic == "false" and clean_basic == "true") or (override_clean_basic == "true")
+    - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
 
 - name: "Clean-Up out/"
   file:
     path: "{{ SRCPATH }}/out"
     state: absent
   when:
-    - (override_clean_out == "false" and clean_out == "true") or (override_clean_out == "true")
+    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
   
 - name: "Clean-Up out/ ({{ SEPARATE_OUT_DIR }})"
   file:
@@ -63,7 +63,7 @@
     state: absent
   register: rm_other_out
   when: 
-    - (override_clean_out == "false" and clean_out == "true") or (override_clean_out == "true")
+    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
     - SEPARATE_OUT_DIR is defined
 
 - name: "Re-create out/ ({{ SEPARATE_OUT_DIR }})"
@@ -105,4 +105,4 @@
     path: "{{ SRCPATH }}/.repo/local_manifests"
     state: absent
   when:
-    - (override_clean_out == "false" and clean_out == "true") or (override_clean_out == "true")
+    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
