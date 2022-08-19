@@ -17,7 +17,9 @@
     - "git apply external/patches/frameworks_base_shadercache.patch"  # always use shader cache
     - "cd kernel/lge/msm8992 && git reset --hard 5111999f7182a828dd0adad72a38a17a57933d72"
     - "wget https://github.com/aoleary/G4-Titan-Kernel/commit/289e2b72a917da57f76c0e5edc7af84662044a4d.patch -O /tmp/patch1"
+    - "wget https://github.com/aoleary/G4-Titan-Kernel/commit/8390b58884b901fe72573911a6992515a2b31315.patch -O /tmp/patch2"
     - "cd kernel/lge/msm8992 && git apply /tmp/patch1"
+    - "cd kernel/lge/msm8992 && git apply /tmp/patch2"
 
 - set_fact:
     SECPATCH_DATE: "2022-08"
