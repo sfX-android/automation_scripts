@@ -86,14 +86,14 @@
   args:
     chdir: "{{ SRCPATH }}"
   when:
-    - (override_reset_git == "false" and reset_git == "true") or (override_reset_git == "true")
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
 
 - name: "Cleanup patch indicators"
   file:
     path: "{{ SRCPATH }}/.tmp/"
     state: absent
   when:
-    - (override_clean_out == "false" and clean_out == "true") or (override_clean_out == "true")
+    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
 
 - name: "Setup patch indicators dir"
   file:
