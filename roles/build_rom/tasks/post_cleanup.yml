@@ -30,3 +30,4 @@
   file:
     path: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
     state: absent
+  when: keep_build_sh is undefined
