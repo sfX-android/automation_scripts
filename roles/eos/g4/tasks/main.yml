@@ -10,8 +10,14 @@
   when:
     - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
 
-- include: patch.yml
+- include: patch_a9.yml
   when:
-    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true") or (override_sync is defined and override_sync == "true")
+    - android_shortversion == "pie" or android_shortversion == "v1-pie" or android_shortversion == "a9"
+
+- include: patch_a12.yml
+  when:
+    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true") or (override_sync is defined and override_sync == "true")
+    - android_shortversion == "s" or android_shortversion == "v1-s" or android_shortversion == "a12"
 
 - include: copy.yml
