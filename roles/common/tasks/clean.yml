@@ -49,6 +49,7 @@
     - vendor/nxp
   when:
     - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
+  no_log: true
 
 - name: "Clean-Up out/"
   file:
