@@ -4,12 +4,14 @@
   file:
     path: "{{ post_cleanup_product_dir }}"
     state: absent
+  no_log: true
   when:
     - SEPARATE_OUT_DIR is not defined
     - post_cleanup_product_override is not defined
     - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
 
 - name: "POST: Clean-Up out/ (SEPARATE_OUT_DIR)"
+  no_log: true
   file:
     path: "{{ SEPARATE_OUT_DIR }}/out/target/product/{{ target_model }}"
     state: absent
@@ -19,6 +21,7 @@
     - (override_clean_out is undefined and clean_out == "true") or (override_clean_out is defined and override_clean_out == "true")
 
 - name: "POST: Clean-Up out/ (post_cleanup_product_override)"
+  no_log: true
   file:
     path: "{{ post_cleanup_product_override }}"
     state: absent
