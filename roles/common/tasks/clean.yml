@@ -87,6 +87,7 @@
     chdir: "{{ SRCPATH }}"
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
+  no_log: true
 
 - name: "Cleanup patch indicators"
   file:
