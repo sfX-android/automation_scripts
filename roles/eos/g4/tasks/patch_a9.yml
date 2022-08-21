@@ -1,0 +1,38 @@
+---
+
+- name: "Apply shader cache patch"
+  shell: "git apply /home/androidsource/patches/frameworks_base/los16_shader_cache.patch"
+  args:
+    chdir: "{{ SRCPATH }}/frameworks/base"
+
+- name: "PIE: applying misc patches"
+  shell: "source build/envsetup.sh && echo 'applying misc patch:' && {{ item }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  loop:
+    - "repopick -f 307334/2 -P frameworks/base/"                      # scale font patch
+    - "git apply external/patches/frameworks_base_shadercache.patch"  # always use shader cache
+
+- set_fact:
+    SECPATCH_DATE: "2022-08"
+
+- name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
+  shell: "source build/envsetup.sh && echo 'applying {{ item }}:' && repopick -f -t {{ item }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  loop:
+    - "P_asb_2022-02"
+    - "P_asb_2022-03"
+    - "P_asb_2022-04"
+    - "P_asb_2022-05"
+    - "P_asb_2022-06"
+    - "P_asb_2022-07"
+    - "P_asb_2022-08"
+    
+- name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
+  lineinfile:
+    path: "{{ SRCPATH }}/build/core/version_defaults.mk"
+    regexp: "PLATFORM_SECURITY_PATCH := .*"
+    line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE }}-05"

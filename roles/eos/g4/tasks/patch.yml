@@ -1,9 +1,0 @@
----
-
-- name: "Apply shader cache patch"
-  shell: "git apply /home/androidsource/patches/frameworks_base/los16_shader_cache.patch"
-  args:
-    chdir: "{{ SRCPATH }}/frameworks/base"
-  when: 
-    - android_shortversion != "a11"
-
