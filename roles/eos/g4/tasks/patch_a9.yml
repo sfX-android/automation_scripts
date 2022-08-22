@@ -31,7 +31,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  loop: "{{ picklist.stdout }}"
+  loop: "{{ picklist.stdout | list }}"
 
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
   lineinfile:
