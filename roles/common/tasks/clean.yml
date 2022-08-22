@@ -82,13 +82,13 @@
   when: 
     - SEPARATE_OUT_DIR is defined
 
-- name: "Reset state for all projects"
-  shell: "{{ repo_bin }} forall -j{{ max_processes }} -vc 'git remote -v | head -n1; git reset --hard' || echo 'SKIPPING WITH ERRORCODE: $?'"
-  args:
-    chdir: "{{ SRCPATH }}"
-  when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
-  no_log: true
+#- name: "Reset state for all projects"
+#  shell: "{{ repo_bin }} forall -j{{ max_processes }} -vc 'git remote -v | head -n1; git reset --hard' || echo 'SKIPPING WITH ERRORCODE: $?'"
+#  args:
+#    chdir: "{{ SRCPATH }}"
+#  when:
+#    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
+#  no_log: true
 
 - name: "Cleanup patch indicators"
   file:
@@ -102,9 +102,9 @@
     path: "{{ SRCPATH }}/.tmp/"
     state: directory
 
-- name: "Cleanup local manifests"
-  file:
-    path: "{{ SRCPATH }}/.repo/local_manifests"
-    state: absent
-  when:
-    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
+#- name: "Cleanup local manifests"
+#  file:
+#    path: "{{ SRCPATH }}/.repo/local_manifests"
+#    state: absent
+#  when:
+#    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
