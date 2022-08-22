@@ -35,11 +35,6 @@
 #        insertafter: EOF
 #      loop: "{{ xmlout.results | map(attribute='matches') | sum(start=[]) | map(attribute='project') }}"
 
-- name: copy results
-  copy:
-    src: "{{ manifest_paths_file }}"
-    dest: "{{ manifest_paths_file }}"
-
 - name: "Reset path(s)"
   shell: 'cat {{ manifest_paths_file }} | parallel -j15 --max-args=10 repo forall -c "git reset --hard"'
   args:
