@@ -1,9 +1,11 @@
 ---
 
 - name: Find all manifests
-  shell: "find {{ SRCDIR }}/.repo/manifests/ -name '*.xml'"
+  shell: "find .repo/manifests/ .repo/local_manifests -name '*.xml'"
+  args:
+    chdir: "{{ SRCDIR }}"
   register: manifests
-  #no_log: true
+  no_log: true
 
 - name: Parse manifests
   community.general.xml:
@@ -12,6 +14,16 @@
     content: attribute
   loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
   register: xmlout
+  no_log: true
+
+- name: Parse manifests (removals)
+  community.general.xml:
+    path: "{{ item }}"
+    xpath: /manifest/remove-project
+    content: attribute
+  failed_when: never is defined
+  loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
+  register: xmlremovals
   no_log: true
 
 - name: "Clean old results file"
@@ -24,19 +36,14 @@
     src: ../roles/common/templates/manifest_paths.j2
     dest: "{{ manifest_paths_file }}"
 
-#    - name: "Write results"
-#      connection: local
-#      become: no
-#      lineinfile:
-#        create: yes
-#        path: "{{ results_file }}"
-#        regex: "^{{ item.path }}$"
-#        line: "{{ item.path }}"
-#        insertafter: EOF
-#      loop: "{{ xmlout.results | map(attribute='matches') | sum(start=[]) | map(attribute='project') }}"
+- name: "remove unwanted"
+  replace:
+    path: "{{ manifest_paths_file }}"
+    regexp: "^{{ item.path }}$"
+  loop: "{{ xmlremovals.results | selectattr('matches','defined') | map(attribute='matches') | sum(start=[]) | map(attribute='remove-project') }}"
 
 - name: "Reset path(s)"
   shell: 'cat {{ manifest_paths_file }} | parallel -j12 --max-args=10 repo forall -j1 {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} -c "git reset --hard"'
   args:
     chdir: "{{ SRCDIR }}"
-  #no_log: true
+  no_log: true
