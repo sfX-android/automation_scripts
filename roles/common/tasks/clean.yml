@@ -90,6 +90,10 @@
 #    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
 #  no_log: true
 
+- include: reset.yml
+  when:
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
+
 - name: "Cleanup patch indicators"
   file:
     path: "{{ SRCPATH }}/.tmp/"
@@ -102,9 +106,9 @@
     path: "{{ SRCPATH }}/.tmp/"
     state: directory
 
-#- name: "Cleanup local manifests"
-#  file:
-#    path: "{{ SRCPATH }}/.repo/local_manifests"
-#    state: absent
-#  when:
-#    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
+- name: "Cleanup local manifests"
+  file:
+    path: "{{ SRCPATH }}/.repo/local_manifests"
+    state: absent
+  when:
+    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
