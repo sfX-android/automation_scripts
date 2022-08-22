@@ -39,4 +39,4 @@
   shell: 'cat {{ manifest_paths_file }} | parallel -j15 --max-args=10 repo forall -c "git reset --hard"'
   args:
     chdir: "{{ SRCDIR }}"
-  no_log: true
+  #no_log: true
