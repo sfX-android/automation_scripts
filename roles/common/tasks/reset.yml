@@ -3,7 +3,7 @@
 - name: Find all manifests
   shell: "find {{ SRCDIR }}/.repo/manifests/ -name '*.xml'"
   register: manifests
-  no_log: true
+  #no_log: true
 
 - name: Parse manifests
   community.general.xml:
