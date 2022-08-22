@@ -1,0 +1,45 @@
+---
+
+- name: Find all manifests
+  shell: "find {{ SRCDIR }} -name '*.xml'"
+  register: manifests
+
+- name: Parse manifests
+  community.general.xml:
+    path: "{{ item }}"
+    xpath: /manifest/project
+    content: attribute
+  loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
+  register: xmlout
+  no_log: true
+
+- name: "Clean old results file"
+  file:
+    path: "{{ results_file }}"
+    state: absent
+
+- name: Write manifest paths file
+  template:
+    src: manifest_paths.j2
+    dest: "{{ results_file }}"
+
+#    - name: "Write results"
+#      connection: local
+#      become: no
+#      lineinfile:
+#        create: yes
+#        path: "{{ results_file }}"
+#        regex: "^{{ item.path }}$"
+#        line: "{{ item.path }}"
+#        insertafter: EOF
+#      loop: "{{ xmlout.results | map(attribute='matches') | sum(start=[]) | map(attribute='project') }}"
+
+- name: copy results
+  copy:
+    src: "{{ results_file }}"
+    dest: "{{ results_file }}"
+
+- name: "Reset path(s)"
+  shell: 'cat {{ results_file }} | parallel -j15 --max-args=10 repo forall -c "git reset --hard"'
+  args:
+    chdir: "{{ SRCDIR }}"
