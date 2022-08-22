@@ -21,7 +21,7 @@
       topic:P_asb_2022-08
 
 - name: "Create repopick list (required on eOS to find path names)"
-  shell: "/usr/bin/python3.6 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ git_repo_main_branch }} -Q '{{ sec_patch_topics }}' | grep 'https'"
+  shell: "/usr/bin/python3.6 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 -Q '{{ sec_patch_topics }}' | grep 'https'"
   args:
     chdir: "{{ SRCPATH }}"
   register: picklist
