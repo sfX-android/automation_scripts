@@ -16,13 +16,13 @@
 
 - name: "Clean old results file"
   file:
-    path: "{{ results_file }}"
+    path: "{{ manifest_paths_file }}"
     state: absent
 
 - name: Write manifest paths file
   template:
     src: manifest_paths.j2
-    dest: "{{ results_file }}"
+    dest: "{{ manifest_paths_file }}"
 
 #    - name: "Write results"
 #      connection: local
@@ -37,11 +37,11 @@
 
 - name: copy results
   copy:
-    src: "{{ results_file }}"
-    dest: "{{ results_file }}"
+    src: "{{ manifest_paths_file }}"
+    dest: "{{ manifest_paths_file }}"
 
 - name: "Reset path(s)"
-  shell: 'cat {{ results_file }} | parallel -j15 --max-args=10 repo forall -c "git reset --hard"'
+  shell: 'cat {{ manifest_paths_file }} | parallel -j15 --max-args=10 repo forall -c "git reset --hard"'
   args:
     chdir: "{{ SRCDIR }}"
   no_log: true
