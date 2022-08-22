@@ -1,3 +1,5 @@
 {% for m in xmlout.results | selectattr('matches','defined') | map(attribute='matches') | sum(start=[]) | map(attribute='project') %}
+{% if m.path is defined %}
 {{ m.path }}
+{% endif %}
 {% endfor %}
