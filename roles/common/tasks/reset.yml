@@ -1,7 +1,7 @@
 ---
 
 - name: Find all manifests
-  shell: "find {{ SRCDIR }}/.repo/manifests/ {{ SRCDIR }}/.repo/local_manifests -name '*.xml'"
+  shell: "find {{ SRCPATH }}/.repo/manifests/ {{ SRCPATH }}/.repo/local_manifests -name '*.xml'"
   register: manifests
   #no_log: true
 
@@ -43,5 +43,5 @@
 - name: "Reset path(s)"
   shell: 'cat {{ manifest_paths_file }} | parallel -j12 --max-args=10 repo forall -j1 {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} -c "git reset --hard"'
   args:
-    chdir: "{{ SRCDIR }}"
+    chdir: "{{ SRCPATH }}"
   #no_log: true
