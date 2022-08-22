@@ -17,6 +17,7 @@
   shell: "{{ repo_bin }} sync -c -j{{ max_processes }} --force-sync --no-tags --no-clone-bundle"
   args:
     chdir: "{{ SRCPATH }}"
+  no_log: true
 
 - name: "Sync LFS"
   shell: "{{ repo_bin }} forall -j{{ max_processes }} -c 'git lfs pull'"
@@ -24,6 +25,7 @@
     chdir: "{{ SRCPATH }}"
   ignore_errors: yes
   when: ROM_FLAVOR == 'eos' or (sync_lfs is defined and sync_lfs == 'true')
+  no_log: true
 
 - name: "Ensure keys dir is set correctly"
   shell: "external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR | regex_replace('e-os','eos') }} {{ android_shortversion }}"
