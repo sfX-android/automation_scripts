@@ -6,14 +6,14 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
   loop:
-    - "repopick -f 307334/2 -P frameworks/base/"                      # scale font patch
+    - "repopick --gerrit https://review.lineageos.org -f 307334/2 -P frameworks/base/"                      # scale font patch
     - "git apply external/patches/frameworks_base_shadercache.patch"  # always use shader cache
 
 - set_fact:
     SECPATCH_DATE: "2022-08"
 
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
-  shell: "source build/envsetup.sh > /dev/null && echo 'applying {{ item }}:' && repopick -f -t {{ item }}"
+  shell: "source build/envsetup.sh > /dev/null && echo 'applying {{ item }}:' && repopick --gerrit https://review.lineageos.org -f -t {{ item }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
