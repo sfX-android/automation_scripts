@@ -1,0 +1,3 @@
+{% for m in xmlout.results | map(attribute='matches') | sum(start=[]) | map(attribute='project') %}
+{{ m.path }}
+{% endfor %}
