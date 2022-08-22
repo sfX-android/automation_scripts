@@ -1,7 +1,7 @@
 ---
 
 - name: "A12: applying required patches"
-  shell: "source build/envsetup.sh && echo 'applying {{ item }}:' && repopick {{ item }}"
+  shell: "source build/envsetup.sh > /dev/null && echo 'applying {{ item }}:' && repopick {{ item }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
