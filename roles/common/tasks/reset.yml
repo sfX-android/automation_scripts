@@ -1,7 +1,7 @@
 ---
 
 - name: Find all manifests
-  shell: "find {{ SRCDIR }}/.repo/manifest* -name '*.xml'"
+  shell: "find {{ SRCDIR }}/.repo/manifests/ -name '*.xml'"
   register: manifests
   no_log: true
 
@@ -12,7 +12,7 @@
     content: attribute
   loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
   register: xmlout
-  #no_log: true
+  no_log: true
 
 - name: "Clean old results file"
   file:
