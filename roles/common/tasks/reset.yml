@@ -21,7 +21,7 @@
 
 - name: Write manifest paths file
   template:
-    src: manifest_paths.j2
+    src: ../roles/common/templates/manifest_paths.j2
     dest: "{{ manifest_paths_file }}"
 
 #    - name: "Write results"
