@@ -36,7 +36,7 @@
 #      loop: "{{ xmlout.results | map(attribute='matches') | sum(start=[]) | map(attribute='project') }}"
 
 - name: "Reset path(s)"
-  shell: 'cat {{ manifest_paths_file }} | parallel -j15 --max-args=10 repo forall -c "git reset --hard"'
+  shell: 'cat {{ manifest_paths_file }} | parallel -j15 --max-args=10 repo forall -j 1 -c "git reset --hard"'
   args:
     chdir: "{{ SRCDIR }}"
   #no_log: true
