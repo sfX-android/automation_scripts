@@ -11,6 +11,9 @@
     - import_role:
         name: common
 
+    - name: "get all project paths"
+      include_tasks: ../roles/common/tasks/reset.yml
+      
     - name: "Telegram TEST notify"
       connection: local
       community.general.telegram:
