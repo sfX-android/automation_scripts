@@ -6,26 +6,33 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
   loop:
-    - "repopick --gerrit https://review.lineageos.org -f 307334/2 -P frameworks/base/"                      # scale font patch
-    - "git apply external/patches/frameworks_base_shadercache.patch"  # always use shader cache
+    - "repopick --gerrit https://review.lineageos.org -f 307334/2 -P frameworks/base/"  # scale font patch
+    - "git apply external/patches/frameworks_base_shadercache.patch"                    # always use shader cache
 
 - set_fact:
     SECPATCH_DATE: "2022-08"
+    sec_patch_topics: >-
+      topic:P_asb_2022-02 OR \
+      topic:P_asb_2022-03 OR \
+      topic:P_asb_2022-04 OR \
+      topic:P_asb_2022-05 OR \
+      topic:P_asb_2022-06 OR \
+      topic:P_asb_2022-07 OR \
+      topic:P_asb_2022-08
+
+- name: "Create repopick list (required on eOS to find path names)"
+  shell: "/usr/bin/python3.6 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ git_repo_main_branch }} -Q '{{ sec_patch_topics }}' | grep 'https'"
+  args:
+    chdir: "{{ SRCPATH }}"
+  register: picklist
 
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
-  shell: "source build/envsetup.sh > /dev/null && echo 'applying {{ item }}:' && repopick --gerrit https://review.lineageos.org -f -t {{ item }}"
+  shell: "source build/envsetup.sh > /dev/null && echo 'applying {{ item }}:' && {{ item }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  loop:
-    - "P_asb_2022-02"
-    - "P_asb_2022-03"
-    - "P_asb_2022-04"
-    - "P_asb_2022-05"
-    - "P_asb_2022-06"
-    - "P_asb_2022-07"
-    - "P_asb_2022-08"
-    
+  loop: "{{ picklist.stdout }}"
+
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
   lineinfile:
     path: "{{ SRCPATH }}/build/core/version_defaults.mk"
