@@ -12,6 +12,11 @@
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
     - android_shortversion == "pie" or android_shortversion == "16.0" or android_shortversion == "a9"
 
+- include: patch_a10.yml
+  when:
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - android_shortversion == "q" or android_shortversion == "17.1" or android_shortversion == "a10"
+
 - include: patch_a12.yml
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
