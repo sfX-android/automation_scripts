@@ -26,6 +26,9 @@
     chdir: "{{ SRCPATH }}"
   register: picklist
 
+- debug: 
+    var: picklist.stdout_lines
+    
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
   shell: "source build/envsetup.sh > /dev/null && echo 'applying SECURITY PATCH:' && {{ item }}"
   args:
