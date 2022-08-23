@@ -45,5 +45,8 @@
   args:
     chdir: "{{ SRCPATH }}"
   register: resetres
-  failed_when: resetres.rc != 0 and resetres.rc != 16
+  failed_when: 
+    - resetres.rc != 16   # skipped
+    - resetres.rc != 21   # local path missing
+    - resetres.rc != 0    # any other error code
   #no_log: true
