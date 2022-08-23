@@ -32,7 +32,7 @@
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
-      loop: "{{ picklist.stdout.splitlines() | map('from_yaml') | list }}"
+      loop: "{{ picklist.stdout.splitlines() | string | map('from_yaml') | list }}"
   
     - name: "Telegram TEST notify"
       connection: local
