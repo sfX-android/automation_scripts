@@ -25,16 +25,13 @@
   args:
     chdir: "{{ SRCPATH }}"
   register: picklist
-
-- debug: 
-    var: picklist
     
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
   shell: "source build/envsetup.sh > /dev/null && echo 'applying SECURITY PATCH:' && {{ item }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  loop: "{{ picklist.stdout_lines | flatten(levels=1) }}"
+  loop: "{{ picklist.stdout.splitlines() | map('from_yaml') | list }}"
 
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
   lineinfile:
