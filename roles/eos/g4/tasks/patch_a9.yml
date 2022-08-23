@@ -31,7 +31,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  loop: "{{ picklist.stdout | list }}"
+  loop: "{{ picklist.stdout.splitlines() | map('from_yaml') | list  }}"
 
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
   lineinfile:
