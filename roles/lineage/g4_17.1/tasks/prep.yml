@@ -1,8 +1,0 @@
----
-
-- name: "Setup user keys dir"
-  file:
-    path: "{{ SRCPATH }}/user-keys"
-    state: link
-    src: "{{ keysdir }}"
-    force: yes
