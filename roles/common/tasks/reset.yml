@@ -46,4 +46,4 @@
     chdir: "{{ SRCPATH }}"
   register: resetres
   failed_when: resetres.rc != 0 and resetres.rc != 16
-  no_log: true
+  #no_log: true
