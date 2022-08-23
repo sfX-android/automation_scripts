@@ -28,7 +28,7 @@
       register: picklist
 
     - debug: 
-        var: picklist.stdout_lines
+        var: picklist
       
     - name: "Telegram TEST notify"
       connection: local
