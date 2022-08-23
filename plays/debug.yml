@@ -11,8 +11,24 @@
     - import_role:
         name: common
 
-    - name: "get all project paths"
-      include_tasks: ../roles/common/tasks/reset.yml
+    - set_fact:
+        SECPATCH_DATE: "2022-08"
+        sec_patch_topics: >-
+          topic:P_asb_2022-02 OR
+          topic:P_asb_2022-03 OR
+          topic:P_asb_2022-04 OR
+          topic:P_asb_2022-05 OR
+          topic:P_asb_2022-06 OR
+          topic:P_asb_2022-07 OR
+          topic:P_asb_2022-08
+    - name: "Create repopick list (required on eOS to find path names)"
+      shell: "/usr/bin/python3.6 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 -Q '{{ sec_patch_topics }}' | grep --color=never https | iconv -t utf-8"
+      args:
+        chdir: "{{ SRCPATH }}"
+      register: picklist
+
+    - debug: 
+        var: picklist.stdout_lines
       
     - name: "Telegram TEST notify"
       connection: local
