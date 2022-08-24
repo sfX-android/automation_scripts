@@ -56,6 +56,7 @@
     - resetres.rc != 14   # skipped only
     - resetres.rc != 16   # skipped+
     - resetres.rc != 21   # local path missing
+    - resetres.rc != 22   # skipped+
     - resetres.rc != 26   # project not found
     - resetres.rc != 0    # any other error code
   #no_log: true
