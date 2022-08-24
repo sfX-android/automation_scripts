@@ -8,14 +8,14 @@
 
 - include: ../../common/tasks/sync.yml
   when:
-    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
 - include: sync.yml
   when:
-    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
 - include: patch.yml
   when: 
-    - (override_reset_git is undefined and reset_git == "true") or (override_reset_git is defined and override_reset_git == "true")
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
 
 - include: copy.yml
