@@ -50,6 +50,8 @@ SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
 manifest_paths_file: "/tmp/manifest_paths.{{ ROM_FLAVOR }}"
+# build signing
+sign_build: true
 
 # set override defaults
 override_clean_basic: 'undef'
