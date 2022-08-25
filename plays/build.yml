@@ -8,6 +8,10 @@
     - import_role:
         name: common
 
+    - import_role:
+        name: eos/common
+      when: ROM_FLAVOR == "eos"
+        
     - debug:
         var: vault_tg_group_id_failing
 
