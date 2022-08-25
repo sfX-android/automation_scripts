@@ -18,7 +18,7 @@
         ***{{ target_model_full }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace(".","\.") }}*** \(signed, ROOTED\)
     dl_links: |-
         ***Download:*** [{{ BUILDIDENT }} \- rooted]({{ leech_server }}/e-os/a10_rooted/{{ target_model }})
-    keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}_rooted'
+    keysdir: '/home/androidsource/do-not-touch/KEYS/e-{{ android_shortversion }}_{{ target_model }}_rooted'
     rempath: "/home/nightlies/roms/e-os/a10_rooted/{{ target_model }}"
   connection: local
   when: PREROOT_BOOT == "true"
@@ -26,7 +26,7 @@
 - set_fact:
     device_cl: |-
         ***{{ target_model_full }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace(".","\.") }}*** \(signed, NO root\)
-    keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
+    keysdir: '/home/androidsource/do-not-touch/KEYS/e-{{ android_shortversion }}_{{ target_model }}'
     rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
   connection: local
   when: PREROOT_BOOT != "true"
