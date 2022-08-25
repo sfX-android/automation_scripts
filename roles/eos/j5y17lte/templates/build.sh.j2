@@ -3,16 +3,16 @@
 # be strict on failures
 set -e
 
+# set required vars
 export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
 export JKZIPDIR="{{ JKZIPDIR }}"
+export EOS_ZIP_DIR="{{ JKZIPDIR }}"
+export EOS_ZIP_SUBDIR="{{ EOS_ZIP_SUBDIR | d('true') }}"
 export EOS_KEYS_DIR="{{ keysdir }}"
-    
-export USE_CCACHE={{ USE_CCACHE }}
-if [ "{{ USE_CCACHE }}" -eq 1 ];then
-    export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
-    mkdir -p {{ CCACHE_DIR }}
-    {{ CCACHE_EXEC }} --max-size=10G
-fi
+export EOS_DEVICE="{{ sub_model }}"
+export EOS_CCACHE_DIR="{{ CCACHE_DIR }}"
+export EOS_BRANCH_NAME="{{ git_repo_main_branch }}"
+export EOS_USE_CCACHE={{ USE_CCACHE }}
 
 cd {{ SRCPATH }}
 source build/envsetup.sh
