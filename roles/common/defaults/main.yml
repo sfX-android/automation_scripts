@@ -29,6 +29,7 @@ RELEASESVR_port: 22
 BDEVICE: "{{ target_model }}"
 
 # ccache defaults
+USE_CCACHE: 1
 CCACHE_EXEC: /usr/bin/ccache
 CCACHE_COMPRESS: 1
 CCACHE_DIR: /ssd/ccache/jenkins/{{ target_model }}-undef
