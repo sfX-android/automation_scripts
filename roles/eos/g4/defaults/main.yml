@@ -13,21 +13,9 @@ JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ sub_model }}"
 git_repo_local_manifests: "git@github.com:LGgFour/local_manifests.git"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 
-# build signing
-# see roles/eos/common/defaults/main.yml for default keysdir
-sign_build: true
-
-# build vars
-USE_CCACHE: 1
-# cache dir defined in semaphore!
-
 # defaults override:
 rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
-
-# extendrom stuff
-#use_extendrom: "true" <-- must be set by Semaphore
-#extendrom_package_list:  <-- must be set by Semaphore
 
 # notification vars
 device_cl: |-
