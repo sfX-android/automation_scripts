@@ -1,35 +1,16 @@
 ---
 
-#- name: "A12: Create repopick list (required to find path names)"
-#  shell: "/usr/bin/python3.6 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-19.1 {{ item }} | grep --color=never https | col | dos2unix "
-#  args:
-#    chdir: "{{ SRCPATH }}"
-#  register: picklist
-#  loop:
-#    - "320591/2"    # system/bpf 
-#    - "320592/2"    # system/netd
-#    - "326385/3"    # packages/modules/adb
-#    - "318097/1"    # memfd: art
-#    - "287706/8"    # memfd: external/perfetto
-    
-#- name: "A12: applying patches"
-#  shell: "source build/envsetup.sh > /dev/null && echo 'applying PATCH:' && {{ item }}"
-#  args:
-#    executable: /bin/bash
-#    chdir: "{{ SRCPATH }}"
-#  loop: "{{ picklist.results.stdout.splitlines() | map('from_yaml') | list }}"
-
 - name: "A12: applying required patches"
   shell: "source build/envsetup.sh > /dev/null && echo 'applying {{ item }}:' && repopick -f {{ item }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
   loop:
-    - "320591/2"    # system/bpf 
-    - "320592/2"    # system/netd
-    - "326385/3"    # packages/modules/adb
-    - "318097/1"    # memfd: art
-    - "287706/8"    # memfd: external/perfetto
+    - "320591/2 -P system/bpf"              # system/bpf 
+    - "320592/2 -P system/netd"             # system/netd
+    - "326385/3 -P packages/modules/adb"    # packages/modules/adb
+    - "318097/1 -P art"                     # memfd: art
+    - "287706/8 -P external/perfetto"       # memfd: external/perfetto
 
 #- name: "A12: manual adjustments"
 #  shell: "{{ item }}"
