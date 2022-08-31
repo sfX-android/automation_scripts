@@ -10,23 +10,6 @@
 
     - import_role:
         name: common
-
-    - set_fact:
-        SECPATCH_DATE: "2022-08"
-        sec_patch_topics: >-
-          topic:P_asb_2022-02
-    - name: "Create repopick list (required on eOS to find path names)"
-      shell: "/usr/bin/python3.6 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 -Q '{{ sec_patch_topics }}' | grep --color=never https | col | dos2unix"
-      args:
-        chdir: "{{ SRCPATH }}"
-      register: picklist
-
-    - name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
-      shell: "source build/envsetup.sh > /dev/null && echo 'applying SECURITY PATCH:' && {{ item }}"
-      args:
-        executable: /bin/bash
-        chdir: "{{ SRCPATH }}"
-      loop: "{{ picklist.stdout.splitlines() | map('from_yaml') }}"
   
     - name: "Telegram TEST notify"
       connection: local
