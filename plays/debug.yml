@@ -17,7 +17,7 @@
       when: ROM_FLAVOR == "graphene"
 
     - debug:
-         var: SEPARATE_OUT_DIR
+         var: SRCPATH
 
     - import_role:
         name: common
