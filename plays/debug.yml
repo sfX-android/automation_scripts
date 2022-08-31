@@ -8,6 +8,14 @@
     - debug:
         var: semaphore_vars
 
+    - import_role:
+        name: eos/common
+      when: ROM_FLAVOR == "eos"
+
+    - import_role:
+        name: graphene/common
+      when: ROM_FLAVOR == "graphene"
+
     - debug:
          var: ROM_FLAVOR
 
