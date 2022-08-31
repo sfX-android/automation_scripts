@@ -9,6 +9,9 @@
         var: semaphore_vars
 
     - import_role:
+        name: common
+
+    - import_role:
         name: eos/common
       when: ROM_FLAVOR == "eos"
 
@@ -18,9 +21,6 @@
 
     - debug:
          var: SRCPATH
-
-    - import_role:
-        name: common
   
     - name: "Telegram TEST notify"
       connection: local
