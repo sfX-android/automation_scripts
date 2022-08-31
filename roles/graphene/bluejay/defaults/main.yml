@@ -1,0 +1,21 @@
+---
+
+# human readable model name
+target_model_full: "Google Pixel 6a (Bluejay)"
+
+# manifests
+git_repo_local_manifests: "ssh://gitea@code.binbash.rocks:22227/secureOS/local_manifests.git"
+
+# extendrom stuff
+#use_extendrom: "true"
+#extendrom_package_list: "noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+
+# GOS_KERNEL_BRANCH:
+# ROM_VERSION:
+# ROM_NAME:
+# ROM_BL_TYPE:
+# lunch_buildtype:
+
+# notification vars
+kernel_cl: |-
+  \- Kernel: [commits](TBD/{{ git_kernel_branch }})
