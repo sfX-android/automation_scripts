@@ -8,6 +8,9 @@
     - debug:
         var: semaphore_vars
 
+    - debug:
+         var: ROM_FLAVOR
+
     - import_role:
         name: common
   
