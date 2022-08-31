@@ -11,7 +11,7 @@
     - import_role:
         name: common
 
-    - import_role:
+    - include_role:
         name: eos/common
       when: ROM_FLAVOR == "eos"
 
