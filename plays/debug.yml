@@ -15,7 +15,7 @@
         name: eos/common
       when: ROM_FLAVOR == "eos"
 
-    - import_role:
+    - include_role:
         name: graphene/common
       when: ROM_FLAVOR == "graphene"
 
