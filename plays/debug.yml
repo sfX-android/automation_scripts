@@ -8,6 +8,9 @@
     - debug:
         var: semaphore_vars
 
+    - import_role:
+        name: common
+
     - include_role:
         name: eos/common
         public: yes
@@ -18,8 +21,7 @@
         public: yes
       when: ROM_FLAVOR == "graphene"
 
-    - import_role:
-        name: common
+
 
     - debug:
          var: git_repo_main_manifests
