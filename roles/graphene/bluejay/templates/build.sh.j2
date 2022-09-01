@@ -26,9 +26,9 @@ vendor/extendrom/get_prebuilts.sh
 {% endif %}
 
 # verify manifests
-cd .repo/manifests
+cd {{ SRCPATH }}/.repo/manifests
 git verify-tag $(git describe)
-cd {{ SRCPATH }}
+cd ../../
 
 # The kernel needs to be built in advance, since it uses a separate build system.
 # Prebuilts are provided for all the officially supported devices, so this step is optional.
@@ -37,7 +37,7 @@ cd {{ SRCPATH }}
 mkdir android/kernel/{{ target_model }}
 cd android/kernel/{{ target_model }}
 repo init -u https://github.com/GrapheneOS/kernel_{{ target_model }}-manifest.git -b {{ GOS_KERNEL_BRANCH }}
-repo sync -j14
+repo sync -j{{ max_processes }}
 LTO=thin BUILD_KERNEL=1 ./build_{{ target_model }}.sh
 cd {{ SRCPATH }}
 {% endif %}
@@ -45,7 +45,8 @@ cd {{ SRCPATH }}
 # prepare fetching blobs
 yarn install --cwd vendor/adevtool/
 source script/envsetup.sh
-m aapt2
+choosecombo release aosp_{{ target_model }} {{ lunch_buildtype }}
+m -j{{ max_processes }} aapt2
 
 # fetch blobs
 vendor/adevtool/bin/run download vendor/adevtool/dl/ -d bluejay -t factory ota
@@ -61,8 +62,7 @@ BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%y%m%d%H)-{{ ROM_BL_TYPE }}"
 
 cd {{ SRCPATH }}
 source script/envsetup.sh
-choosecombo release {{ target_model }} {{ lunch_buildtype }}
-m target-files-package otatools-package
-#m otatools-package
+m -j{{ max_processes }} target-files-package otatools-package
+#m -j{{ max_processes }} otatools-package
 time script/release.sh {{ target_model }}
 echo -e '\n\n\t\e[32m\e[1mBUILDING '$BUILD_ID' for {{ target_model }} FINISHED SUCCESSFULLY!!\e[0m\n'
