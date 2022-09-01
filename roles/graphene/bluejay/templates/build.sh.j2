@@ -16,7 +16,7 @@ fi
 
 # setup build env    
 cd {{ SRCPATH }}
-source build/envsetup.sh
+source script/envsetup.sh
 
 # extendrom
 {% if use_extendrom is defined and use_extendrom == "true" %}
@@ -60,7 +60,7 @@ export BUILD_NUMBER="v{{ ROM_VERSION }}"
 BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%y%m%d%H)-{{ ROM_BL_TYPE }}" 
 
 cd {{ SRCPATH }}
-source build/envsetup.sh
+source script/envsetup.sh
 choosecombo release {{ target_model }} {{ lunch_buildtype }}
 m target-files-package otatools-package
 #m otatools-package
