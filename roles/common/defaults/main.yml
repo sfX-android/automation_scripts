@@ -54,6 +54,7 @@ manifest_paths_file: "/tmp/manifest_paths.{{ ROM_FLAVOR }}"
 # build signing
 sign_build: true
 keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
+SRC_KEYSDIR: user-keys
 
 # set override defaults
 override_clean_basic: 'undef'
