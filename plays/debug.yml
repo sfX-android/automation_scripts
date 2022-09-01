@@ -20,6 +20,9 @@
       when: ROM_FLAVOR == "graphene"
 
     - debug:
+         var: git_repo_main_manifests
+
+    - debug:
          var: SRCPATH
   
     - name: "Telegram TEST notify"
