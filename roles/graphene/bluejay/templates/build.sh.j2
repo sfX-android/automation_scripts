@@ -3,6 +3,8 @@
 # be strict on failures
 set -e
 
+{{ SH_GRAPHENE_GPG }}
+
 # CCACHE
 export USE_CCACHE={{ USE_CCACHE }}
 if [ "{{ USE_CCACHE }}" -eq 1 ];then
@@ -24,7 +26,6 @@ vendor/extendrom/get_prebuilts.sh
 {% endif %}
 
 # verify manifests
-gpg --recv-keys 65EEFE022108E2B708CBFCF7F9E712E59AF5F22A
 cd .repo/manifests
 git verify-tag $(git describe)
 cd {{ SRCPATH }}
@@ -55,7 +56,7 @@ vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/bluejay.yml -f vendo
 
 # build
 export password=""
-export BUILD_NUMBER=v{{ ROM_VERSION }}
+export BUILD_NUMBER="v{{ ROM_VERSION }}"
 BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%y%m%d%H)-{{ ROM_BL_TYPE }}" 
 
 cd {{ SRCPATH }}
