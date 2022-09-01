@@ -10,17 +10,19 @@
 
     - include_role:
         name: eos/common
+        public: yes
       when: ROM_FLAVOR == "eos"
 
     - include_role:
         name: graphene/common
+        public: yes
       when: ROM_FLAVOR == "graphene"
         
     - debug:
         var: vault_tg_group_id_failing
 
     - fail:
-        msg: boo
+        msg: "boo.. vault_tg_group_id_failing is undefined"
       when: vault_tg_group_id_failing is undefined
 
     - name: "set semaphore running indicator"
