@@ -53,8 +53,8 @@ rm -rf vendor/adevtool/dl/*
 vendor/adevtool/bin/run download vendor/adevtool/dl/ -d bluejay -t factory ota
 sudo vendor/adevtool/bin/run generate-all vendor/adevtool/config/bluejay.yml -c vendor/state/bluejay.json -s vendor/adevtool/dl/bluejay-*-factory-*.zip
 sudo chown -R ${USER}:${USER} vendor/google_devices
-vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/bluejay.yml -f vendor/adevtool/dl/bluejay-ota-*.zip
 m -j{{ max_processes }} aapt2
+vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/bluejay.yml -f vendor/adevtool/dl/bluejay-ota-*.zip
 {% endif %}
 
 # build
