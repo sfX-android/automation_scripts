@@ -1,7 +1,7 @@
 ---
 
 # human readable model name
-target_model_full: "Samsung J5 - 2017"
+target_model_full: "Samsung J5 \\- 2017"
 
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
