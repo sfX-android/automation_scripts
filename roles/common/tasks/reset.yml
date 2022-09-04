@@ -48,7 +48,7 @@
   loop: "{{ xmlremovals.results | selectattr('matches','defined') | map(attribute='matches') | sum(start=[]) | map(attribute='remove-project') }}"
 
 - name: "Reset path(s)"
-  shell: 'cat {{ manifest_paths_file }} | parallel -j6 --max-args=10 repo forall -j1 {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} -c "git reset --hard"'
+  shell: 'cat {{ manifest_paths_file }} | parallel -j6 --max-args=10 {{ repo_bin_path }}/repo forall -j1 {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} -c "git reset --hard"'
   args:
     chdir: "{{ SRCPATH }}"
   register: resetres
