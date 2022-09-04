@@ -19,7 +19,7 @@
     content: attribute
   loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
   register: xmlout
-  no_log: true
+  #no_log: true
 
 - name: Parse manifests (removals)
   community.general.xml:
