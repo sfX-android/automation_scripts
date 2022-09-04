@@ -23,7 +23,7 @@ keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ ta
 # extendrom stuff
 use_extendrom: "true"
 eos_enable_gestures: "true"
-extendrom_package_list: "noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+extendrom_package_list: "Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
 
 # ccache
 USE_CCACHE: 1
