@@ -29,7 +29,7 @@
   failed_when: never is defined
   loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
   register: xmlremovals
-  no_log: true
+  #no_log: true
 
 - name: "Clean old results file"
   file:
@@ -61,4 +61,4 @@
     - resetres.rc != 26   # project not found
     - resetres.rc != 32   # skipped?
     - resetres.rc != 0    # any other error code
-  no_log: true
+  #no_log: true
