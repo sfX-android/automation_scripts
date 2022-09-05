@@ -3,54 +3,29 @@
 # human readable model name
 target_model_full: "Samsung J5 \\- 2017"
 
-# build vars
-RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
-SRCPATH: "/home/androidsource/do-not-touch/e-os"
-PREFIXFNAME: "e"
-JKZIPDIR: "/ssd/tmp/eos/zips/{{ BDEVICE }}"
-rempath: "/home/nightlies/roms/e-os/a10/{{ target_model }}/"
-
 # manifests
-git_repo_main_manifests: "https://gitlab.e.foundation/e/os/releases.git"
-REPOBRANCH: "{{ git_repo_main_branch }}"
 git_repo_local_manifests: "https://code.binbash.rocks:8443/MVA-VoLTE/local_manifests.git"
 git_repo_local_manifests_branch: "eos-q"
 
-# build signing
-sign_build: true
-keysdir: '/home/androidsource/do-not-touch/KEYS/{{ android_shortversion }}_{{ target_model }}'
-
 # extendrom stuff
 use_extendrom: "true"
-eos_enable_gestures: "true"
 extendrom_package_list: "Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
 
-# ccache
-USE_CCACHE: 1
-CCACHE_DIR: /ssd/ccache/jenkins/android-10
-
 # notification vars
-ota_hint: |-
-  ***OTA Update:*** supported
+#device_cl: |-
+#  ***{{ target_model_full | replace("-","\-") | replace("_","\_") }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace(".","\.") }}***
 
-device_cl: |-
-  ***{{ target_model_full | replace("-","\-") | replace("_","\_") }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace(".","\.") }}***
+#kernel_cl: |-
+#  \- Kernel: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_kernel_samsung_exynos7870/commits/branch/android-10.0)
 
-rom_cl: |-
-  ***Changes:***
-  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ git_repo_main_branch }})
+#dtree_cl: |-
+#  \- Device tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_j5y17lte/commits/branch/eos-q)
 
-kernel_cl: |-
-  \- Kernel: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_kernel_samsung_exynos7870/commits/branch/android-10.0)
+#cdtree_cl: |-
+#  \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
 
-dtree_cl: |-
-  \- Device tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_j5y17lte/commits/branch/eos-q)
-
-cdtree_cl: |-
-  \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
-
-dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/a10/{{ target_model }})
+#dl_links: |-
+#  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/a10/{{ target_model }})
 
 # custom release tools
 #custom_release_script: true
