@@ -9,7 +9,7 @@ git_repo_local_manifests: "https://github.com/sfX-android/android_local_manifest
 # extendrom stuff
 use_extendrom: "true"
 eos_enable_gestures: "false"
-extendrom_package_list: "noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+extendrom_package_list: "Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
 
 # notification vars
 kernel_cl: |-
