@@ -22,16 +22,12 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     # this will be a user build!
     lunch lineage_hotdog-user
 
-    # enable & use extendrom
-    export ENABLE_EXTENDROM=true
-    export EOS_GESTURES="{{ eos_enable_gestures }}"
+    export ENABLE_EXTENDROM={{ use_extendrom }}
+    export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
     
     if [ "{{ PREROOT_BOOT }}" == "true" ];then
         export MAGISK_TARGET_ARCH=arm64
         export EXTENDROM_PREROOT_BOOT=true
-        export EXTENDROM_PACKAGES="noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky SignMagisk"        
-    else
-        export EXTENDROM_PACKAGES="noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
     fi
     
     # all the extendrom MAGIC!!
