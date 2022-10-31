@@ -1,0 +1,10 @@
+---
+
+- name: "Manual adjustments"
+  shell: "{{ item }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  loop:
+    - cd frameworks/base && git revert e4ca118f0f37feaa3f687585c9784015fa81005e # https://review.lineageos.org/c/LineageOS/android_frameworks_base/+/334011
+    - cd frameworks/base && git revert c0b699da4f5dfd70229954f19c135c4c9d71d400 # https://github.com/LineageOS/android_frameworks_base/commit/c0b699da4f5dfd
