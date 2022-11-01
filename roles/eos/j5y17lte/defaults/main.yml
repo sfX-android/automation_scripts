@@ -18,11 +18,11 @@ extendrom_package_list: "Lawnchair-latest F-Droid F-DroidPrivilegedExtension add
 kernel_cl: |-
   \- Kernel: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_kernel_samsung_exynos7870/commits/branch/android-10.0)
 
-#dtree_cl: |-
-#  \- Device tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_j5y17lte/commits/branch/eos-q)
+dtree_cl: |-
+  \- Device tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_j5y17lte/commits/branch/eos-q)
 
-#cdtree_cl: |-
-#  \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
+cdtree_cl: |-
+  \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
 
 #dl_links: |-
 #  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/a10/{{ target_model }})
