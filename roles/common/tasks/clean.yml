@@ -35,6 +35,7 @@
     - hardware/qcom/sm8150
     - hardware/qcom/sm8150p
     - hardware/qcom-caf
+    - hardware/qcom/wlan
     - hardware/qcom/Android.mk    
     - kernel/
     - packages/apps/Trebuchet
