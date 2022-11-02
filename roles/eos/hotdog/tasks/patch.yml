@@ -10,13 +10,19 @@
     url: https://raw.githubusercontent.com/Wunderment/build_tasks/master/source/sign_target_files_apks.py-17.1.patch
     dest: "{{ SRCPATH }}/sign_target_files_apks.patch"
 
-- name: "Apply Wunderment patches"
+- name: "Fetch python v3 patch"
+  get_url:
+    url: https://gitlab.e.foundation/e/os/android_build/-/merge_requests/34.patch
+    dest: "{{ SRCPATH }}/pythonv3builderror.patch"
+
+- name: "Apply patches"
   shell: "patch -p0 < '{{ item }}'"
   args:
     chdir: "{{ SRCPATH }}/build/make/tools/releasetools"
   loop:
     - "../../../../sign_target_files_apks.patch"
     - "../../../../add_img_to_target_files.patch"
+    - "../../../../pythonv3builderror.patch"
     
 - name: "Apply signing fixes on top of the Wunderment patches"
   shell: "git apply device/oneplus/hotdog/patches/{{ item }}"
