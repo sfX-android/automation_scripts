@@ -1,7 +1,7 @@
 ---
 
 - name: "PIE: applying misc patches"
-  shell: "source ~/.bashrc > /dev/null && source build/envsetup.sh > /dev/null && echo 'applying misc patch:' && {{ item }}"
+  shell: "source build/envsetup.sh > /dev/null && echo 'applying misc patch:' && {{ item }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
@@ -23,7 +23,7 @@
       topic:P_asb_2022-10
 
 - name: "Create repopick list (required on eOS to find path names)"
-  shell: "/usr/bin/python3.6 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 -Q '{{ sec_patch_topics }}' | grep --color=never https | col | dos2unix "
+  shell: "/usr/bin/python3 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 -Q '{{ sec_patch_topics }}' | grep --color=never https | col | dos2unix "
   args:
     chdir: "{{ SRCPATH }}"
   register: picklist
