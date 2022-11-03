@@ -8,7 +8,7 @@
 - name: "Cleanup old build log"
   file:
     path: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
-     state: absent
+    state: absent
 
 - name: "Basic Clean-Up (props, images)"
   shell: "find out/ -name {{ item }} -delete || true"
