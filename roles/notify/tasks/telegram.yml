@@ -27,6 +27,7 @@
     path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
   register: logfile
   connection: local
+  no_log: true
 
 - name: "Compress log"
   community.general.archive:
