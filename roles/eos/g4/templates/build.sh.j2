@@ -3,6 +3,14 @@
 # be strict on failures
 set -e
 
+# set python env - if needed
+# 1. sudo apt-get install python2 virtualenv python2-pip-whl python2-setuptools-whl
+# 2. mkdir -p ~/.venv/python2
+# 3. virtualenv --python=$(which python2) ~/.venv/python2
+case {{ git_repo_main_branch }} in
+    *-pie|*-p|lineage-16*) source ~/.venv/python2/bin/activate ;;
+esac
+
 # set required vars
 export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
 export JKZIPDIR="{{ JKZIPDIR }}"
@@ -14,7 +22,7 @@ export EOS_CCACHE_DIR="{{ CCACHE_DIR }}"
 export EOS_BRANCH_NAME="{{ git_repo_main_branch }}"
 export EOS_USE_CCACHE={{ USE_CCACHE }}
 
-# setup build env    
+# setup build env 
 cd {{ SRCPATH }}
 source build/envsetup.sh
 lunch lineage_{{ sub_model }}-userdebug
