@@ -21,6 +21,7 @@
       CCACHE_DIR: {{ CCACHE_DIR | d("N/A") }}
       use_extendrom: {{ use_extendrom | d(false) }}
       extendrom_package_list: {{ extendrom_package_list | d("N/A") }}
+      rempath: {{ rempath | d("N/A") }}
       
       clean_basic: {{ clean_basic | d("N/A") }} | override_clean_basic: {{ override_clean_basic | d("N/A") }}
       clean_out: {{ clean_out | d("N/A") }} | override_clean_out: {{ override_clean_out | d("N/A") }}
