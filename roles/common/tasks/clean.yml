@@ -63,6 +63,14 @@
     - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
   no_log: true
 
+- name: "Clean-Up (cross-version incompatible REPO paths)"
+  shell: >
+      find .repo/project* -type d -name {{ item }} -exec rm -rf {} \;
+  args:
+     chdir: "{{ SRCPATH }}"
+     executable: /bin/bash
+  loop: "{{ prob_repo_paths }}"
+
 - name: "Clean-Up out/"
   file:
     path: "{{ SRCPATH }}/out"
