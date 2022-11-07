@@ -65,4 +65,4 @@
     - resetres.rc != 32   # skipped?
     - resetres.rc != 58   # project not found
     - resetres.rc != 0    # any other error code
-  no_log: true
+  #no_log: true
