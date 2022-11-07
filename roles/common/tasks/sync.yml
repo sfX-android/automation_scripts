@@ -14,13 +14,13 @@
     chdir: "{{ SRCPATH }}"
 
 - name: "Sync"
-  shell: "{{ repo_bin }} sync -c -j{{ max_processes }} --force-sync"
+  shell: "{{ repo_bin }} sync -j{{ max_processes }} --force-sync"
   args:
     chdir: "{{ SRCPATH }}"
   #no_log: true
 
 - name: "Sync LFS"
-  shell: "{{ repo_bin }} forall -j{{ max_processes }} -c 'git lfs pull'"
+  shell: "{{ repo_bin }} forall -j{{ max_processes }} 'git lfs pull'"
   args:
     chdir: "{{ SRCPATH }}"
   ignore_errors: yes
