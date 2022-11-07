@@ -64,9 +64,11 @@
   no_log: true
 
 - name: "Basic Clean-Up (cross-version incompatible REPO paths)"
-  shell: "find .repo/project* -type d -name {{ item }} -exec rm -rf {} \;"
-    args:
-    chdir: "{{ SRCPATH }}"
+  shell: >
+      find .repo/project* -type d -name {{ item }} -exec rm -rf {} \;
+  args:
+     chdir: "{{ SRCPATH }}"
+     executable: /bin/bash
   loop:
     - "libbrillo.git"
 
