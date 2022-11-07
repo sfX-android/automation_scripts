@@ -10,6 +10,12 @@
     path: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
     state: absent
 
+- name: "Cleanup old build log (ansible host)"
+  connection: local
+  file:
+    path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+    state: absent
+
 - name: "Basic Clean-Up (props, images)"
   shell: "find out/ -name {{ item }} -delete || true"
   args:
