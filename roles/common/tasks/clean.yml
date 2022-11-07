@@ -36,6 +36,7 @@
     - build
     - cts
     - device/
+    - external/libbrillo
     - frameworks/av
     - frameworks/ml
     - frameworks/native
@@ -69,6 +70,10 @@
   args:
      chdir: "{{ SRCPATH }}"
      executable: /bin/bash
+  register: clurp
+  failed_when: 
+    - clurp.rc != 0
+    - clurp.rc != 1
   loop: "{{ prob_repo_paths }}"
 
 - name: "Clean-Up out/"
