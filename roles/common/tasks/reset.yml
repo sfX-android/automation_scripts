@@ -10,7 +10,7 @@
   args:
     executable: /bin/bash
   register: manifests
-  #no_log: true
+  no_log: true
 
 - name: Parse manifests
   community.general.xml:
@@ -19,7 +19,7 @@
     content: attribute
   loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
   register: xmlout
-  #no_log: true
+  no_log: true
 
 - name: Parse manifests (removals)
   community.general.xml:
@@ -29,12 +29,13 @@
   failed_when: never is defined
   loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
   register: xmlremovals
-  #no_log: true
+  no_log: true
 
 - name: "Clean old results file"
   file:
     path: "{{ manifest_paths_file }}"
     state: absent
+  no_log: true
 
 - name: Write manifest paths file
   template:
@@ -64,4 +65,4 @@
     - resetres.rc != 32   # skipped?
     - resetres.rc != 58   # project not found
     - resetres.rc != 0    # any other error code
-  #no_log: true
+  no_log: true
