@@ -8,7 +8,7 @@
       Build variables:
       
       Version: {{ MAID_VERSION }}
-      Type: {{ RELEASE_TYPE }}
+      Type: {{ RELEASE_TYPE | d('nightly') }}
       Build server: {{ groups.buildserver[0] }}
       Leech server: {{ groups.downloadserver[0] }}
       
@@ -18,7 +18,7 @@
   shell: "buildiso -p mAid -r /home/{{ vault_buildmaidserver_user }}/mAid_work -t /home/{{ vault_buildmaidserver_user }}/mAid_work/iso -d xz"
   environment:
     MAID_VERSION: "{{ MAID_VERSION }}"
-    MAID_TYPE: "{{ RELEASE_TYPE }}"
+    MAID_TYPE: "{{ RELEASE_TYPE | d('nightly') }}"
     REPO_UPLOAD_PKG_SRV: "{{ groups.downloadserver[0] }}"
     REPO_UPLOAD_PKG_USER: "{{ vault_buildmaidserver_user }}"
     REPO_UPLOAD_PKG_PATH: "/home/nightlies/roms/mAid/.repo/"
