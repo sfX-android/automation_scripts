@@ -1,4 +1,9 @@
 ---
 
 #- include: set_vars.yml
+
+- include: sync.yml
+  become: no
+  
 - include: build.yml
+  become: no
