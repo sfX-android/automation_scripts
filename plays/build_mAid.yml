@@ -1,0 +1,76 @@
+---
+
+- name: "Build mAid"
+  hosts: buildmaidserver
+  gather_facts: true
+
+  tasks:
+    - import_role:
+        name: common
+
+    - debug:
+        var: vault_tg_group_id_failing
+
+    - fail:
+        msg: "boo.. vault_tg_group_id_failing is undefined"
+      when: vault_tg_group_id_failing is undefined
+
+    - name: "set semaphore running indicator"
+      connection: local
+      copy:
+        dest: "{{ semaphore_work_dir }}/.ansible_running"
+        content: |
+          date="{{ ansible_date_time.iso8601 }}"
+          play=build_mAid.yml
+          role="{{ ROM_FLAVOR }}"
+
+    # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
+    - block:
+      - import_role:
+          name: pre
+          
+      - import_role:
+          name: build_mAid
+
+      - import_role:
+          name: release
+        when:
+          - (override_release_build == "undef" and release_build == "true") or (override_release_build == "true")
+
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_automation }}"
+        when: debug_build is not defined or (debug_build is defined and debug_build == "false")
+
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_failing }}"
+        when: debug_build is defined and debug_build == "true"
+
+      - import_role:
+          name: notify
+
+      - name: "remove semaphore running indicator"
+        file:
+          path: "{{ semaphore_work_dir }}/.ansible_running"
+          state: absent
+
+      - import_role:
+          name: post
+
+      # when any of the above fails notify always 
+      rescue:
+        - import_role:
+            name: post
+
+        - set_fact:
+            tg_group_id: "{{ vault_tg_group_id_failing }}"
+
+        - include_role:
+            name: notify
+
+        - fail:
+            msg: "build failure occured. check log."
+
+        - name: "remove semaphore running indicator"
+          file:
+            path: "{{ semaphore_work_dir }}/.ansible_running"
+            state: absent
