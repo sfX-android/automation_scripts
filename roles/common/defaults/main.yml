@@ -68,3 +68,4 @@ prob_repo_paths:
   - "libbrillo.git"
   - "android_device_qcom_sepolicy.git"
   - "android_hardware_qcom_wlan.git"
+  - "perfetto.git"
