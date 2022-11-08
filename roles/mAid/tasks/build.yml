@@ -15,7 +15,7 @@
       __________________________________________________
 
 - name: "Starting mAid build - let the CPUs burn ......"
-  shell: "buildiso -p mAid -r /home/jenkins/mAid_work -t /home/jenkins/mAid_work/iso -d xz"
+  shell: "buildiso -p mAid -r /home/{{ vault_buildmaidserver_user }}/mAid_work -t /home/{{ vault_buildmaidserver_user }}/mAid_work/iso -d xz"
   environment:
     MAID_VERSION: "{{ MAID_VERSION }}"
     MAID_TYPE: "{{ RELEASE_TYPE }}"
