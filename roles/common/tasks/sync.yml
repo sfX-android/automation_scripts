@@ -14,7 +14,7 @@
     chdir: "{{ SRCPATH }}"
 
 - name: "Sync"
-  shell: "{{ repo_bin }} sync -j{{ max_processes }} --force-sync"
+  shell: "{{ repo_bin }} sync -j{{ max_processes }} --force-sync --force-remove-dirty"
   args:
     chdir: "{{ SRCPATH }}"
   #no_log: true
