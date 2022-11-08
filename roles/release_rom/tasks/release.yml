@@ -10,6 +10,7 @@
   when:
     - ROM_FLAVOR != "TWRP"
     - ROM_FLAVOR != "SHRP"
+    - ROM_FLAVOR != "MAID"
 
 - name: "Release RECOVERY for {{ BDEVICE }}"
   shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
@@ -19,3 +20,12 @@
     - "{{ ROMFILE.stdout }}.sha256sum"
   when:
     - ROM_FLAVOR == "TWRP" or ROM_FLAVOR == "SHRP"
+
+- name: "Release mAid v{{ MAID_VERSION }}"
+  shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
+  delegate_to: "{{ groups.buildserver[0] }}"
+  loop:
+    - "{{ ROMFILE.stdout }}"
+    - "{{ ROMFILE.stdout }}.md5"
+  when:
+    - ROM_FLAVOR == "MAID"
