@@ -1,0 +1,10 @@
+---
+
+#MAID_TYPE: "{{ RELEASE_TYPE }}"
+#REPO_UPLOAD_PKG_USER: "{{ vault_buildmaidserver_user }}"
+#REPO_UPLOAD_PKG_PATH: "/home/nightlies/roms/mAid/.repo/"
+#REPO_UPLOAD_ISO_SRV: "{{ REPO_UPLOAD_PKG_SRV }}"
+#REPO_UPLOAD_ISO_USER: "{{ REPO_UPLOAD_PKG_USER }}"
+#REPO_UPLOAD_ISO_PATH: "/home/nightlies/roms/mAid/"
+
+repo_mAid_http: "https://code.binbash.rocks:8443/mAid/build.git"
