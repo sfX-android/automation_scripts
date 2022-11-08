@@ -37,6 +37,7 @@
     - cts
     - device/
     - external/libbrillo
+    - external/perfetto
     - frameworks/av
     - frameworks/ml
     - frameworks/native
