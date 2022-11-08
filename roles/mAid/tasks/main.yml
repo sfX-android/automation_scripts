@@ -1,0 +1,4 @@
+---
+
+- include: set_vars.yml
+#- include: build.yml
