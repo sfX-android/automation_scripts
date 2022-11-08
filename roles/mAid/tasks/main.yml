@@ -1,4 +1,4 @@
 ---
 
-- include: set_vars.yml
-#- include: build.yml
+#- include: set_vars.yml
+- include: build.yml
