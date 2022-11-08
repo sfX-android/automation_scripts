@@ -8,3 +8,4 @@
 #REPO_UPLOAD_ISO_PATH: "/home/nightlies/roms/mAid/"
 
 repo_mAid_http: "https://code.binbash.rocks:8443/mAid/build.git"
+maid_home_path: "build_maid"
