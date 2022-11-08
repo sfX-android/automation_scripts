@@ -1,0 +1,9 @@
+---
+
+- set_fact:
+    MAID_VERSION: ""
+  when: RELEASE_TYPE == "nightly"
+
+- set_fact:
+    MAID_VERSION: "{{ RELEASE_VERSION }}"
+  when: RELEASE_TYPE != "nightly"
