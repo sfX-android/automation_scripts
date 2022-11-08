@@ -1,0 +1,31 @@
+---
+
+- name: "mAid build info"
+  debug:
+    msg: |
+      __________________________________________________
+      
+      Build variables:
+      
+      Version: {{ MAID_VERSION }}
+      Type: {{ RELEASE_TYPE }}
+      Build server: {{ groups.buildserver[0] }}
+      Leech server: {{ groups.downloadserver[0] }}
+      
+      __________________________________________________
+
+- name: "Starting mAid build - let the CPUs burn ......"
+  shell: ""
+  environment:
+    MAID_VERSION: "{{ MAID_VERSION }}"
+    MAID_TYPE: "{{ RELEASE_TYPE }}"
+    REPO_UPLOAD_PKG_SRV: "{{ groups.downloadserver[0] }}"
+    REPO_UPLOAD_PKG_USER: "{{ vault_buildmaidserver_user }}"
+    REPO_UPLOAD_PKG_PATH: "/home/nightlies/roms/mAid/.repo/"
+    REPO_UPLOAD_ISO_SRV: "{{ REPO_UPLOAD_PKG_SRV }}"
+    REPO_UPLOAD_ISO_USER: "{{ REPO_UPLOAD_PKG_USER }}"
+    REPO_UPLOAD_ISO_PATH: "/home/nightlies/roms/mAid/"
+  args:
+    executable: /bin/bash
+    chdir: build_maid
+  delegate_to: "{{ groups.buildserver[0] }}"
