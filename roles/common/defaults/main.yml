@@ -69,3 +69,4 @@ prob_repo_paths:
   - "android_device_qcom_sepolicy.git"
   - "android_hardware_qcom_wlan.git"
   - "perfetto.git"
+  - "android_external_perfetto.git"
