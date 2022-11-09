@@ -67,7 +67,7 @@
 
 - name: "Clean-Up (cross-version incompatible REPO paths)"
   shell: >
-      find .repo/project* -type d -name {{ item }} -exec rm -rf {} \;
+      find .repo/project* -type d -name {{ item }}.git -exec rm -rf {} \;
   args:
      chdir: "{{ SRCPATH }}"
      executable: /bin/bash
