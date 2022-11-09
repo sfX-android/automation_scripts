@@ -13,6 +13,7 @@ tg_success: |
         {{ hash.stat.checksum | default("error getting hash") }}
         
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
+
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last build failed\!
         
