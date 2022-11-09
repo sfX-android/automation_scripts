@@ -65,18 +65,4 @@ override_sync: 'undef'
 
 # cross build: problematic repos paths
 prob_repo_paths:
-  - "libbrillo.git"
-#  - "android_device_qcom_sepolicy.git"
-#  - "android_hardware_qcom_wlan.git"
-#  - "perfetto.git"
-#  - "android_external_perfetto.git"
-#  - "android_build_blueprint.git"
-#  - "ImageMagick.git"
-#  - "curl.git"
-#  - "kati.git"
-#  - "dalvik.git"
-#  - "elfutils.git"
-#  - "dng_sdk.git"
-#  - "f2fs-tools.git"
-#  - "expat.git"
-#  - "fsck_msdos.git"
+  - "libbrillo"
