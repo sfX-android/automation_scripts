@@ -1,0 +1,20 @@
+---
+
+tg_success: |
+        {{ ICON_GOOD }} ***New build has finished\!***
+        
+        mAid v{{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
+        
+        Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/branch/{{ MAID_VERSION | d('nightly') }})
+        
+        Download: [{{ MAID_VERSION | d('nightly') }}]({{ leech_server }}/mAid/)
+        
+        ***MD5 hash:***
+        {{ hash.stat.checksum | default("error getting hash") }}
+        
+        This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
+tg_failed: |
+        {{ ICON_BAD }} ***ERROR:*** Last build failed\!
+        
+        \- mAid v{{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
+        \- Build id: _{{ BUILDIDENT | replace("-","\-") }}_
