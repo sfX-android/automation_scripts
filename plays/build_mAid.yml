@@ -32,8 +32,9 @@
       - import_role:
           name: pre
           
-      - import_role:
+      - include_role:
           name: build_mAid
+          public: true
 
       - import_role:
           name: release
