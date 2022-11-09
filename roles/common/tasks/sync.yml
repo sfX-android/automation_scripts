@@ -17,7 +17,7 @@
   shell: "{{ repo_bin }} sync -j{{ max_processes }} --force-sync --force-remove-dirty"
   args:
     chdir: "{{ SRCPATH }}"
-  #no_log: true
+  no_log: true
 
 - name: "Sync LFS"
   shell: "{{ repo_bin }} forall -j{{ max_processes }} 'git lfs pull'"
