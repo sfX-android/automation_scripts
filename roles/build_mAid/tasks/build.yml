@@ -11,6 +11,7 @@
       Type: {{ RELEASE_TYPE | d('nightly') }}
       Build server: {{ groups.buildserver[0] }}
       Leech server: {{ groups.downloadserver[0] }}
+      private notify: {{ debug_build }}
       
       __________________________________________________
 
@@ -19,10 +20,10 @@
   environment:
     MAID_VERSION: "{{ MAID_VERSION | d('') }}"
     MAID_TYPE: "{{ RELEASE_TYPE | d('nightly') }}"
-    REPO_UPLOAD_PKG_SRV: "{{ groups.downloadserver[0] }}"
+    REPO_UPLOAD_PKG_SRV: "{% if debug_build != 'true' %}{{ REPO_UPLOAD_PKG_SRV }}{% else %}''{% endif %}"
     REPO_UPLOAD_PKG_USER: "{{ vault_buildmaidserver_user }}"
     REPO_UPLOAD_PKG_PATH: "/home/nightlies/roms/mAid/.repo/"
-    REPO_UPLOAD_ISO_SRV: "$REPO_UPLOAD_PKG_SRV"
+    REPO_UPLOAD_ISO_SRV: "{% if debug_build != 'true' %}{{ REPO_UPLOAD_ISO_SRV }}{% else %}''{% endif %}"
     REPO_UPLOAD_ISO_USER: "{{ vault_buildmaidserver_user }}"
     REPO_UPLOAD_ISO_PATH: "/home/nightlies/roms/mAid/"
   args:
