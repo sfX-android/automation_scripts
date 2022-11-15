@@ -29,11 +29,11 @@
     MAID_VERSION: "{{ MAID_VERSION | d('') }}"
     MAID_TYPE: "{{ RELEASE_TYPE | d('nightly') }}"
     REPO_UPLOAD_PKG_SRV: >-
-        {% if not release_build_def %}{{ REPO_UPLOAD_PKG_SRV }}{% endif %}
+        {% if release_build_def %}{{ REPO_UPLOAD_PKG_SRV }}{% endif %}
     REPO_UPLOAD_PKG_USER: "{{ vault_buildmaidserver_user }}"
     REPO_UPLOAD_PKG_PATH: "/home/nightlies/roms/mAid/.repo/"
     REPO_UPLOAD_ISO_SRV: >-
-        {% if not release_build_def %}{{ REPO_UPLOAD_ISO_SRV }}{% endif %}
+        {% if release_build_def %}{{ REPO_UPLOAD_ISO_SRV }}{% endif %}
     REPO_UPLOAD_ISO_USER: "{{ vault_buildmaidserver_user }}"
     REPO_UPLOAD_ISO_PATH: "/home/nightlies/roms/mAid/"
   args:
