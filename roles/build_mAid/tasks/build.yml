@@ -12,6 +12,7 @@
       Build server: {{ groups.buildserver[0] }}
       Leech server: {{ groups.downloadserver[0] }}
       private notify: {{ debug_build }}
+      release build & packages: {{ release_build }}
       
       __________________________________________________
 
