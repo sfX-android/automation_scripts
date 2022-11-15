@@ -8,7 +8,6 @@
     MAID_VERSION: "{{ RELEASE_VERSION }}"
   when: RELEASE_TYPE != "nightly"
 
-- add_host:
-    name: "{{ inventory_hostname }}"
-    release_build: >-
+- set_fact:
+    release_build_def: >-
         {% if override_release_build is defined %}{{ override_release_build }}{% else %}{{ release_build }}{% endif %}
