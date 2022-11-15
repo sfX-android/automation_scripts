@@ -36,11 +36,6 @@
           name: build_mAid
           public: true
 
-      - import_role:
-          name: release
-        when:
-          - (override_release_build == "undef" and release_build == "true") or (override_release_build == "true")
-
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
         when: debug_build is not defined or (debug_build is defined and debug_build == "false")
