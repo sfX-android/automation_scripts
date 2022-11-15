@@ -23,8 +23,8 @@
       -r {{ maid_build_path }}/mAid_work \
       -t {{ maid_build_path }}/mAid_work/iso \
       -d xz \
-      2> /tmp/build_{{ ROM_FLAVOR }}_error.log \
-      1> /tmp/build_{{ ROM_FLAVOR }}_stdout.log
+      > >(tee /tmp/build_MAID_stdout.log) \
+      2> >(tee /tmp/build_MAID_error.log >&2)
   environment:
     MAID_VERSION: "{{ MAID_VERSION | d('') }}"
     MAID_TYPE: "{{ RELEASE_TYPE | d('nightly') }}"
