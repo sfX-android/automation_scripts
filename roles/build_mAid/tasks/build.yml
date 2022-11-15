@@ -17,12 +17,12 @@
       __________________________________________________
 
 - name: "Starting mAid build - let the CPUs burn ......"
-  shell: >-
-    buildiso -p mAid
-      -r {{ maid_build_path }}/mAid_work 
-      -t {{ maid_build_path }}/mAid_work/iso
-      -d xz
-      2> /tmp/build_{{ ROM_FLAVOR }}_error.log
+  shell: >
+    buildiso -p mAid \
+      -r {{ maid_build_path }}/mAid_work \
+      -t {{ maid_build_path }}/mAid_work/iso \
+      -d xz \
+      2> /tmp/build_{{ ROM_FLAVOR }}_error.log \
       1> /tmp/build_{{ ROM_FLAVOR }}_stdout.log
   environment:
     MAID_VERSION: "{{ MAID_VERSION | d('') }}"
