@@ -23,7 +23,7 @@
       -r {{ maid_build_path }}/mAid_work \
       -t {{ maid_build_path }}/mAid_work/iso \
       -d xz \
-      > >(tee /tmp/build_MAID_stdout.log) \
+      > /tmp/build_MAID_stdout.log \
       2> >(tee /tmp/build_MAID_error.log >&2)
   environment:
     MAID_VERSION: "{{ MAID_VERSION | d('') }}"
