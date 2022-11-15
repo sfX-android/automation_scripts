@@ -10,4 +10,4 @@
 
 - set_fact:
     release_build_def: >-
-        {% if override_release_build is defined %}{{ override_release_build | bool }}{% else %}{{ release_build | bool }}{% endif %}
+        {% if override_release_build is defined and override_release_build != "" %}{{ override_release_build | bool }}{% else %}{{ release_build | bool }}{% endif %}
