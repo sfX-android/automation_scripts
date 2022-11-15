@@ -66,10 +66,10 @@
         - include_role:
             name: notify
 
-        - fail:
-            msg: "build failure occured. check log."
-
         - name: "remove semaphore running indicator"
           file:
             path: "{{ semaphore_work_dir }}/.ansible_running"
             state: absent
+
+        - fail:
+            msg: "build failure occured. check log."
