@@ -1,0 +1,8 @@
+---
+
+- name: "Get current build hash"
+  shell: >
+    find /var/tmp/mAid_work/iso/ -type f -name {{ ROM_FLAVOR }}_v{{ MAID_VERSION | d('nightly') }}*.iso.md5 -exec cat {} \;
+  args:
+    executable: /bin/bash
+  register: md5hash
