@@ -1,13 +1,16 @@
 ---
 
+branch_tag: >
+        {% if MAID_VERSION is undefined or MAID_VERSION == "nightly" %}nightly{% else %}v{{ MAID_VERSION }}{% endif %}
+
 tg_success: |
         {{ ICON_GOOD }} ***New build has finished\!***
         
         mAid v{{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         
-        Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/branch/{{ MAID_VERSION | d('nightly') }})
+        Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/branch/{{ branch_tag }})
         
-        Download: [{{ MAID_VERSION | d('nightly') }}]({{ leech_server }}/mAid/)
+        Download: [ISO]({{ leech_server }}/mAid/)
         
         ***MD5 hash:***
         {{ hash.stat.checksum | default("error getting hash") }}
