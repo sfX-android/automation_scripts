@@ -21,11 +21,3 @@
   when:
     - ROM_FLAVOR == "TWRP" or ROM_FLAVOR == "SHRP"
 
-- name: "Release mAid v{{ MAID_VERSION }}"
-  shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
-  delegate_to: "{{ groups.buildserver[0] }}"
-  loop:
-    - "{{ ROMFILE.stdout }}"
-    - "{{ ROMFILE.stdout }}.md5"
-  when:
-    - ROM_FLAVOR == "MAID"
