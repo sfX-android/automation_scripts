@@ -6,14 +6,13 @@ commit_uri_id: >
 tg_success: |
         {{ ICON_GOOD }} ***New build has finished\!***
         
-        mAid v{{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
+        ***mAid v{{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}***
         
-        Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/{{ commit_uri_id }})
-        
-        Download: [ISO]({{ leech_server }}/mAid/)
+        \- Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/{{ commit_uri_id }})
+        \- Download: [ISO]({{ leech_server }}/mAid/)
         
         ***MD5 hash:***
-        {{ hash.stat.checksum | default("error getting hash") }}
+        {{ md5hash | default("error getting hash") }}
         
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
