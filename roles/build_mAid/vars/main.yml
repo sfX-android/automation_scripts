@@ -1,5 +1,7 @@
 ---
 
+release_build: "{{ override_release_build | d(release_build) }}"
+
 commit_uri_id: >
         {% if MAID_VERSION is undefined or MAID_VERSION == "nightly" %}branch/nightly{% else %}tag/v{{ MAID_VERSION }}{% endif %}
 
