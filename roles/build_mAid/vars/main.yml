@@ -12,7 +12,7 @@ tg_success: |
         \- Download: [ISO]({{ leech_server }}/mAid/)
         
         ***MD5 hash:***
-        {{ md5hash | default("error getting hash") }}
+        {{ md5hash.stdout | default("error getting hash") }}
         
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
