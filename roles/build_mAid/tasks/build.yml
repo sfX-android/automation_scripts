@@ -19,6 +19,7 @@
 - name: "Starting mAid build - let the CPUs burn ......"
   shell: >
     buildiso -p mAid \
+      {% if skip_clean_build %}-c{% endif %} \
       -r {{ maid_build_path }}/mAid_work \
       -t {{ maid_build_path }}/mAid_work/iso \
       -d xz \
