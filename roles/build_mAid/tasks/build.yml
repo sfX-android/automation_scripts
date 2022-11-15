@@ -39,6 +39,7 @@
   args:
     executable: /bin/bash
     chdir: build_maid
+  register: buildresult
   delegate_to: "{{ groups.buildserver[0] }}"
 
 - name: Fetch build logs
