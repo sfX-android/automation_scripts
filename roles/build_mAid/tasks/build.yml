@@ -1,5 +1,9 @@
 ---
 
+- set_fact:
+    release_build: >-
+        {% if override_release_build is defined %}{{ override_release_build }}{% else %}{{ release_build }}{% endif %}
+
 - name: "mAid build info"
   debug:
     msg: |
