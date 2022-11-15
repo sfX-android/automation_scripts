@@ -9,5 +9,6 @@
   when: RELEASE_TYPE != "nightly"
 
 - add_host:
+    name: "{{ inventory_hostname }}"
     release_build: >-
         {% if override_release_build is defined %}{{ override_release_build }}{% else %}{{ release_build }}{% endif %}
