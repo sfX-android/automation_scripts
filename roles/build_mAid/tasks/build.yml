@@ -38,3 +38,11 @@
     executable: /bin/bash
     chdir: build_maid
   delegate_to: "{{ groups.buildserver[0] }}"
+
+- name: Fetch build logs
+  fetch:
+    src: "{{ item }}"
+    dest: /tmp/
+  loop:
+    - "/tmp/build_{{ ROM_FLAVOR }}_error.log"
+    - "/tmp/build_{{ ROM_FLAVOR }}_stdout.log"
