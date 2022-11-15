@@ -2,7 +2,7 @@
 
 - name: "Get current build hash"
   shell: >
-    find /var/tmp/mAid_work/iso/ -type f -name *{{ MAID_VERSION | d('nightly') }}*.iso.md5 -exec cat {} \;
+    find /var/tmp/mAid_work/iso/ -type f -name *{{ MAID_VERSION | d('nightly') }}*.iso.md5 -exec cat {} \; | cut -d " " -f1
   args:
     executable: /bin/bash
   register: md5hash
