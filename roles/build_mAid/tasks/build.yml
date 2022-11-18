@@ -17,10 +17,8 @@
       __________________________________________________
 
 - name: "clean-up"
-  become: yes
-  file:
-    path: "{{ maid_build_path }}/mAid_work"
-    state: absent
+  shell: "sudo rm -rf {{ maid_build_path }}/mAid_work"
+  ignore_errors: yes
   when: not skip_clean_build | bool
   delegate_to: "{{ groups.buildserver[0] }}"
 
