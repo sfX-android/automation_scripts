@@ -22,7 +22,16 @@
   when: not skip_clean_build | bool
   delegate_to: "{{ groups.buildserver[0] }}"
 
-- name: "Starting mAid build - let the CPUs burn ......"
+- name: "Starting mAid build"
+  debug:
+    msg: |
+    __________________________________________________
+    
+    Starting a mAid build - let the CPUs burn ......
+    
+    __________________________________________________
+
+- name: "mAid build process"
   shell: >
     buildiso -p mAid \
       {% if skip_clean_build | bool %}-c{% endif %} \
