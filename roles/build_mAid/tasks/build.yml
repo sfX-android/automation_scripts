@@ -25,11 +25,11 @@
 - name: "Starting mAid build"
   debug:
     msg: |
-    __________________________________________________
-    
-    Starting a mAid build - let the CPUs burn ......
-    
-    __________________________________________________
+      __________________________________________________
+
+      Starting a mAid build - let the CPUs burn ......
+
+      __________________________________________________
 
 - name: "mAid build process"
   shell: >
