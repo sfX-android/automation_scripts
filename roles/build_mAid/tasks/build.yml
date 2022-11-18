@@ -21,6 +21,7 @@
     path: "{{ maid_build_path }}/mAid_work"
     state: absent
   when: not skip_clean_build | bool
+  delegate_to: "{{ groups.buildserver[0] }}"
 
 - name: "Starting mAid build - let the CPUs burn ......"
   shell: >
