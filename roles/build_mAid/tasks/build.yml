@@ -16,6 +16,12 @@
       
       __________________________________________________
 
+- name: "clean-up"
+  file:
+    path: "{{ maid_build_path }}/mAid_work"
+    state: absent
+  when: not skip_clean_build | bool
+
 - name: "Starting mAid build - let the CPUs burn ......"
   shell: >
     buildiso -p mAid \
