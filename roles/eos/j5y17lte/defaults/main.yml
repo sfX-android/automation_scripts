@@ -9,7 +9,7 @@ git_repo_local_manifests_branch: "eos-q"
 
 # extendrom stuff
 use_extendrom: "true"
-extendrom_package_list: "Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky"
+extendrom_package_list: "Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky noEOSCamera opencamera_j5_latest"
 
 # notification vars
 #device_cl: |-
