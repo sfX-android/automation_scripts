@@ -1,7 +1,7 @@
 ---
 
 - name: "Manage a service"
-  hosts: buildserver
+  hosts: "{{ service_host }}"
   gather_facts: true
       
   tasks:
@@ -11,4 +11,4 @@
     service:
       name: "{{ servicename }}"
       state: "{{ servicename_state }}"
-    delegate_to: "{{ service_host }}"
+    #delegate_to: "{{ service_host }}"
