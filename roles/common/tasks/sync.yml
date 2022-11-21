@@ -25,7 +25,7 @@
     chdir: "{{ SRCPATH }}"
   #ignore_errors: yes
   when: ROM_FLAVOR == 'eos' or (sync_lfs is defined and sync_lfs == 'true')
-  no_log: true
+  #no_log: true
 
 - name: "Ensure keys dir is set correctly"
   shell: "KEYS_DIR='{{ SRC_KEYSDIR }}' external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR | regex_replace('e-os','eos') }} {{ android_shortversion }}"
