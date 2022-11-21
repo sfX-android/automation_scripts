@@ -23,7 +23,7 @@
   shell: "{{ repo_bin }} forall -j{{ max_processes }} 'git lfs pull'"
   args:
     chdir: "{{ SRCPATH }}"
-  ignore_errors: yes
+  #ignore_errors: yes
   when: ROM_FLAVOR == 'eos' or (sync_lfs is defined and sync_lfs == 'true')
   no_log: true
 
