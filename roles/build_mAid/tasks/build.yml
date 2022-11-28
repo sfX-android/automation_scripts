@@ -13,6 +13,7 @@
       Leech server: {{ groups.downloadserver[0] }}
       private notify: {{ debug_build }}
       release build & packages: {{ release_build_def }} (default: {{ release_build }})
+      Selected mAid Kernel: {{ maid_kernel }}
       
       __________________________________________________
 
