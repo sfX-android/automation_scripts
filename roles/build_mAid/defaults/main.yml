@@ -13,3 +13,6 @@ REPO_UPLOAD_ISO_SRV: "{{ REPO_UPLOAD_PKG_SRV }}"
 repo_mAid_http: "https://code.binbash.rocks:8443/mAid/build.git"
 maid_home_path: "build_maid"
 maid_build_path: "/var/tmp"
+
+# default mAid kernel if not specified in Semaphore
+maid_kernel: linux510
