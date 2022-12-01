@@ -15,4 +15,4 @@ maid_home_path: "build_maid"
 maid_build_path: "/var/tmp"
 
 # default mAid kernel if not specified in Semaphore
-maid_kernel: linux510
+maid_kernel: linux515
