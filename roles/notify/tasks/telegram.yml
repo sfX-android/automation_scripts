@@ -34,7 +34,7 @@
     path: "/tmp/build_{{ ROM_FLAVOR }}_error.log"
   register: logfile
   connection: local
-  no_log: true
+  #no_log: true
   when: ROM_FLAVOR == "MAID"
 
 - name: "Compress log"
