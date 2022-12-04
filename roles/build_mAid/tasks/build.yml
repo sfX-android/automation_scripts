@@ -1,4 +1,4 @@
----
+2---
 
 - name: "mAid build info"
   debug:
@@ -71,3 +71,8 @@
   loop:
     - "/tmp/build_{{ ROM_FLAVOR }}_error.log"
     - "/tmp/build_{{ ROM_FLAVOR }}_stdout.log"
+
+- fail:
+    msg: "Build FAILED! Check log for details: /tmp/build_{{ ROM_FLAVOR }}_error.log"
+  when:
+    - buildresult.rc is undefined or buildresult.rc != 0
