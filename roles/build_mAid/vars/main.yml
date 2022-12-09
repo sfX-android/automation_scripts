@@ -1,7 +1,7 @@
 ---
 
 commit_uri_id: >
-        {% if MAID_VERSION is undefined or MAID_VERSION == "nightly" %}branch/nightly{% else %}tag/v{{ MAID_VERSION }}{% endif %}
+        {% if RELEASE_TYPE == "nightly" %}branch/nightly{% else %}tag/v{{ MAID_VERSION }}{% endif %}
 
 tg_success: |
         {{ ICON_GOOD }} ***New build has finished\!***
@@ -9,7 +9,7 @@ tg_success: |
         ***mAid v{{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }} \- {{ RELEASE_TYPE | d('nightly') | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}***
         
         \- Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/{{ commit_uri_id }})
-        \- Download: [ISO]({{ leech_server }}/mAid/)
+        \- Download: [ISO]({{ dl_link }})
         
         ***MD5 hash:***
         {{ md5hash.stdout | default("error getting hash") }}
