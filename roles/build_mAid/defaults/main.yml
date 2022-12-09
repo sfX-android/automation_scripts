@@ -9,6 +9,7 @@
 
 REPO_UPLOAD_PKG_SRV: "{{ groups.downloadserver[0] }}"
 REPO_UPLOAD_ISO_SRV: "{{ REPO_UPLOAD_PKG_SRV }}"
+RELEASE_TYPE: nightly
 
 repo_mAid_http: "https://code.binbash.rocks:8443/mAid/build.git"
 maid_home_path: "build_maid"
