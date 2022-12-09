@@ -2,11 +2,13 @@
 
 - set_fact:
     MAID_VERSION: ""
-  when: RELEASE_TYPE == "nightly"
+  when: RELEASE_TYPE is undefined or RELEASE_TYPE == "nightly"
 
 - set_fact:
     MAID_VERSION: "{{ RELEASE_VERSION }}"
-  when: RELEASE_TYPE != "nightly"
+  when: 
+    - RELEASE_TYPE != "nightly"
+    - RELEASE_TYPE is defined
 
 - set_fact:
     release_build_def: >-
