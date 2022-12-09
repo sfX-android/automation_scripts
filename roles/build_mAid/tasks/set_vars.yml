@@ -14,3 +14,7 @@
         {% if override_release_build is defined and override_release_build != "undef" %}{{ override_release_build | bool }}{% else %}{{ release_build | bool }}{% endif %}
     release_packages_def: >-
         {% if override_release_packages is defined and override_release_packages != "undef" %}{{ override_release_packages | bool }}{% else %}{{ release_packages | bool }}{% endif %}
+
+- set_fact:
+    dl_link: >-
+        {% if RELEASE_TYPE == "nightly" %}{{ leech_server }}/mAid/{% else %}{{ leech_server }}/mAid/stable{% endif %}
