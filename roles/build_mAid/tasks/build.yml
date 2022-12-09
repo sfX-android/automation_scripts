@@ -13,14 +13,11 @@
       Leech server: {{ groups.downloadserver[0] }}
       private notify: {{ debug_build }}
       
-      release ISO: >{{ override_release_build }}< {{ release_build_def }} (default: {{ release_build }})
+      release ISO: {{ release_build_def }} (default: {{ release_build }})
       release packages: {{ release_packages_def }} (default: {{ release_packages }})
       Selected mAid Kernel: {{ maid_kernel }}
       
       __________________________________________________
-
-- fail:
-    msg: boo
 
 - name: "clean-up"
   shell: "sudo rm -rf {{ maid_build_path }}/mAid_work"
