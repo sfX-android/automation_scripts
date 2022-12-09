@@ -11,7 +11,7 @@
       Type: {{ RELEASE_TYPE | d('nightly') }}
       Build server: {{ groups.buildserver[0] }}
       Leech server: {{ groups.downloadserver[0] }}
-      private notify: {{ debug_build | d('false') }}
+      private notify: {{ debug_build }}
       
       release ISO: {{ release_build_def }} (default: {{ release_build }})
       release packages: {{ release_packages_def }} (default: {{ release_packages }})
