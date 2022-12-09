@@ -19,6 +19,9 @@
       
       __________________________________________________
 
+- fail:
+    msg: boo
+    
 - name: "clean-up"
   shell: "sudo rm -rf {{ maid_build_path }}/mAid_work"
   ignore_errors: yes
