@@ -26,7 +26,10 @@ device_cl: |-
 
 rom_cl: |-
   ***Changes:***
-  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ e_release_tag }})
+  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases)
+
+# unfortunately the foundation is not very consistent here. sometimes they even tag a release wrong so we switched to just the releases page above instead
+#  \- e OS: [Changelog](https://gitlab.e.foundation/e/os/releases/-/releases/{{ e_release_tag }})
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/{{ android_shortversion }}/{{ target_model }})
