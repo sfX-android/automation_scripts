@@ -1,6 +1,6 @@
 ---
 
-- name: "Check for parallel unning jobs"
+- name: "Check for parallel running jobs"
   shell: >-
     find {{ semaphore_lock_dir }} | grep -v "{{ semaphore_runfile }}" | wc -l
   register: run_count
