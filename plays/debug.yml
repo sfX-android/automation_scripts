@@ -31,7 +31,7 @@
          var: SRCPATH
   
     - set_fact:
-        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_version }}.ansible_running"
+        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ semaphore_vars.target_version }}.ansible_running"
 
     - name: "set semaphore running indicator"
       connection: local
