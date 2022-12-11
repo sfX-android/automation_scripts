@@ -25,10 +25,13 @@
         msg: "boo.. vault_tg_group_id_failing is undefined"
       when: vault_tg_group_id_failing is undefined
 
+    - set_fact:
+        semaphore_runfile: "{{ semaphore_work_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ target_version }}.ansible_running"
+
     - name: "set semaphore running indicator"
       connection: local
       copy:
-        dest: "{{ semaphore_work_dir }}/.ansible_running"
+        dest: "{{ semaphore_runfile }}"
         content: |
           date="{{ ansible_date_time.iso8601 }}"
           play=build.yml
@@ -68,7 +71,7 @@
 
       - name: "remove semaphore running indicator"
         file:
-          path: "{{ semaphore_work_dir }}/.ansible_running"
+          path: "{{ semaphore_runfile }}"
           state: absent
 
       - import_role:
@@ -90,5 +93,5 @@
 
         - name: "remove semaphore running indicator"
           file:
-            path: "{{ semaphore_work_dir }}/.ansible_running"
+            path: "{{ semaphore_runfile }}"
             state: absent
