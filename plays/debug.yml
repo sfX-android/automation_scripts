@@ -21,8 +21,6 @@
         public: yes
       when: ROM_FLAVOR == "graphene"
 
-
-
     - debug:
          var: git_repo_main_manifests
 
