@@ -6,6 +6,7 @@ REPOBRANCH: undefined
 
 # semaphore working/tmp dir
 semaphore_work_dir: /opt/scs-work
+semaphore_lock_dir: "{{ semaphore_work_dir }}/run"
 
 # ensure we have a normalized & clean version tag (e.g. removing slashes from a git tag etc)
 parsed_target_version: "{{ git_repo_main_branch | regex_replace('.*/','') | regex_replace('^v','') }}"
