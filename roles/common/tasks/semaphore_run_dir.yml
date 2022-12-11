@@ -1,0 +1,7 @@
+---
+
+- name: "Check/Create semaphore run dir"
+  file:
+    path: "{{ semaphore_lock_dir }}"
+    state: directory
+    mode: 0700
