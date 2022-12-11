@@ -8,8 +8,8 @@
     - debug:
         var: semaphore_vars
         
-    - debug:
-        var: ansible_facts
+    #- debug:
+    #    var: ansible_facts
 
     - import_role:
         name: common
