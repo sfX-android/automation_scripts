@@ -36,7 +36,7 @@
     - name: "set semaphore running indicator"
       connection: local
       copy:
-        dest: "moo.{{ semaphore_runfile }}"
+        dest: "{{ semaphore_runfile }}"
         content: |
           date="{{ ansible_date_time.iso8601 }}"
           play=debug.yml
