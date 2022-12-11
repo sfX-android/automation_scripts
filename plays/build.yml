@@ -26,7 +26,7 @@
       when: vault_tg_group_id_failing is undefined
 
     - set_fact:
-        semaphore_runfile: "{{ semaphore_work_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ target_version }}.ansible_running"
+        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ target_version }}.ansible_running"
 
     - name: "set semaphore running indicator"
       connection: local
