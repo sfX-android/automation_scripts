@@ -2,3 +2,5 @@
 
 - include_vars: ../files/secrets.yml
   no_log: true
+
+- include: semaphore_run_dir.yml
