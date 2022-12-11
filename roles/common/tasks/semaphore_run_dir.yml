@@ -1,6 +1,8 @@
 ---
 
 - name: "Check/Create semaphore run dir"
+  connection: local
+  become: no
   file:
     path: "{{ semaphore_lock_dir }}"
     state: directory
