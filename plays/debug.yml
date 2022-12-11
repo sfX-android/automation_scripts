@@ -31,7 +31,7 @@
          var: SRCPATH
   
     - set_fact:
-        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ semaphore_vars.target_version }}.ansible_running"
+        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ semaphore_vars.task_details.target_version }}.ansible_running"
 
     - name: "set semaphore running indicator"
       connection: local
@@ -39,7 +39,7 @@
         dest: "moo.{{ semaphore_runfile }}"
         content: |
           date="{{ ansible_date_time.iso8601 }}"
-          play=build_mAid.yml
+          play=debug.yml
           role="{{ ROM_FLAVOR }}"
   
     - name: "Telegram TEST notify"
