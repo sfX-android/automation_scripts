@@ -1,5 +1,11 @@
 ---
 
+- name: "Check for parallel unning jobs"
+  shell: >-
+    find {{ semaphore_lock_dir }} | grep -v "{{ semaphore_runfile }}" | wc -l
+  register: run_count
+  changed_when: run_count.stdout == "0"
+
 - name: "Starting service {{ blocking_service_name }} on {{ blocking_service_host }}"
   remote_user: "{{ blocking_service_ssh_user }}"
   become: yes
@@ -8,3 +14,4 @@
     state: started
   delegate_to: "{{ blocking_service_host }}"
   no_log: true
+  when: run_count.changed
