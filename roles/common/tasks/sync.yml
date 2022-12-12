@@ -28,7 +28,7 @@
   no_log: true
 
 - name: "Ensure keys dir is set correctly"
-  shell: "KEYS_DIR='{{ SRC_KEYSDIR }}' external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR | regex_replace('e-os','eos') }} {{ android_shortversion }}"
+  shell: "KEYS_DIR='{{ keysdir }}' external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR | regex_replace('e-os','eos') }} {{ android_shortversion }}"
   args:
     chdir: "{{ SRCPATH }}"
   when: sign_build is defined and sign_build == "true"
