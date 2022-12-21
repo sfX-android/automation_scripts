@@ -45,7 +45,7 @@ SH_GRAPHENE_GPG: |
            # import all required gpg pub keys
            for k in $GPG_KEYS;do
               if [ $GPG_FORCE_DL -eq 0 ];then
-                  gpg -k $k 2>&1 >> /dev/null && echo "[$FUNCNAME] ... skipping already imported gpg pub key ($k)" && continue
+                  gpg -k $k >> /dev/null 2>&1 && echo "[$FUNCNAME] ... skipping already imported gpg pub key ($k)" && continue
               fi
               for s in $GPG_KEYSERVER;do
                   echo "- trying $k from $s"
