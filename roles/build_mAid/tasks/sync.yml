@@ -10,6 +10,6 @@
   git:
     repo: "{{ repo_mAid_http }}"
     dest: "{{ maid_home_path }}"
-    version: "{% if MAID_VERSION != 'nightly' %}{{ MAID_VERSION }}{% else %}nightly{% endif %}"
+    version: "{% if RELEASE_VERSION is defined and MAID_VERSION != 'nightly' %}{{ MAID_VERSION }}{% else %}nightly{% endif %}"
     force: yes
   delegate_to: "{{ groups.buildserver[0] }}"
