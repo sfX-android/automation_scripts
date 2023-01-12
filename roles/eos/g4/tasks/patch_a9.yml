@@ -10,7 +10,7 @@
     - "git apply external/patches/frameworks_base_shadercache.patch"                    # always use shader cache
 
 - set_fact:
-    SECPATCH_DATE: "2022-10"
+    SECPATCH_DATE: "2023-01"
     sec_patch_topics: >-
       topic:P_asb_2022-02 OR
       topic:P_asb_2022-03 OR
@@ -20,7 +20,10 @@
       topic:P_asb_2022-07 OR
       topic:P_asb_2022-08 OR
       topic:P_asb_2022-09 OR
-      topic:P_asb_2022-10
+      topic:P_asb_2022-10 OR
+      topic:P_asb_2022-11 OR
+      topic:P_asb_2022-12 OR
+      topic:P_asb_2023-01
 
 - name: "Create repopick list (required on eOS to find path names)"
   shell: >
