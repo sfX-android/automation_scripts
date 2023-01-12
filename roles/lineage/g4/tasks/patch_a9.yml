@@ -22,7 +22,7 @@
 #    - "cd kernel/lge/msm8992 && git apply /tmp/patch2"
 
 - set_fact:
-    SECPATCH_DATE: "2022-08"
+    SECPATCH_DATE: "2023-01"
 
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
   shell: "source build/envsetup.sh > /dev/null && echo 'applying {{ item }}:' && repopick -f -t {{ item }}"
@@ -37,6 +37,12 @@
     - "P_asb_2022-06"
     - "P_asb_2022-07"
     - "P_asb_2022-08"
+    - "P_asb_2022-09"
+    - "P_asb_2022-10"
+    - "P_asb_2022-11"
+    - "P_asb_2022-12"
+    - "P_asb_2023-01"
+    
     
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
   lineinfile:
