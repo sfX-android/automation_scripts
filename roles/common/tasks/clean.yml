@@ -36,6 +36,7 @@
     - build
     - cts
     - device/
+    - external/adt-infra
     - external/libbrillo
     - external/perfetto
     - frameworks/av
@@ -57,9 +58,7 @@
     - system/security
     - system/sepolicy
     - test/
-    - tools/adt/idea
-    - tools/build
-    - tools/studio/cloud
+    - tools/
     - vendor/lineage
     - vendor/fdroid
     - vendor/cm
