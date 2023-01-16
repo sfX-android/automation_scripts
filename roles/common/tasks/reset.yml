@@ -1,5 +1,13 @@
 ---
 
+- name: "Get local manifests (if set)"
+  git:
+    repo: "{{ git_repo_local_manifests }}"
+    dest: "{{ SRCPATH }}/.repo/local_manifests"
+    version: "{{ git_repo_local_manifests_branch }}"
+    force: true
+  when: git_repo_local_manifests is defined
+  
 - name: "Init Android sources"
   shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }}"
   args:
