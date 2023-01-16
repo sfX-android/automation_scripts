@@ -57,6 +57,9 @@
     - system/security
     - system/sepolicy
     - test/
+    - tools/adt/idea
+    - tools/build
+    - tools/studio/cloud
     - vendor/lineage
     - vendor/fdroid
     - vendor/cm
