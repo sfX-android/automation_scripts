@@ -55,6 +55,7 @@
     - kernel/
     - packages/apps/Trebuchet
     - packages/apps/Updater
+    - .repo/repo
     - system/core
     - system/security
     - system/sepolicy
