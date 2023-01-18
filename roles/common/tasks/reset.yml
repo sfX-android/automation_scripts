@@ -60,7 +60,9 @@
 
 - name: "Reset path(s)"
   shell: >
-    egrep -v "{{ prob_repo_paths | join('|') }}" {{ manifest_paths_file }} | parallel -j6 --max-args=10 {{ repo_bin }} forall -j1 {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} -c "git reset --hard"
+    for f in $(egrep -v "{{ prob_repo_paths | join('|') }}" {{ manifest_paths_file }}); do
+      [ -d "$f" ] && echo "$f"
+    done | parallel -j6 --max-args=10 {{ repo_bin }} forall -j1 {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} -c "git reset --hard"
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
