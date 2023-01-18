@@ -39,6 +39,7 @@
     - external/adt-infra
     - external/libbrillo
     - external/perfetto
+    - external/chromium-webview
     - frameworks/av
     - frameworks/ml
     - frameworks/native
