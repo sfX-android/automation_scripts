@@ -40,6 +40,7 @@
     - external/libbrillo
     - external/perfetto
     - external/chromium-webview
+    - external/mesa3d
     - frameworks/av
     - frameworks/ml
     - frameworks/native
