@@ -30,9 +30,9 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
   loop:
-    - "P_asb_2022-02"
-    - "P_asb_2022-03"
-    - "P_asb_2022-04"
+    #- "P_asb_2022-02" # merged officially!
+    #- "P_asb_2022-03" # merged officially!
+    #- "P_asb_2022-04" # merged officially!
     - "P_asb_2022-05"
     - "P_asb_2022-06"
     - "P_asb_2022-07"
