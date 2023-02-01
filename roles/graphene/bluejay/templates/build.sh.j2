@@ -63,9 +63,13 @@ vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/bluejay.yml -f vendo
 # build id
 export password=""
 export BUILD_NUMBER="v{{ ROM_VERSION }}"
-# BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%y%m%d%H)-{{ ROM_BL_TYPE }}"
+# BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%Y%m%d%H)-{{ ROM_BL_TYPE }}"
 export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_BL_TYPE }}"
 sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
+export GBUILDID=$(date +%Y%m%d00)
+
+# enable/add Updater app
+export OFFICIAL_BUILD=true
 
 # build
 cd {{ SRCPATH }}
@@ -73,3 +77,14 @@ source script/envsetup.sh
 m -j{{ max_processes }} target-files-package otatools-package
 time script/release.sh {{ target_model }}
 echo -e '\n\n\t\e[32m\e[1mBUILDING '$BUILD_ID' for {{ target_model }} FINISHED SUCCESSFULLY!!\e[0m\n'
+
+[ ! -d releases/${GBUILDID} ] && mkdir releases/${GBUILDID}/
+mv out/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-* releases/${GBUILDID}/
+
+if [ -d releases/$PREV_GBUILDID ];then
+    script/generate_delta.sh {{ target_model }} ${PREV_GBUILDID} ${GBUILDID}
+else
+    echo "... skipping delta as PREV_GBUILDID is empty or it does not exist"
+fi
+
+echo -e '\nYou can find the build here: releases/${GBUILDID}/\n\n'
