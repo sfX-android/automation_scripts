@@ -79,7 +79,7 @@ time script/release.sh {{ target_model }}
 echo -e '\n\n\t\e[32m\e[1mBUILDING '$BUILD_ID' for {{ target_model }} FINISHED SUCCESSFULLY!!\e[0m\n'
 
 [ ! -d releases/${GBUILDID} ] && mkdir releases/${GBUILDID}/
-mv out/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-* releases/${GBUILDID}/
+mv out/release-{{ target_model }}-${GBUILDID} releases/${GBUILDID}/
 
 if [ -d releases/$PREV_GBUILDID ];then
     script/generate_delta.sh {{ target_model }} ${PREV_GBUILDID} ${GBUILDID}
