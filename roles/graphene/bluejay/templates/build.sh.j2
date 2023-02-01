@@ -78,10 +78,10 @@ m -j{{ max_processes }} target-files-package otatools-package
 time script/release.sh {{ target_model }}
 echo -e '\n\n\t\e[32m\e[1mBUILDING '$BUILD_ID' for {{ target_model }} FINISHED SUCCESSFULLY!!\e[0m\n'
 
-[ ! -d releases/${GBUILDID} ] && mkdir releases/${GBUILDID}/
+[ ! -d "releases/${GBUILDID}" ] && mkdir releases/${GBUILDID}/
 mv out/release-{{ target_model }}-${GBUILDID} releases/${GBUILDID}/
 
-if [ -d releases/$PREV_GBUILDID ];then
+if [ -d "releases/${PREV_GBUILDID}/release-{{ target_model }}-${PREV_GBUILDID}" ];then
     script/generate_delta.sh {{ target_model }} ${PREV_GBUILDID} ${GBUILDID}
 else
     echo "... skipping delta as PREV_GBUILDID is empty or it does not exist"
