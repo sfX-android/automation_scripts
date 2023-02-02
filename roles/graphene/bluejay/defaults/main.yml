@@ -5,7 +5,7 @@ target_model_full: "Google Pixel 6a (Bluejay)"
 
 # extendrom stuff
 use_extendrom: "true"
-extendrom_package_list: "noGOSpdfviewer noGOSvanadium noGOSauditor noGOScontacts noGOSupdater noSeedvault noWizard"
+extendrom_package_list: "noGOSpdfviewer noGOSvanadium noGOSauditor noGOScontacts noSeedvault noWizard"
 
 # GOS_KERNEL_BRANCH:
 # ROM_NAME:
