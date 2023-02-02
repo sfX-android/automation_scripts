@@ -100,17 +100,22 @@ else
     echo "... skipping delta as PREV_GBUILDID (${PREV_GBUILDID}) is empty / does not exist or is not lower then GBUILDID (${GBUILDID})"
 fi
 
-# release
-scp releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-ota_update-${GBUILDID}.zip \
-    releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-factory-${GBUILDID}.zip \
-    $DELTABUILD \
-    {{ custom_release_server }}:{{ custom_release_server_path }}
-
-# cleanup prev delta build
-if [ ! -z "$DELTABUILD" ] && [ -d "releases/${PREV_GBUILDID}" ] ;then
-    rm -rfv releases/${PREV_GBUILDID} && echo "... deleted previous delta files: ${PREV_GBUILDID}"
+# release & cleanup previous build (if requested)
+if [ ! -z "{{ release_channel }}" -a "{{ release_channel }}" == "skip" ];then
+    echo ".. skipping release as requested ({{ release_channel }})"
 else
-    echo "... skipping previous delta cleanup (seems no releases/${PREV_GBUILDID} exists) "
+    scp releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-ota_update-${GBUILDID}.zip \
+        releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-factory-${GBUILDID}.zip \
+        releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-{{ release_channel }} \
+        $DELTABUILD \
+        {{ custom_release_server }}:{{ custom_release_server_path }}
+
+    # cleanup prev delta build
+    if [ ! -z "$DELTABUILD" ] && [ -d "releases/${PREV_GBUILDID}" ] ;then
+        rm -rfv releases/${PREV_GBUILDID} && echo "... deleted previous delta files: ${PREV_GBUILDID}"
+    else
+        echo "... skipping previous delta cleanup (seems no releases/${PREV_GBUILDID} exists) "
+    fi
 fi
 
 echo -e '\nYou can find the build here: releases/${GBUILDID}/\n\n'
