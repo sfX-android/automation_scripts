@@ -68,7 +68,7 @@ export BUILD_NUMBER="v{{ ROM_VERSION }}"
 # BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%Y%m%d%H)-{{ ROM_BL_TYPE }}"
 export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_BL_TYPE }}"
 sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
-export GBUILDID=$(date +%Y%m%d00)
+#export GBUILDID=$(date +%Y%m%d00)
 
 # enable/add Updater app
 export OFFICIAL_BUILD=true
@@ -77,17 +77,40 @@ export OFFICIAL_BUILD=true
 cd {{ SRCPATH }}
 source script/envsetup.sh
 m -j{{ max_processes }} target-files-package otatools-package
+
+# packaging & signing
 time script/release.sh {{ target_model }}
 echo -e '\n\n\t\e[32m\e[1mBUILDING '$BUILD_ID' for {{ target_model }} FINISHED SUCCESSFULLY!!\e[0m\n'
 
+# move files
+export GBUILDID=$(grep 'ro.build.version.incremental' out/target/product/{{ target_model }}/system/build.prop | cut -d = -f 2)
 ln -s ../graphene_releases releases
 [ ! -d "releases/${GBUILDID}" ] && mkdir releases/${GBUILDID}/
+
+# find (the latest) previous release
+PREV_GBUILDID=$(find releases/ -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1 | cut -d '/' -f 2)
 mv out/release-{{ target_model }}-${GBUILDID} releases/${GBUILDID}/
 
-if [ -d "releases/${PREV_GBUILDID}/release-{{ target_model }}-${PREV_GBUILDID}" ];then
+# create incremental / delta updates
+unset DELTABUILD
+if [ ! -z "${PREV_GBUILDID}" -a "${PREV_GBUILDID}" -lt "${GBUILDID}" ];then
     script/generate_delta.sh {{ target_model }} ${PREV_GBUILDID} ${GBUILDID}
+    DELTABUILD="releases/${GBUILDID}/{{ target_model }}-incremental-${PREV_GBUILDID}-${GBUILDID}.zip"
 else
-    echo "... skipping delta as PREV_GBUILDID is empty or it does not exist"
+    echo "... skipping delta as PREV_GBUILDID (${PREV_GBUILDID}) is empty / does not exist or is not lower then GBUILDID (${GBUILDID})"
+fi
+
+# release
+scp releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-ota_update-${GBUILDID}.zip \
+    releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-factory-${GBUILDID}.zip \
+    $DELTABUILD \
+    {{ custom_release_server }}:{{ custom_release_server_path }}
+
+# cleanup prev delta build
+if [ ! -z "$DELTABUILD" ] && [ -d "releases/${PREV_GBUILDID}" ] ;then
+    rm -rfv releases/${PREV_GBUILDID} && echo "... deleted previous delta files: ${PREV_GBUILDID}"
+else
+    echo "... skipping previous delta cleanup (seems no releases/${PREV_GBUILDID} exists) "
 fi
 
 echo -e '\nYou can find the build here: releases/${GBUILDID}/\n\n'
