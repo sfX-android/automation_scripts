@@ -55,7 +55,7 @@ choosecombo release aosp_{{ target_model }} {{ lunch_buildtype }}
 {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
 m -j{{ max_processes }} aapt2
 yarn install --cwd vendor/adevtool/
-rm -rf vendor/adevtool/dl/*
+sudo rm -rf vendor/adevtool/dl/*
 vendor/adevtool/bin/run download vendor/adevtool/dl/ -d bluejay -t factory ota
 sudo vendor/adevtool/bin/run generate-all vendor/adevtool/config/bluejay.yml -c vendor/state/bluejay.json -s vendor/adevtool/dl/bluejay-*-factory-*.zip
 sudo chown -R ${USER}:${USER} vendor/google_devices
