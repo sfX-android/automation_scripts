@@ -37,7 +37,7 @@
     - cts
     - device/
     - external/adt-infra
-    - external/librillo
+    - external/libbrillo
     - external/perfetto
     - external/chromium-webview
     - external/mesa3d
