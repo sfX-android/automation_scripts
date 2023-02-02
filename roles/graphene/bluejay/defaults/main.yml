@@ -1,8 +1,7 @@
 ---
 
 # human readable model name
-target_model_full: 
-    Google Pixel 6a \(Bluejay\)
+target_model_full: "Google Pixel 6a"
 
 # extendrom stuff
 use_extendrom: "true"
