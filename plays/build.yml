@@ -57,6 +57,7 @@
           name: release
         when:
           - (override_release_build == "undef" and release_build == "true") or (override_release_build == "true")
+          - custom_release_script is undefined or (custom_release_script is defined and custom_release_script != "true")
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
