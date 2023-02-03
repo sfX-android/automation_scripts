@@ -21,6 +21,14 @@ fi
 cd {{ SRCPATH }}
 [ -L releases ] && rm releases
 
+# build id
+export password=""
+export BUILD_NUMBER="v{{ ROM_VERSION }}"
+# BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%Y%m%d%H)-{{ ROM_BL_TYPE }}"
+export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_BL_TYPE }}"
+sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
+#export GBUILDID=$(date +%Y%m%d00)
+
 source script/envsetup.sh
 
 # extendrom
@@ -51,24 +59,17 @@ cd {{ SRCPATH }}
 source script/envsetup.sh
 choosecombo release aosp_{{ target_model }} {{ lunch_buildtype }}
 
-# fetch blobs
+# fetch & extract blobs
 {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
-m -j{{ max_processes }} aapt2
 yarn install --cwd vendor/adevtool/
+source script/envsetup.sh
+m -j{{ max_processes }} aapt2
 sudo rm -rf vendor/adevtool/dl/*
-vendor/adevtool/bin/run download vendor/adevtool/dl/ -d bluejay -t factory ota
-sudo vendor/adevtool/bin/run generate-all vendor/adevtool/config/bluejay.yml -c vendor/state/bluejay.json -s vendor/adevtool/dl/bluejay-*-factory-*.zip
+vendor/adevtool/bin/run download vendor/adevtool/dl/ -d bluejay -t factory ota -b {{ normalized_target_version }}
+sudo vendor/adevtool/bin/run generate-all vendor/adevtool/config/{{ target_model }}.yml -c vendor/state/{{ target_model }}.json -s vendor/adevtool/dl/{{ target_model }}-{{ normalized_target_version | lower() }}-*.zip
 sudo chown -R ${USER}:${USER} vendor/google_devices
-vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/bluejay.yml -f vendor/adevtool/dl/bluejay-ota-*.zip
+vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/{{ target_model }}.yml -f vendor/adevtool/dl/{{ target_model }}-ota-{{ target_model }}-{{ normalized_target_version | lower() }}-*.zip
 {% endif %}
-
-# build id
-export password=""
-export BUILD_NUMBER="v{{ ROM_VERSION }}"
-# BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%Y%m%d%H)-{{ ROM_BL_TYPE }}"
-export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_BL_TYPE }}"
-sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
-#export GBUILDID=$(date +%Y%m%d00)
 
 # enable/add Updater app
 export OFFICIAL_BUILD=true
