@@ -90,7 +90,7 @@ ln -s ../graphene_releases releases
 
 # find (the latest) previous release
 PREV_GBUILDID=$(find releases/ -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1 | cut -d '/' -f 2)
-mv out/release-{{ target_model }}-${GBUILDID} releases/${GBUILDID}/
+cp -a out/release-{{ target_model }}-${GBUILDID} releases/${GBUILDID}/
 
 # create incremental / delta updates
 unset DELTABUILD
