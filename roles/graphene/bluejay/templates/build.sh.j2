@@ -68,7 +68,7 @@ sudo rm -rf vendor/adevtool/dl/*
 vendor/adevtool/bin/run download vendor/adevtool/dl/ -d bluejay -t factory ota -b {{ normalized_target_version }}
 sudo vendor/adevtool/bin/run generate-all vendor/adevtool/config/{{ target_model }}.yml -c vendor/state/{{ target_model }}.json -s vendor/adevtool/dl/{{ target_model }}-{{ normalized_target_version | lower() }}-*.zip
 sudo chown -R ${USER}:${USER} vendor/google_devices
-vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/{{ target_model }}.yml -f vendor/adevtool/dl/{{ target_model }}-ota-{{ target_model }}-{{ normalized_target_version | lower() }}-*.zip
+vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/{{ target_model }}.yml -f vendor/adevtool/dl/{{ target_model }}-ota-{{ normalized_target_version | lower() }}-*.zip
 {% endif %}
 
 # enable/add Updater app
