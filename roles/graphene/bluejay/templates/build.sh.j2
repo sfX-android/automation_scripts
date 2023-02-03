@@ -57,7 +57,7 @@ cd {{ SRCPATH }}
 
 # prepare fetching blobs
 source script/envsetup.sh
-choosecombo release aosp_{{ target_model }} {{ lunch_buildtype }}
+choosecombo release {{ target_model }} {{ lunch_buildtype }}
 
 # fetch & extract blobs
 {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
