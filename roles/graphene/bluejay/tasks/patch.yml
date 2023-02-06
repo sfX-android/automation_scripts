@@ -1,37 +1,14 @@
 ---
 
-- name: "Fetch add_img_to_target_files.patch"
-  get_url:
-    url: https://raw.githubusercontent.com/Wunderment/build_tasks/master/source/add_img_to_target_files.py-17.1.patch
-    dest: "{{ SRCPATH }}/add_img_to_target_files.patch"
+- name: "Get all available patches"
+  find:
+    paths: "{{ SRCPATH }}/external/patches"
+    patterns: "*.diff"
+  register: patch
 
-- name: "Fetch sign_target_files_apks.patch"
-  get_url:
-    url: https://raw.githubusercontent.com/Wunderment/build_tasks/master/source/sign_target_files_apks.py-17.1.patch
-    dest: "{{ SRCPATH }}/sign_target_files_apks.patch"
-
-- name: "Apply Wunderment patches"
-  shell: "patch -p0 < '{{ item }}'"
-  args:
-    chdir: "{{ SRCPATH }}/build/make/tools/releasetools"
-  loop:
-    - "../../../../sign_target_files_apks.patch"
-    - "../../../../add_img_to_target_files.patch"
-    
-- name: "Apply signing fixes on top of the Wunderment patches"
-  shell: "git apply device/oneplus/hotdog/patches/{{ item }}"
+- name: "Apply patches"
+  shell: "git apply external/patches/{{ item }}"
   args:
     chdir: "{{ SRCPATH }}"
-  loop:
-    - build_make_tools_releasetools_sign_target_files_apks.patch
-    - build_make_tools_releasetools_add_img_to_target_files.patch
-    - build_make_core_Makefile_fixsigning.patch
-
-- name: "Cleanup tmp patch files"
-  file:
-    path: "{{ SRCPATH }}/{{ item }}"
-    state: absent
-  loop:
-    - add_img_to_target_files.patch
-    - sign_target_files_apks.patch
-    - build_make_core_Makefile_fixsigning.patch
+  loop: "{{ patch.files }}"
+  when: patch == true
