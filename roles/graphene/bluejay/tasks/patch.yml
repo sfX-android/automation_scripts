@@ -9,4 +9,6 @@
   shell: "bash external/patches/apply.sh"
   args:
     chdir: "{{ SRCPATH }}"
+  register: patchres
+  failed_when: patchres.rc == 2
   when: patch.examined > 0
