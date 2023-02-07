@@ -11,4 +11,4 @@
   args:
     chdir: "{{ SRCPATH }}"
   loop: "{{ patch.files }}"
-  when: patch == true
+  when: patch.changed == true
