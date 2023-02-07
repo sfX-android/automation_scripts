@@ -8,6 +8,6 @@
 
 - include: patch.yml
   when: 
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (force_patch is defined and force_patch == "true")
 
 - include: copy.yml
