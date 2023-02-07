@@ -1,14 +1,12 @@
 ---
-
 - name: "Get all available patches"
   find:
     paths: "{{ SRCPATH }}/external/patches"
     patterns: "*.diff"
   register: patch
-
+  
 - name: "Apply patches"
-  shell: "git apply {{ item.path }}"
+  shell: "bash external/patches/apply.sh"
   args:
     chdir: "{{ SRCPATH }}"
-  loop: "{{ patch.files }}"
   when: patch.examined > 0
