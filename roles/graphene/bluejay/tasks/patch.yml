@@ -7,7 +7,7 @@
   register: patch
 
 - name: "Apply patches"
-  shell: "git apply external/patches/{{ item }}"
+  shell: "git apply {{ item.path }}"
   args:
     chdir: "{{ SRCPATH }}"
   loop: "{{ patch.files }}"
