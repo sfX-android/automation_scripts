@@ -115,8 +115,8 @@ else
     if [ ! -z "$DELTABUILD" ] && [ -d "releases/${PREV_GBUILDID}" ] ;then
         rm -rfv releases/${PREV_GBUILDID} && echo "... deleted previous delta files: ${PREV_GBUILDID}"
     else
-        echo "... skipping previous delta cleanup (seems no releases/${PREV_GBUILDID} exists) "
+        echo "... skipping previous delta cleanup (see above for reason)"
     fi
 fi
 
-echo -e '\nYou can find the build here: releases/${GBUILDID}/\n\n'
+echo -e "\nYou can find the build here: releases/${GBUILDID}/\n\n"
