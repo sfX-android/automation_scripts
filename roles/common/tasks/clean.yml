@@ -81,6 +81,8 @@
     - clurp.rc != 0
     - clurp.rc != 1
   loop: "{{ prob_repo_paths }}"
+  when:
+    - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
 
 - name: "Clean-Up out/"
   file:
