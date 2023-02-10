@@ -83,13 +83,15 @@ m -j{{ max_processes }} target-files-package otatools-package
 time script/release.sh {{ target_model }}
 echo -e '\n\n\t\e[32m\e[1mBUILDING '$BUILD_ID' for {{ target_model }} FINISHED SUCCESSFULLY!!\e[0m\n'
 
-# move files
+# prepare release
 export GBUILDID=$(grep 'ro.build.version.incremental' out/target/product/{{ target_model }}/system/build.prop | cut -d = -f 2)
 ln -s ../graphene_releases releases
-[ ! -d "releases/${GBUILDID}" ] && mkdir releases/${GBUILDID}/
 
 # find (the latest) previous release
 PREV_GBUILDID=$(find releases/ -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1 | cut -d '/' -f 2)
+
+# ... and move current one
+[ ! -d "releases/${GBUILDID}" ] && mkdir releases/${GBUILDID}/
 cp -a out/release-{{ target_model }}-${GBUILDID} releases/${GBUILDID}/
 
 # create incremental / delta updates
