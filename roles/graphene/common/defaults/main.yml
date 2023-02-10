@@ -20,15 +20,17 @@ device_cl: |-
   ***{{ target_model_full }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
 rom_cl: |-
   ***Changes:***
-  \- LineageOS: [Changelog](https://grapheneos.org/releases#{{ target_mode }}-stable)
+  \- GrapheneOS: [Changelog](https://grapheneos.org/releases)
 kernel_cl: |-
   \- kernel: [commits](https://github.com/GrapheneOS/kernel_common_5.10/commits/12.1)
 dtree_cl: |-
-  \- g4 unified tree: [commits](https://TBD/)
+  \- device tree: [commits](https://TBD/)
 cdtree_cl: |-
-  \- g4\-common tree: [commits](https://TBD/)
+  \- common tree: [commits](https://TBD/)
 dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
+  ***Download:*** TBD
+
+# [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
 
 # common snippets for templates
 
