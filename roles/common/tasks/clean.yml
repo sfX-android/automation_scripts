@@ -17,11 +17,12 @@
     state: absent
 
 - name: "Basic Clean-Up (props, images)"
-  shell: "find out/ -name {{ item }} -delete || true"
+  shell: "find out/ -type f -name {{ item }} -delete || true"
   args:
     chdir: "{{ SRCPATH }}"
   loop:
     - build.prop
+    - build_number.txt
     - boot.img
     - recovery.img
     - blrecovery.img
