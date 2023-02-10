@@ -7,6 +7,7 @@
 - include: end_build.yml
 # generate sha hash
 - include: gen_checksum.yml
+  when: not skip_gen_checksum
 # post clean up if requested
 - include: post_cleanup.yml
   when: post_cleanup is defined and post_cleanup == "true"
