@@ -69,3 +69,4 @@ override_sync: 'undef'
 # cross build: problematic repos paths
 prob_repo_paths:
   - "libbrillo"
+  - "barbet-sepolicy"
