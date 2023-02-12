@@ -57,3 +57,10 @@ SH_GRAPHENE_GPG: |
               exit 3
            done
        }
+
+SH_GRAPHENE_VERIFY: |
+       curl https://grapheneos.org/allowed_signers > ~/.ssh/grapheneos_allowed_signers
+       cd .repo/manifests
+       git config gpg.ssh.allowedSignersFile ~/.ssh/grapheneos_allowed_signers
+       git verify-tag $(git describe)
+       cd ../..
