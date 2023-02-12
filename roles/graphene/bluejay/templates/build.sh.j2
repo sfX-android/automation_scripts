@@ -39,9 +39,7 @@ vendor/extendrom/get_prebuilts.sh
 {% endif %}
 
 # verify manifests
-cd {{ SRCPATH }}/.repo/manifests
-git verify-tag $(git describe)
-cd ../../
+{{ SH_GRAPHENE_VERIFY }}
 
 # The kernel needs to be built in advance, since it uses a separate build system.
 # Prebuilts are provided for all the officially supported devices, so this step is optional.
