@@ -58,6 +58,7 @@
     - kernel/
     - packages/apps/Trebuchet
     - packages/apps/Updater
+    - packages/providers/MediaProvider
     - .repo/repo
     - system/core
     - system/security
