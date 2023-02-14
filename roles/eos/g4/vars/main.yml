@@ -10,7 +10,6 @@ EOS_RELEASE_TYPE: "{{ RELEASE_TYPE }}"
 JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ sub_model }}"
 
 # manifests
-git_repo_main_manifests: "https://github.com/sfX-android/eos_manifest_pie.git" # specific PIE only repo
 git_repo_local_manifests: "git@github.com:LGgFour/local_manifests.git"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 
