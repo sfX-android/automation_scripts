@@ -70,7 +70,6 @@ override_sync: 'undef'
 prob_repo_paths:
   - "libbrillo"
   - "barbet-sepolicy"
-  - "android_hardware_qcom_audio"
 
 # cross build: problematic source paths
 # DEPRECATED by new git reset approach
