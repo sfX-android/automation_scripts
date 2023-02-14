@@ -70,3 +70,69 @@ override_sync: 'undef'
 prob_repo_paths:
   - "libbrillo"
   - "barbet-sepolicy"
+
+# cross build: problematic source paths
+incompat_cross_version_paths:
+    - android
+    - build
+    - cts
+    - device/
+    - external/adt-infra
+    - external/dnsmasq
+    - external/freetype
+    - external/libaom
+    - external/libbrillo
+    - external/libhevc
+    - external/libtextclassifier
+    - external/perfetto
+    - external/chromium-libpac
+    - external/chromium-webview
+    - external/guice
+    - external/mesa3d
+    - external/okhttp
+    - external/ppp
+    - external/robolectric-shadows
+    - external/selinux
+    - external/sonivox
+    - external/v8
+    - frameworks/av
+    - frameworks/hardware/interfaces
+    - frameworks/ml
+    - frameworks/native
+    - frameworks/opt/net/voip
+    - frameworks/opt/net/wifi
+    - frameworks/opt/telephony
+    - frameworks/support
+    - hardware/libhardware_legacy
+    - hardware/marvell
+    - hardware/qcom/sm7150
+    - hardware/qcom/sm7250
+    - hardware/qcom/sm8150
+    - hardware/qcom/sm8150p
+    - hardware/qcom-caf
+    - hardware/qcom/wlan
+    - hardware/qcom/Android.mk    
+    - kernel/
+    - packages/apps/Bluetooth
+    - packages/apps/PermissionController
+    - packages/apps/PhoneCommon
+    - packages/apps/Trebuchet
+    - packages/apps/Updater
+    - packages/modules/NetworkStack
+    - packages/providers/MediaProvider
+    - platform_testing
+    - prebuilts/gcc/darwin-x86/x86/x86_64-linux-android-4.9
+    - prebuilts/gcc/linux-x86/x86/x86_64-linux-android-4.9
+    - prebuilts/r8
+    - .repo/repo
+    - system/connectivity/wificond
+    - system/core
+    - system/keymaster
+    - system/security
+    - system/sepolicy
+    - test/
+    - tools/
+    - vendor/lineage
+    - vendor/fdroid
+    - vendor/cm
+    - vendor/nxp
