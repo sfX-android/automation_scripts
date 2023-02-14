@@ -19,8 +19,11 @@
     chdir: "{{ SRCPATH }}"
   #no_log: true
 
+# git lfs can be a pita! i.e. it silently fails and you have no idea where.
+# the following ensures we can catch known issues or print the error path at least
 - name: "Sync LFS"
-  shell: "{{ repo_bin }} forall -j{{ max_processes }} -c 'git lfs pull'"
+  shell: >
+      {{ repo_bin }} forall -j{{ max_processes }} -c 'git lfs pull || pwd | grep -E "OpenCL-CTS" '
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
