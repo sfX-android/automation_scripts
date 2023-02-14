@@ -58,11 +58,16 @@
     regexp: "^{{ item.path }}$\\n"
   loop: "{{ xmlremovals.results | selectattr('matches','defined') | map(attribute='matches') | sum(start=[]) | map(attribute='remove-project') }}"
 
+# try to use the most efficient way of resetting paths - if they exists
+# while ignoring unknown paths - as they get removed by repo sync anyways
 - name: "Reset path(s)"
   shell: >
-    for f in $(egrep -v "{{ prob_repo_paths | join('|') }}" {{ manifest_paths_file }}); do
-      [ -d "$f" ] && echo "$f" && find $f -type f -name *.orig -delete -or -type f -name *.rej -delete
-    done | parallel -j6 --max-args=10 {{ repo_bin }} forall -j1 {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} -c 'git reset --hard'
+    CORES={{ max_processes }}
+    SEQ=$(for s in $(seq 1 $CORES);do echo "{${s}}";done | tr '\n' ' ')
+    CPWD=$PWD
+    egrep -v "{{ prob_repo_paths | join('|') }}" {{ manifest_paths_file }} \
+      | parallel -j{{ max_processes }} --max-args=1 "{{ repo_bin }} info {1} >> /dev/null 2>&1 && [ -d {1} ] && echo {1}" \
+      | parallel -j${CORES} --max-args=1 "cd {1} && git reset --hard ; cd $CPWD"      
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
@@ -81,3 +86,6 @@
     - resetres.rc != 58   # project not found
     - resetres.rc != 0    # any other error code
   no_log: "{{ nolog_gitreset | d(true) }}"
+
+# NSEQ=$(echo "$SEQ" | sed 's/ /\\n/g')
+#| parallel -j1 --max-args=${CORES} "find $SEQ -type f -name *.orig -delete -or -type f -name *.rej -delete && echo -e \"$NSEQ\"" \
