@@ -61,7 +61,7 @@
 # try to use the most efficient way of resetting paths - if they exists
 # while ignoring unknown paths - as they get removed by repo sync anyways
 - name: "Reset path(s)"
-  shell: >
+  shell: |
     CORES={{ max_processes }}
     SEQ=$(for s in $(seq 1 $CORES);do echo "{${s}}";done | tr '\n' ' ')
     CPWD=$PWD
