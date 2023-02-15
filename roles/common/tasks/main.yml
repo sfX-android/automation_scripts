@@ -4,3 +4,5 @@
   no_log: true
 
 - include: semaphore_run_dir.yml
+
+- include: prep.yml
