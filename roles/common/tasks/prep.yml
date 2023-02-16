@@ -4,3 +4,11 @@
   file:
     path: "{{ SRCPATH }}"
     state: directory
+
+- name: "Ensure no compat bin links exist"
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "~/.local/bin/python"
+    - "~/.local/bin/gcc"
