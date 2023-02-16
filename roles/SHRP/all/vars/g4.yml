@@ -19,7 +19,7 @@ DTPATH: "{{ SRCPATH }}/device/lge/g4"
 # kernel
 KERNPATH: "{{ SRCPATH }}/kernel/lge/g4"
 KERNGIT: "https://github.com/LGgFour/kernel_lge_msm8992.git"
-KERNBRANCH: "recovery"
+KERNBRANCH: "android-9.0"
 
 # shrp_release_type can be set by Semaphore or here.
 # needed ONLY when shrp_release_type should NOT be "PREVIEW"
