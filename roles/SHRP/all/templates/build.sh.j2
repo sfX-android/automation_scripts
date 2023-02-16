@@ -20,18 +20,6 @@ F_GETSPEC(){ grep IGNORE_MISC_WIPE_DATA out/target/product/g4/ramdisk-recovery.c
 
 cd $SRCPATH
 
-####################
-# cherry-pick(s)
-#cd bootable/recovery
-#
-#if [ "{{ target_model }}" != "datamedia" ];then
-#	# allow to exclude the TWRP app (TW_EXCLUDE_TWRPAPP flag)
-#	git fetch "https://gerrit.twrp.me/android_bootable_recovery" refs/changes/73/1673/2 && git cherry-pick FETCH_HEAD
-#fi
-####################
-
-cd $SRCPATH
-
 # special pre-handling for smt285
 if [ "{{ target_model }}" == "gtexslte" ];then
     cd bootable/
@@ -40,6 +28,12 @@ if [ "{{ target_model }}" == "gtexslte" ];then
     cd $SRCPATH
     export ANDROID_SET_JAVA_HOME=true 
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+fi
+
+if [ "{{ android_shortversion }}"  == "a9" ];then
+    ln -fs /usr/bin/python2 ~/.local/bin/python
+    source ~/.bashrc
+    echo "switched to python2"
 fi
 
 # prepare #
@@ -65,3 +59,8 @@ fi
 [ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
 cp -v out/target/product/{{ target_model | regex_replace('_lockedbl','') }}/SHRP_v*.zip {{ JKZIPDIR }}/
 
+if [ -e ~/.local/bin/python ];then
+    rm ~/.local/bin/python
+else
+    true
+fi
