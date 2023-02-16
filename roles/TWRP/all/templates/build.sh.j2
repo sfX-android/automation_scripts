@@ -30,6 +30,7 @@ if [ "{{ target_model }}" == "gtexslte" ];then
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 fi
 
+export PATH="$HOME/.local/bin:$PATH"
 gcc --version
 python --version
 
