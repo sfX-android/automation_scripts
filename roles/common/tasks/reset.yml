@@ -57,6 +57,7 @@
   replace:
     path: "{{ manifest_paths_file }}"
     regexp: "^{{ item.path }}$\\n"
+  when: item.path is defined
   loop: "{{ xmlremovals.results | selectattr('matches','defined') | map(attribute='matches') | sum(start=[]) | map(attribute='remove-project') }}"
 
 # try to use the most efficient way of resetting paths - if they exists
