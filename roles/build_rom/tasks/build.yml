@@ -31,7 +31,7 @@
       #
 
 - name: "Building ROM: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
-  shell: "source ./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1"
+  shell: "source ~/.bashrc && ./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1"
   args:
     executable: /bin/bash
   async: 14400
