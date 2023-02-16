@@ -16,5 +16,5 @@ DTPATH: "{{ SRCPATH }}/device/lge/g4"
 # kernel
 KERNPATH: "{{ SRCPATH }}/kernel/lge/g4"
 KERNGIT: "https://github.com/LGgFour/kernel_lge_msm8992.git"
-KERNBRANCH: "android-9.0"
+KERNBRANCH: "recovery"
 
