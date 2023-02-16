@@ -20,7 +20,7 @@
   args:
     executable: /bin/bash
   register: manifests
-  no_log: true
+  no_log: "{{ nolog_gitreset | d(true) }}"
 
 - name: Parse manifests
   community.general.xml:
@@ -29,7 +29,7 @@
     content: attribute
   loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
   register: xmlout
-  no_log: true
+  no_log: "{{ nolog_gitreset | d(true) }}"
 
 - name: Parse manifests (removals)
   community.general.xml:
