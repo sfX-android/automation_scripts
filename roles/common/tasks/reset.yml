@@ -27,6 +27,7 @@
     path: "{{ item }}"
     xpath: /manifest/project
     content: attribute
+  failed_when: never is defined
   loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
   register: xmlout
   no_log: "{{ nolog_gitreset | d(true) }}"
