@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -i
 
 # be strict on failures
 set -e
@@ -16,7 +16,7 @@ export TEMPORARY_DISABLE_PATH_RESTRICTIONS=true
 export SRCPATH="{{ SRCPATH }}"
 
 # special handling for LG G4
-F_GETSPEC(){ grep IGNORE_MISC_WIPE_DATA out/target/product/g4/ramdisk-recovery.cpio | wc -l |tr -d '\n' ; }
+F_GETSPEC(){ grep --text IGNORE_MISC_WIPE_DATA out/target/product/g4/ramdisk-recovery.cpio | wc -l |tr -d '\n' ; }
 
 cd $SRCPATH
 
@@ -35,6 +35,8 @@ if [ "{{ android_shortversion }}"  == "a9" ];then
     ln -sf /usr/bin/gcc-9 ~/.local/bin/gcc
     source ~/.bashrc
     echo "switched to python2 and gcc-9"
+    gcc --version
+    python --version
 fi
 
 # prepare #
