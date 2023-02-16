@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -i
 
 # be strict on failures
 set -e
@@ -16,19 +16,7 @@ export TEMPORARY_DISABLE_PATH_RESTRICTIONS=true
 export SRCPATH="{{ SRCPATH }}"
 
 # special handling for LG G4
-F_GETSPEC(){ grep IGNORE_MISC_WIPE_DATA out/target/product/g4/ramdisk-recovery.cpio | wc -l |tr -d '\n' ; }
-
-cd $SRCPATH
-
-####################
-# cherry-pick(s)
-#cd bootable/recovery
-#
-#if [ "{{ target_model }}" != "datamedia" ];then
-#	# allow to exclude the TWRP app (TW_EXCLUDE_TWRPAPP flag)
-#	git fetch "https://gerrit.twrp.me/android_bootable_recovery" refs/changes/73/1673/2 && git cherry-pick FETCH_HEAD
-#fi
-####################
+F_GETSPEC(){ grep --text IGNORE_MISC_WIPE_DATA out/target/product/g4/ramdisk-recovery.cpio | wc -l |tr -d '\n' ; }
 
 cd $SRCPATH
 
@@ -40,6 +28,15 @@ if [ "{{ target_model }}" == "gtexslte" ];then
     cd $SRCPATH
     export ANDROID_SET_JAVA_HOME=true 
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+fi
+
+if [ "{{ android_shortversion }}"  == "a9" ];then
+    ln -fs /usr/bin/python2 ~/.local/bin/python
+    ln -sf /usr/bin/gcc-9 ~/.local/bin/gcc
+    source ~/.bashrc
+    echo "switched to python2 and gcc-9"
+    gcc --version
+    python --version
 fi
 
 # prepare #
@@ -67,3 +64,18 @@ TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.ve
 cd $LOCPATH
 [ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
 mv -v recovery.img {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}_{{ target_model }}.img
+
+# remove compat bin links
+if [ -e ~/.local/bin/python ];then
+    rm ~/.local/bin/python
+else
+    true
+fi
+if [ -e ~/.local/bin/gcc ];then
+    rm ~/.local/bin/gcc
+else
+    true
+fi
+
+gcc --version
+python --version
