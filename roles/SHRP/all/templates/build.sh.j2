@@ -30,12 +30,12 @@ if [ "{{ target_model }}" == "gtexslte" ];then
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 fi
 
+export PATH="~/.local/bin:$PATH"
 gcc --version
 python --version
 
 # prepare #
 export TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}"
-#export PATH="~/.local/bin:$PATH"
 
 # BUILD #
 source build/envsetup.sh
