@@ -30,14 +30,8 @@ if [ "{{ target_model }}" == "gtexslte" ];then
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 fi
 
-if [ "{{ android_shortversion }}"  == "a9" ];then
-    ln -fs /usr/bin/python2 ~/.local/bin/python
-    ln -sf /usr/bin/gcc-9 ~/.local/bin/gcc
-    source ~/.bashrc
-    echo "switched to python2 and gcc-9"
-    gcc --version
-    python --version
-fi
+gcc --version
+python --version
 
 # prepare #
 export TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}"
@@ -73,6 +67,3 @@ if [ -e ~/.local/bin/gcc ];then
 else
     true
 fi
-
-gcc --version
-python --version
