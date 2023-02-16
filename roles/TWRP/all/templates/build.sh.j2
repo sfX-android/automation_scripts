@@ -1,4 +1,4 @@
-#!/bin/bash -i
+#!/bin/bash
 
 # be strict on failures
 set -e
@@ -30,14 +30,8 @@ if [ "{{ target_model }}" == "gtexslte" ];then
     export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 fi
 
-if [ "{{ android_shortversion }}"  == "a9" ];then
-    ln -fs /usr/bin/python2 ~/.local/bin/python
-    ln -sf /usr/bin/gcc-9 ~/.local/bin/gcc
-    source ~/.bashrc
-    echo "switched to python2 and gcc-9"
-    gcc --version
-    python --version
-fi
+gcc --version
+python --version
 
 # prepare #
 export TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}"
@@ -64,6 +58,18 @@ TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.ve
 cd $LOCPATH
 [ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
 mv -v recovery.img {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}_{{ target_model }}.img
+
+# remove compat bin links
+if [ -e ~/.local/bin/python ];then
+    rm ~/.local/bin/python
+else
+    true
+fi
+if [ -e ~/.local/bin/gcc ];then
+    rm ~/.local/bin/gcc
+else
+    true
+fi
 
 # remove compat bin links
 if [ -e ~/.local/bin/python ];then
