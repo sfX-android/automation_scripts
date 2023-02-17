@@ -41,8 +41,7 @@
     - "P_asb_2022-10"
     - "P_asb_2022-11"
     - "P_asb_2022-12"
-    - "P_asb_2023-01"
-    
+    - "P_asb_{{ SECPATCH_DATE }}"
     
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
   lineinfile:
