@@ -69,7 +69,7 @@ override_sync: 'undef'
 # cross build: problematic repos paths
 prob_repo_paths:
   - "barbet-sepolicy"
-  - bootable/recovery
+  - bootable
 #  - "libbrillo"
 
 # cross build: problematic source paths
