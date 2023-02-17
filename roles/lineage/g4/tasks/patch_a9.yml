@@ -11,26 +11,38 @@
 
 - set_fact:
     SECPATCH_DATE: "2023-01"
+    sec_patch_topics: >-
+      topic:P_asb_2022-05 OR
+      topic:P_asb_2022-06 OR
+      topic:P_asb_2022-07 OR
+      topic:P_asb_2022-08 OR
+      topic:P_asb_2022-09 OR
+      topic:P_asb_2022-10 OR
+      topic:P_asb_2022-11 OR
+      topic:P_asb_2022-12 OR
+      topic:P_asb_2023-01
 
+#topic:P_asb_2022-02 OR # merged officially!
+#topic:P_asb_2022-03 OR # merged officially!
+#topic:P_asb_2022-04 OR # merged officially!
+
+- name: "Create repopick list (required to find path names)"
+  shell: >
+    /usr/bin/python3 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 
+    -Q '{{ sec_patch_topics }}' 
+    | grep --color=never https | col | dos2unix
+    | egrep -v '338357|342095|324039|324040|324041'
+  args:
+    chdir: "{{ SRCPATH }}"
+  register: picklist
+    
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE }}-05"
-  shell: "source build/envsetup.sh > /dev/null && echo 'applying {{ item }}:' && repopick -f -t {{ item }}"
+  shell: "source build/envsetup.sh > /dev/null && echo 'applying SECURITY PATCH:' && {{ item }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  loop:
-    #- "P_asb_2022-02" # merged officially!
-    #- "P_asb_2022-03" # merged officially!
-    #- "P_asb_2022-04" # merged officially!
-    - "P_asb_2022-05"
-    - "P_asb_2022-06"
-    - "P_asb_2022-07"
-    - "P_asb_2022-08"
-    - "P_asb_2022-09"
-    - "P_asb_2022-10"
-    - "P_asb_2022-11"
-    - "P_asb_2022-12"
-    - "P_asb_{{ SECPATCH_DATE }}"
-    
+  loop: "{{ picklist.stdout.splitlines() | map('from_yaml') | list }}"
+
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE }}-05"
   lineinfile:
     path: "{{ SRCPATH }}/build/core/version_defaults.mk"
