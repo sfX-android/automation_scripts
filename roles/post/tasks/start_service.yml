@@ -4,7 +4,7 @@
   connection: local
   become: no
   shell: >-
-    find {{ semaphore_lock_dir }} | grep -v "{{ semaphore_runfile }}" | wc -l
+    find {{ semaphore_lock_dir }}  -type f -name '*.ansible_running' | grep -v "{{ semaphore_runfile }}" | wc -l
   register: run_count
   changed_when: run_count.stdout == "0"
 
