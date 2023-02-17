@@ -73,8 +73,11 @@ prob_repo_paths:
 #  - "libbrillo"
 
 # cross build: problematic source paths
-# DEPRECATED by new git reset approach
 incompat_cross_version_paths:
+    - bootable/recovery
+
+# DEPRECATED by new git reset approach
+incompat_cross_version_paths_DISABLED:
     - android
     - build
     - cts
