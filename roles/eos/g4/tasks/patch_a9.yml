@@ -20,7 +20,10 @@
   register: picklist
     
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-05"
-  shell: "source build/envsetup.sh > /dev/null && echo 'applying SECURITY PATCH:' && {{ item }}"
+  shell: >
+    source build/envsetup.sh > /dev/null \
+      && echo 'applying SECURITY PATCH:' \
+      && {{ item }} -fv 2> /dev/null || {{ item }} -fv 1>&2
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
