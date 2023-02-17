@@ -30,14 +30,14 @@
   when:
     - clean_out != "true" or (override_clean_out != "true")
 
-#- name: "Basic Clean-Up (cross-version incompatible paths)"
-#  file:
-#    state: absent
-#    path: "{{ SRCPATH }}/{{ item }}"
-#  loop: "{{ incompat_cross_version_paths }}"
-#  when:
-#    - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
-#  no_log: true
+- name: "Basic Clean-Up (cross-version incompatible paths)"
+  file:
+    state: absent
+    path: "{{ SRCPATH }}/{{ item }}"
+  loop: "{{ incompat_cross_version_paths }}"
+  when:
+    - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
+  no_log: true
 
 - name: "Clean-Up (cross-version incompatible REPO paths)"
   shell: >
