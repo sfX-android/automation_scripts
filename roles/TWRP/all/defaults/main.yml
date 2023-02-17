@@ -1,8 +1,8 @@
 ---
 
 # build vars
-SRCPATH: "/home/androidsource/do-not-touch/twrp"
 PREFIXFNAME: "TWRP"
+SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}"
 SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}/{{ BDEVICE }}/out"
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 RELEASE_TYPE: "PREVIEW"
