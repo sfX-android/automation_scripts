@@ -9,27 +9,10 @@
     - "repopick -f 307334/2 -P frameworks/base/"                      # scale font patch
     - "git apply external/patches/frameworks_base_shadercache.patch"  # always use shader cache
 
-- set_fact:
-    SECPATCH_DATE: "2023-01"
-    sec_patch_topics: >-
-      topic:P_asb_2022-05 OR
-      topic:P_asb_2022-06 OR
-      topic:P_asb_2022-07 OR
-      topic:P_asb_2022-08 OR
-      topic:P_asb_2022-09 OR
-      topic:P_asb_2022-10 OR
-      topic:P_asb_2022-11 OR
-      topic:P_asb_2022-12 OR
-      topic:P_asb_2023-01
-
-#topic:P_asb_2022-02 OR # merged officially!
-#topic:P_asb_2022-03 OR # merged officially!
-#topic:P_asb_2022-04 OR # merged officially!
-
 - name: "Create repopick list (required to find path names)"
   shell: >
     /usr/bin/python3 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 
-    -Q '{{ sec_patch_topics }}' 
+    -Q '{{ sec_patch_topics_pie }}' 
     | grep --color=never https | col | dos2unix
     | egrep -v '338357|342095|324039|324040|324041'
   args:
@@ -47,4 +30,4 @@
   lineinfile:
     path: "{{ SRCPATH }}/build/core/version_defaults.mk"
     regexp: "PLATFORM_SECURITY_PATCH := .*"
-    line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE }}-05"
+    line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE_PIE }}-05"
