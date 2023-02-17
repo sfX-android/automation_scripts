@@ -70,6 +70,7 @@
           name: notify
 
       - name: "remove semaphore running indicator"
+        connection: local
         file:
           path: "{{ semaphore_runfile }}"
           state: absent
@@ -92,6 +93,7 @@
             msg: "build failure occured. check log."
 
         - name: "remove semaphore running indicator"
+          connection: local
           file:
             path: "{{ semaphore_runfile }}"
             state: absent
