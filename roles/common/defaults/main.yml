@@ -75,6 +75,7 @@ prob_repo_paths:
 # cross build: problematic source paths
 incompat_cross_version_paths:
     - bootable/recovery
+    - device
 
 # DEPRECATED by new git reset approach
 incompat_cross_version_paths_DISABLED:
