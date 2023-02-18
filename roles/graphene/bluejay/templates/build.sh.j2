@@ -92,7 +92,8 @@ PREV_GBUILDID=$(find releases/ -mindepth 1 -maxdepth 1 -type d | sort | tail -n 
 [ ! -d "releases/${GBUILDID}" ] && mkdir releases/${GBUILDID}/
 cp -a out/release-{{ target_model }}-${GBUILDID} releases/${GBUILDID}/
 
-# create incremental / delta updates
+{% if create_delta_update | d("yes") == "yes" %}
+# create incremental / delta updates if requested
 unset DELTABUILD
 if [ ! -z "${PREV_GBUILDID}" -a "${PREV_GBUILDID}" -lt "${GBUILDID}" ];then
     script/generate_delta.sh {{ target_model }} ${PREV_GBUILDID} ${GBUILDID}
@@ -100,6 +101,7 @@ if [ ! -z "${PREV_GBUILDID}" -a "${PREV_GBUILDID}" -lt "${GBUILDID}" ];then
 else
     echo "... skipping delta as PREV_GBUILDID (${PREV_GBUILDID}) is empty / does not exist or is not lower then GBUILDID (${GBUILDID})"
 fi
+{% endif %}
 
 # release & cleanup previous build (if requested)
 if [ ! -z "{{ release_channel }}" -a "{{ release_channel }}" == "skip" ];then
