@@ -1,7 +1,7 @@
 ---
 
 - name: "Switch release channel"
-  hosts: custom_release_server
+  hosts: "{{ custom_release_server }}"
   gather_facts: false
   become: no
 
