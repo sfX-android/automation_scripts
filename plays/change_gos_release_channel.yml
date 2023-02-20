@@ -15,6 +15,6 @@
     - name: "Adapt OTA info"
       lineinfile:
           path: "{{ custom_release_server_path }}/{{ target_model}}-{{ release_channel_new }}"
-          regexp: '(.*\s+){{ release_channel_old }}
+          regexp: '(.*\s+){{ release_channel_old }}'
           line: '\1{{ release_channel_new }}'
           backrefs: yes
