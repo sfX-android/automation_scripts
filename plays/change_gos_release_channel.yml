@@ -5,7 +5,7 @@
   gather_facts: false
   become: no
 
-- tasks:
+  - tasks:
     - name: "Switch from {{ release_channel_old }} to {{ release_channel_new }}"
       copy:
         remote_src: yes
