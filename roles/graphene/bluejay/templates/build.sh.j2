@@ -114,10 +114,10 @@ else
         {{ custom_release_server }}:{{ custom_release_server_path }}
 
     # cleanup prev delta build
-    if [ ! -z "$DELTABUILD" ] && [ -d "releases/${PREV_GBUILDID}" ] ;then
+    if [ ! -z "$DELTABUILD" ] && [ -d "releases/${PREV_GBUILDID}" ] && [ "{{ post_cleanup }}" == "true" ] ;then
         rm -rfv releases/${PREV_GBUILDID} && echo "... deleted previous delta files: ${PREV_GBUILDID}"
     else
-        echo "... skipping previous delta cleanup (see above for reason)"
+        echo "... skipping previous delta cleanup"
     fi
 fi
 
