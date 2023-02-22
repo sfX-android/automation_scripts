@@ -120,7 +120,7 @@ else
          TRY=$(( TRY + 1 ))
     done
     [ $TRY -ne 1000 ] && echo "Error while uploading update to {{ custom_release_server }}" && exit 3
-    echo "Uploaded successfully to {{ custom_release_server }}"
+    echo "Uploaded build ${GBUILDID} successfully to {{ custom_release_server }}"
 
     # cleanup prev delta build
     if [ ! -z "$DELTABUILD" ] && [ -d "releases/${PREV_GBUILDID}" ] && [ "{{ post_cleanup }}" == "true" ] ;then
