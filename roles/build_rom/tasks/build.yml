@@ -15,6 +15,7 @@
       Build ID: {{ build_id }}
       {% if release_channel is defined %}
       Release Channel: {{ release_channel }}
+      {% endif %}
       ROM_FLAVOR: {{ ROM_FLAVOR }}
       RELEASE_TYPE: {{ RELEASE_TYPE | d("N/A") }}
       android_shortversion: {{ android_shortversion }}
