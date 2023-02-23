@@ -8,6 +8,9 @@
     - import_role:
         name: common
 
+    - debug:
+        var: semaphore_vars
+        
     - include_role:
         name: eos/common
         public: yes
