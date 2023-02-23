@@ -12,6 +12,9 @@
       BDEVICE: {{ BDEVICE }}
       target_model_full: {{ target_model_full }} - target_model: {{ target_model }}{% if sub_model is defined %} - sub_model: {{ sub_model }}{% endif%}
       
+      Build ID: {{ build_id }}
+      {% if release_channel is defined %}
+      Release Channel: {{ release_channel }}
       ROM_FLAVOR: {{ ROM_FLAVOR }}
       RELEASE_TYPE: {{ RELEASE_TYPE | d("N/A") }}
       android_shortversion: {{ android_shortversion }}
