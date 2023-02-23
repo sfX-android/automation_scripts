@@ -9,7 +9,7 @@
         name: common
 
     - debug:
-        var: semaphore_vars
+        msg: "{{ semaphore_vars }}"
         
     - include_role:
         name: eos/common
