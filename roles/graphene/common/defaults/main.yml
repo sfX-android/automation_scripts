@@ -7,7 +7,7 @@ git_repo_main_manifests: "https://github.com/GrapheneOS/platform_manifest.git"
 # key dir in sources dir
 SRC_KEYSDIR: keys
 
-ROM_VERSION: "{{ semaphore_vars.task_details.target_version }}"
+ROM_VERSION: "{{ build_id }}"
 # GOS_KERNEL_BRANCH:
 # ROM_NAME:
 # ROM_BL_TYPE:
