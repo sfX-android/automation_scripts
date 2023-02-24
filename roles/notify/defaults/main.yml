@@ -4,6 +4,10 @@ tg_success: |
         {{ ICON_GOOD }} ***New build has finished\!***
         
         {{ device_cl }}
+        Build ID: {{ build_id }}
+        {% if release_channel is defined %}
+        Release Channel: {{ release_channel }}
+        {% endif %}
         
         {{ rom_cl }}
         {{ kernel_cl }}
