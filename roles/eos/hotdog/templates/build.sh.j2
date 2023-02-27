@@ -13,6 +13,8 @@ export EOS_DEVICE="{{ target_model }}"
 export EOS_CCACHE_DIR="{{ CCACHE_DIR }}"
 export EOS_BRANCH_NAME="{{ git_repo_main_branch }}"
 export EOS_USE_CCACHE={{ USE_CCACHE }}
+# fixing issues on newer kernels
+# like: "pm8150.dtsi syntax error"
 export DTC_EXT=/usr/bin/dtc
 
 cd {{ SRCPATH }}
