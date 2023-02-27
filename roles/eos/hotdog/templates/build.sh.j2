@@ -13,6 +13,7 @@ export EOS_DEVICE="{{ target_model }}"
 export EOS_CCACHE_DIR="{{ CCACHE_DIR }}"
 export EOS_BRANCH_NAME="{{ git_repo_main_branch }}"
 export EOS_USE_CCACHE={{ USE_CCACHE }}
+export DTC_EXT=/usr/bin/dtc
 
 cd {{ SRCPATH }}
 source build/envsetup.sh
