@@ -110,8 +110,8 @@ else
     # the cloud VM has issues to response sometimes so lets loop
     # several times in the hope this get fixed
     TRY=1
-    while [ $TRY -le 3 ];do
-        echo "trying to upload to {{ custom_release_server }} ... (try $TRY of 3)"
+    while [ $TRY -le 10 ];do
+        echo "trying to upload to {{ custom_release_server }} ... (try $TRY of 10)"
         timeout 5m scp releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-ota_update-${GBUILDID}.zip \
             releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-factory-${GBUILDID}.zip \
             releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-{{ release_channel }} \
