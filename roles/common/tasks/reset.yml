@@ -60,6 +60,15 @@
   when: item.path is defined
   loop: "{{ xmlremovals.results | selectattr('matches','defined') | map(attribute='matches') | sum(start=[]) | map(attribute='remove-project') }}"
 
+# instead of reset it is dramatically faster to simply delete everything..
+# (other then .repo/ ofc)
+- name: "RIP all project paths"
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ lookup('file', manifest_paths_file).splitlines() }}"
+  no_log: "{{ nolog_gitreset | d(true) }}"
+
 # try to use the most efficient way of resetting paths - if they exists
 # while ignoring unknown paths - as they get removed by repo sync anyways
 - name: "Reset path(s)"
@@ -88,6 +97,7 @@
     - resetres.rc != 58   # project not found
     - resetres.rc != 0    # any other error code
   no_log: "{{ nolog_gitreset | d(true) }}"
+  when: old_reset_approach is defined
 
 # NSEQ=$(echo "$SEQ" | sed 's/ /\\n/g')
 #| parallel -j1 --max-args=${CORES} "find $SEQ -type f -name *.orig -delete -or -type f -name *.rej -delete && echo -e \"$NSEQ\"" \
