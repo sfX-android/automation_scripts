@@ -68,6 +68,8 @@
     state: absent
   loop: "{{ lookup('file', manifest_paths_file).splitlines() }}"
   no_log: "{{ nolog_gitreset | d(true) }}"
+  when:
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
 
 # try to use the most efficient way of resetting paths - if they exists
 # while ignoring unknown paths - as they get removed by repo sync anyways
