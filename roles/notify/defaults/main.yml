@@ -31,7 +31,7 @@ tg_failed: |
         \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
         \- Device: ***{{ BDEVICE | replace("-","\-") }}***
         \- Build ident: _{{ BUILDIDENT | replace("-","\-") }}_
-        \- Build ID: {{ build_id }}
+        \- Build ID:  {{ build_id | replace(".","\.") }}
         {% if release_channel is defined %}
         \- Release Channel: {{ release_channel }}
         {% endif %}
