@@ -65,3 +65,13 @@ SH_GRAPHENE_VERIFY: |
        git config gpg.ssh.allowedSignersFile ~/.ssh/grapheneos_allowed_signers
        git verify-tag $(git describe)
        cd {{ SRCPATH }}
+
+
+SH_GRAPHENE_VPN_ICON: |
+      cd {{ SRCPATH }}
+      cp vendor/sos/icons/{{ vpn_icon }}.png frameworks/base/core/res/res/drawable-hdpi/vpn_connected.png
+      cp vendor/sos/icons/{{ vpn_icon }}.png frameworks/base/core/res/res/drawable-mdpi/vpn_connected.png
+      cp vendor/sos/icons/{{ vpn_icon }}.png frameworks/base/core/res/res/drawable-xxhdpi/vpn_connected.png
+      cp vendor/sos/icons/{{ vpn_icon }}.png frameworks/base/core/res/res/drawable-ldpi/vpn_connected.png
+      cp vendor/sos/icons/{{ vpn_icon }}.png frameworks/base/core/res/res/drawable-xhdpi/vpn_connected.png
+      ln -sf vendor/sos/frameworks/base/packages/SystemUI/res/drawable/stat_sys_vpn_ic.xml.{{ vpn_icon }} stat_sys_vpn_ic.xml
