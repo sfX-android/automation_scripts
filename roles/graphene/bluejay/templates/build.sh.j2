@@ -72,6 +72,9 @@ vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/{{ target_model }}.y
 # enable/add Updater app
 export OFFICIAL_BUILD=true
 
+# icons replacements
+{{ SH_GRAPHENE_VPN_ICON }}
+
 # build
 cd {{ SRCPATH }}
 source script/envsetup.sh
