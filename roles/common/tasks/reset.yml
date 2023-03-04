@@ -63,10 +63,12 @@
 # instead of reset it is dramatically faster to simply delete everything..
 # (other then .repo/ ofc)
 - name: "RIP all project paths"
-  file:
-    path: "{{ item }}"
-    state: absent
-  loop: "{{ lookup('file', manifest_paths_file).splitlines() }}"
+  shell: |
+       for d in $(cat {{ manifest_paths_file }});do
+          [ -d "$d" ] && rm -rf $d
+       done
+  args:
+    executable: /bin/bash
   no_log: "{{ nolog_gitreset | d(true) }}"
 
 # try to use the most efficient way of resetting paths - if they exists
