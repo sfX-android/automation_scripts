@@ -68,7 +68,7 @@
     state: absent
   loop: "{{ lookup('file', manifest_paths_file).splitlines() }}"
   no_log: "{{ nolog_gitreset | d(true) }}"
-  ignore_errors: true
+  @ignore_errors: true
 
 # try to use the most efficient way of resetting paths - if they exists
 # while ignoring unknown paths - as they get removed by repo sync anyways
