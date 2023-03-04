@@ -65,7 +65,11 @@
 - name: "RIP all project paths"
   shell: |
        for d in $(cat {{ manifest_paths_file }});do
-          [ -d "$d" ] && rm -rf $d
+          if [ -d "$d" ]; then 
+            rm -rf $d
+          else
+            continue
+          fi
        done
   args:
     executable: /bin/bash
