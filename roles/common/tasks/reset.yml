@@ -73,6 +73,7 @@
        done
   args:
     executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
   no_log: "{{ nolog_gitreset | d(true) }}"
 
 # try to use the most efficient way of resetting paths - if they exists
