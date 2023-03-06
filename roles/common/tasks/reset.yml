@@ -83,8 +83,17 @@
     CORES={{ max_processes }}
     SEQ=$(for s in $(seq 1 $CORES);do echo "{${s}}";done | tr '\n' ' ')
     CPWD=$PWD
-    egrep -v "{{ prob_repo_paths | join('|') }}" {{ manifest_paths_file }} \
-      | parallel -j{{ max_processes }} --max-args=1 "{{ repo_bin }} info {1} >> /dev/null 2>&1 && [ -d {1} ] && echo {1}" \
+    > {{ manifest_paths_file }}.real
+    
+    for d in $(egrep -v "{{ prob_repo_paths | join('|') }}" {{ manifest_paths_file }});do
+      if [ -d "$d" ]; then
+        echo "$d" >> {{ manifest_paths_file }}.real
+      else
+        continue
+      fi
+    done
+    cat {{ manifest_paths_file }}.real \
+      | parallel -j{{ max_processes - 2 }} --max-args=1 "{{ repo_bin }} info {1} >> /dev/null 2>&1 && [ -d {1} ] && echo {1}" \
       | parallel -j${CORES} --max-args=1 "cd {1} && git reset --hard ; cd $CPWD"      
   args:
     chdir: "{{ SRCPATH }}"
