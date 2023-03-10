@@ -66,6 +66,7 @@
 
 - name: Fetch build logs
   fetch:
+    flat: true
     src: "{{ item }}"
     dest: /tmp/
   loop:
