@@ -15,7 +15,7 @@
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
       - include_vars: ../roles/build_mAid/vars/main.yml
-          no_log: true
+        no_log: true
 
       - import_role:
           name: common
