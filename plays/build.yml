@@ -4,30 +4,10 @@
   hosts: buildserver
   gather_facts: true
 
-  tasks:
-    - import_role:
-        name: common
-
+  pre_tasks:
     - debug:
-        msg: "{{ semaphore_vars }}"
-        
-    - include_role:
-        name: eos/common
-        public: yes
-      when: ROM_FLAVOR == "eos"
-
-    - include_role:
-        name: graphene/common
-        public: yes
-      when: ROM_FLAVOR == "graphene"
-        
-    - debug:
-        var: vault_tg_group_id_failing
-
-    - fail:
-        msg: "boo.. vault_tg_group_id_failing is undefined"
-      when: vault_tg_group_id_failing is undefined
-
+      msg: "{{ semaphore_vars }}"
+          
     - set_fact:
         semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ build_id }}.ansible_running"
 
@@ -40,9 +20,31 @@
           play=build.yml
           target={{ target_model }}
           role="{{ ROM_FLAVOR }}/{{ target_model }}"
-
+          
+  tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
+    
+      - import_role:
+          name: common
+
+      - include_role:
+          name: eos/common
+          public: yes
+        when: ROM_FLAVOR == "eos"
+
+      - include_role:
+          name: graphene/common
+          public: yes
+        when: ROM_FLAVOR == "graphene"
+
+      - debug:
+          var: vault_tg_group_id_failing
+
+      - fail:
+          msg: "boo.. vault_tg_group_id_failing is undefined"
+        when: vault_tg_group_id_failing is undefined
+
       - import_role:
           name: pre
           
