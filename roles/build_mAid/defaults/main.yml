@@ -13,6 +13,7 @@ RELEASE_TYPE: nightly
 
 repo_mAid_http: "https://code.binbash.rocks:8443/mAid/build.git"
 maid_home_path: "build_maid"
+SRCPATH: "{{ maid_home_path }}"
 maid_build_path: "/var/tmp"
 
 # default mAid kernel if not specified in Semaphore
