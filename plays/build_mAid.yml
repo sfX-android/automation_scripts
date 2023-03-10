@@ -68,8 +68,8 @@
             tg_group_id: "{{ vault_tg_group_id_failing }}"
 
         - include_role:
-          name: build_mAid
-          public: true
+            name: build_mAid
+            public: true
           
         - include_role:
             name: notify
