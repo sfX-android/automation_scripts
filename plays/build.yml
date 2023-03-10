@@ -6,7 +6,7 @@
 
   pre_tasks:
     - debug:
-      msg: "{{ semaphore_vars }}"
+        msg: "{{ semaphore_vars }}"
           
     - set_fact:
         semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ build_id }}.ansible_running"
