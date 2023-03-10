@@ -68,6 +68,7 @@
             tg_group_id: "{{ vault_tg_group_id_failing }}"
 
         - include_vars: ../roles/build_mAid/vars/main.yml
+          no_log: true
           
         - include_role:
             name: notify
