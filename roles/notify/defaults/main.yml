@@ -22,7 +22,7 @@ tg_success: |
         {% endif %}
         
         ***SHA256:***
-        {{ hash.stat.checksum | default("error getting hash") }}
+        {{ hash.stat.checksum | default("no hash found") }}
         
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
