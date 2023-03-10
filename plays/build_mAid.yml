@@ -32,31 +32,31 @@
             play=build_mAid.yml
             role="{{ ROM_FLAVOR }}"
 
-        - import_role:
-            name: pre
+      - import_role:
+          name: pre
 
-        - include_role:
-            name: build_mAid
-            public: true
+      - include_role:
+          name: build_mAid
+          public: true
 
-        - set_fact:
-            tg_group_id: "{{ vault_tg_group_id_automation }}"
-          when: debug_build is not defined or (debug_build is defined and debug_build == "false")
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_automation }}"
+        when: debug_build is not defined or (debug_build is defined and debug_build == "false")
 
-        - set_fact:
-            tg_group_id: "{{ vault_tg_group_id_failing }}"
-          when: debug_build is defined and debug_build == "true"
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_failing }}"
+        when: debug_build is defined and debug_build == "true"
 
-        - import_role:
-            name: notify
+      - import_role:
+          name: notify
 
-        - name: "remove semaphore running indicator"
-          file:
-            path: "{{ semaphore_runfile }}"
-            state: absent
+      - name: "remove semaphore running indicator"
+        file:
+          path: "{{ semaphore_runfile }}"
+          state: absent
 
-        - import_role:
-            name: post
+      - import_role:
+          name: post
 
       # when any of the above fails notify always 
       rescue:
