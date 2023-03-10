@@ -7,6 +7,10 @@
   vars:
     ansible_python_interpreter: /usr/bin/env python3
 
+  pre_tasks:
+    - set_fact:
+        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ semaphore_vars.task_details.target_version }}.ansible_running"
+        
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
@@ -19,9 +23,6 @@
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: vault_tg_group_id_failing is undefined
-
-      - set_fact:
-          semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ semaphore_vars.task_details.target_version }}.ansible_running"
 
       - name: "set semaphore running indicator"
         connection: local
