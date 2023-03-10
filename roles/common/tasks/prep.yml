@@ -5,21 +5,24 @@
     path: "{{ SRCPATH }}"
     state: directory
 
-- name: "Ensure no compat bin links exist"
-  file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - "~/.local/bin/python"
-    - "~/.local/bin/gcc"
-  when: android_shortversion != "a9"
+- block:
+  - name: "Ensure no compat bin links exist"
+    file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - "~/.local/bin/python"
+      - "~/.local/bin/gcc"
+    when: android_shortversion != "a9"
 
-- name: "Ensure compat bin links exist"
-  file:
-    src: "{{ item.target }}"
-    path: "{{ item.lname }}"
-    state: link
-  loop:
-    - { lname: "~/.local/bin/python", target: "/usr/bin/python2" }
-    - { lname: "~/.local/bin/gcc", target: "/usr/bin/gcc-9"  }
-  when: android_shortversion == "a9"
+  - name: "Ensure compat bin links exist"
+    file:
+      src: "{{ item.target }}"
+      path: "{{ item.lname }}"
+      state: link
+    loop:
+      - { lname: "~/.local/bin/python", target: "/usr/bin/python2" }
+      - { lname: "~/.local/bin/gcc", target: "/usr/bin/gcc-9"  }
+    when: android_shortversion == "a9"
+
+  when: android_shortversion is defined
