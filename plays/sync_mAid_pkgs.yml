@@ -3,7 +3,8 @@
 - name: "Sync mAid packages"
   hosts: localhost
   connection: local
-  gather_facts: false
+  # we need facts to have ansible_date_time
+  gather_facts: true
   become: no
 
   vars:
