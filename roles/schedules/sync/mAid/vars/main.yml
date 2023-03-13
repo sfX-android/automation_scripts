@@ -12,9 +12,11 @@ tg_success: |
         
         This task has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
+#regex_replace('([.\-!>\(\)<])', '\1') 
+
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last sync failed\!
         
-        {{ buildresult.stdout | d('no output from script') | replace("!","\!") | replace("-","\-") | replace(".","\.") | replace(">","\>") }}
+        {{ buildresult.stdout | d('no output from script') | regex_escape() }}
 
 notify_on_success: true
