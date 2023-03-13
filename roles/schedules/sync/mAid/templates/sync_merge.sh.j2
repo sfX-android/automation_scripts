@@ -1,0 +1,64 @@
+#!/bin/bash
+
+syncpairs="https://github.com/mAid-linux-ci/pkg_xperia-flashtool.git|mAid|https://aur.archlinux.org/xperia-flashtool.git|xperia-flashtool|master"
+
+for r in {{ syncpairs }};do
+
+  REPOONLY=$(echo "$r" | cut -d "|" -f4)
+  BSRC={{ local_work_path }}
+
+  LBRANCH=$(echo "$r" | cut -d "|" -f2)
+  UBRANCH=$(echo "$r" | cut -d "|" -f5)
+
+  TSRC=$BSRC/$REPOONLY
+  TURL=$(echo "$r" | cut -d "|" -f1)
+  UPSTREAM=$(echo "$r" | cut -d "|" -f3)
+
+  if [ -d $TSRC ];then
+    cd $TSRC
+    git reset --hard
+    git checkout $LBRANCH
+    git pull origin $LBRANCH
+  else
+    mkdir -p $TSRC || echo dir already created
+    cd $BSRC
+    git clone $TURL
+    cd $TSRC
+    git checkout $LBRANCH  || (git checkout $UBRANCH && git branch ${LBRANCH} && git checkout $LBRANCH)
+  fi
+
+
+  ##############################################################################
+  # https://github.com/pursonchen/sync-fork/blob/master/sync-local-upstream.sh: 
+  ##############################################################################
+
+  function sync_fork() {
+
+  #Check if the local repository exists upstream.
+  #If it exists, it is in direct sync.
+  #If not, add upstream to fork.
+  my_remote_repository=$(git remote -v)
+  echo $my_remote_repository
+  if [[ $my_remote_repository =~ "upstream" ]]
+  then
+     sync_source
+  else
+     git remote add upstream $UPSTREAM
+     sync_source
+  fi
+  }
+
+  #Syncing a Fork with the main repository
+  function sync_source() {
+     #current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+     git fetch upstream
+     git checkout $LBRANCH
+     git merge upstream/$UBRANCH
+     git push origin $LBRANCH
+     git checkout $LBRANCH
+  }
+
+  sync_fork
+
+done
