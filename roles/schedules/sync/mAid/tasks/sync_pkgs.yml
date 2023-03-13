@@ -12,3 +12,10 @@
     chdir: "{{ local_work_path }}"
     executable: /bin/bash
   loop: "{{ syncpairs }}"
+  register: buildresult
+  ignore_errors: yes
+
+- fail:
+    msg: "Build FAILED! Check log for details"
+  when:
+    - buildresult.rc is undefined or buildresult.rc != 0
