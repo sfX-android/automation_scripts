@@ -3,12 +3,12 @@
 - name: "Prepare sync"
   template:
     src: sync_merge.sh.j2
-    dest: "{{ semaphore_work_dir }}/mAid_sync_merge.sh"
+    dest: "{{ local_work_dir }}/mAid_sync_merge.sh"
     mode: 0700
     
 - name: "Sync pairs"
   shell: ./mAid_sync_merge.sh
   args:
-    chdir: "{{ semaphore_work_dir }}"
+    chdir: "{{ local_work_dir }}"
     executable: /bin/bash
   loop: "{{ syncpairs }}"
