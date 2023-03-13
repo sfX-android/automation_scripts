@@ -2,7 +2,7 @@
 
 #syncpairs="https://github.com/mAid-linux-ci/pkg_xperia-flashtool.git|mAid|https://aur.archlinux.org/xperia-flashtool.git|xperia-flashtool|master"
 
-for r in {{ syncpairs }};do
+for r in {{ item }};do
 
   REPOONLY=$(echo "$r" | cut -d "|" -f4)
   BSRC={{ local_work_path }}
