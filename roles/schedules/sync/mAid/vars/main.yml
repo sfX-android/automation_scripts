@@ -7,13 +7,13 @@ syncpairs:
 tg_success: |
         {{ ICON_GOOD }} ***Sync has finished\!***
         
-        Sync pairs:
-        {{ syncpairs }}
+        {{ buildresult.stdout | d('no output from script') }}
         
         This task has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last sync failed\!
         
-        Sync pairs:
-        {{ syncpairs }}
+        {{ buildresult.stdout | d('no output from script') }}
+
+notify_on_success: false
