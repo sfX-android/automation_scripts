@@ -16,7 +16,7 @@
   ignore_errors: yes
 
 - set_fact:
-    buildresult: buildresult_loop.results | last
+    buildresult: "{{ buildresult_loop.results | last }}"
     
 - fail:
     msg: "Sync FAILED!. Return code: {{ buildresult.rc | d('undefined') }}! Check log for details"
