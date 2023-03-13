@@ -17,7 +17,7 @@
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
-      - include_vars: ../roles/build_mAid/vars/main.yml
+      - include_vars: ../roles/schedules/sync/mAid/vars/main.yml
         no_log: true
 
       - import_role:
@@ -70,7 +70,7 @@
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
 
-        - include_vars: ../roles/build_mAid/vars/main.yml
+        - include_vars: ../roles/schedules/sync/mAid/vars/main.yml
           no_log: true
           
         - include_role:
