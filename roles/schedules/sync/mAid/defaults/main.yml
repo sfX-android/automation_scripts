@@ -1,4 +1,4 @@
 ---
 
 syncpairs:
-  - "https://github.com/mAid-linux-ci/pkg_xperia-flashtool.git|mAid|https://aur.archlinux.org/xperia-flashtool.git|xperia-flashtool|master"
+  - "git@arch.github.com:mAid-linux-ci/pkg_xperia-flashtool.git|mAid|https://aur.archlinux.org/xperia-flashtool.git|xperia-flashtool|master"
