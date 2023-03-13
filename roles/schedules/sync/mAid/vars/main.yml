@@ -3,7 +3,7 @@ local_work_path: "{{ semaphore_work_dir }}/sync_mAid"
 SRCPATH: "{{ local_work_path }}"
 
 syncpairs:
-  - "git@arch.github.com:mAid-linux-ci/pkg_xperia-flashtool.git|mAid|https://aur.archlinux.org/xperia-flashtool.git|xperia-flashtool|master"
+  - "git@arch.github.com:mAid-linux-ci/xperia-flashtool.git|mAid|https://aur.archlinux.org/xperia-flashtool.git|xperia-flashtool|master"
 
 tg_success: |
         {{ ICON_GOOD }} ***Sync has finished\!***
