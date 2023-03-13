@@ -7,7 +7,7 @@
     mode: 0700
     
 - name: "Sync pairs"
-  shell: ./mAid_sync_merge.sh
+  shell: ./mAid_sync_merge.sh; echo $?
   args:
     chdir: "{{ local_work_path }}"
     executable: /bin/bash
