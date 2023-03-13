@@ -19,4 +19,4 @@ tg_failed: |
         
         {{ buildresult.stdout | d('no output from script') | regex_escape() }}
 
-notify_on_success: true
+notify_on_success: false
