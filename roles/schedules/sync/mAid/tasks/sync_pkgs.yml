@@ -11,3 +11,4 @@
   args:
     chdir: "{{ semaphore_work_dir }}"
     executable: /bin/bash
+  loop: "{{ syncpairs }}"
