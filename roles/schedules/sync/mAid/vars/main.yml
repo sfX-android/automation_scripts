@@ -8,13 +8,13 @@ syncpairs:
 tg_success: |
         {{ ICON_GOOD }} ***Sync has finished\!***
         
-        {{ buildresult.stdout | d('no output from script') }}
+        {{ buildresult.stdout | d('no output from script') | replace("!","\!") | replace("-","\-") | replace(".","\.") | replace(">","\>") }}
         
         This task has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last sync failed\!
         
-        {{ buildresult.stdout | d('no output from script') }}
+        {{ buildresult.stdout | d('no output from script') | replace("!","\!") | replace("-","\-") | replace(".","\.") | replace(">","\>") }}
 
 notify_on_success: true
