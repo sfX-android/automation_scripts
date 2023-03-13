@@ -8,7 +8,7 @@ syncpairs:
 tg_success: |
         {{ ICON_GOOD }} ***Sync has finished\!***
         
-        {{ buildresult.stdout | d('no output from script') | regex_replace('([\.-!>()<])', '\\1') }}
+        {{ buildresult.stdout | d('no output from script') | regex_replace('([.\-!>\(\)<])', '\\1') }}
         
         This task has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
