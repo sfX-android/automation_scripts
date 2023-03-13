@@ -16,4 +16,4 @@ tg_failed: |
         
         {{ buildresult.stdout | d('no output from script') }}
 
-notify_on_success: false
+notify_on_success: true
