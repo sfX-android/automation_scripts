@@ -22,8 +22,8 @@ for r in ${SYNCPAIRS};do
   else
     mkdir -p $TSRC || echo dir already created
     cd $BSRC
-    git clone $TURL
     cd $TSRC
+    git clone $TURL .
     git checkout $LBRANCH  || (git checkout $UBRANCH && git branch ${LBRANCH} && git checkout $LBRANCH)
   fi
 
