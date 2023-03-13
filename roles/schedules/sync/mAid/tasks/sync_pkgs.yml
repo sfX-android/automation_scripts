@@ -7,14 +7,17 @@
     mode: 0700
     
 - name: "Sync pairs"
-  shell: ./mAid_sync_merge.sh; echo $?
+  shell: ./mAid_sync_merge.sh
   args:
     chdir: "{{ local_work_path }}"
     executable: /bin/bash
   loop: "{{ syncpairs }}"
-  register: buildresult
+  register: buildresult_loop
   ignore_errors: yes
 
+- set_fact:
+    buildresult: buildresult_loop.results | last
+    
 - fail:
     msg: "Sync FAILED!. Return code: {{ buildresult.rc | d('undefined') }}! Check log for details"
   when:
