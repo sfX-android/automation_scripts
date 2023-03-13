@@ -1,4 +1,5 @@
 ---
+local_work_path: "{{ semaphore_work_dir }}/sync_mAid"
 
 syncpairs:
   - "git@arch.github.com:mAid-linux-ci/pkg_xperia-flashtool.git|mAid|https://aur.archlinux.org/xperia-flashtool.git|xperia-flashtool|master"
