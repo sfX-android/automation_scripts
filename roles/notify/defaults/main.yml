@@ -8,6 +8,9 @@ tg_success: |
         {% if release_channel is defined %}
         Release Channel: {{ release_channel }}
         {% endif %}
+        {% if sec_level_date is defined %}
+        Platform security patch level: {{ sec_level_date }}
+        {% endif %}
         
         {{ rom_cl }}
         {{ kernel_cl }}
