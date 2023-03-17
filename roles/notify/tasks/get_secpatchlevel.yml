@@ -1,0 +1,9 @@
+---
+
+- name: "Read Security patch date"
+  shell: |-
+    grep -E 'PLATFORM_SECURITY_PATCH\s+:=\s+' build/core/version_defaults.mk| cut -d "=" -f 2 | tr -d " "
+  args:
+    chdir: "{{ SRCPATH }}/out"
+    executable: /bin/bash
+  register: sec_level_date
