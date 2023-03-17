@@ -8,8 +8,8 @@ tg_success: |
         {% if release_channel is defined %}
         Release Channel: {{ release_channel | regex_escape() }}
         {% endif %}
-        {% if sec_level_date is defined %}
-        ***Platform security patch level:*** {{ sec_level_date | regex_escape() }}
+        {% if sec_level_date.stdout is defined %}
+        ***Platform security patch level:*** {{ sec_level_date.stdout | regex_escape() }}
         {% endif %}
         
         {{ rom_cl }}
