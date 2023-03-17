@@ -34,3 +34,7 @@
     path: "{{ SRCPATH }}/build/core/version_defaults.mk"
     regexp: "PLATFORM_SECURITY_PATCH := .*"
     line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE_PIE }}-01"
+
+- name: "register patch date"
+  shell: "echo {{ SECPATCH_DATE_PIE }}-01"
+  register: sec_level_date
