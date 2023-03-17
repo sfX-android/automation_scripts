@@ -1,4 +1,6 @@
 ---
 
-#- include: get_secpatchlevel.yml
+- include: get_secpatchlevel.yml
+  when: ROM_FLAVOR != "MAID"
+
 - include: telegram.yml
