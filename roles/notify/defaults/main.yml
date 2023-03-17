@@ -6,10 +6,10 @@ tg_success: |
         {{ device_cl }}
         Build ID: {{ build_id | replace(".","\.") }}
         {% if release_channel is defined %}
-        Release Channel: {{ release_channel }}
+        Release Channel: {{ release_channel | regex_escape() }}
         {% endif %}
         {% if sec_level_date is defined %}
-        ***Platform security patch level:*** {{ sec_level_date }}
+        ***Platform security patch level:*** {{ sec_level_date | regex_escape() }}
         {% endif %}
         
         {{ rom_cl }}
@@ -34,7 +34,7 @@ tg_failed: |
         \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
         \- Device: ***{{ BDEVICE | replace("-","\-") }}***
         \- Build ident: _{{ BUILDIDENT | replace("-","\-") }}_
-        \- Build ID:  {{ build_id | replace(".","\.") }}
+        \- Build ID:  {{ build_id | | regex_escape() }}
         {% if release_channel is defined %}
-        \- Release Channel: {{ release_channel }}
+        \- Release Channel: {{ release_channel | regex_escape() }}
         {% endif %}
