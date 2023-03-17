@@ -37,10 +37,3 @@
   args:
     chdir: "{{ SRCPATH }}"
   when: sign_build is defined and sign_build == "true"
-
-- name: "Grab & write Security patch date"
-  shell: |-
-    grep -E 'PLATFORM_SECURITY_PATCH\s+:=\s+' build/core/version_defaults.mk| cut -d "=" -f 2 | tr -d " " > platform_sec_patch.info
-  args:
-    chdir: "{{ SRCPATH }}/out"
-    executable: /bin/bash
