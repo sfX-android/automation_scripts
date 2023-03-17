@@ -75,6 +75,7 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
   no_log: "{{ nolog_gitreset | d(true) }}"
+  when: disabledtask is defined
 
 # try to use the most efficient way of resetting paths - if they exists
 # while ignoring unknown paths - as they get removed by repo sync anyways
@@ -113,7 +114,7 @@
     - resetres.rc != 58   # project not found
     - resetres.rc != 0    # any other error code
   no_log: "{{ nolog_gitreset | d(true) }}"
-  when: old_reset_approach is defined
+  #when: old_reset_approach is defined
 
 # NSEQ=$(echo "$SEQ" | sed 's/ /\\n/g')
 #| parallel -j1 --max-args=${CORES} "find $SEQ -type f -name *.orig -delete -or -type f -name *.rej -delete && echo -e \"$NSEQ\"" \
