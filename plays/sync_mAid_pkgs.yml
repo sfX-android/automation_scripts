@@ -51,7 +51,7 @@
           tg_group_id: "{{ vault_tg_group_id_failing }}"
         when: debug_build is defined and debug_build == "true"
 
-      - import_role:
+      - include_role:
           name: notify
 
       - name: "remove semaphore running indicator"
