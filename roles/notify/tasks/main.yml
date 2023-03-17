@@ -1,6 +1,8 @@
 ---
 
 - include: get_secpatchlevel.yml
-  when: ROM_FLAVOR != "MAID"
+  when: 
+    - ROM_FLAVOR != "MAID"
+    - sec_level_date is undefined
 
 - include: telegram.yml
