@@ -29,8 +29,8 @@
     chdir: "{{ SRCPATH }}"
   loop: "{{ picklist.stdout.splitlines() | map('from_yaml') | list }}"
 
-- name: "PIE: bump security patch version string to: {{ SECPATCH_DATE_PIE }}-05"
+- name: "PIE: bump security patch version string to: {{ SECPATCH_DATE_PIE }}-01"
   lineinfile:
     path: "{{ SRCPATH }}/build/core/version_defaults.mk"
     regexp: "PLATFORM_SECURITY_PATCH := .*"
-    line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE_PIE }}-05"
+    line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE_PIE }}-01"
