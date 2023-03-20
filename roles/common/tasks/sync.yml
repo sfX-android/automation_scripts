@@ -29,7 +29,8 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  when: ROM_FLAVOR == 'eos' or (sync_lfs is defined and sync_lfs == 'true')
+  when: ROM_FLAVOR != 'MAID'
+  # or (sync_lfs is defined and sync_lfs == 'true')
   no_log: true
 
 - name: "Ensure keys dir is set correctly"
