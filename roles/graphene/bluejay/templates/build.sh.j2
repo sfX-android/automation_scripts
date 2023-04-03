@@ -27,15 +27,18 @@ export BUILD_NUMBER="v{{ ROM_VERSION }}"
 # BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%Y%m%d%H)-{{ ROM_BL_TYPE }}"
 export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_BL_TYPE }}"
 sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
-#export GBUILDID=$(date +%Y%m%d00)
 
 source script/envsetup.sh
 
 # extendrom
 {% if use_extendrom is defined and use_extendrom == "true" %}
 export ENABLE_EXTENDROM={{ use_extendrom }}
+{%    if ROM_BL_TYPE == "obl-q" %}
+export EXTENDROM_PACKAGES="{{ extendrom_package_list }} sDevice"
+{%    else %}
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
-vendor/extendrom/get_prebuilts.sh
+{%    endif %}
+vendor/extendrom/er.sh
 {% endif %}
 
 # verify manifests
