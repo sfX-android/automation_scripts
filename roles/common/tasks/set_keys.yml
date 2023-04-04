@@ -1,9 +1,11 @@
 ---
 
 - name: "Ensure keys dir is set correctly"
-  shell: "KEYS_DIR='{{ keysdir }}' external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR | regex_replace('e-os','eos') }} {{ android_shortversion }}"
+  shell: "external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR | regex_replace('e-os','eos') }} {{ android_shortversion }}"
   args:
     chdir: "{{ SRCPATH }}"
+  environment:
+    KEYS_DIR: "{{ keysdir }}"
   when: sign_build is defined and sign_build == "true"
 
 - name: "Ensure we actually have keys (i.e. generate them if needed)"
@@ -12,8 +14,8 @@
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   environment:
-    CERT_CN: "{{ ROM_FLAVOR }}"
+    CERT_CN: "{{ KEYS_CN }}"
     KEYS_DIR: "{{ SRC_KEYSDIR }}"
-    USER_NAME: "{{ KEYS_USER | d(ansible_user) }}"
+    USER_NAME: "{{ KEYS_USER }}"
     KSIZE: "{{ KEYS_SIZE }}"
     HASHTYPE: "{{ KEYS_HASHTYPE }}"
