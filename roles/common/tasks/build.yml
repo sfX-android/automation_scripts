@@ -5,8 +5,10 @@
   args:
     chdir: "{{ SRCPATH }}"
 
-- name: "EXTENDROM: get prebuilts"
-  shell: "source build/envsetup.sh && vendor/extendrom/get_prebuilts.sh"
+- include_tasks: set_keys.yml
+
+- name: "EXTENDROM: activate"
+  shell: "source build/envsetup.sh && vendor/extendrom/er.sh"
   args:
     chdir: "{{ SRCPATH }}"
   when: "{{ lookup('env', 'ENABLE_EXTENDROM') | default('false', True) }} == true"
