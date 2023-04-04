@@ -1,6 +1,6 @@
 ---
 
-- include_tasks: set_keys.yml
+- include_tasks: ../../common/tasks/set_keys.yml
 
 - name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: 4 hours)"
   debug:
