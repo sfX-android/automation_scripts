@@ -58,10 +58,14 @@ SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
 manifest_paths_file: "/tmp/manifest_paths.{{ ROM_FLAVOR }}"
+
 # build signing
 sign_build: true
 keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
 SRC_KEYSDIR: user-keys
+KEYS_SIZE: 4096
+KEYS_HASHTYPE: sha256
+
 # gen a ROM checksum
 skip_gen_checksum: false
 
