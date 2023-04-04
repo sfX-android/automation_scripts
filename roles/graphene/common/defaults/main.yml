@@ -8,10 +8,7 @@ git_repo_main_manifests: "https://github.com/GrapheneOS/platform_manifest.git"
 SRC_KEYSDIR: keys
 
 ROM_VERSION: "{{ build_id }}"
-# GOS_KERNEL_BRANCH:
-# ROM_NAME:
-# ROM_BL_TYPE:
-# lunch_buildtype:
+keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}_{{ ROM_BL_TYPE }}'
 
 # notification vars
 ota_hint: |-
