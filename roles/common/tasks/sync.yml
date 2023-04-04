@@ -32,3 +32,5 @@
   when: ROM_FLAVOR != 'MAID'
   # or (sync_lfs is defined and sync_lfs == 'true')
   no_log: true
+
+- include: set_keys.yml
