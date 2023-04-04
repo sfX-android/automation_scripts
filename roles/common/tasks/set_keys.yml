@@ -5,3 +5,15 @@
   args:
     chdir: "{{ SRCPATH }}"
   when: sign_build is defined and sign_build == "true"
+
+- name: "Ensure we actually have keys (i.e. generate them if needed)"
+  shell: external/buildtools/sign/sign_generate_keys.sh
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
+  environment:
+    CERT_CN: "{{ ROM_FLAVOR }}"
+    KEYS_DIR: "{{ SRC_KEYSDIR }}"
+    USER_NAME: "{{ KEYS_USER | d(ansible_user) }}"
+    KSIZE: "{{ KEYS_SIZE }}"
+    HASHTYPE: "{{ KEYS_HASHTYPE }}"
