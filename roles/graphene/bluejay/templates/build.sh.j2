@@ -24,8 +24,8 @@ cd {{ SRCPATH }}
 # build id
 export password=""
 export BUILD_NUMBER="v{{ ROM_VERSION }}"
-# BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}.$(date +%Y%m%d%H)-{{ ROM_BL_TYPE }}"
-export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_BL_TYPE }}"
+export ROM_TYPE="{{ ROM_TYPE }}"
+export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_TYPE }}"
 sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
 
 source script/envsetup.sh
@@ -33,7 +33,7 @@ source script/envsetup.sh
 # extendrom
 {% if use_extendrom is defined and use_extendrom == "true" %}
 export ENABLE_EXTENDROM={{ use_extendrom }}
-{%    if ROM_BL_TYPE == "wq" %}
+{%    if ROM_TYPE == "wq" %}
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }} sDevice"
 {%    else %}
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
@@ -122,7 +122,7 @@ else
             releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-factory-${GBUILDID}.zip \
             releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-{{ release_channel }} \
             $DELTABUILD \
-            {{ custom_release_server }}:{{ custom_release_server_path }}-{{ ROM_BL_TYPE }} && TRY=999
+            {{ custom_release_server }}:{{ custom_release_server_path }}-{{ ROM_TYPE }} && TRY=999
          TRY=$(( TRY + 1 ))
     done
     [ $TRY -ne 1000 ] && echo "Error while uploading update to {{ custom_release_server }}" && exit 3
