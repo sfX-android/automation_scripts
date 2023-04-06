@@ -37,6 +37,7 @@ export ENABLE_EXTENDROM={{ use_extendrom }}
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }} sDevice"
 {%    else %}
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+find out/target/product/ -type f -name sDevice.apk -delete
 {%    endif %}
 vendor/extendrom/er.sh
 {% endif %}
