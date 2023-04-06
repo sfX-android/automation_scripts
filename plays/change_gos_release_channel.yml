@@ -9,12 +9,12 @@
     - name: "Switch from {{ release_channel_old }} to {{ release_channel_new }}"
       copy:
         remote_src: yes
-        src: "{{ custom_release_server_path }}/{{ target_model}}-{{ release_channel_old }}"
-        dest: "{{ custom_release_server_path }}/{{ target_model}}-{{ release_channel_new }}"
+        src: "{{ custom_release_server_path }}-{{ ROM_TYPE }}/{{ target_model}}-{{ release_channel_old }}"
+        dest: "{{ custom_release_server_path }}-{{ ROM_TYPE }}/{{ target_model}}-{{ release_channel_new }}"
 
     - name: "Adapt OTA info"
       lineinfile:
-          path: "{{ custom_release_server_path }}/{{ target_model}}-{{ release_channel_new }}"
+          path: "{{ custom_release_server_path }}-{{ ROM_TYPE }}/{{ target_model}}-{{ release_channel_new }}"
           regexp: '(.*\s+){{ release_channel_old }}'
           line: '\1{{ release_channel_new }}'
           backrefs: yes
