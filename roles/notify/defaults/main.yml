@@ -6,7 +6,10 @@ tg_success: |
         {{ device_cl }}
         Build ID: {{ build_id | replace(".","\.") }}
         {% if release_channel is defined %}
-        Release Channel: {{ release_channel | regex_escape() }}
+        Release channel: {{ release_channel | regex_escape() }}
+        {% endif %}
+        {% if ROM_TYPE is defined %}
+        Release type: {{ ROM_TYPE | regex_escape() }}
         {% endif %}
         {% if sec_level_date.stdout is defined %}
         ***Platform security patch level:*** {{ sec_level_date.stdout | regex_escape() }}
@@ -36,5 +39,8 @@ tg_failed: |
         \- Build ident: _{{ BUILDIDENT | replace("-","\-") }}_
         \- Build ID:  {{ build_id | regex_escape() }}
         {% if release_channel is defined %}
-        \- Release Channel: {{ release_channel | regex_escape() }}
+        \- Release channel: {{ release_channel | regex_escape() }}
+        {% endif %}
+        {% if ROM_TYPE is defined %}
+        \- Release type: {{ ROM_TYPE | regex_escape() }}
         {% endif %}
