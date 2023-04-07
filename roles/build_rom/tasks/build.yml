@@ -16,7 +16,10 @@
       
       Build ID: {{ build_id }}
       {% if release_channel is defined %}
-      Release Channel: {{ release_channel }}
+      Release channel: {{ release_channel }}
+      {% endif %}
+      {% if ROM_TYPE is defined %}
+      Release type: {{ ROM_TYPE | regex_escape() }}
       {% endif %}
       ROM_FLAVOR: {{ ROM_FLAVOR }}
       RELEASE_TYPE: {{ RELEASE_TYPE | d("N/A") }}
