@@ -3,8 +3,11 @@
 # human readable model name
 target_model_full: "OnePlus 7T pro"
 
+SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}-aosp"
+
 # TWRP repo branch
-git_repo_main_branch: "android-12.1"
+git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git"
+git_repo_main_branch: "twrp-12.1"
 
 # specify lunch target
 LUNCHTARGET: "twrp_hotdogv2-eng"
@@ -16,8 +19,6 @@ DTPATH: "{{ SRCPATH }}/device/oneplus/hotdogv2"
 
 # kernel (prebuilt OP kernel - permissive)
 KERNPATH: "kernel/oneplus/hotdog"
-#KERNGIT: "https://github.com/OnePlusOSS/android_kernel_oneplus_sm8150.git"
-#KERNBRANCH: "SM8150_Q_10.0"
 
 # shrp_release_type can be set by Semaphore or here when NOT shrp_release_type = PREVIEW
 shrp_release_type: Official
