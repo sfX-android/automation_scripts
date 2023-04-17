@@ -10,19 +10,17 @@ git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_mani
 git_repo_main_branch: "twrp-12.1"
 
 # specify lunch target
-LUNCHTARGET: "twrp_hotdogv2-eng"
+LUNCHTARGET: "twrp_hotdog-eng"
 
 # device tree
-DTURI: "https://github.com/Systemad/android_device_oneplus_hotdogv2.git"
-DTBRANCH: "a12"
-DTPATH: "{{ SRCPATH }}/device/oneplus/hotdogv2"
+DTURI: "https://github.com/sfX-android/android_device_oneplus_hotdog.git"
+DTBRANCH: "android-12_twrp"
+DTPATH: "{{ SRCPATH }}/device/oneplus/hotdog"
 
 # kernel (prebuilt OP kernel - permissive)
 KERNPATH: "kernel/oneplus/hotdog"
 
-# shrp_release_type can be set by Semaphore or here when NOT shrp_release_type = PREVIEW
-shrp_release_type: Official
-RELEASE_TYPE: "{{ shrp_release_type }}"
+RELEASE_TYPE: UNOFFICIAL
 
 # overwrite notify var
 kernel_cl: |-
