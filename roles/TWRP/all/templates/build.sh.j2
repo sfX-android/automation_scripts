@@ -10,7 +10,9 @@ export USE_CCACHE=0
 export LC_ALL=C
 export ALLOW_MISSING_DEPENDENCIES=true
 export DISABLE_APEX_LIBS_ABSENCE_CHECK=true
+{% if android_shortversion == "a9" or android_shortversion == "a10" or android_shortversion == "a11" %}
 export TEMPORARY_DISABLE_PATH_RESTRICTIONS=true
+{% endif %}
 
 # set source path
 export SRCPATH="{{ SRCPATH }}"
