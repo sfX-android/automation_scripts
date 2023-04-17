@@ -3,6 +3,8 @@
 - include: get_secpatchlevel.yml
   when: 
     - ROM_FLAVOR != "MAID"
+    - ROM_FLAVOR != "TWRP"
+    - ROM_FLAVOR != "SHRP"
     - sec_level_date.stdout is undefined
 
 - include: telegram.yml
