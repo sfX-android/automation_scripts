@@ -32,8 +32,8 @@ if [ "$EOS_RELEASE_TYPE" == "CUSTOM" ];then
     export ENABLE_EXTENDROM={{ use_extendrom }}
     export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
     export EXTENDROM_BOOT_DEBUG=true
-    #export EXTENDROM_DEBUG_PATH=/persist-lg
-    export EXTENDROM_DEBUG_PATH=/metadata
+    export EXTENDROM_DEBUG_PATH=/persist
+    #export EXTENDROM_DEBUG_PATH=/metadata
     export EXTENDROM_DEBUG_PATH_SIZE_FULL=200
     export EXTENDROM_DEBUG_PATH_SIZE_KERNEL=100
     vendor/extendrom/er.sh
