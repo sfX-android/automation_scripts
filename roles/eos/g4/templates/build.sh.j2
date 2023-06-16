@@ -8,7 +8,7 @@ set -e
 # 2. mkdir -p ~/.venv/python2
 # 3. virtualenv --python=$(which python2) ~/.venv/python2
 case {{ git_repo_main_branch }} in
-    *-pie|*-p|lineage-16*) source ~/.venv/python2/bin/activate ;;
+    *-pie|*-p|lineage-16*|android-9*) source ~/.venv/python2/bin/activate ;;
 esac
 
 # set required vars
@@ -25,7 +25,7 @@ export EOS_USE_CCACHE={{ USE_CCACHE }}
 # setup build env 
 cd {{ SRCPATH }}
 source build/envsetup.sh
-lunch lineage_{{ sub_model }}-user
+lunch lineage_{{ sub_model }}-userdebug
 
 # handle custom build accordingly
 if [ "$EOS_RELEASE_TYPE" == "CUSTOM" ];then
