@@ -4,3 +4,4 @@
   when: 
     - blocking_service_name is defined
     - blocking_service_host is defined
+    - blocking_service_name != "xmrig"
