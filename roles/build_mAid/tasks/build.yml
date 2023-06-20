@@ -37,7 +37,7 @@
 
 - fail:
     msg: |
-    ERROR: mAid HOOK IS MISSING! CHECK /usr/bin/buildiso!!
+      ERROR: mAid HOOK IS MISSING! CHECK /usr/bin/buildiso!!
     
   when: (maid_hook is changed) or (maid_hook is failed)
 
