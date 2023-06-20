@@ -29,6 +29,7 @@
   lineinfile:
     path: /usr/bin/buildiso
     regexp: ^import.*/mAid.func
+    line: mAid.func
     state: present
   check_mode: true
   register: maid_hook
