@@ -28,8 +28,8 @@
 - name: "check mAid hook"
   lineinfile:
     path: /usr/bin/buildiso
-    regexp: ^import.*/mAid.func
-    line: mAid.func
+    regexp: ^import /home/jenkins/build_maid/mAid.func
+    line: import /home/jenkins/build_maid/mAid.func
     state: present
   check_mode: true
   register: maid_hook
