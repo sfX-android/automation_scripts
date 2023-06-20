@@ -25,6 +25,21 @@
   when: not skip_clean_build | bool
   delegate_to: "{{ groups.buildserver[0] }}"
 
+- name: "check mAid hook"
+  lineinfile:
+    path: /usr/bin/buildiso
+    regexp: ^import.*/mAid.func
+    state: present
+  check_mode: true
+  register: maid_hook
+  delegate_to: "{{ groups.buildserver[0] }}"
+
+- fail:
+    msg: |
+    ERROR: mAid HOOK IS MISSING! CHECK /usr/bin/buildiso!!
+    
+  when: (maid_hook is changed) or (maid_hook is failed)
+
 - name: "Starting mAid build"
   debug:
     msg: |
