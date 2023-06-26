@@ -16,7 +16,7 @@
       release ISO: {{ release_build_def }} (default: {{ release_build }})
       release packages: {{ release_packages_def }} (default: {{ release_packages }})
       Selected mAid Kernel: {{ maid_kernel }}
-      mAid build size: {{ maid_size | d('light') }}
+      mAid build size: {{ maid_size }}
       
       __________________________________________________
    
@@ -66,7 +66,7 @@
     MAID_VERSION: "{{ MAID_VERSION | d('') }}"
     MAID_TYPE: "{{ RELEASE_TYPE | d('nightly') }}"
     MAID_KERNEL: "{{ maid_kernel }}"
-    MAID_SIZE: "{{ maid_size | d('light') }}"
+    MAID_SIZE: "{{ maid_size }}"
     REPO_UPLOAD_PKG_SRV: >-
         {% if release_packages_def %}{{ REPO_UPLOAD_PKG_SRV }}{% endif %}
     REPO_UPLOAD_PKG_USER: "{{ vault_buildmaidserver_user }}"
