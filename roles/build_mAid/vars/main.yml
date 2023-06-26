@@ -19,6 +19,9 @@ maid_build_path: "/var/tmp"
 # default mAid kernel if not specified in Semaphore
 maid_kernel: linux515
 
+# default build size if not specified in Semaphore
+maid_size: light
+
 # default build vars
 debug_build: 'false'
 skip_clean_build: 'false'
