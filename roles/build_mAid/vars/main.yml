@@ -32,8 +32,9 @@ commit_uri_id: >
 tg_success: |
         {{ ICON_GOOD }} ***New build has finished\!***
         
-        ***mAid v{{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }} \- {{ RELEASE_TYPE | d('nightly') | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}***
-        
+        ***mAid {{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }} \- {{ RELEASE_TYPE | d('nightly') | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}***
+
+        \- Size: **{{ maid_size }}** (see [wiki](https://code.binbash.rocks:8443/mAid/build/wiki/Frequently-Asked-Questions#what-means-light-full))
         \- Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/{{ commit_uri_id }})
         \- Download: [ISO]({{ dl_link }})
         
