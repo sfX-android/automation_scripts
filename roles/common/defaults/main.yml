@@ -160,7 +160,7 @@ incompat_cross_version_paths_DISABLED:
 #topic:P_asb_2022-03 OR # merged officially!
 #topic:P_asb_2022-04 OR # merged officially!
 # https://review.lineageos.org/q/topic:xxxx
-SECPATCH_DATE_PIE: "2023-05"
+SECPATCH_DATE_PIE: "2023-06"
 sec_patch_topics_pie: >-
       topic:P_asb_2022-05 OR
       topic:P_asb_2022-06 OR
@@ -174,4 +174,5 @@ sec_patch_topics_pie: >-
       topic:P_asb_2023-02 OR
       topic:P_asb_2023-03 OR
       topic:P_asb_2023-04 OR
+      topic:P_asb_2023-05 OR
       topic:P_asb_{{ SECPATCH_DATE_PIE }}
