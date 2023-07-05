@@ -41,7 +41,11 @@
           date="{{ ansible_date_time.iso8601 }}"
           play=debug.yml
           role="{{ ROM_FLAVOR }}"
-  
+
+    - name: fake sec patch date
+      shell: echo 2023-06-05
+      register: sec_level_date
+      
     - name: "Telegram TEST notify"
       connection: local
       community.general.telegram:
@@ -49,5 +53,8 @@
         api_args:
           chat_id: "{{ vault_tg_group_id_failing }}"
           parse_mode: "MarkdownV2"
-          text: "DEBUG playbook ended successfully"
+          text: |
+            DEBUG playbook ended successfully
+
+            ***Platform security patch level:*** [{{ sec_level_date.stdout | regex_escape() }}](https://source.android.com/docs/security/bulletin/{{ sec_level_date.stdout | regex_escape() | regex_replace('(\d+-\d+\-)(05)','\1-01' ) }})
           disable_web_page_preview: True
