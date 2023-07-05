@@ -11,11 +11,11 @@
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
     - android_shortversion == "pie" or android_shortversion == "v1-pie" or android_shortversion == "a9"
 
-- name: "register custom patch date for pie"
-  shell: "echo {{ SECPATCH_DATE_PIE }}-01"
-  register: sec_level_date
-  when:
-    - android_shortversion == "pie" or android_shortversion == "v1-pie" or android_shortversion == "a9"
+#- name: "register custom patch date for pie"
+#  shell: "echo {{ SECPATCH_DATE_PIE }}-01"
+#  register: sec_level_date
+#  when:
+#    - android_shortversion == "pie" or android_shortversion == "v1-pie" or android_shortversion == "a9"
 
 - include: patch_a12.yml
   when:
