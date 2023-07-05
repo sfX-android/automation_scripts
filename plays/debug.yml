@@ -56,5 +56,5 @@
           text: |
             DEBUG playbook ended successfully
 
-            ***Platform security patch level:*** [{{ sec_level_date.stdout | regex_escape() }}](https://source.android.com/docs/security/bulletin/{{ sec_level_date.stdout | regex_escape() | regex_replace('(\d+-\d+)(-05)','\1-01' ) }})
+            ***Platform security patch level:*** [{{ sec_level_date.stdout | regex_escape() }}](https://source.android.com/docs/security/bulletin/{{ sec_level_date.stdout | regex_escape() | regex_replace('([0-9]+-[0-9]+)(-05)','\1-01' ) }})
           disable_web_page_preview: True
