@@ -4,6 +4,9 @@
 # be strict on failures
 set -e
 
+# fix build errors
+export LC_ALL=C
+
 unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EXTENDROM EXTENDROM_PACKAGES
 
 ########################### SYNC / PREPARE #########################
