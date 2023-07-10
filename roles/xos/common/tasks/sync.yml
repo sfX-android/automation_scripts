@@ -6,4 +6,4 @@
     git pull
     git submodule update --init --recursive
   args:
-    chdir: "{{ SRCPATH }}"
+    chdir: "{{ DOSPATH }}"
