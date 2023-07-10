@@ -12,7 +12,7 @@ unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EX
 cd {{ SRCPATH }}
 
 # make signing keys extendrom compatible
-ln -s ../../Signing_Keys/4096pro/{{ target_model }}/ Build/LineageOS-{{ los_version }}/user-keys
+ln -s ../../Signing_Keys/4096pro/{{ target_model }}/ user-keys
 
 # add the local manifest
 [ -d .repo/local_manifests ] && rm -rf .repo/local_manifests
