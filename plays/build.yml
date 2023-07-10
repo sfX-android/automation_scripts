@@ -29,14 +29,9 @@
           name: common
 
       - include_role:
-          name: eos/common
+          name: "{{ ROM_FLAVOR }}/common"
           public: yes
-        when: ROM_FLAVOR == "eos"
-
-      - include_role:
-          name: graphene/common
-          public: yes
-        when: ROM_FLAVOR == "graphene"
+        when: ROM_FLAVOR == "xos" OR ROM_FLAVOR == "graphene" OR ROM_FLAVOR == "eos"
 
       - debug:
           var: vault_tg_group_id_failing
