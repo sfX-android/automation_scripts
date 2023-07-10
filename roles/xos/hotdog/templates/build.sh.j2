@@ -8,13 +8,7 @@ unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EX
 
 ########################### SYNC / PREPARE #########################
 
-# sync DOS build 
-cd {{ SRCPATH }}
-git reset --hard
-git pull
-git submodule update --init --recursive
-
-# move on to the real build dir
+# move to the real build dir
 cd /home/androidsource/do-not-touch/divest/Build/LineageOS-{{ los_version }}
 
 # make signing keys extendrom compatible
