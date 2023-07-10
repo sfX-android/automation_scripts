@@ -20,17 +20,20 @@ cd /home/androidsource/do-not-touch/divest/Build/LineageOS-{{ los_version }}
 # make signing keys extendrom compatible
 ln -s ../../Signing_Keys/4096pro/{{ target_model }}/ Build/LineageOS-{{ los_version }}/user-keys
 
-#Add the local manifest
+# add the local manifest
 cat ../../Manifests/Manifest_LAOS-20.0.xml > .repo/local_manifests/local_manifest.xml;
-git clone 
+[ -d .repo/local_manifests ] && rm -rf .repo/local_manifests
+git clone {{ git_repo_local_manifests }} .repo/local_manifests -b {{ git_repo_local_manifests_branch }}
 
 # sync Android
 #repo forall -j${DOS_MAX_THREADS_REPO} -c 'git am --abort; git revert --abort' || true
 #resetWorkspace
 #rm -rf packages/apps/Fennec_DOS-Shim/ vendor/divested/ vendor/fdroid_prebuilt/ packages/apps/SupportDivestOS/
 #patchWorkspace
-repo init -u https://github.com/LineageOS/android.git -b lineage-{{ los_version }} --git-lfs;
-repo -j14 sync
+#repo init -u https://github.com/LineageOS/android.git -b lineage-{{ los_version }} --git-lfs;
+#repo -j14 sync
+
+# worarkound for dirty builds
 [ -d out/target/product/$BDEVICE/rec_tmp ] && rm -rf out/target/product/$BDEVICE/rec_tmp
 
 # Workaround for 20.0+
@@ -49,6 +52,9 @@ if [ "{{ USE_CCACHE }}" -eq 1 ];then
     {{ CCACHE_EXEC }} --max-size=10G
 fi
 
+# all the extendrom MAGIC!!
+vendor/extendrom/get_prebuilts.sh
+
 # setup build env    
 source build/envsetup.sh
 breakfast lineage_{{ target_model }}-user
@@ -58,6 +64,7 @@ make -j15 generate_verity_key
 export ENABLE_EXTENDROM=true
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
 export EXTENDROM_PREROOT_BOOT=true
+export MAGISK_TARGET_ARCH=arm64
 export EXTENDROM_BOOT_DEBUG=true
 export EXTENDROM_DEBUG_PATH=/metadata
 export EXTENDROM_DEBUG_PATH_SIZE_FULL=200
