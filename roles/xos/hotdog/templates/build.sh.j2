@@ -1,0 +1,74 @@
+#!/bin/bash
+####################################################################################################################
+
+# be strict on failures
+set -e
+
+unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EXTENDROM EXTENDROM_PACKAGES
+
+########################### SYNC / PREPARE #########################
+
+# sync DOS build 
+cd {{ SRCPATH }}
+git reset --hard
+git pull
+git submodule update --init --recursive
+
+# move on to the real build dir
+cd /home/androidsource/do-not-touch/divest/Build/LineageOS-{{ los_version }}
+
+# make signing keys extendrom compatible
+ln -s ../../Signing_Keys/4096pro/{{ target_model }}/ Build/LineageOS-{{ los_version }}/user-keys
+
+#Add the local manifest
+cat ../../Manifests/Manifest_LAOS-20.0.xml > .repo/local_manifests/local_manifest.xml;
+git clone 
+
+# sync Android
+#repo forall -j${DOS_MAX_THREADS_REPO} -c 'git am --abort; git revert --abort' || true
+#resetWorkspace
+#rm -rf packages/apps/Fennec_DOS-Shim/ vendor/divested/ vendor/fdroid_prebuilt/ packages/apps/SupportDivestOS/
+#patchWorkspace
+repo init -u https://github.com/LineageOS/android.git -b lineage-{{ los_version }} --git-lfs;
+repo -j14 sync
+[ -d out/target/product/$BDEVICE/rec_tmp ] && rm -rf out/target/product/$BDEVICE/rec_tmp
+
+# Workaround for 20.0+
+awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+
+source ../../Scripts/init.sh;
+
+########################### BUILD #########################
+
+# CCACHE
+export USE_CCACHE={{ USE_CCACHE }}
+if [ "{{ USE_CCACHE }}" -eq 1 ];then
+    export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
+    mkdir -p {{ CCACHE_DIR }}
+    export CCACHE_DIR="{{ CCACHE_DIR }}"
+    {{ CCACHE_EXEC }} --max-size=10G
+fi
+
+# setup build env    
+source build/envsetup.sh
+breakfast lineage_{{ target_model }}-user
+make -j15 generate_verity_key
+
+# extendrom
+export ENABLE_EXTENDROM=true
+export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+export EXTENDROM_PREROOT_BOOT=true
+export EXTENDROM_BOOT_DEBUG=true
+export EXTENDROM_DEBUG_PATH=/metadata
+export EXTENDROM_DEBUG_PATH_SIZE_FULL=200
+export EXTENDROM_DEBUG_PATH_SIZE_KERNEL=100
+vendor/extendrom/er.sh
+
+# build
+#mka sepolicy
+#mka bootimage
+
+# disable incremental builds:
+#[ -d /ssd/dos/builds//LineageOS-{{ los_version }}/release_keys/ ] && rm -r /ssd/dos/builds//LineageOS-{{ los_version }}/release_keys/
+
+buildDevice hotdog

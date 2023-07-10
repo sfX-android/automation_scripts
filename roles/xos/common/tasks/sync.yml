@@ -1,0 +1,6 @@
+---
+
+- name: sync submodules
+  shell: "git submodule update --init --recursive"
+  args:
+    chdir: "{{ SRCPATH }}"

@@ -1,0 +1,24 @@
+---
+# git
+git_repo_main_manifests: "https://github.com/LineageOS/android.git"
+
+# build vars
+los_version: "{{ android_shortversion | replace('a13','20.0') replace('a12','19.1') | replace('a9','16.0') }}"
+DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
+SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
+REPOBRANCH: "lineage-{{ los_version }}"
+PREFIXFNAME: "{{ REPOBRANCH }}"
+JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ BDEVICE }}"
+USE_CCACHE: 1
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ BDEVICE }}/"
+
+# notification vars
+ota_hint: |-
+  ***OTA Update:*** supported
+
+rom_cl: |-
+  ***Changes:***
+  \- LineageOS: [Changelog](https://divestos.org/pages/news)
+
+dl_links: |-
+  ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})
