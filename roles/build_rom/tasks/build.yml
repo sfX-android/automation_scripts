@@ -7,7 +7,7 @@
     msg: |
       #
       
-      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ git_repo_main_branch }} has been started, lean back and let the CPUs burn ...
+      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ git_repo_main_branch | d(android_shortversion) }} has been started, lean back and let the CPUs burn ...
       
       Variables in use:
 
