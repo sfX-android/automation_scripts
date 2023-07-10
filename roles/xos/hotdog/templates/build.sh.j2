@@ -9,13 +9,12 @@ unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EX
 ########################### SYNC / PREPARE #########################
 
 # move to the real build dir
-cd /home/androidsource/do-not-touch/divest/Build/LineageOS-{{ los_version }}
+cd {{ SRCPATH }}
 
 # make signing keys extendrom compatible
 ln -s ../../Signing_Keys/4096pro/{{ target_model }}/ Build/LineageOS-{{ los_version }}/user-keys
 
 # add the local manifest
-cat ../../Manifests/Manifest_LAOS-20.0.xml > .repo/local_manifests/local_manifest.xml;
 [ -d .repo/local_manifests ] && rm -rf .repo/local_manifests
 git clone {{ git_repo_local_manifests }} .repo/local_manifests -b {{ git_repo_local_manifests_branch }}
 
