@@ -12,7 +12,7 @@ unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EX
 cd {{ SRCPATH }}
 
 # make signing keys extendrom compatible
-ln -s ../../Signing_Keys/4096pro/{{ target_model }}/ user-keys
+[ ! -L user-keys ] && ln -s ../../Signing_Keys/4096pro/{{ target_model }}/ user-keys
 
 # add the local manifest
 [ -d .repo/local_manifests ] && rm -rf .repo/local_manifests
@@ -32,6 +32,7 @@ git clone {{ git_repo_local_manifests }} .repo/local_manifests -b {{ git_repo_lo
 # Workaround for 20.0+
 awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
 
+export BDEVICE={{ target_model }}
 source ../../Scripts/init.sh;
 
 ########################### BUILD #########################
@@ -44,9 +45,6 @@ if [ "{{ USE_CCACHE }}" -eq 1 ];then
     export CCACHE_DIR="{{ CCACHE_DIR }}"
     {{ CCACHE_EXEC }} --max-size=10G
 fi
-
-# all the extendrom MAGIC!!
-vendor/extendrom/get_prebuilts.sh
 
 # setup build env    
 source build/envsetup.sh
