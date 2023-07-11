@@ -8,7 +8,7 @@ DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
 REPOBRANCH: "lineage-{{ los_version }}"
 PREFIXFNAME: "{{ REPOBRANCH }}"
-JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ BDEVICE }}"
+ZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/{{ BDEVICE }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ BDEVICE }}/"
 
@@ -21,4 +21,4 @@ rom_cl: |-
   \- LineageOS: [Changelog](https://divestos.org/pages/news)
 
 dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ sub_model }})
+  ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
