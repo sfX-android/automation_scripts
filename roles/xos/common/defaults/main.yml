@@ -12,6 +12,14 @@ ZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/{{ BDEVICE }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ BDEVICE }}/"
 
+# keys
+KEYS_CN: "X.OS"
+KEYS_SIZE: 8192
+KEYS_HASHTYPE: sha512
+keysdir: "{{ DOSPATH }}/Signing_Keys/4096pro/{{ target_model }}/"
+
+ROM_VERSION: "{{ build_id }}"
+
 # notification vars
 ota_hint: |-
   ***OTA Update:*** supported
