@@ -3,7 +3,7 @@
 - name: sync DOS
   shell: |
     git reset --hard
-    git checkout {{ xos_main_branch }}
+    git checkout {{ xos_main_branch | d(default_xos_main_branch) }}
     git pull
     git submodule update --init --recursive
   args:
