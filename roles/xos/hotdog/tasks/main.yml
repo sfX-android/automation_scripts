@@ -1,11 +1,5 @@
 ---
 
 - include: ../../common/tasks/setvars.yml
-- include: ../../common/tasks/clean.yml
-
-# include the DOS sync
-- include: ../common/tasks/sync.yml
-  when: (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
-
 #- include: fetch_recovery.yml
 - include: copy.yml
