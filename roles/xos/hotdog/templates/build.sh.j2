@@ -11,6 +11,8 @@ unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EX
 
 ########################### SYNC / PREPARE #########################
 
+export BDEVICE={{ target_model }}
+
 # move to the real build dir
 cd {{ SRCPATH }}
 
@@ -22,23 +24,25 @@ cd {{ SRCPATH }}
 git clone {{ git_repo_local_manifests }} .repo/local_manifests -b {{ git_repo_local_manifests_branch }}
 
 # sync Android
-#repo forall -j${DOS_MAX_THREADS_REPO} -c 'git am --abort; git revert --abort' || true
-#resetWorkspace
-#rm -rf packages/apps/Fennec_DOS-Shim/ vendor/divested/ vendor/fdroid_prebuilt/ packages/apps/SupportDivestOS/
-#patchWorkspace
-#repo init -u https://github.com/LineageOS/android.git -b lineage-{{ los_version }} --git-lfs;
-#repo -j14 sync
+source ../../Scripts/init.sh
+rm -rf packages/apps/Fennec_DOS-Shim/ vendor/divested/ vendor/fdroid_prebuilt/ packages/apps/SupportDivestOS/
+resetWorkspace
+repo forall -j${DOS_MAX_THREADS_REPO} -c 'git am --abort; git revert --abort' || true
+repo init -u https://github.com/LineageOS/android.git -b lineage-20.0 --git-lfs;
+repo sync -j${DOS_MAX_THREADS_REPO} 
+patchWorkspace
 
 # worarkound for dirty builds
 [ -d out/target/product/$BDEVICE/rec_tmp ] && rm -rf out/target/product/$BDEVICE/rec_tmp
 
-# Workaround for 20.0+
+# DOS workaround for 20.0+
 awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
 
-export BDEVICE={{ target_model }}
-source ../../Scripts/init.sh;
-
 ########################### BUILD #########################
+
+# setup build env    
+source build/envsetup.sh
+breakfast lineage_{{ target_model }}-user
 
 # CCACHE
 export USE_CCACHE={{ USE_CCACHE }}
@@ -49,9 +53,7 @@ if [ "{{ USE_CCACHE }}" -eq 1 ];then
     {{ CCACHE_EXEC }} --max-size=10G
 fi
 
-# setup build env    
-source build/envsetup.sh
-breakfast lineage_{{ target_model }}-user
+# ??
 make -j15 generate_verity_key
 
 # extendrom
@@ -70,6 +72,6 @@ vendor/extendrom/er.sh
 #mka bootimage
 
 # disable incremental builds:
-#[ -d /ssd/dos/builds//LineageOS-{{ los_version }}/release_keys/ ] && rm -r /ssd/dos/builds//LineageOS-{{ los_version }}/release_keys/
+[ -d /ssd/xos/builds/LineageOS-{{ los_version }}/release_keys/ ] && rm -r /ssd/xos/builds//LineageOS-{{ los_version }}/release_keys/
 
 buildDevice hotdog
