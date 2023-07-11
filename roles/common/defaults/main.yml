@@ -26,7 +26,7 @@ build_id: "{{ sm_build_id | regex_replace(' ','') }}"
 repo_bin: /home/androidsource/bin/repo
 
 # number of threads used e.g. with repo binary etc
-max_processes: 15
+max_processes: 16
 
 # ssh port where the release server is reachable (coming from the build server)
 RELEASESVR_port: 22
