@@ -7,7 +7,8 @@
     path: "{{ item }}"
     state: absent
   loop:
-    - packages/apps/Fennec_DOS-Shim
-    - vendor/divested
-    - vendor/fdroid_prebuilt
-    - packages/apps/SupportDivestOS
+    - "{{ SRCPATH }}/packages/apps/Fennec_DOS-Shim"
+    - "{{ SRCPATH }}/vendor/divested"
+    - "{{ SRCPATH }}/vendor/fdroid_prebuilt"
+    - "{{ SRCPATH }}/packages/apps/SupportDivestOS"
+    - "{{ SRCPATH }}/out/target/product/{{ target_model }}/rec_tmp"
