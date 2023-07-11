@@ -16,5 +16,5 @@
     - "{{ SRCPATH }}/vendor/divested"
     - "{{ SRCPATH }}/vendor/fdroid_prebuilt"
     - "{{ SRCPATH }}/packages/apps/SupportDivestOS"
-   when: 
+  when: 
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
