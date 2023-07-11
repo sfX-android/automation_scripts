@@ -1,7 +1,14 @@
 #!/bin/bash
-############################################################################
+################################################################################################################
 # global vars for X.OS
-############################################################################
+#
+# can be overwritten / extended by device specific definitions.
+# Device example:
+# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/xos/hotdog/templates/divested.vars.j2
+#
+# additional / current list of possible options:
+# https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
+################################################################################################################
 
 # General
 export DOS_MAX_THREADS_REPO=4     # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 8)
