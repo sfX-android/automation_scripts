@@ -1,5 +1,6 @@
 ---
 
 - include: ../../common/tasks/setvars.yml
+- include: ../../common/tasks/clean.yml
 #- include: fetch_recovery.yml
 - include: copy.yml
