@@ -7,3 +7,14 @@
     git submodule update --init --recursive
   args:
     chdir: "{{ DOSPATH }}"
+    executable: /bin/bash
+
+- name: "apply DOS patches"
+  shell: |
+    source ../../Scripts/init.sh
+    patchWorkspace
+    # DOS workaround for 20.0+
+    awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
