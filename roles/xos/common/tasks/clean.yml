@@ -2,7 +2,7 @@
 
 - include: ../../common/tasks/clean.yml
 
-- name: "Specific DOS cleanup"
+- name: "Specific DOS basic cleanup"
   file:
     path: "{{ item }}"
     state: absent
