@@ -3,5 +3,5 @@
 - name: "Allow to set SElinux = Permissive"
   lineinfile:
     path: "{{ DOSPATH }}/Scripts/Common/Functions.sh"
-    regexp: '^\s+optionsNo.*"SECURITY_SELINUX_DISABLE".*"SECURITY_WRITABLE_HOOKS".*'
-    line: '### DISABLED TO ALLOW PERMISSIVE: optionsNo+=("SECURITY_SELINUX_DISABLE" "SECURITY_WRITABLE_HOOKS");'
+    regexp: '(^\s+optionsNo.*"SECURITY_SELINUX_DISABLE".*"SECURITY_WRITABLE_HOOKS".*)'
+    line: '### DISABLED TO ALLOW PERMISSIVE: \1'
