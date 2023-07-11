@@ -52,8 +52,10 @@ ICON_BAD: ☠️
 custom_release_script: false
 
 # build vars
+BUILDHOME: /home/jenkins
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
-JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ target_model }}"
+ZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ target_model }}"
+JKZIPDIR: "{{ ZIPDIR }}"
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
@@ -82,7 +84,6 @@ override_sync: 'undef'
 prob_repo_paths:
   - "barbet-sepolicy"
   - bootable_recovery
-#  - "libbrillo"
 
 # cross build: problematic source paths
 incompat_cross_version_paths:
