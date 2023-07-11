@@ -2,6 +2,9 @@
 # git
 git_repo_main_manifests: "https://github.com/LineageOS/android.git"
 
+# DOS main branch
+default_xos_main_branch: '2023-07-10'
+
 # build vars
 los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','19.1') | replace('a9','16.0') }}"
 DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
