@@ -9,6 +9,9 @@
     chdir: "{{ DOSPATH }}"
     executable: /bin/bash
 
+# sync LOS etc
+- include: ../../common/tasks/sync.yml
+
 - name: "apply DOS patches"
   shell: |
     source ../../Scripts/init.sh
