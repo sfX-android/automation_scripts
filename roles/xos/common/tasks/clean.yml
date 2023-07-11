@@ -1,5 +1,7 @@
 ---
 
+- include_tasks: ../../common/tasks/clean.yml
+
 - name: "Specific DOS -basic- cleanup"
   file:
     path: "{{ item }}"
