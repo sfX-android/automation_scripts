@@ -10,7 +10,7 @@
     executable: /bin/bash
 
 # sync LOS etc
-- include: ../../common/tasks/sync.yml
+- import: ../../common/tasks/sync.yml
 
 - name: "apply DOS patches"
   shell: |
