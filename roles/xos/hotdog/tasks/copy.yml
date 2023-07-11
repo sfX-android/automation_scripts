@@ -10,3 +10,8 @@
     src: build.sh.j2
     dest: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
     mode: 0700
+
+- name: "Set device vars"
+  template:
+    src: divested.vars.j2
+    dest: ".divested.vars"
