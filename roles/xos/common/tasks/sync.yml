@@ -15,10 +15,11 @@
 
 - name: "apply DOS patches"
   shell: |
-    export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.local/bin:$PATH"
     source ../../Scripts/init.sh 
     patchWorkspace 
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+  environment:
+    PATH: "$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.local/bin:$PATH"
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
