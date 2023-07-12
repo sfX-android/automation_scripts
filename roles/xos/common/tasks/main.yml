@@ -1,7 +1,7 @@
 ---
 
 - include: clean.yml
-- include: copy.yml
+- include: vars.yml
 
 - block:
 
