@@ -15,7 +15,6 @@
 
 - name: "apply DOS patches"
   shell: |
-    source $HOME/.bashrc && echo "source1 success"
     source ../../Scripts/init.sh  && echo "source2 success" && patchWorkspace
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   environment:
