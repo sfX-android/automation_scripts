@@ -20,7 +20,7 @@
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   environment:
     BDEVICE: "{{ target_model }}"
-    PATH: "$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH: "{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   args:
     chdir: "{{ SRCPATH }}"
     executable: "{{ BUILDHOME }}/.local/bin/sh"
