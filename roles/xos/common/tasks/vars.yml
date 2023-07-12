@@ -1,6 +1,0 @@
----
-
-- name: "Set global vars"
-  template:
-    src: divested.vars.j2
-    dest: ".divested.vars"
