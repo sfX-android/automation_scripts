@@ -14,6 +14,7 @@ PREFIXFNAME: "{{ REPOBRANCH }}"
 ZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/{{ BDEVICE }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ BDEVICE }}/"
+RELEASE_TYPE: OFFICIAL
 
 # keys
 KEYS_CN: "X.OS"
