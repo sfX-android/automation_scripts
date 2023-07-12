@@ -16,7 +16,7 @@
 - name: "apply DOS patches"
   shell: |
     source ../../Scripts/init.sh  && echo "source2 success" && patchWorkspace
-    awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+    #awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   environment:
     BDEVICE: "{{ target_model }}"
     PATH: "{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
