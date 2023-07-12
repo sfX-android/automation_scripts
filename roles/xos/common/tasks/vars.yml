@@ -7,5 +7,5 @@
     
 - name: "Set device vars"
   template:
-    src: divested.vars.j2
+    src: "divested.vars.j2.{{ target_model }}"
     dest: ".divested.vars.{{ target_model }}"
