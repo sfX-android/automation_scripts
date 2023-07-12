@@ -1,0 +1,11 @@
+---
+
+- name: "Set global vars"
+  template:
+    src: divested.vars.j2
+    dest: ".divested.vars"
+    
+- name: "Set device vars"
+  template:
+    src: divested.vars.j2
+    dest: ".divested.vars.{{ target_model }}"
