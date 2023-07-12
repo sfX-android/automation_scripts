@@ -15,10 +15,13 @@
 
 - name: "apply DOS patches"
   shell: |
-    source $HOME/.bashrc
-    source ../../Scripts/init.sh 
-    patchWorkspace 
+    source $HOME/.bashrc;
+    source ../../Scripts/init.sh ;
+    patchWorkspace ;
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
+
+- fail:
+    msg: boooooo
