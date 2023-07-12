@@ -15,6 +15,7 @@
 
 - name: "apply DOS patches"
   shell: |
+    alias sh=/bin/bash
     source ../../Scripts/init.sh  && echo "source2 success" && patchWorkspace
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   environment:
