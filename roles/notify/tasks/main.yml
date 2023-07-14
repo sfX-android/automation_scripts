@@ -6,5 +6,6 @@
     - ROM_FLAVOR != "TWRP"
     - ROM_FLAVOR != "SHRP"
     - sec_level_date.stdout is undefined
+    - buildresult.rc is defined and buildresult.rc == 0
 
 - include: telegram.yml
