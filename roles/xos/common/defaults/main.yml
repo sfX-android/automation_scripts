@@ -2,7 +2,8 @@
 # git
 git_repo_main_manifests: "https://github.com/LineageOS/android.git"
 
-# DOS main branch
+# DOS repo + main branch
+xos_git_repo: "git@github.com:sfX-android/build_divestos.git"
 default_xos_main_branch: '2023-07-14'
 
 # build vars
