@@ -26,7 +26,7 @@
 - name: "reset workspace (by DOS)"
   shell: |
     source ../../Scripts/init.sh  && echo "sourcing init: success" \
-      && repo forall -j${DOS_MAX_THREADS_REPO} -c 'git am --abort; git revert --abort' || true \
+      && repo forall -c 'git am --abort; git revert --abort' || true \
       && resetWorkspace >> {{ BUILD_LOG }} 2>&1
   register: resetout
   #failed_when: "'No error detected' not in resetout.stdout"
