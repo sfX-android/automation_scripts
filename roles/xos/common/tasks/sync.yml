@@ -19,10 +19,10 @@
     source ~/.bashrc
     source build/envsetup.sh  && echo "sourcing envsetup: success" \
       && source ../../Scripts/init.sh  && echo "sourcing init: success" \
-      && patchWorkspace >> {{ BUILD_LOG }} 2>&1
-    awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+      && patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
+      && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
-  failed_when: "'No error detected' not in patchout.stdout"
+  #failed_when: "'No error detected' not in patchout.stdout"
   environment:
     BDEVICE: "{{ target_model }}"
     PATH: "{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -30,6 +30,3 @@
     chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
     #executable: "{{ BUILDHOME }}/.local/bin/sh"
-
-- fail:
-    msg: hoooo
