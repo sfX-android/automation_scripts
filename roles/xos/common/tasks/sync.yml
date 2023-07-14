@@ -3,12 +3,15 @@
 - name: sync DOS
   shell: |
     git reset --hard
-    git init {{ xos_git_repo }} -b {{ xos_main_branch | d(default_xos_main_branch) }}
-    git pull
-    git submodule update --init --recursive
+    git init {{ xos_git_repo }} -b {{ xos_main_branch | d(default_xos_main_branch) }} \
+      && git pull \
+      && git submodule update --init --recursive
   args:
     chdir: "{{ DOSPATH }}"
     executable: /bin/bash
+
+- fail:
+    msg: gooo
 
 # sync LOS etc
 - include_tasks: ../../../common/tasks/sync.yml
