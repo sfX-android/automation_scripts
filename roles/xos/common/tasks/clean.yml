@@ -1,6 +1,8 @@
 ---
 
 - include_tasks: ../../../common/tasks/clean.yml
+  vars:
+    override_reset_git: false
 
 - name: "Specific DOS -basic- cleanup"
   file:
@@ -20,3 +22,18 @@
     - "{{ SRCPATH }}/packages/apps/SupportDivestOS"
   when: 
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+
+- name: "reset workspace (by DOS)"
+  shell: |
+    source ../../Scripts/init.sh  && echo "sourcing init: success" \
+      && repo forall -j${DOS_MAX_THREADS_REPO} -c 'git am --abort; git revert --abort' || true \
+      && resetWorkspace >> {{ BUILD_LOG }} 2>&1
+    awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+  register: resetout
+  #failed_when: "'No error detected' not in resetout.stdout"
+  environment:
+    BDEVICE: "{{ target_model }}"
+    PATH: "{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: "{{ BUILDHOME }}/.local/bin/sh"
