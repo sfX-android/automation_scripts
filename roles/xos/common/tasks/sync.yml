@@ -16,6 +16,7 @@
 
 - name: "apply DOS patches"
   shell: |
+    source ~/.bashrc
     source build/envsetup.sh  && echo "sourcing envsetup: success" \
       && source ../../Scripts/init.sh  && echo "sourcing init: success" \
       && patchWorkspace >> {{ BUILD_LOG }} 2>&1
@@ -28,3 +29,6 @@
   args:
     chdir: "{{ SRCPATH }}"
     executable: "{{ BUILDHOME }}/.local/bin/sh"
+
+- fail:
+    msg: hoooo
