@@ -1,7 +1,7 @@
 ---
  
 - name: "Apply signing fixes"
-  shell: "git apply device/oneplus/sm8150-common/patches/{{ item }}"
+  shell: "patch -p1 < device/oneplus/sm8150-common/patches/{{ item }}"
   args:
     chdir: "{{ SRCPATH }}"
   loop:
