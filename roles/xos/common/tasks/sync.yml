@@ -15,7 +15,7 @@
 
 - name: "apply DOS patches"
   shell: |
-    source ../../Scripts/init.sh  && echo "source2 success" && patchWorkspace
+    source ../../Scripts/init.sh  && echo "source2 success" && patchWorkspace >> {{ BUILD_LOG }} 2>&1
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
   failed_when: "'No error detected' not in patchout.stdout"
