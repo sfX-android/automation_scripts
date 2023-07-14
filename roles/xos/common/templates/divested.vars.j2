@@ -11,7 +11,7 @@
 #####################################################################################################################
 
 # General
-export DOS_MAX_THREADS_REPO=12     # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 8)
+export DOS_MAX_THREADS_REPO=10     # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 8)
 export DOS_MAX_THREADS_BUILD={{ max_processes }}   # Max amount of threads used for build, e.g. used by make (shouldn't exceed your CPU cores count)
 export DOS_WORKSPACE_ROOT="{{ DOSPATH }}"
 export DOS_BUILDS="{{ ZIPDIR }}"
