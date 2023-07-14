@@ -11,7 +11,7 @@
   loop:
     - "{{ SRCPATH }}/out/target/product/{{ target_model }}/rec_tmp"
 
-- name: "Specific DOS full cleanup"
+- name: "Specific DOS -full- cleanup"
   file:
     path: "{{ item }}"
     state: absent
