@@ -16,8 +16,6 @@
 - name: "apply DOS patches"
   shell: |
     source ../../Scripts/init.sh  && echo "sourcing init: success" \
-      && repo forall -j${DOS_MAX_THREADS_REPO} -c 'git am --abort; git revert --abort' || true \
-      && resetWorkspace \
       && patchWorkspace >> {{ BUILD_LOG }} 2>&1
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
