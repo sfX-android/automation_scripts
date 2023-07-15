@@ -17,6 +17,9 @@ USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ BDEVICE }}/"
 RELEASE_TYPE: OFFICIAL
 ROM_VERSION: "{{ build_id }}"
+
+# extendrom stuff
+use_extendrom: "true"
 extendrom_package_list: "additional_repos.xml Phonesky Lawnchair-latest SignMagisk AuroraServices AuroraStore MicrogGmsCore GsfProxy"
 
 # keys
