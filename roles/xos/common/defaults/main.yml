@@ -13,7 +13,7 @@ DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
 ZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/{{ BDEVICE }}"
 USE_CCACHE: 1
-rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ BDEVICE }}/"
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 RELEASE_TYPE: OFFICIAL
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
