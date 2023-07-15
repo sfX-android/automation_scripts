@@ -11,10 +11,7 @@ git_repo_local_manifests_branch: "eos-q"
 use_extendrom: "true"
 extendrom_package_list: "Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore AuroraServices Phonesky noEOSCamera opencamera_j5_latest"
 
-# notification vars
-#device_cl: |-
-#  ***{{ target_model_full | replace("-","\-") | replace("_","\_") }}*** ***\({{ target_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ git_repo_main_branch | replace("-","\-") | replace(".","\.") }}***
-
+# notification vars (overwriting the defaults
 kernel_cl: |-
   \- Kernel: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_kernel_samsung_exynos7870/commits/branch/android-10.0)
 
@@ -24,10 +21,11 @@ dtree_cl: |-
 cdtree_cl: |-
   \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
 
-#dl_links: |-
-#  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/a10/{{ target_model }})
-
-# custom release tools
-#custom_release_script: true
-#custom_release_script_yml: "path/to/release.yml"
-
+# security patches from LOS topicy
+sec_patch_date_last: "{{current_year }}-07"
+sec_patch_topics: >-
+      topic:Q_asb_2023-03 OR
+      topic:Q_asb_2023-04 OR
+      topic:Q_asb_2023-05 OR
+      topic:Q_asb_2023-06 OR
+      topic:Q_asb_{{ sec_patch_date_last }}
