@@ -16,6 +16,9 @@
       or sec_patch_date_last is undefined
       or SRCPATH is undefined
 
+# requires:
+#     <!-- cherrypicker patch tool -->
+#    <project path="external/cherrypicker" name="aol-aosip/android_vendor_unconv" remote="github" revision="master" />
 - name: "SECURITY PATCH MERGE: create repopick list (required to find path names)"
   shell: >
     /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics }}' 
