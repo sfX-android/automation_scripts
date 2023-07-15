@@ -5,6 +5,7 @@ git_repo_main_manifests: "https://github.com/LineageOS/android.git"
 # DOS repo + main branch
 xos_git_repo: "git@github.com:sfX-android/build_divestos.git"
 default_xos_main_branch: '2023-07-14'
+git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 
 # build vars
 los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','19.1') | replace('a9','16.0') }}"
