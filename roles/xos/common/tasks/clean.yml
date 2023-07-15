@@ -16,7 +16,7 @@
     path: "{{ item }}"
     state: absent
   loop:
-    - "{{ SRCPATH  }}/DOS_PATCHED_FLAG"
+    - "{{ SRCPATH }}/DOS_PATCHED_FLAG"
     - "{{ SRCPATH }}/packages/apps/Fennec_DOS-Shim"
     - "{{ SRCPATH }}/vendor/divested"
     - "{{ SRCPATH }}/vendor/fdroid_prebuilt"
