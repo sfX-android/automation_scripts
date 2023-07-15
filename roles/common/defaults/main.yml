@@ -12,8 +12,13 @@ semaphore_lock_dir: "{{ semaphore_work_dir }}/run"
 parsed_target_version: "{{ git_repo_main_branch | regex_replace('.*/','') | regex_replace('^v','') }}"
 normalized_target_version: "{{ parsed_target_version | regex_replace('(\\d+)\\.(\\d+)(.*)','\\1.\\2') }}"
 
+# normalize current date (used in several places later
+current_year: "{{ ansible_date_time.year }}"
+current_month: "{{ ansible_date_time.month }}"
+current_day: "{{ ansible_date_time.day }}"
+
 # build identifier used in e.g. the filename later
-BUILDIDENT: "{{ ansible_date_time.date | regex_replace('-','') }}"
+BUILDIDENT: "{{ ansible_date_time.year }}{{ ansible_date_time.month }}{{ ansible_date_time.day }}"
 sm_build_id: >-
     {% if semaphore_vars.task_details.target_version is undefined %}
     {{ semaphore_vars.task_details.incoming_version | d('0000') }}
