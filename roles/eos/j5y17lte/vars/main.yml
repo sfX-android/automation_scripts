@@ -21,7 +21,7 @@ dtree_cl: |-
 cdtree_cl: |-
   \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
 
-# security patches from LOS topicy
+# security patches from LOS topics
 sec_patch_pick_branch: "lineage-17.1" 
 sec_patch_date_last: "{{current_year }}-07"
 sec_patch_topics: >-
