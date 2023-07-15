@@ -1,4 +1,7 @@
 ---
+
+os_name: "X.OS" 
+
 # git
 git_repo_main_manifests: "https://github.com/LineageOS/android.git"
 
@@ -15,16 +18,16 @@ SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
 ZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/{{ BDEVICE }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
-RELEASE_TYPE: OFFICIAL
+RELEASE_TYPE: dos
 ROM_VERSION: "{{ build_id }}"
-PREFIXFNAME: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
+PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 
 # extendrom stuff
 use_extendrom: "true"
 extendrom_package_list: "additional_repos.xml Phonesky Lawnchair-latest SignMagisk AuroraServices AuroraStore MicrogGmsCore GsfProxy"
 
 # keys
-KEYS_CN: "X.OS"
+KEYS_CN: "{{ os_name }}"
 KEYS_SIZE: 8192
 KEYS_HASHTYPE: sha512
 keysdir: "{{ DOSPATH }}/Signing_Keys/4096pro/{{ target_model }}/"
