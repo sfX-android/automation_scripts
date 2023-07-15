@@ -4,7 +4,9 @@
 # be strict on failures
 set -e
 
-source ~/.bashrc
+# DOS stupid workarounds (they use fedora and /bin/sh -> /bin/bash)
+alias rename="/home/jenkins/util-linux/usr/bin/rename"
+alias sh=/bin/bash
 
 # fix build errors
 export LC_ALL=C
