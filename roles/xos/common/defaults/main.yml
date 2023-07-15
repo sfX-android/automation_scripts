@@ -43,3 +43,6 @@ rom_cl: |-
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
+
+device_cl: |-
+  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() }}***
