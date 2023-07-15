@@ -7,5 +7,5 @@
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
-- include: patch.yml
+- include: ../../../common/tasks/secpatch.yml
 - include: copy.yml
