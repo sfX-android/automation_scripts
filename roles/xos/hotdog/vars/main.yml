@@ -9,12 +9,3 @@ git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 # build vars
 REPOBRANCH: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 PREFIXFNAME: "{{ REPOBRANCH }}"
-#rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
-#post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
-
-# extendrom stuff
-use_extendrom: "true"
-#extendrom_package_list: "additional_repos.xml"
-
-#custom_release_script: true
-#custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
