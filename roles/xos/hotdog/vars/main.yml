@@ -5,7 +5,3 @@ target_model_full: "OnePlus 7T pro"
 # git
 git_repo_local_manifests: "git@github.com:sfX-android/android_local_manifests_hotdog.git"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
-
-# build vars
-REPOBRANCH: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
-PREFIXFNAME: "{{ REPOBRANCH }}"
