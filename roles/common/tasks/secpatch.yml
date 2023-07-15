@@ -1,0 +1,42 @@
+---
+
+- fail:
+    msg: 
+      Missing a required variable!!
+      
+      Current definitions:
+      {{ sec_patch_pick_branch | d('MISSING!!') }}
+      {{ sec_patch_topics | d('MISSING!!') }}
+      {{ sec_patch_date_last | d('MISSING!!') }}
+      {{ SRCPATH | d('MISSING!!') }}
+      
+  when:
+    - sec_patch_pick_branch is undefined
+      or sec_patch_topics is undefined
+      or sec_patch_date_last is undefined
+      or SRCPATH is undefined
+
+- name: "SECURITY PATCH MERGE: create repopick list (required to find path names)"
+  shell: >
+    /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics }}' 
+    | grep --color=never https | col | dos2unix
+    | egrep -v '338357|342095|324039|324040|324041'
+  args:
+    chdir: "{{ SRCPATH }}"
+  register: picklist
+    
+- name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last }}-01"
+  shell: >
+    source build/envsetup.sh > /dev/null \
+      && echo 'applying SECURITY PATCH:' \
+      && {{ item }} -fv 2> /dev/null || {{ item }} -fv 1>&2
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  loop: "{{ picklist.stdout.splitlines() | map('from_yaml') | list }}"
+
+- name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last }}-01"
+  lineinfile:
+    path: "{{ SRCPATH }}/build/core/version_defaults.mk"
+    regexp: "PLATFORM_SECURITY_PATCH := .*"
+    line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last }}-01"
