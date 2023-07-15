@@ -1,6 +1,3 @@
 ---
 # human readable model name
 target_model_full: "OnePlus 7T pro"
-
-# git
-git_repo_local_manifests: "git@github.com:sfX-android/android_local_manifests_hotdog.git"
