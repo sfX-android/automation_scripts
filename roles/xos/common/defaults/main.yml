@@ -31,7 +31,7 @@ ota_hint: |-
 
 rom_cl: |-
   ***Changes:***
-  \- LineageOS: [Changelog](https://divestos.org/pages/news)
+  \- divestOS: [Changelog](https://divestos.org/pages/news)
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
