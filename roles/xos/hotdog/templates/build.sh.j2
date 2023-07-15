@@ -4,8 +4,10 @@
 # be strict on failures
 set -e
 
-# required to load DOS workarounds
-source ~/.bashrc
+# stupid DOS workarounds (they use fedora which has another rename binary and /bin/sh -> /bin/bash)
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.local/bin:$PATH"
+alias rename="/home/jenkins/util-linux/usr/bin/rename"
+alias sh=/bin/bash
 
 # fix build errors
 export LC_ALL=C
