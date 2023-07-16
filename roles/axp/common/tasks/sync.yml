@@ -4,7 +4,7 @@
   shell: |
     git reset --hard
     git pull \
-      && git checkout {{ xos_main_branch | d(default_xos_main_branch) }} \
+      && git checkout {{ axp_main_branch | d(default_axp_main_branch) }} \
       && git pull \
       && git submodule update --init --recursive
   args:

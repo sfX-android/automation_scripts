@@ -16,9 +16,9 @@
     - ROM_FLAVOR == "TWRP"
 
 - set_fact:
-    JKZIPDIR: "{{ xos_finalzip_dir }}"
+    JKZIPDIR: "{{ axp_finalzip_dir }}"
   when:
-    - ROM_FLAVOR == "xos"
+    - ROM_FLAVOR == "axp"
 
 - name: "Get current build filename"
   shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"

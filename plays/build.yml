@@ -31,7 +31,7 @@
       - include_role:
           name: "{{ ROM_FLAVOR }}/common"
           public: yes
-        when: ROM_FLAVOR == "xos" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
+        when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
 
       - debug:
           var: vault_tg_group_id_failing

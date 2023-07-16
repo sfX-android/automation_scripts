@@ -1,13 +1,13 @@
 ---
 
-os_name: "X.OS" 
+os_name: "AXP.OS" 
 
 # git
 git_repo_main_manifests: "https://github.com/LineageOS/android.git"
 
 # DOS repo + main branch
-xos_git_repo: "git@github.com:sfX-android/build_divestos.git"
-default_xos_main_branch: '2023-07-14'
+axp_git_repo: "git@github.com:sfX-android/build_divestos.git"
+default_axp_main_branch: '2023-07-14'
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 
 # build vars
@@ -15,7 +15,7 @@ los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','1
 git_repo_main_branch: "lineage-{{ los_version }}"
 DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
-xos_finalzip_dir: "{{ ZIPDIR }}/LineageOS-{{ los_version }}/release_keys/"
+axp_finalzip_dir: "{{ ZIPDIR }}/LineageOS-{{ los_version }}/release_keys/"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 RELEASE_TYPE: dos
@@ -40,7 +40,7 @@ ota_hint: |-
 rom_cl: |-
   ***Changes:***
   \- divestOS: [Changelog](https://divestos.org/pages/news)
-  \- X\.OS: [Changelog](https://x.os.binbash.rocks/dl.html)
+  \- X\.OS: [Changelog](https://axp.binbash.rocks/news.html)
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})

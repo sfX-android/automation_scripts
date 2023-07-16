@@ -1,10 +1,10 @@
 #!/bin/bash
 #####################################################################################################################
-# global vars for X.OS
+# global vars for {{ os_name }}
 #
 # can be overwritten / extended by device specific definitions.
 # Device example:
-# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/xos/common/templates/divested.vars.hotdog.j2
+# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/templates/divested.vars.hotdog.j2
 #
 # additional / current list of possible options:
 # https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
@@ -32,15 +32,15 @@ export DOS_GPG_SIGNING=true;
 export DOS_GPG_SIGNING_KEY="B8744D67F9F1E14E145DFD8E7F627E920F316994";
 
 # Branding
-export DOS_BRANDING_NAME="X.OS";
-export DOS_BRANDING_ZIP_PREFIX="X.OS";
+export DOS_BRANDING_NAME="{{ os_name }}";
+export DOS_BRANDING_ZIP_PREFIX="{{ os_name }}";
 export DOS_BRANDING_BOOTANIMATION_FONT="Fira-Sans-Heavy"; #Options: $ convert -list font
 export DOS_BRANDING_BOOTANIMATION_STYLE="plasma"; #Options: gradient, plasma
 #export DOS_BRANDING_BOOTANIMATION_COLOR="#FF5722-#FF8A65"; #gradient
 export DOS_BRANDING_BOOTANIMATION_COLOR="#FF5722-#03A9F4"; #plasma
 export DOS_BRANDING_LINK_ABOUT="https://divestos.org/index.php?page=about";
 export DOS_BRANDING_LINK_PRIVACY="https://divestos.org/index.php?page=privacy_policy";
-export DOS_BRANDING_SERVER_OTA="https://sfxota.binbash.rocks:8010/xos/updater.php";
+export DOS_BRANDING_SERVER_OTA="https://sfxota.binbash.rocks:8010/axp/updater.php";
 export DOS_BRANDING_SERVER_OTA_ONION="$DOS_BRANDING_SERVER_OTA"; #TODO: need to handle allow cleartext
 
 # Theme
