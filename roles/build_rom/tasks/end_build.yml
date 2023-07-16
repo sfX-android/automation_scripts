@@ -5,4 +5,24 @@
   when:
     - buildresult.rc is undefined or buildresult.rc != 0
 
+- set_fact:
+    LOCFILE: "{{ PREFIXFNAME }}.*-{{ RELEASE_TYPE }}.*\\.zip"
+  when:
+    - ROM_FLAVOR != "TWRP"
 
+- set_fact:
+    LOCFILE: "{{ PREFIXFNAME }}.*-{{ RELEASE_TYPE }}.*\\.img"
+  when:
+    - ROM_FLAVOR == "TWRP"
+
+- name: "Get current build filename"
+  shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"
+  args:
+    chdir: "{{ JKZIPDIR }}"
+  register: ROMFILE
+
+- name: "Copy build.prop for OTA"
+  shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
+  when:
+    - ROM_FLAVOR != "TWRP"
+    - ROM_FLAVOR != "SHRP"
