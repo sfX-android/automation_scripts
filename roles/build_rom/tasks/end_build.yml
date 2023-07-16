@@ -16,7 +16,7 @@
     - ROM_FLAVOR == "TWRP"
 
 - set_fact:
-    JKZIPDIR: "{{ JKZIPDIR }}/release-keys"
+    JKZIPDIR: "{{ xos_zip_dir }}"
   when:
     - ROM_FLAVOR == "xos"
 
