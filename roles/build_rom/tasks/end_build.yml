@@ -21,7 +21,7 @@
     - ROM_FLAVOR == "xos"
 
 - name: "Get current build filename"
-  shell: "find ./ -maxdepth 2 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"
+  shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"
   args:
     chdir: "{{ JKZIPDIR }}"
   register: ROMFILE
