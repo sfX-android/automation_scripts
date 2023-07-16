@@ -21,6 +21,7 @@ rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ ta
 RELEASE_TYPE: dos
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
+skip_gen_checksum: true
 
 # extendrom stuff
 use_extendrom: "true"
