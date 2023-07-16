@@ -15,6 +15,11 @@
   when:
     - ROM_FLAVOR == "TWRP"
 
+- set_fact:
+    JKZIPDIR: "{{ JKZIPDIR }}/release-keys"
+  when:
+    - ROM_FLAVOR == "xos"
+
 - name: "Get current build filename"
   shell: "find ./ -maxdepth 2 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"
   args:
