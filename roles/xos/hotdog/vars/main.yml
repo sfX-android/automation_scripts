@@ -3,10 +3,10 @@
 target_model_full: "OnePlus 7T pro"
 
 dtree_cl: |-
-  \- device tree: [commits](https://github.com/sfX-android/android_device_oneplus_hotdog/commits/{{ git_repo_local_manifests_branch }})
+  \- device tree: [commits](https://github.com/LineageOS/android_device_oneplus_hotdog/commits/{{ git_repo_main_branch }})
 
 cdtree_cl: |-
   \- common tree: [commits](https://github.com/sfX-android/android_device_oneplus_sm8150-common/commits/{{ git_repo_local_manifests_branch }})
 
 kernel_cl: |-
-  \- Kernel: [commits](https://github.com/LineageOS/android_kernel_oneplus_sm8150/commits/lineage-20/{{ git_repo_main_branch }})
+  \- Kernel: [commits](https://github.com/LineageOS/android_kernel_oneplus_sm8150/commits/{{ git_repo_main_branch }})
