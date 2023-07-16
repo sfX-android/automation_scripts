@@ -15,7 +15,7 @@ los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','1
 git_repo_main_branch: "lineage-{{ los_version }}"
 DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
-ZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/{{ BDEVICE }}"
+xos_finalzip_dir: "{{ ZIPDIR }}/builds/LineageOS-{{ los_version }}/release_keys/"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 RELEASE_TYPE: dos
