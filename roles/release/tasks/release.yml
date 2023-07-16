@@ -5,7 +5,7 @@
   delegate_to: "{{ groups.buildserver[0] }}"
   loop:
     - "{{ ROMFILE.stdout }}"
-    - "{{ ROMFILE.stdout }}.sha256sum"
+    - "{{ ROMFILE.stdout }}.sha*sum"
     - "{{ ROMFILE.stdout }}.prop"
   when:
     - ROM_FLAVOR != "TWRP"
