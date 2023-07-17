@@ -2,7 +2,7 @@
 
 - block:
 
-    - fail:
+    - fail: |
         msg: 
           Missing a required variable!!
           
