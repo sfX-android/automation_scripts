@@ -25,6 +25,7 @@
       shell: >
         /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics }}' 
         | grep --color=never https | col | dos2unix
+        | sed 's/\*Manifest Change\*/.repo/'
         | egrep -v '338357|342095|324039|324040|324041'
       args:
         chdir: "{{ SRCPATH }}"
@@ -35,11 +36,12 @@
       shell: >
         /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics }}' 
         | grep --color=never https | col | dos2unix
-        | egrep -v '338357|342095|324039|324040|324041|359416'
+        | egrep -v '338357|342095|324039|324040|324041|359416|352333'
       args:
         chdir: "{{ SRCPATH }}"
       register: picklist
       when: ROM_FLAVOR == "eos"
+      # 352333: https://code.binbash.rocks:8443/MVA-VoLTE/local_manifests/commit/f928672336a6bd97862b70f187f277381e80308b
 
     - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last }}-01"
       shell: >
