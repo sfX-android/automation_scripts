@@ -29,7 +29,18 @@
       args:
         chdir: "{{ SRCPATH }}"
       register: picklist
-        
+      when: ROM_FLAVOR != "eos"
+      
+    - name: "SECURITY PATCH MERGE (eos): create repopick list (required to find path names)"
+      shell: >
+        /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics }}' 
+        | grep --color=never https | col | dos2unix
+        | egrep -v '338357|342095|324039|324040|324041|359416'
+      args:
+        chdir: "{{ SRCPATH }}"
+      register: picklist
+      when: ROM_FLAVOR == "eos"
+
     - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last }}-01"
       shell: >
         source build/envsetup.sh > /dev/null \
