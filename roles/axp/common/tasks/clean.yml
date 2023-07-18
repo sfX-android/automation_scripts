@@ -1,6 +1,6 @@
 ---
 
-- include_tasks: ../../../common/tasks/clean.yml
+- include: ../../../common/tasks/clean.yml
   vars:
     override_reset_git: false
 
