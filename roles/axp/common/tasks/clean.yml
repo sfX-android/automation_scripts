@@ -1,8 +1,9 @@
 ---
 
-- include: ../../../common/tasks/clean.yml
-  vars:
-    override_reset_git: false
+- import: ../../../common/tasks/clean.yml
+
+#  vars:
+#    override_reset_git: false
 
 - name: "Specific DOS -basic- cleanup"
   file:
