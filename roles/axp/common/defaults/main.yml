@@ -50,7 +50,7 @@ ota_hint: |-
 rom_cl: |-
   ***Changes:***
   \- divestOS: [Changelog](https://divestos.org/pages/news)
-  \- X\.OS: [Changelog](https://axp.binbash.rocks/news.html)
+  \- AXP\.OS: [Changelog](https://axp.binbash.rocks/news.html)
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }})
