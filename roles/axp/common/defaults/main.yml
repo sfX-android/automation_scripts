@@ -28,7 +28,7 @@ use_extendrom: "true"
 extendrom_package_list: "additional_repos.xml Phonesky Lawnchair-latest SignMagisk AuroraServices AuroraStore MicrogGmsCore GsfProxy"
 EXTENDROM_PREROOT_BOOT: "true"
 extendrom_signature_spoofing: "true"
-extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/axp/{{ android_shortversion | upper() }}"
+extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
 extendrom_sigspoof_patcher_reset: "false"
 extendrom_debug_path_default: /metadata
 extendrom_debug_path_size_full_default: 500 
