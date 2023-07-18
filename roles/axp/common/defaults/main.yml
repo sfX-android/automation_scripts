@@ -26,7 +26,7 @@ skip_gen_checksum: true
 # extendrom stuff
 use_extendrom: "true"
 extendrom_package_list: "additional_repos.xml Phonesky Lawnchair-latest SignMagisk AuroraServices AuroraStore MicrogGmsCore GsfProxy"
-EXTENDROM_PREROOT_BOOT: "true"
+extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
 extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
 extendrom_sigspoof_patcher_reset: "false"
