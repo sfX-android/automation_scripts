@@ -13,7 +13,9 @@ alias sh=/bin/bash
 export LC_ALL=C
 
 # unset any extendrom var
-unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EXTENDROM EXTENDROM_PACKAGES
+unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EXTENDROM EXTENDROM_PACKAGES PREROOT_BOOT
+unset EXTENDROM_DEBUG_PATH_SIZE_FULL EXTENDROM_DEBUG_PATH_SIZE_KERNEL EXTENDROM_DEBUG_PATH_SIZE_SELINUX 
+unset EXTENDROM_DEBUG_PATH_SIZE_CRASH EXTENDROM_SIGNATURE_SPOOFING EXTENDROM_SIGSPOOF_FORCE_PDIR PATCHER_RESET
 
 ########################### SYNC / PREPARE #########################
 
@@ -40,14 +42,16 @@ if [ "{{ USE_CCACHE }}" -eq 1 ];then
 fi
 
 # extendrom flags
-export ENABLE_EXTENDROM=true
+export ENABLE_EXTENDROM={{ use_extendrom }}
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
-export EXTENDROM_PREROOT_BOOT=true
+export EXTENDROM_PREROOT_BOOT={{ EXTENDROM_PREROOT_BOOT }}
 export MAGISK_TARGET_ARCH=arm64
-export EXTENDROM_BOOT_DEBUG=true
-export EXTENDROM_DEBUG_PATH=/metadata
-export EXTENDROM_DEBUG_PATH_SIZE_FULL=200
-export EXTENDROM_DEBUG_PATH_SIZE_KERNEL=100
+export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
+export EXTENDROM_DEBUG_PATH={{ extendrom_debug_path |d (extendrom_debug_path_default) }}
+export EXTENDROM_DEBUG_PATH_SIZE_FULL={{ extendrom_debug_path_size_full | d(extendrom_debug_path_size_full_default) }}
+export EXTENDROM_DEBUG_PATH_SIZE_KERNEL={{ extendrom_debug_path_size_kernel | d(extendrom_debug_path_size_kernel_default) }}
+export EXTENDROM_DEBUG_PATH_SIZE_SELINUX={{ extendrom_debug_path_size_selinux | d(extendrom_debug_path_size_selinux_default) }}
+export EXTENDROM_DEBUG_PATH_SIZE_CRASH={{ extendrom_debug_path_size_crash | d(extendrom_debug_path_size_crash_default) }}
 export EXTENDROM_SIGNATURE_SPOOFING={{ extendrom_signature_spoofing }}
 export EXTENDROM_SIGSPOOF_FORCE_PDIR={{ extendrom_sigspoof_force_dir }}
 export PATCHER_RESET={{ extendrom_sigspoof_patcher_reset }}
@@ -56,5 +60,4 @@ vendor/extendrom/er.sh
 
 # build
 mka generate_verity_key
-#mka sepolicy
-buildDevice hotdog
+buildDevice {{ target_model }}
