@@ -44,7 +44,7 @@ fi
 # extendrom flags
 export ENABLE_EXTENDROM={{ use_extendrom }}
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
-export EXTENDROM_PREROOT_BOOT={{ EXTENDROM_PREROOT_BOOT }}
+export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
 export MAGISK_TARGET_ARCH=arm64
 export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
 export EXTENDROM_DEBUG_PATH={{ extendrom_debug_path |d (extendrom_debug_path_default) }}
