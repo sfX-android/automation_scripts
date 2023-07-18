@@ -39,7 +39,7 @@ if [ "{{ USE_CCACHE }}" -eq 1 ];then
     {{ CCACHE_EXEC }} --max-size=10G
 fi
 
-# extendrom
+# extendrom flags
 export ENABLE_EXTENDROM=true
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
 export EXTENDROM_PREROOT_BOOT=true
@@ -48,9 +48,13 @@ export EXTENDROM_BOOT_DEBUG=true
 export EXTENDROM_DEBUG_PATH=/metadata
 export EXTENDROM_DEBUG_PATH_SIZE_FULL=200
 export EXTENDROM_DEBUG_PATH_SIZE_KERNEL=100
+export EXTENDROM_SIGNATURE_SPOOFING={{ extendrom_signature_spoofing }}
+export EXTENDROM_SIGSPOOF_FORCE_PDIR={{ extendrom_sigspoof_force_dir }}
+export PATCHER_RESET={{ extendrom_sigspoof_patcher_reset }}
+# execute extendrom
 vendor/extendrom/er.sh
 
 # build
-#mka generate_verity_key
+mka generate_verity_key
 #mka sepolicy
 buildDevice hotdog
