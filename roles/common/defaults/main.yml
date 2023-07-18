@@ -44,7 +44,7 @@ BDEVICE: "{{ target_model }}"
 USE_CCACHE: 1
 CCACHE_EXEC: /usr/bin/ccache
 CCACHE_COMPRESS: 1
-CCACHE_DIR: /ssd/ccache/jenkins/{{ target_model }}-undef
+CCACHE_DIR: "/ssd/ccache/jenkins/{{ android_shortversion }}"
 
 # base url where the user can download released ROMs etc
 leech_server: "https://leech.binbash.rocks:8008"
