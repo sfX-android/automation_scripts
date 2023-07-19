@@ -30,6 +30,7 @@ extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
 extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
 extendrom_sigspoof_patcher_reset: "false"
+extendrom_boot_debug: "true"
 extendrom_debug_path_default: /metadata
 extendrom_debug_path_size_full_default: 500 
 extendrom_debug_path_size_kernel_default: 100
