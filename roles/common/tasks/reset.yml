@@ -1,5 +1,12 @@
 ---
 
+- name: "Cleanup patch indicators"
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ SRCPATH }}/EXTENDROM_PATCHER_DONE"
+
 - name: "Clear manifests"
   file:
     path: "{{ SRCPATH }}/.repo/manifests"
