@@ -2,9 +2,17 @@
 
 - name: "Debug"
   hosts: buildserver
-  gather_facts: true
+  gather_facts: false
       
   tasks:
+
+    - ansible.builtin.setup:
+        filter:
+          - ansible_date_time
+      
+    - debug:
+        var: ansible_date_time
+  
     - debug:
         var: semaphore_vars
         
