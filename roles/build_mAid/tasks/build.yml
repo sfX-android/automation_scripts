@@ -25,6 +25,7 @@
   ignore_errors: yes
   when: not skip_clean_build | bool
   delegate_to: "{{ groups.buildserver[0] }}"
+  no_log: true
 
 - name: "check mAid hook"
   lineinfile:
