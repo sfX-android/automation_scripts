@@ -39,7 +39,12 @@
 - fail:
     msg: |
       ERROR: mAid HOOK IS MISSING! CHECK /usr/bin/buildiso!!
-    
+
+      It must have this line after the last import line:
+
+      import /home/jenkins/build_maid/mAid.func
+      (yes NOT build_m>A<id here)
+      
   when: (maid_hook is changed) or (maid_hook is failed)
 
 - name: "Starting mAid build"
