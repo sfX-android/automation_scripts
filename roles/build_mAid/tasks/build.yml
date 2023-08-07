@@ -80,6 +80,7 @@
         {% if release_build_def %}{{ REPO_UPLOAD_ISO_SRV }}{% endif %}
     REPO_UPLOAD_ISO_USER: "{{ vault_buildmaidserver_user }}"
     REPO_UPLOAD_ISO_PATH: "/home/nightlies/roms/mAid/"
+    build_mirror: "True"
   args:
     executable: /bin/bash
     chdir: build_maid
