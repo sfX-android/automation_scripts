@@ -106,6 +106,7 @@ SH_COMMON_BUILD_SNIPPET: |
         # extendrom flags
         export ENABLE_EXTENDROM={{ use_extendrom }}
         export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+        {% if extendrom_packages_skip_dl is defined %}export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}{% endif %}
         export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
         export MAGISK_TARGET_ARCH=arm64
         export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
