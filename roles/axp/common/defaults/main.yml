@@ -122,5 +122,6 @@ SH_COMMON_BUILD_SNIPPET: |
         vendor/extendrom/er.sh
         
         # build
-        mka generate_verity_key
-        buildDevice {{ target_model }}
+        mka generate_verity_key \
+         && mka sepolicy && \
+         buildDevice {{ target_model }}
