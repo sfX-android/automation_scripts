@@ -102,7 +102,7 @@
     done
     cat {{ manifest_paths_file }}.real \
       | parallel -j{{ max_processes - 2 }} --max-args=1 "{{ repo_bin }} info {1} >> /dev/null 2>&1 && [ -d {1} ] && echo {1}" \
-      | parallel -j${CORES} --max-args=1 "cd {1} && git reset --hard ; cd $CPWD"      
+      | parallel -j${CORES} --max-args=1 "cd {1} && git reset --hard ; git rebase --abort; cd $CPWD"      
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
