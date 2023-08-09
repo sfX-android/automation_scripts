@@ -1,0 +1,11 @@
+---
+
+- name: "apply AXP.OS patches"
+  shell: |
+      patch -Rtp1< {{ item.patch }} && echo "successfully reversed patch: {{ item.patch }}"
+  args:
+    chdir: "{{ item.patchpath }}"
+    executable: "/bin/bash"
+  loop:
+    - { "patchpath": "{{ SRCPATH }}/packages/apps/Updater", "patch": "../../../../../Patches/{{ git_repo_main_branch | replace('lineage','LineageOS') }}/android_packages_apps_Updater/0001-Server.patch" }
+    - { "patchpath": "{{ SRCPATH }}/packages/apps/Updater", "patch": "../../../../../Patches/{{ git_repo_main_branch | replace('lineage','LineageOS') }}/android_packages_apps_Updater/0002-Server.patch" }
