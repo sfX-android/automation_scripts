@@ -8,4 +8,4 @@
     executable: "/bin/bash"
   loop:
     - { "patchpath": "{{ SRCPATH }}/packages/apps/Updater", "patch": "{{ DOSPATH }}/Patches/{{ git_repo_main_branch | replace('lineage','LineageOS') }}/android_packages_apps_Updater/0001-Server.patch" }
-    - { "patchpath": "{{ SRCPATH }}/packages/apps/Updater", "patch": "{{ DOSPATH }}/Patches/{{ git_repo_main_branch | replace('lineage','LineageOS') }}/android_packages_apps_Updater/0002-Server.patch" }
+    - { "patchpath": "{{ SRCPATH }}/packages/apps/Updater", "patch": "{{ DOSPATH }}/Patches/{{ git_repo_main_branch | replace('lineage','LineageOS') }}/android_packages_apps_Updater/0002-Tor_Support.patch" }
