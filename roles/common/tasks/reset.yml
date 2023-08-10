@@ -24,19 +24,7 @@
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   register: resetsimple
-  failed_when:
-    - resetsimple.rc != 3    # skipped+
-    - resetsimple.rc != 14   # skipped only
-    - resetsimple.rc != 15   # skipped+
-    - resetsimple.rc != 16   # skipped+
-    - resetsimple.rc != 17   # skipped+
-    - resetsimple.rc != 21   # local path missing
-    - resetsimple.rc != 22   # skipped+
-    - resetsimple.rc != 23   # skipped+
-    - resetsimple.rc != 26   # project not found
-    - resetsimple.rc != 32   # skipped?
-    - resetsimple.rc != 58   # project not found
-    - resetsimple.rc != 0    # any other error code
+  failed_when: resetsimple is undefined
   #no_log: "{{ nolog_gitreset | d(true) }}"
   when: 
     - (override_clean_basic == "undef" and clean_basic == "false") or (override_clean_basic == "false")
