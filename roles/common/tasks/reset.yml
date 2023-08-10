@@ -17,98 +17,15 @@
   args:
     chdir: "{{ SRCPATH }}"
 
-- name: Find all manifests
+- name: "Reset path (simple)"
   shell: |
-    if [ -d "{{ SRCPATH }}/.repo/local_manifests" ];then
-      find {{ SRCPATH }}/.repo/manifests/ {{ SRCPATH }}/.repo/local_manifests -name '*.xml'
-    else
-      find {{ SRCPATH }}/.repo/manifests/ -name '*.xml'
-    fi
-  args:
-    executable: /bin/bash
-  register: manifests
-  no_log: "{{ nolog_gitreset | d(true) }}"
-
-- name: Parse manifests
-  community.general.xml:
-    path: "{{ item }}"
-    xpath: /manifest/project
-    content: attribute
-  failed_when: never is defined
-  loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
-  register: xmlout
-  no_log: "{{ nolog_gitreset | d(true) }}"
-
-- name: Parse manifests (removals)
-  community.general.xml:
-    path: "{{ item }}"
-    xpath: /manifest/remove-project
-    content: attribute
-  failed_when: never is defined
-  loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
-  register: xmlremovals
-  no_log: true
-
-- name: "Clean old results file"
-  file:
-    path: "{{ manifest_paths_file }}"
-    state: absent
-  no_log: true
-
-- name: Write manifest paths file
-  template:
-    src: ../roles/common/templates/manifest_paths.j2
-    dest: "{{ manifest_paths_file }}"
-
-- name: "remove unwanted"
-  replace:
-    path: "{{ manifest_paths_file }}"
-    regexp: "^{{ item.path }}$\\n"
-  when: item.path is defined
-  loop: "{{ xmlremovals.results | selectattr('matches','defined') | map(attribute='matches') | sum(start=[]) | map(attribute='remove-project') }}"
-
-# instead of reset it is dramatically faster to simply delete everything..
-# (other then .repo/ ofc)
-- name: "RIP all project paths"
-  shell: |
-       for d in $(cat {{ manifest_paths_file }});do
-          if [ -d "$d" ]; then 
-            rm -rf $d
-          else
-            continue
-          fi
-       done
-  args:
-    executable: /bin/bash
-    chdir: "{{ SRCPATH }}"
-  no_log: "{{ nolog_gitreset | d(true) }}"
-  when: disabledtask is defined
-
-# try to use the most efficient way of resetting paths - if they exists
-# while ignoring unknown paths - as they get removed by repo sync anyways
-- name: "Reset path(s)"
-  shell: |
-    CORES={{ max_processes }}
-    SEQ=$(for s in $(seq 1 $CORES);do echo "{${s}}";done | tr '\n' ' ')
-    CPWD=$PWD
-    > {{ manifest_paths_file }}.real
-    
-    for d in $(egrep -v "{{ prob_repo_paths | join('|') }}" {{ manifest_paths_file }});do
-      if [ -d "$d" ]; then
-        echo "$d" >> {{ manifest_paths_file }}.real
-      else
-        continue
-      fi
-    done
-    cat {{ manifest_paths_file }}.real \
-      | parallel -j{{ max_processes - 2 }} --max-args=1 "{{ repo_bin }} info {1} >> /dev/null 2>&1 && [ -d {1} ] && echo {1}" \
-      | parallel -j${CORES} --max-args=1 "cd {1} && git reset --hard ; git rebase --abort; cd $CPWD"      
+    {{ repo_bin }} forall -j{{ max_processes }} -c "git am --abort; git rebase --abort; git reset --hard"  
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   register: resetres
   failed_when:
-    - resetres.rc != 3   # skipped+
+    - resetres.rc != 3    # skipped+
     - resetres.rc != 14   # skipped only
     - resetres.rc != 15   # skipped+
     - resetres.rc != 16   # skipped+
@@ -121,7 +38,115 @@
     - resetres.rc != 58   # project not found
     - resetres.rc != 0    # any other error code
   no_log: "{{ nolog_gitreset | d(true) }}"
-  #when: old_reset_approach is defined
+  when: 
+    - (override_clean_basic == "undef" and clean_basic == "false") or (override_clean_basic == "false")
 
-# NSEQ=$(echo "$SEQ" | sed 's/ /\\n/g')
-#| parallel -j1 --max-args=${CORES} "find $SEQ -type f -name *.orig -delete -or -type f -name *.rej -delete && echo -e \"$NSEQ\"" \
+- name: "Block: complex manifest based reset"
+  block:
+
+    - name: Find all manifests
+      shell: |
+        if [ -d "{{ SRCPATH }}/.repo/local_manifests" ];then
+          find {{ SRCPATH }}/.repo/manifests/ {{ SRCPATH }}/.repo/local_manifests -name '*.xml'
+        else
+          find {{ SRCPATH }}/.repo/manifests/ -name '*.xml'
+        fi
+      args:
+        executable: /bin/bash
+      register: manifests
+      no_log: "{{ nolog_gitreset | d(true) }}"
+    
+    - name: Parse manifests
+      community.general.xml:
+        path: "{{ item }}"
+        xpath: /manifest/project
+        content: attribute
+      failed_when: never is defined
+      loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
+      register: xmlout
+      no_log: "{{ nolog_gitreset | d(true) }}"
+    
+    - name: Parse manifests (removals)
+      community.general.xml:
+        path: "{{ item }}"
+        xpath: /manifest/remove-project
+        content: attribute
+      failed_when: never is defined
+      loop: "{{ manifests.stdout.splitlines() | map('from_yaml') }}"
+      register: xmlremovals
+      no_log: true
+    
+    - name: "Clean old results file"
+      file:
+        path: "{{ manifest_paths_file }}"
+        state: absent
+      no_log: true
+    
+    - name: Write manifest paths file
+      template:
+        src: ../roles/common/templates/manifest_paths.j2
+        dest: "{{ manifest_paths_file }}"
+    
+    - name: "remove unwanted"
+      replace:
+        path: "{{ manifest_paths_file }}"
+        regexp: "^{{ item.path }}$\\n"
+      when: item.path is defined
+      loop: "{{ xmlremovals.results | selectattr('matches','defined') | map(attribute='matches') | sum(start=[]) | map(attribute='remove-project') }}"
+    
+    # instead of reset it is dramatically faster to simply delete everything..
+    # (other then .repo/ ofc)
+    - name: "RIP all project paths"
+      shell: |
+           for d in $(cat {{ manifest_paths_file }});do
+              if [ -d "$d" ]; then 
+                rm -rf $d
+              else
+                continue
+              fi
+           done
+      args:
+        executable: /bin/bash
+        chdir: "{{ SRCPATH }}"
+      no_log: "{{ nolog_gitreset | d(true) }}"
+      when: disabledtask is defined
+    
+    # try to use the most efficient way of resetting paths - if they exists
+    # while ignoring unknown paths - as they get removed by repo sync anyways
+    - name: "Reset path(s)"
+      shell: |
+        CORES={{ max_processes }}
+        SEQ=$(for s in $(seq 1 $CORES);do echo "{${s}}";done | tr '\n' ' ')
+        CPWD=$PWD
+        > {{ manifest_paths_file }}.real
+        
+        for d in $(egrep -v "{{ prob_repo_paths | join('|') }}" {{ manifest_paths_file }});do
+          if [ -d "$d" ]; then
+            echo "$d" >> {{ manifest_paths_file }}.real
+          else
+            continue
+          fi
+        done
+        cat {{ manifest_paths_file }}.real \
+          | parallel -j{{ max_processes - 2 }} --max-args=1 "{{ repo_bin }} info {1} >> /dev/null 2>&1 && [ -d {1} ] && echo {1}" \
+          | parallel -j${CORES} --max-args=1 "cd {1} && git reset --hard ; git rebase --abort; cd $CPWD"      
+      args:
+        chdir: "{{ SRCPATH }}"
+        executable: /bin/bash
+      register: resetres
+      failed_when:
+        - resetres.rc != 3   # skipped+
+        - resetres.rc != 14   # skipped only
+        - resetres.rc != 15   # skipped+
+        - resetres.rc != 16   # skipped+
+        - resetres.rc != 17   # skipped+
+        - resetres.rc != 21   # local path missing
+        - resetres.rc != 22   # skipped+
+        - resetres.rc != 23   # skipped+
+        - resetres.rc != 26   # project not found
+        - resetres.rc != 32   # skipped?
+        - resetres.rc != 58   # project not found
+        - resetres.rc != 0    # any other error code
+      no_log: "{{ nolog_gitreset | d(true) }}"
+  when: 
+    - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
