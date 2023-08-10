@@ -2,7 +2,7 @@
 
 - name: "apply AXP.OS patches"
   shell: |
-      patch -Rtp1< {{ item.patch }} && echo "successfully reversed patch: {{ item.patch }}"
+      patch -Rtp1 --no-backup-if-mismatch < {{ item.patch }} && echo "successfully reversed patch: {{ item.patch }}"
   args:
     chdir: "{{ item.patchpath }}"
     executable: "/bin/bash"
