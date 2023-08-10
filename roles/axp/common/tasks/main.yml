@@ -6,7 +6,7 @@
 - block:
 
   - include: sync.yml
-  - include: patch.yml
+  #- include: patch.yml
   - include: selinux_permissive.yml
     when: 
       - axp_allow_permissive is defined and axp_allow_permissive | bool
