@@ -29,4 +29,10 @@
   args:
     chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
-    #executable: "{{ BUILDHOME }}/.local/bin/sh"
+
+# link wireguard module
+- name: add wireguard
+  file:
+    src: "{{ SRCPATH }}/kernel/wireguard-linux-compat/src"
+    dest: "{{ SRCPATH }}/{{ target_kernel_dir }}/net/wireguard"
+    state: link
