@@ -12,7 +12,7 @@ git_repo_local_manifests: "https://github.com/AXP-OS/manifest.git"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 
 # build vars
-los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','19.1') | replace('a9','16.0') }}"
+los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','19.1') | replace('a11','18.1') | replace('a10','17.1') | replace('a9','16.0') }}"
 git_repo_main_branch: "lineage-{{ los_version }}"
 DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
