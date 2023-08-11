@@ -17,7 +17,6 @@
     state: absent
   loop:
     - "{{ SRCPATH }}/DOS_PATCHED_FLAG"
-    - "{{ SRCPATH }}/EXTENDROM_PATCHER_DONE"
     - "{{ SRCPATH }}/packages/apps/Fennec_DOS-Shim"
     - "{{ SRCPATH }}/vendor/divested"
     - "{{ SRCPATH }}/vendor/fdroid_prebuilt"
@@ -25,3 +24,9 @@
   when: 
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
+- name: "Specific AXP.OS -full- cleanup"
+  shell: "find vendor/extendrom vendor/axp -name EXTENDROM_PATCHER_DONE -delete"
+  args:
+    chdir: "{{ SRCPATH }}"
+  when: 
+     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
