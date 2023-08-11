@@ -27,7 +27,7 @@
   failed_when: resetsimple is undefined
   #no_log: "{{ nolog_gitreset | d(true) }}"
   when: 
-    - (override_clean_basic == "undef" and clean_basic == "false") or (override_clean_basic == "false")
+    - (override_clean_incompat == "undef" and clean_incompat == "false") or (override_clean_incompat == "false")
 
 - name: "Block: complex manifest based reset"
   block:
@@ -137,4 +137,4 @@
         - resetres.rc != 0    # any other error code
       no_log: "{{ nolog_gitreset | d(true) }}"
   when: 
-    - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
+    - (override_clean_incompat == "undef" and clean_incompat == "true") or (override_clean_incompat == "true")
