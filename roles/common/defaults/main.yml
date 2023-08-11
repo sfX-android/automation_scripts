@@ -86,6 +86,7 @@ override_reset_git: 'undef'
 override_release_build: 'undef'
 override_sync: 'undef'
 override_clean_incompat: 'undef'
+clean_incompat: 'false'
 
 # cross build: problematic repos paths
 prob_repo_paths:
