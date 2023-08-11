@@ -36,7 +36,7 @@
     path: "{{ SRCPATH }}/{{ item }}"
   loop: "{{ incompat_cross_version_paths }}"
   when:
-    - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
+    - (override_clean_incompat == "undef" and clean_incompat == "true") or (override_clean_incompat == "true")
   no_log: true
 
 - name: "Clean-Up (cross-version incompatible REPO paths)"
@@ -51,7 +51,7 @@
     - clurp.rc != 1
   loop: "{{ prob_repo_paths }}"
   when:
-    - (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
+    - (override_clean_incompat == "undef" and clean_incompat == "true") or (override_clean_incompat == "true")
 
 - name: "Clean-Up out/"
   file:
@@ -83,14 +83,6 @@
     state: link
   when: 
     - SEPARATE_OUT_DIR is defined
-
-#- name: "Reset state for all projects"
-#  shell: "{{ repo_bin }} forall -j{{ max_processes }} -vc 'git remote -v | head -n1; git reset --hard' || echo 'SKIPPING WITH ERRORCODE: $?'"
-#  args:
-#    chdir: "{{ SRCPATH }}"
-#  when:
-#    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
-#  no_log: true
 
 - include: ../roles/common/tasks/reset.yml
 #  when:
