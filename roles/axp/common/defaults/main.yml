@@ -37,6 +37,7 @@ extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 extendrom_sigspoof_patcher_reset: "false"  # as this resets divest patches (e.g. boot animation)
+extendrom_signing_patches: true
 
 # keys
 KEYS_CN: "{{ os_name }}"
@@ -118,6 +119,7 @@ SH_COMMON_BUILD_SNIPPET: |
         export EXTENDROM_SIGNATURE_SPOOFING={{ extendrom_signature_spoofing }}
         export EXTENDROM_SIGSPOOF_FORCE_PDIR={{ extendrom_sigspoof_force_dir }}
         export PATCHER_RESET={{ extendrom_sigspoof_patcher_reset }}
+        export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
         # execute extendrom
         vendor/extendrom/er.sh
         
