@@ -1,0 +1,8 @@
+---
+ 
+- name: "Apply signing fixes"
+  shell: "patch -p1 < device/oneplus/sm8150-common/patches/{{ item }}"
+  args:
+    chdir: "{{ SRCPATH }}"
+  loop:
+    - build_make_tools_releasetools_fixpython.patch

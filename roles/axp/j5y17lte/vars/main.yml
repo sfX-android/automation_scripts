@@ -1,0 +1,12 @@
+---
+# human readable model name
+target_model_full: "Samsung J5 \- 2017"
+
+dtree_cl: |-
+  \- device tree: [commits](https://github.com/AXP-OS/device_samsung_j5y17lte/commits/{{ git_repo_main_branch }})
+
+cdtree_cl: |-
+  \- common tree: [commits](https://github.com/AXP-OS/device_samsung_exynos7870-common/commits/{{ git_repo_local_manifests_branch }})
+
+kernel_cl: |-
+  \- Kernel: [commits](https://github.com/AXP-OS/kernel_samsung_exynos7870/commits/{{ git_repo_main_branch }})
