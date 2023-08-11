@@ -31,12 +31,10 @@
     chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
 
-- name: "revert to Lineage compatible OTA"
+- name: "apply AXP.OS patches"
   shell: |
-      patch -Rtp1 --no-backup-if-mismatch < {{ item.patch }} && echo "successfully reversed patch: {{ item.patch }}"
+      vendor/extendrom/tools/apply_patches.sh vendor/axp/patches
   args:
-    chdir: "{{ item.patchpath }}"
+    chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
-  loop:
-    - { "patchpath": "{{ SRCPATH }}/packages/apps/Updater", "patch": "{{ DOSPATH }}/Patches/{{ git_repo_main_branch | replace('lineage','LineageOS') }}/android_packages_apps_Updater/0002-Tor_Support.patch" }
-    - { "patchpath": "{{ SRCPATH }}/packages/apps/Updater", "patch": "{{ DOSPATH }}/Patches/{{ git_repo_main_branch | replace('lineage','LineageOS') }}/android_packages_apps_Updater/0001-Server.patch" }
+  
