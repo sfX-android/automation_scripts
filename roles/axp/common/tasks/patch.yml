@@ -33,7 +33,10 @@
 
 - name: "apply AXP.OS patches"
   shell: |
-      vendor/extendrom/tools/apply_patches.sh vendor/axp/patches
+      source ~/.bashrc
+      source build/envsetup.sh \
+        && source ../../Scripts/init.sh \
+        && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches
   args:
     chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
