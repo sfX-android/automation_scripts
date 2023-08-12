@@ -25,7 +25,7 @@
     executable: /bin/bash
   register: resetsimple
   failed_when: resetsimple is undefined
-  #no_log: "{{ nolog_gitreset | d(true) }}"
+  no_log: "{{ nolog_gitreset | d(true) }}"
   when: 
     - (override_clean_incompat == "undef" and clean_incompat == "false") or (override_clean_incompat == "false")
 
