@@ -6,6 +6,8 @@
 - block:
 
   - include: sync.yml
+    when: (override_sync == "true")
+    
   - include: patch.yml
   - include: selinux_permissive.yml
     when: 
