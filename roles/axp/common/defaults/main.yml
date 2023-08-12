@@ -117,7 +117,7 @@ SH_COMMON_BUILD_SNIPPET: |
         export EXTENDROM_DEBUG_PATH_SIZE_CRASH={{ extendrom_debug_path_size_crash | d(extendrom_debug_path_size_crash_default) }}
         export EXTENDROM_SIGNATURE_SPOOFING={{ extendrom_signature_spoofing }}
         export EXTENDROM_SIGSPOOF_FORCE_PDIR={{ extendrom_sigspoof_force_dir }}
-        export PATCHER_RESET={{ extendrom_sigspoof_patcher_reset }}
+        export EXTENDROM_PATCHER_RESET={{ extendrom_patcher_reset }}
         export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
         # execute extendrom
         vendor/extendrom/er.sh
