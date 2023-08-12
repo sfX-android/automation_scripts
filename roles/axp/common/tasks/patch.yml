@@ -20,9 +20,9 @@
 - name: "apply AXP.OS adjustments"
   shell: |
     source ~/.bashrc
-    source build/envsetup.sh  && echo "sourcing envsetup: success" \
-      && source ../../Scripts/init.sh  && echo "sourcing init: success" \
-      && lunch lineage_{{ target_model }}-user \
+    source build/envsetup.sh \
+      && source ../../Scripts/init.sh \
+      && lunch lineage_{{ target_model }}-user && echo lunch success \
       && vendor/axp/axp.sh
   environment:
     BDEVICE: "{{ target_model }}"
