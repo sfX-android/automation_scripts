@@ -20,6 +20,9 @@
           play=build.yml
           target={{ target_model }}
           role="{{ ROM_FLAVOR }}/{{ target_model }}"
+
+    - import_role:
+        name: pre        
           
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
@@ -40,9 +43,6 @@
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: vault_tg_group_id_failing is undefined
 
-      - import_role:
-          name: pre
-          
       - include_vars: "../roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
         when: 
           - ROM_FLAVOR == "SHRP" or ROM_FLAVOR == "TWRP"
