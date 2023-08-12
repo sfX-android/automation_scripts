@@ -18,7 +18,7 @@ DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
 axp_finalzip_dir: "{{ ZIPDIR }}/LineageOS-{{ los_version }}/release_keys/"
 USE_CCACHE: 1
-rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 RELEASE_TYPE: dos
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
