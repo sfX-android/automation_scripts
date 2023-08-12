@@ -29,7 +29,7 @@ extendrom_package_list: "additional_repos.xml Phonesky Magisk AuroraServices Aur
 extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
 extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
-extendrom_sigspoof_patcher_reset: "false"  # as this resets divest patches (e.g. boot animation)
+extendrom_patcher_reset: "false"  # as this resets divest patches (e.g. boot animation)
 extendrom_boot_debug: "true"
 extendrom_debug_path_default: /metadata
 extendrom_debug_path_size_full_default: 500 
