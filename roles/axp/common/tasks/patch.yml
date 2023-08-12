@@ -37,3 +37,6 @@
   args:
     chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
+
+- fail:
+    msg: boo
