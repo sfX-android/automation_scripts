@@ -25,8 +25,12 @@
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
 - name: "Specific AXP.OS -full- cleanup"
-  shell: "find vendor/extendrom vendor/axp -name EXTENDROM_PATCHER_DONE -delete"
+  shell: "find {{ item.path }} {{ item.extra | d('') }} -name {{ item.file }} -delete -print"
   args:
     chdir: "{{ SRCPATH }}"
-  when: 
+  loop:
+    - { path: "vendor/axp", file: "EXTENDROM_PATCHER_DONE" }
+    - { path: "vendor/extendrom", file: "EXTENDROM_PATCHER_DONE" }
+    - { path: "kernel/", file: ".wg.patched", extra: "-maxdepth 3" }
+  when:
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
