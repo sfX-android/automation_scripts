@@ -6,3 +6,13 @@
     chdir: "{{ SRCPATH }}"
   loop:
     - build_make_tools_releasetools_fixpython.patch
+
+- name: "apply AXP.OS kernel patches"
+  shell: |
+      source ~/.bashrc
+      source build/envsetup.sh \
+        && source ../../Scripts/init.sh \
+        && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/kernel
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: "/bin/bash"
