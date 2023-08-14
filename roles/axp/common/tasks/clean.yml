@@ -21,7 +21,6 @@
     - "{{ SRCPATH }}/vendor/divested"
     - "{{ SRCPATH }}/vendor/fdroid_prebuilt"
     - "{{ SRCPATH }}/packages/apps/SupportDivestOS"
-    - "{{ SRCPATH }}/kernel/wireguard-linux-compat"
   when: 
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
