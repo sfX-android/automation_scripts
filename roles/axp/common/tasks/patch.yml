@@ -1,5 +1,13 @@
 ---
 
+- name: "disable GPG verify if dirty build"
+  ansible.builtin.lineinfile:
+    path: "{{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/Functions.sh"
+    line: '#verifyAllPlatformTag'
+    regexp: '\s+verifyAllPlatformTags\;'
+   when:
+    - clean_out != "true" or (override_clean_out != "true")
+
 - name: "apply DOS patches"
   shell: |
     source ~/.bashrc
