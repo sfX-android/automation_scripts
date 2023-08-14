@@ -6,7 +6,7 @@
     line: '#verifyAllPlatformTag'
     regexp: '\s+verifyAllPlatformTags\;'
    when:
-    - clean_out != "true" or (override_clean_out != "true")
+    - clean_out != "true" or (override_clean_out != "true") or (skip_gpg_verify | bool)
 
 - name: "apply DOS patches"
   shell: |
