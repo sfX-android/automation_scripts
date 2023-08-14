@@ -39,7 +39,7 @@
     chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
 
-- name: "apply AXP.OS patches"
+- name: "apply AXP.OS patches (common)"
   shell: |
       source ~/.bashrc
       source build/envsetup.sh \
