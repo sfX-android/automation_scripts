@@ -3,10 +3,9 @@
 - name: sync DOS
   shell: |
     git reset --hard
-    git pull \
-      && git checkout {{ axp_main_branch | d(default_axp_main_branch) }} \
-      && git pull \
-      && git submodule update --init --recursive
+    git pull
+    {% if axp_main_branch is defined %}git checkout {{ axp_main_branch }} && git pull{% endif %}
+    git submodule update --init --recursive
   args:
     chdir: "{{ DOSPATH }}"
     executable: /bin/bash
