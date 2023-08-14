@@ -7,12 +7,13 @@
   loop:
     - build_make_tools_releasetools_fixpython.patch
 
-- name: "apply AXP.OS kernel patches"
+- name: "apply AXP.OS kernel patches (hotdog)"
   shell: |
       source ~/.bashrc
       source build/envsetup.sh \
         && source ../../Scripts/init.sh \
-        && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/kernel
+        && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/kernel \
+        && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
   args:
     chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
