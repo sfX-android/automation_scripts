@@ -36,10 +36,7 @@
       source ~/.bashrc
       source build/envsetup.sh \
         && source ../../Scripts/init.sh \
-        && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches
+        && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/common
   args:
     chdir: "{{ SRCPATH }}"
     executable: "/bin/bash"
-
-#- fail:
-#    msg: boo
