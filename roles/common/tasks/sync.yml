@@ -19,7 +19,7 @@
         || {{ repo_bin }} sync -j{{ max_processes }} --force-sync --fail-fast
   args:
     chdir: "{{ SRCPATH }}"
-  #no_log: true
+  no_log: true
 
 # git lfs can be a pita! i.e. it silently fails and you have no idea where.
 # the following ensures we can catch known issues or print the error path at least
