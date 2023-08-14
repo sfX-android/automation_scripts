@@ -96,4 +96,9 @@
             state: absent
             
         - fail:
-            msg: "build failure occured. check log."
+            msg: |
+              ERROR OCCURED:
+              
+              {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
+              
+              See above for details.
