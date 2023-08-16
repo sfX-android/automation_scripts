@@ -12,8 +12,8 @@
   shell: |
     source ~/.bashrc
     source build/envsetup.sh  && echo "sourcing envsetup: success" \
-      && source ../../Scripts/init.sh  && echo "sourcing init: success" \
-      && patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
+      && source ../../Scripts/init.sh  && echo "sourcing init: success"
+    patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
       && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
   #failed_when: "'No error detected' not in patchout.stdout"
