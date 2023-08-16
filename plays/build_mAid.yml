@@ -55,6 +55,7 @@
           name: notify
 
       - name: "remove semaphore running indicator"
+        connection: local
         file:
           path: "{{ semaphore_runfile }}"
           state: absent
@@ -77,6 +78,7 @@
             name: notify
 
         - name: "remove semaphore running indicator"
+          connection: local
           file:
             path: "{{ semaphore_runfile }}"
             state: absent
