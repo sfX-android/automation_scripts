@@ -13,10 +13,12 @@
   args:
     chdir: "{{ SRCPATH }}"
 
+--jobs-checkout=
+
 - name: "Sync"
   shell: >
-      {{ repo_bin }} sync -j{{ max_processes }} --force-sync --force-remove-dirty \
-        || {{ repo_bin }} sync -j{{ max_processes }} --force-sync --fail-fast
+      {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} --force-sync --force-remove-dirty \
+        || {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} --force-sync --fail-fast
   args:
     chdir: "{{ SRCPATH }}"
   no_log: true
@@ -25,7 +27,7 @@
 # the following ensures we can catch known issues or print the error path at least
 - name: "Sync LFS"
   shell: >
-      {{ repo_bin }} forall -j{{ max_processes }} -c 'git lfs pull || pwd | grep -E "OpenCL-CTS" '
+      {{ repo_bin }} forall --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} -c 'git lfs pull || pwd | grep -E "OpenCL-CTS" '
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
