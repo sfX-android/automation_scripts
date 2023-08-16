@@ -4,6 +4,14 @@
   vars:
     override_reset_git: 'true'
 
+- name: "reset DOS"
+  git: 
+    repo: "{{ axp_git_repo }}"
+    dest: "{{ DOSPATH }}"
+    force: true
+    version: "{{ axp_main_branch | d('HEAD') }}"
+    clone: no
+ 
 - name: "Specific DOS -basic- cleanup"
   file:
     path: "{{ item }}"
