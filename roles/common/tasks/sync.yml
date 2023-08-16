@@ -13,8 +13,6 @@
   args:
     chdir: "{{ SRCPATH }}"
 
---jobs-checkout=
-
 - name: "Sync"
   shell: >
       {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} --force-sync --force-remove-dirty \
