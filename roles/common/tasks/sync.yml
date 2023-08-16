@@ -25,7 +25,7 @@
 # the following ensures we can catch known issues or print the error path at least
 - name: "Sync LFS"
   shell: >
-      {{ repo_bin }} forall --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} -c 'git lfs pull || pwd | grep -E "OpenCL-CTS" '
+      {{ repo_bin }} forall -j{{ max_processes_sync }} -c 'git lfs pull || pwd | grep -E "OpenCL-CTS" '
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
