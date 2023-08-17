@@ -1,6 +1,6 @@
 ---
 # human readable model name
-target_model_full: "Samsung J5 \- 2017"
+target_model_full: "Samsung J5 - 2017"
 
 dtree_cl: |-
   \- device tree: [commits](https://github.com/AXP-OS/device_samsung_j5y17lte/commits/{{ git_repo_main_branch }})
