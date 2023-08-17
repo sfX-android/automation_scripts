@@ -1,0 +1,9 @@
+---
+
+- name: Prepare env
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ SRCPATH }}"
+    - "{{ DOSPATH }}"
