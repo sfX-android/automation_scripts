@@ -15,8 +15,8 @@
 
 - name: "Sync"
   shell: >
-      {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} --force-sync --force-remove-dirty \
-        || {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} --force-sync --fail-fast
+      {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} --force-sync --force-remove-dirty -c --force-sync --no-clone-bundle\
+        || {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} --force-sync --fail-fast -c --force-sync --no-clone-bundle
   args:
     chdir: "{{ SRCPATH }}"
   no_log: true
