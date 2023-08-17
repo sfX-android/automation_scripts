@@ -1,9 +1,6 @@
 ---
 
-# AXP.OS - DOS default branch (axp_git_repo)
-#default_axp_main_branch: '2023-08-14'
-
-# DOS repo + main branch
+# git stuff
 axp_git_repo: "git@github.com:AXP-OS/build.git"
 git_repo_local_manifests: "https://github.com/AXP-OS/manifest.git"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
