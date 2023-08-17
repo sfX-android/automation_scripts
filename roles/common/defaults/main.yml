@@ -32,7 +32,7 @@ repo_bin: /home/androidsource/bin/repo
 
 # number of threads used e.g. with repo binary etc
 max_processes: 16
-max_processes_sync: 4    # will set --jobs-network={{ max_processes_sync }} for repo sync
+max_processes_sync: 8    # will set --jobs-network={{ max_processes_sync }} for repo sync
 
 # ssh port where the release server is reachable (coming from the build server)
 RELEASESVR_port: 22
