@@ -54,6 +54,9 @@ leech_server: "https://leech.binbash.rocks:8008"
 ICON_GOOD: 🎉
 ICON_BAD: ☠️
 
+# disable telegram notifications by default
+telegram_notifications: false
+
 # default to false
 custom_release_script: false
 
