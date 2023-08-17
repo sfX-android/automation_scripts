@@ -9,14 +9,5 @@
     clone: yes
     track_submodules: true
 
-#- name: sync DOS
-#  shell: |
-#    git pull
-#    {% if axp_main_branch is defined %}git checkout {{ axp_main_branch }} && git pull{% endif %}
-#    git submodule update --init --recursive
-#  args:
-#    chdir: "{{ DOSPATH }}"
-#    executable: /bin/bash
-
 # sync LOS etc
 - include_tasks: ../../../common/tasks/sync.yml
