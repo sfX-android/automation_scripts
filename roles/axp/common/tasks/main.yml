@@ -1,6 +1,7 @@
 ---
 
 - include: vars.yml
+- include_tasks: prep.yml 
 - include: clean.yml
 
 - block:
