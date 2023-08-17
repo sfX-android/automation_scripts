@@ -38,10 +38,13 @@
 
       - debug:
           var: vault_tg_group_id_failing
+        when: telegram_notifications | bool
 
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
-        when: vault_tg_group_id_failing is undefined
+        when: 
+          - vault_tg_group_id_failing is undefined
+          - telegram_notifications | bool
 
       - include_vars: "../roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
         when: 
