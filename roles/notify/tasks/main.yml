@@ -9,3 +9,4 @@
     - buildresult.rc is defined and buildresult.rc == 0
 
 - include: telegram.yml
+  when: telegram_notifications | bool
