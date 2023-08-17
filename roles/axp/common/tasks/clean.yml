@@ -33,7 +33,8 @@
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
 - name: "Specific AXP.OS -full- cleanup"
-  shell: "find {{ item.path }} {{ item.extra | d('') }} -name {{ item.file }} -delete -print"
+  shell: |
+     if [ -d "{{ item.path }}" ];then find {{ item.path }} {{ item.extra | d('') }} -name {{ item.file }} -delete -print; fi
   args:
     chdir: "{{ SRCPATH }}"
   loop:
