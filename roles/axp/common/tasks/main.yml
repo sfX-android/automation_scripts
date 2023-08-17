@@ -1,16 +1,16 @@
 ---
 
-- include: vars.yml
+- include_tasks: vars.yml
 - include_tasks: prep.yml 
-- include: clean.yml
+- include_tasks: clean.yml
 
 - block:
 
-  - include: sync.yml
+  - include_tasks: sync.yml
  #   when: (override_sync == "true")
     
-  - include: patch.yml
-  - include: selinux_permissive.yml
+  - include_tasks: patch.yml
+  - include_tasks: selinux_permissive.yml
     when: 
       - axp_allow_permissive is defined and axp_allow_permissive | bool
 
