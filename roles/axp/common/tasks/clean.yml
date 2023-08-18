@@ -10,7 +10,7 @@
     dest: "{{ DOSPATH }}"
     force: true
     version: "{{ axp_main_branch | d('HEAD') }}"
-    clone: no
+    clone: true
  
 - name: "Specific DOS -basic- cleanup"
   file:
