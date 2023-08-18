@@ -91,7 +91,7 @@ SH_COMMON_BUILD_SNIPPET: |
         ########################### BUILD #########################
         
         # setup build env
-        source ../../Scripts/init.sh
+        source {{ DOSPATH }}/Scripts/init.sh
         source build/envsetup.sh
         breakfast lineage_{{ target_model }}-user
         
