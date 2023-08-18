@@ -8,21 +8,32 @@
   when:
     - clean_out != "true" or (override_clean_out != "true") or (skip_gpg_verify | bool)
 
-- name: "apply DOS patches"
-  shell: |
+- name: "apply DOS patches (raw)"
+  raw: |
+    export BDEVICE="{{ target_model }}" PATH="{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    cd {{ SRCPATH }}
     source ~/.bashrc
     source build/envsetup.sh  && echo "sourcing envsetup: success" \
       && source {{ DOSPATH }}/Scripts/init.sh  && echo "sourcing init: success"
     patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
       && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
-  #failed_when: "'No error detected' not in patchout.stdout"
-  environment:
-    BDEVICE: "{{ target_model }}"
-    PATH: "{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-  args:
-    chdir: "{{ SRCPATH }}"
-    executable: "/bin/bash"
+
+#- name: "apply DOS patches"
+#  shell: |
+#    source ~/.bashrc
+#    source build/envsetup.sh  && echo "sourcing envsetup: success" \
+#      && source {{ DOSPATH }}/Scripts/init.sh  && echo "sourcing init: success"
+#    patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
+#      && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+#  register: patchout
+#  #failed_when: "'No error detected' not in patchout.stdout"
+#  environment:
+#    BDEVICE: "{{ target_model }}"
+#    PATH: "{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+#  args:
+#    chdir: "{{ SRCPATH }}"
+#    executable: "/bin/bash"
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
