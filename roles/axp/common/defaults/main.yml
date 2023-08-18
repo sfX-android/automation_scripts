@@ -22,7 +22,8 @@ PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 
 # extendrom stuff
 use_extendrom: "true"
-extendrom_package_list: "additional_repos.xml Phonesky Magisk AuroraServices AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG Lawnchair-latest"
+extendrom_package_list: "additional_repos.xml Phonesky Magisk AuroraServices AuroraStore MicrogGmsCore_unified-latest MozillaNlpBackend NominatimBackend GsfProxy_GH noeSpeakNG Lawnchair-latest"
+extendrom_fdroid_repos: "microg.xml"
 extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
 extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
@@ -103,6 +104,7 @@ SH_COMMON_BUILD_SNIPPET: |
         # extendrom flags
         export ENABLE_EXTENDROM={{ use_extendrom }}
         export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+        export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
         {% if extendrom_packages_skip_dl is defined %}export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}{% endif %}
         export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
         export MAGISK_TARGET_ARCH=arm64
