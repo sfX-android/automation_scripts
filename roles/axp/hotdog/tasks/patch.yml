@@ -8,12 +8,12 @@
     - build_make_tools_releasetools_fixpython.patch
 
 - name: "apply AXP.OS kernel patches (hotdog)"
-  shell: |
+  raw: |
+      export BDEVICE="{{ target_model }}" PATH="{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      cd {{ SRCPATH }}
       source ~/.bashrc
       source build/envsetup.sh \
         && source ../../Scripts/init.sh \
         && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/kernel \
         && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
-  args:
-    chdir: "{{ SRCPATH }}"
-    executable: "/bin/bash"
+
