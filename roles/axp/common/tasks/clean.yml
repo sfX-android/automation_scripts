@@ -8,6 +8,13 @@
     version: "{{ axp_main_branch | d('HEAD') }}"
     clone: true
 
+- name: Prepare DOS build
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ SRCPATH }}"
+    
 - include_tasks: ../../../common/tasks/clean.yml
   vars:
     override_reset_git: 'true'
