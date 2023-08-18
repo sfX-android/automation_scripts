@@ -1,9 +1,5 @@
 ---
 
-- include_tasks: ../../../common/tasks/clean.yml
-  vars:
-    override_reset_git: 'true'
-
 - name: "reset DOS"
   git: 
     repo: "{{ axp_git_repo }}"
@@ -11,6 +7,10 @@
     force: true
     version: "{{ axp_main_branch | d('HEAD') }}"
     clone: true
+
+- include_tasks: ../../../common/tasks/clean.yml
+  vars:
+    override_reset_git: 'true'
  
 - name: "Specific DOS -basic- cleanup"
   file:
