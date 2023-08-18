@@ -1,0 +1,6 @@
+---
+
+- name: "Ensure the defined sources path exists"
+  file:
+    path: "{{ SRCPATH }}"
+    state: directory
