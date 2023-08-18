@@ -12,7 +12,7 @@
   shell: |
     source ~/.bashrc
     source build/envsetup.sh  && echo "sourcing envsetup: success" \
-      && source ../../Scripts/init.sh  && echo "sourcing init: success"
+      && source {{ DOSPATH }}/Scripts/init.sh  && echo "sourcing init: success"
     patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
       && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
@@ -29,7 +29,7 @@
   shell: |
     source ~/.bashrc
     source build/envsetup.sh \
-      && source ../../Scripts/init.sh \
+      && source {{ DOSPATH }}/Scripts/init.sh \
       && lunch lineage_{{ target_model }}-user && echo lunch success \
       && vendor/axp/axp.sh
   environment:
@@ -43,7 +43,7 @@
   shell: |
       source ~/.bashrc
       source build/envsetup.sh \
-        && source ../../Scripts/init.sh \
+        && source {{ DOSPATH }}/Scripts/init.sh \
         && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/common
   args:
     chdir: "{{ SRCPATH }}"
