@@ -13,7 +13,7 @@
     state: absent
   
 - name: "Init Android sources"
-  shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }}"
+  shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }} || true"
   args:
     chdir: "{{ SRCPATH }}"
 
