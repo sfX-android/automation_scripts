@@ -1,10 +1,5 @@
 ---
 
-- name: "Ensure the defined sources path exists"
-  file:
-    path: "{{ SRCPATH }}"
-    state: directory
-
 - block:
   - name: "Ensure no compat bin links exist"
     file:
