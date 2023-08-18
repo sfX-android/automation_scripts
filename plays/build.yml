@@ -88,6 +88,8 @@
 
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
+          when:
+            - telegram_notifications | bool
 
         - include_role:
             name: notify
