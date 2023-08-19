@@ -19,7 +19,7 @@
         || {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} --force-sync --fail-fast -c --no-clone-bundle
   args:
     chdir: "{{ SRCPATH }}"
-  no_log: true
+  no_log: "{{ debug_off | d(true) }}"
 
 # git lfs can be a pita! i.e. it silently fails and you have no idea where.
 # the following ensures we can catch known issues or print the error path at least
@@ -31,4 +31,4 @@
     chdir: "{{ SRCPATH }}"
   when: ROM_FLAVOR != 'MAID'
   # or (sync_lfs is defined and sync_lfs == 'true')
-  no_log: true
+  no_log: "{{ debug_off | d(true) }}"
