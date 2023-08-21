@@ -25,8 +25,8 @@ PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 
 # extendrom stuff
 use_extendrom: "true"
-extendrom_package_list: "additional_repos.xml molly.xml nailyk.xml threema.xml Phonesky Magisk AuroraServices AuroraStore MicrogGmsCore_unified-latest MozillaNlpBackend NominatimBackend GsfProxy_GH noeSpeakNG Lawnchair-latest"
-extendrom_fdroid_repos: "microg.xml"
+extendrom_package_list: "additional_repos.xml Phonesky Magisk AuroraServices AuroraStore MicrogGmsCore_unified-latest MozillaNlpBackend NominatimBackend GsfProxy_GH noeSpeakNG Lawnchair-latest"
+extendrom_fdroid_repos: "microg.xml molly.xml nailyk.xml threema.xml"
 extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
 extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
