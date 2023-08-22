@@ -18,6 +18,8 @@
     patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
       && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
+  args:
+    executable: /bin/bash
 
 #- name: "apply DOS patches"
 #  shell: |
@@ -45,6 +47,8 @@
       && source {{ DOSPATH }}/Scripts/init.sh \
       && lunch lineage_{{ target_model }}-user && echo lunch success \
       && vendor/axp/axp.sh
+  args:
+    executable: /bin/bash
 
 #- name: "apply AXP.OS adjustments"
 #  shell: |
@@ -68,6 +72,8 @@
       source build/envsetup.sh \
         && source {{ DOSPATH }}/Scripts/init.sh \
         && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/common
+  args:
+    executable: /bin/bash
 
 #- name: "apply AXP.OS patches (common)"
 #  shell: |
