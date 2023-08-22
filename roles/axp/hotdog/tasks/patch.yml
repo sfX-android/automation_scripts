@@ -16,4 +16,5 @@
         && source {{ DOSPATH }}/Scripts/init.sh \
         && vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/kernel \
         && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
-
+  args:
+    executable: /bin/bash
