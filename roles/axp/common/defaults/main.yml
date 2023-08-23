@@ -70,7 +70,7 @@ DOS_INIT: |
     export BDEVICE="{{ target_model }}"
     export PATH="{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     alias sh=/bin/bash
-    alias rename="{{ playbook_dir }}/../roles/axp/common/files/rename"
+    alias rename=""{{ SRCPATH }}/rename"
     cd {{ SRCPATH }}
     source build/envsetup.sh && echo "sourcing envsetup: success"
     source {{ DOSPATH }}/Scripts/init.sh && echo "sourcing init: success"
