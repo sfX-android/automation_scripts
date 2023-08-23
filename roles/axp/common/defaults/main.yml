@@ -61,6 +61,21 @@ dl_links: |-
 device_cl: |-
   ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() }}***
 
+# Divest has some very weird behavior as it is only compatible with fedora officially
+# one of the reasons is that /bin/sh points to /bin/bash there and divest uses /bin/sh
+# everywhere(no idea why!) and another example is the tool "rename" which is different
+# in fedora then in other distros (at least Ubuntu). The following fixes all known issues
+# with divest due to its non-standard behavior and inits DOS as it should be
+DOS_INIT: |
+    export BDEVICE="{{ target_model }}"
+    export PATH="{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    alias sh=/bin/bash
+    alias rename="{{ playbook_dir }}/../roles/axp/common/files/rename"
+    cd {{ SRCPATH }}
+    source build/envsetup.sh && echo "sourcing envsetup: success"
+    source {{ DOSPATH }}/Scripts/init.sh && echo "sourcing init: success"
+
+# the build script which will be executed after all the resets, syncs and patching have been done
 SH_COMMON_BUILD_SNIPPET: |
         #!/bin/bash
         ####################################################################################################################
