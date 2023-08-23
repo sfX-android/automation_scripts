@@ -67,6 +67,7 @@ device_cl: |-
 # in fedora then in other distros (at least Ubuntu). The following fixes all known issues
 # with divest due to its non-standard behavior and inits DOS as it should be
 DOS_INIT: |
+    if [ "x$HOME" == "x" ];then export HOME=$(pwd);fi
     export BDEVICE="{{ target_model }}"
     export PATH="{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     alias sh=/bin/bash
