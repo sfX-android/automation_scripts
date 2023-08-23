@@ -83,10 +83,8 @@ SH_COMMON_BUILD_SNIPPET: |
         # be strict on failures
         set -e
         
-        # stupid DOS workarounds (they use fedora which has another rename binary and /bin/sh -> /bin/bash)
-        export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/.local/bin:$PATH"
-        alias rename="/home/jenkins/util-linux/usr/bin/rename"
-        alias sh=/bin/bash
+        # stupid DOS workarounds
+        {{ DOS_INIT }}
         
         # fix build errors
         export LC_ALL=C
@@ -96,19 +94,9 @@ SH_COMMON_BUILD_SNIPPET: |
         unset EXTENDROM_DEBUG_PATH_SIZE_FULL EXTENDROM_DEBUG_PATH_SIZE_KERNEL EXTENDROM_DEBUG_PATH_SIZE_SELINUX 
         unset EXTENDROM_DEBUG_PATH_SIZE_CRASH EXTENDROM_SIGNATURE_SPOOFING EXTENDROM_SIGSPOOF_FORCE_PDIR PATCHER_RESET
         
-        ########################### SYNC / PREPARE #########################
-        
-        # required for including the right DOS vars
-        export BDEVICE={{ target_model }}
-        
-        # go to the real build dir
-        cd {{ SRCPATH }}
-        
         ########################### BUILD #########################
         
         # setup build env
-        source {{ DOSPATH }}/Scripts/init.sh
-        source build/envsetup.sh
         breakfast lineage_{{ target_model }}-user
         
         # CCACHE
