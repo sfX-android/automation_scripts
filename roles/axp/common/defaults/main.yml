@@ -82,21 +82,20 @@ SH_COMMON_BUILD_SNIPPET: |
         
         # be strict on failures
         set -e
-        
-        # stupid DOS workarounds
-        {{ DOS_INIT }}
-        
+
         # fix build errors
         export LC_ALL=C
         
         # unset any extendrom var
         unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EXTENDROM EXTENDROM_PACKAGES PREROOT_BOOT
         unset EXTENDROM_DEBUG_PATH_SIZE_FULL EXTENDROM_DEBUG_PATH_SIZE_KERNEL EXTENDROM_DEBUG_PATH_SIZE_SELINUX 
-        unset EXTENDROM_DEBUG_PATH_SIZE_CRASH EXTENDROM_SIGNATURE_SPOOFING EXTENDROM_SIGSPOOF_FORCE_PDIR PATCHER_RESET
+        unset EXTENDROM_DEBUG_PATH_SIZE_CRASH EXTENDROM_SIGNATURE_SPOOFING EXTENDROM_SIGSPOOF_FORCE_PDIR EXTENDROM_PATCHER_RESET
+        unset EXTENDROM_SIGNING_PATCHES EXTENDROM_PACKAGES_SKIP_DL
         
         ########################### BUILD #########################
         
-        # setup build env
+        # setup build env including stupid DOS workarounds
+        {{ DOS_INIT }}
         breakfast lineage_{{ target_model }}-user
         
         # CCACHE
