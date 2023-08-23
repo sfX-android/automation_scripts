@@ -10,7 +10,7 @@
 
 - name: "apply DOS patches"
   raw: |
-    {{ SH_DOS_INIT }}
+    {{ DOS_INIT }}
     patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
       && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
@@ -20,7 +20,7 @@
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
   raw: |
-    {{ SH_DOS_INIT }}
+    {{ DOS_INIT }}
     lunch lineage_{{ target_model }}-user && echo lunch success \
       && vendor/axp/axp.sh
   args:
@@ -28,7 +28,7 @@
 
 - name: "apply AXP.OS patches (common)"
   raw: |
-      {{ SH_DOS_INIT }}
+      {{ DOS_INIT }}
       vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/common
   args:
     executable: /bin/bash
