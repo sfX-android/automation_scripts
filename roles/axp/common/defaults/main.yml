@@ -69,7 +69,8 @@ device_cl: |-
 DOS_INIT: |
     if [ "x$HOME" == "x" ];then export HOME=$(pwd);fi # compat fix when running build + semaphore on the same system
     export BDEVICE="{{ target_model }}"
-    export PATH="{{ BUILDHOME }}/.yarn/bin:{{ BUILDHOME }}/.config/yarn/global/node_modules/.bin:{{ BUILDHOME }}/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    if [ ! -L "$HOME/.local/bin/sh" ];then ln -s /bin/bash $HOME/.local/bin/sh; fi
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
     cd {{ SRCPATH }}
