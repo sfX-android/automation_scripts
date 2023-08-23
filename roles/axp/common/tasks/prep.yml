@@ -4,3 +4,9 @@
   file:
     path: "{{ SRCPATH }}"
     state: directory
+
+- name: Copy DOS renamer
+  copy:
+    src: rename
+    dest: "{{ SRCPATH }}/"
+    mode: 0755
