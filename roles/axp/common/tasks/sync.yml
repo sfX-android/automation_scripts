@@ -9,15 +9,9 @@
     clone: yes
     track_submodules: true
 
-- name: "sync LOS base & local manifests"
-  include_role:
-    name: common
-    tasks_from: sync.yml
-    vars_from: ../../../axp/common/defaults/main.yml
+- name: "AXP.OS: sync LOS base & local manifests"
+  include_tasks: ../../../common/tasks/sync.yml
 
 # (needs to be done in DOS more early then for others)
-- name: "ensure the keys dir is set correctly"
-  include_role:
-    name: common
-    tasks_from: set_keys.yml
-    vars_from: ../../../axp/common/defaults/main.yml
+- name: "AXP.OS: ensure the keys dir is set correctly"
+  include_tasks: ../../../common/tasks/set_keys.yml
