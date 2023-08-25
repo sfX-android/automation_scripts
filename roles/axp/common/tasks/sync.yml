@@ -9,5 +9,13 @@
     clone: yes
     track_submodules: true
 
-# sync LOS etc
-- include_tasks: ../../../common/tasks/sync.yml
+- name: "sync LOS base & local manifests"
+  include_role:
+    name: common
+    tasks_from: sync.yml
+
+# (needs to be done in DOS more early then for others)
+- name: "ensure the keys dir is set correctly"
+  include_role:
+    name: common
+    tasks_from: set_keys.yml
