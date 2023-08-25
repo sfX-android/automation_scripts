@@ -1,5 +1,9 @@
 ---
 
+# TEST / TEMP
+- name: "AXP.OS: ensure the keys dir is set correctly"
+  include_tasks: ../../../common/tasks/set_keys.yml
+  
 - include_tasks: prep.yml
 - include_tasks: vars.yml
 - include_tasks: clean.yml
