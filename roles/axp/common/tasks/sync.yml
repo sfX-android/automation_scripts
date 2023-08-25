@@ -13,9 +13,11 @@
   include_role:
     name: common
     tasks_from: sync.yml
+    vars_from: ../../../axp/common/defaults/main.yml
 
 # (needs to be done in DOS more early then for others)
 - name: "ensure the keys dir is set correctly"
   include_role:
     name: common
     tasks_from: set_keys.yml
+    vars_from: ../../../axp/common/defaults/main.yml
