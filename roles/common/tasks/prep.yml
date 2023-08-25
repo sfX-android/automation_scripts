@@ -21,3 +21,5 @@
     when: android_shortversion == "a9"
 
   when: android_shortversion is defined
+
+- include_tasks: ../../common/tasks/set_keys.yml
