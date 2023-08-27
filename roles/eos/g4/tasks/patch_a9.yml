@@ -19,7 +19,12 @@
     chdir: "{{ SRCPATH }}"
   register: picklist
   loop: "{{ sec_patch_topics_pie }}"
-  
+
+- name: debug3
+  debug:
+    msg: "{{ item.stdout.splitlines() | map('from_yaml')  }}"
+  loop: "{{ picklist.results }}"
+
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-05"
   shell: >
     source build/envsetup.sh > /dev/null \
