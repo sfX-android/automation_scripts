@@ -174,20 +174,20 @@ incompat_cross_version_paths_DISABLED:
 #topic:P_asb_2022-04 OR # merged officially!
 # https://review.lineageos.org/q/topic:xxxx
 SECPATCH_DATE_PIE: "2023-08"
-sec_patch_topics_pie: >-
-      topic:P_asb_2022-05 OR
-      topic:P_asb_2022-06 OR
-      topic:P_asb_2022-07 OR
-      topic:P_asb_2022-08 OR
-      topic:P_asb_2022-09 OR
-      topic:P_asb_2022-10 OR
-      topic:P_asb_2022-11 OR
-      topic:P_asb_2022-12 OR
-      topic:P_asb_2023-01 OR
-      topic:P_asb_2023-02 OR
-      topic:P_asb_2023-03 OR
-      topic:P_asb_2023-04 OR
-      topic:P_asb_2023-05 OR
-      topic:P_asb_2023-06 OR
-      topic:P_asb_2023-07 OR
-      topic:P_asb_{{ SECPATCH_DATE_PIE }}
+sec_patch_topics_pie:
+      - topic:P_asb_2022-05
+      - topic:P_asb_2022-06
+      - topic:P_asb_2022-07
+      - topic:P_asb_2022-08
+      - topic:P_asb_2022-09
+      - topic:P_asb_2022-10
+      - topic:P_asb_2022-11
+      - topic:P_asb_2022-12
+      - topic:P_asb_2023-01
+      - topic:P_asb_2023-02
+      - topic:P_asb_2023-03
+      - topic:P_asb_2023-04
+      - topic:P_asb_2023-05
+      - topic:P_asb_2023-06
+      - topic:P_asb_2023-07
+      - topic:P_asb_{{ SECPATCH_DATE_PIE }}
