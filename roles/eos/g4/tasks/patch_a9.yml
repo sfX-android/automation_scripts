@@ -12,12 +12,13 @@
 - name: "Create repopick list (required to find path names)"
   shell: >
     /usr/bin/python3 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 
-    -Q '{{ sec_patch_topics_pie }}' 
+    -Q '{{ item }}' 
     | grep --color=never https | col | dos2unix
     | egrep -v '338357|342095|324039|324040|324041'
   args:
     chdir: "{{ SRCPATH }}"
   register: picklist
+  loop: "{{ sec_patch_topics_pie }}"
     
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-05"
   shell: >
@@ -27,7 +28,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  loop: "{{ picklist.stdout.splitlines() | map('from_yaml') | list }}"
+  loop: "{{ picklist.results.stdout.splitlines() | map('from_yaml') | list }}"
 
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE_PIE }}-01"
   lineinfile:
