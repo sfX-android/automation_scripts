@@ -26,14 +26,17 @@
   loop: "{{ picklist.results }}"
 
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-05"
-  shell: >
-    source build/envsetup.sh > /dev/null \
-      && echo 'applying SECURITY PATCH:' \
-      && {{ item }} -fv 2> /dev/null || {{ item }} -fv 1>&2
+  shell: |
+    source build/envsetup.sh > /dev/null
+    {% for ritem in item.stdout.splitlines() | map('from_yaml') | list %}
+    echo 'applying SECURITY PATCH:'
+    {{ ritem }} -fv 2> /dev/null || {{ ritem }} -fv 1>&2
+    {% endfor %}
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  loop: "{{ picklist.results.item.stdout.splitlines() | map('from_yaml') | list }}"
+  loop: "{{ picklist.results }}"
+  #.stdout.splitlines() | map('from_yaml') | list }}"
 
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE_PIE }}-01"
   lineinfile:
