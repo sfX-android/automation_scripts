@@ -20,10 +20,11 @@
   register: picklist
   loop: "{{ sec_patch_topics_pie }}"
 
-- name: debug3
-  debug:
-    msg: "{{ item.stdout.splitlines() | map('from_yaml')  }}"
-  loop: "{{ picklist.results }}"
+# repopick seems to use find on out, which fails on clean builds
+- name: prep out
+  file:
+    path: "{{ SRCPATH }}/out/target/product"
+    state: directory
 
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-05"
   shell: |
