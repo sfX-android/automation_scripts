@@ -19,19 +19,6 @@
     chdir: "{{ SRCPATH }}"
   register: picklist
   loop: "{{ sec_patch_topics_pie }}"
-
-- name: debug1
-  debug:
-    var: picklist
-
-- name: debug2
-  debug:
-    var: picklist.results
-
-- name: debug3
-  debug:
-    msg: "{{item }}"
-  loop: "{{ picklist.results }}"
   
 - name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-05"
   shell: >
@@ -41,7 +28,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  loop: "{{ picklist.results.stdout.splitlines() | map('from_yaml') | list }}"
+  loop: "{{ picklist.results.item.stdout.splitlines() | map('from_yaml') | list }}"
 
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE_PIE }}-01"
   lineinfile:
