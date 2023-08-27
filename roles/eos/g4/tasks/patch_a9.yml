@@ -29,7 +29,7 @@
   shell: |
     source build/envsetup.sh > /dev/null
     {% for ritem in item.stdout.splitlines() | map('from_yaml') | list %}
-    echo 'applying SECURITY PATCH:'
+    echo 'applying SECURITY PATCH: {{ ritem }}'
     {{ ritem }} -fv 2> /dev/null || {{ ritem }} -fv 1>&2
     {% endfor %}
   args:
