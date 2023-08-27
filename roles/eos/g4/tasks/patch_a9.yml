@@ -14,7 +14,7 @@
     /usr/bin/python3 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 
     -Q '{{ item }}' 
     | grep --color=never https | col | dos2unix
-    | grep -Ev '338357|342095|324039|324040|324041|Manifest change'
+    | grep -iEv '338357|342095|324039|324040|324041|Manifest change'
   args:
     chdir: "{{ SRCPATH }}"
   register: picklist
