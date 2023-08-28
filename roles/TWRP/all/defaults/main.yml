@@ -2,13 +2,16 @@
 
 # build vars
 PREFIXFNAME: "TWRP"
-SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}"
 SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}/{{ BDEVICE }}/out"
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 RELEASE_TYPE: "SFX"
 
-# manifests
-git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git"
+#SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}"
+SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}-aosp"
+
+# main TWRP manifest
+#git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git"
+git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git"
 
 # notification vars
 rom_cl: |-
