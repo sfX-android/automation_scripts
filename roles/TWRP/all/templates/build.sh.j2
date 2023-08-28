@@ -55,8 +55,16 @@ if [ "{{ target_model }}" == "g4" ];then
    	echo "Return: $?"
 fi
 
+# get TWRP version
 LOCPATH="$SRCPATH/out/target/product/{{ target_model }}/"
-TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.version |grep -v ro.twrp.version | tr -d "\n" |cut -d "-" -f1)
+if [ -f $LOCPATH/recovery/root/sbin/recovery ];then
+    TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.version |grep -v ro.twrp.version | tr -d "\n" |cut -d "-" -f1)
+elif [ -f $LOCPATH/recovery/root/sbin/twrp ];then
+    TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.version |grep -v ro.twrp.version | tr -d "\n" |cut -d "-" -f1)
+else
+    echo "WARNING: Cannot determine twrp binary for version detection"
+    TWRPRELEASE=unknown
+fi
 
 cd $LOCPATH
 [ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
