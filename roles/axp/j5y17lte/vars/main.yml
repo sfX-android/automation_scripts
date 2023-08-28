@@ -3,7 +3,7 @@
 target_model_full: "Samsung J5 - 2017"
 
 # boot debugger path & config
-extendrom_debug_path_default: /metadata
+extendrom_debug_path_default: /cache
 extendrom_debug_path_size_full_default: 500 
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
