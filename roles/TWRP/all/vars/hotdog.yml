@@ -3,10 +3,10 @@
 # human readable model name
 target_model_full: "OnePlus 7T pro"
 
-SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}-aosp"
+#SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}-aosp"
+#git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git"
 
 # TWRP repo branch
-git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git"
 git_repo_main_branch: "twrp-12.1"
 
 # specify lunch target
