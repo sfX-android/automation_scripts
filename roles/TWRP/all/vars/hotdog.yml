@@ -20,8 +20,6 @@ DTPATH: "{{ SRCPATH }}/device/oneplus/hotdog"
 # kernel (prebuilt OP kernel - permissive)
 KERNPATH: "kernel/oneplus/hotdog"
 
-RELEASE_TYPE: UNOFFICIAL
-
 # overwrite notify var
 kernel_cl: |-
   \- Kernel: prebuilt OP kernel \(stock \+ permissive\)
