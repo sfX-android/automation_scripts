@@ -60,7 +60,7 @@ LOCPATH="$SRCPATH/out/target/product/{{ target_model }}/"
 if [ -f $LOCPATH/recovery/root/sbin/recovery ];then
     TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.version |grep -v ro.twrp.version | tr -d "\n" |cut -d "-" -f1)
 elif [ -f $LOCPATH/recovery/root/sbin/twrp ];then
-    TWRPRELEASE=$(strings $LOCPATH/recovery/root/sbin/recovery |grep -A 1 ro.twrp.version |grep -v ro.twrp.version | tr -d "\n" |cut -d "-" -f1)
+    TWRPRELEASE=$(strings $LOCPATH//obj/EXECUTABLES/recovery_intermediates/data.o |grep -A 1 tw_version |grep -v tw_version | tr -d "\n" |cut -d "-" -f1 )
 else
     echo "WARNING: Cannot determine twrp binary for version detection"
     TWRPRELEASE=unknown
