@@ -63,7 +63,7 @@ device_cl: |-
 # with divest due to its non-standard behavior and inits DOS as it should be
 DOS_INIT: |
     echo "BUILDHOME: {{ BUILDHOME }}"
-    if [ "x$HOME" == "x" ];then export HOME="{{ BUILDHOME }}" && echo "home set to $HOME";else echo "home untouched: $HOME"; fi
+    export HOME="{{ BUILDHOME }}" && echo "home set to $HOME"
     export BDEVICE="{{ target_model }}"
     export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     if [ ! -L "$HOME/.local/bin/sh" ];then ln -s /bin/bash $HOME/.local/bin/sh; fi
