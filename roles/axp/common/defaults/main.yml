@@ -67,6 +67,7 @@ DOS_INIT: |
     export BDEVICE="{{ target_model }}"
     export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     if [ ! -L "$HOME/.local/bin/sh" ];then ln -s /bin/bash $HOME/.local/bin/sh; fi
+    if [ ! -L "$HOME/.local/bin/rename" ];then ln -s {{ SRCPATH }}/rename $HOME/.local/bin/rename; fi
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
     cd {{ SRCPATH }}
