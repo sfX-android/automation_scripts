@@ -14,7 +14,7 @@ LUNCHTARGET: "twrp_hotdog-eng"
 
 # device tree
 DTURI: "https://github.com/sfX-android/android_device_oneplus_hotdog.git"
-DTBRANCH: "android-12_twrp-testing"
+DTBRANCH: "android-12_twrp"
 DTPATH: "{{ SRCPATH }}/device/oneplus/hotdog"
 
 # kernel (prebuilt OP kernel - permissive)
