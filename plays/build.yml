@@ -36,10 +36,6 @@
           public: yes
         when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
 
-      - debug:
-          var: vault_tg_group_id_failing
-        when: telegram_notifications | bool
-
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: 
@@ -63,11 +59,15 @@
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
-        when: debug_build is not defined or (debug_build is defined and debug_build == "false")
+        when:
+          - debug_build is not defined or (debug_build is defined and debug_build == "false")
+          - telegram_notifications | bool
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
-        when: debug_build is defined and debug_build == "true"
+        when:
+          - debug_build is defined and debug_build == "true"
+          - telegram_notifications | bool
 
       - include_role:
           name: notify
