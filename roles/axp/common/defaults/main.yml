@@ -100,6 +100,7 @@ SH_COMMON_BUILD_SNIPPET: |
         # CCACHE
         export USE_CCACHE={{ USE_CCACHE }}
         if [ "{{ USE_CCACHE }}" -eq 1 ];then
+            export CCACHE_EXEC=/usr/bin/ccache
             export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
             mkdir -p {{ CCACHE_DIR }}
             export CCACHE_DIR="{{ CCACHE_DIR }}"
