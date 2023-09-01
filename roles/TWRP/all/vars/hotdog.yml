@@ -17,8 +17,10 @@ DTURI: "https://github.com/sfX-android/android_device_oneplus_hotdog.git"
 DTBRANCH: "android-12_twrp"
 DTPATH: "{{ SRCPATH }}/device/oneplus/hotdog"
 
-# kernel (prebuilt OP kernel - permissive)
-KERNPATH: "kernel/oneplus/hotdog"
+# kernel
+KERNPATH: "{{ SRCPATH }}/kernel/oneplus/sm8150"
+KERNGIT: "https://github.com/AXP-OS/android_kernel_oneplus_sm8150.git"
+KERNBRANCH: "axp-a13"
 
 # overwrite notify var
 kernel_cl: |-
