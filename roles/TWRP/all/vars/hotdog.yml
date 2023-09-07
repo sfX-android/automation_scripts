@@ -21,7 +21,3 @@ DTPATH: "{{ SRCPATH }}/device/oneplus/hotdog"
 KERNPATH: "{{ SRCPATH }}/kernel/oneplus/sm8150"
 KERNGIT: "https://github.com/AXP-OS/android_kernel_oneplus_sm8150.git"
 KERNBRANCH: "axp-a13"
-
-# overwrite notify var
-kernel_cl: |-
-  \- Kernel: prebuilt OP kernel \(stock \+ permissive\)
