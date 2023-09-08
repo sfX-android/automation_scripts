@@ -1,5 +1,0 @@
----
-
-- name: "Release /e/ OS for {{ BDEVICE }}"
-  debug:
-    msg: "TBD"

@@ -1,7 +1,6 @@
 ---
 
 - include: ../../common/tasks/setvars.yml
-#- include: fetch_recovery.yml
 - include: copy.yml
 - include: patch.yml
   when:
