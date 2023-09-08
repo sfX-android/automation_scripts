@@ -4,8 +4,9 @@
   template:
     src: divested.vars.j2
     dest: "{{ BUILDHOME }}/.divested.vars"
-    
+
 - name: "Set device vars"
   template:
     src: "divested.vars.{{ target_model }}.j2"
     dest: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
+  when: (role_path + 'divested.vars.' + {{ target_model }} + '.j2') | is_file
