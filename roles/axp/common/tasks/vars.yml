@@ -5,8 +5,14 @@
     src: divested.vars.j2
     dest: "{{ BUILDHOME }}/.divested.vars"
 
+- name: "check if a device overwrite exists"
+  connection: local
+  stat:
+    path: "{{ role_path }}/templates/divested.vars.{{ target_model }}.j2"
+  register: devvar
+
 - name: "Set device vars"
   template:
     src: "divested.vars.{{ target_model }}.j2"
     dest: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
-  when: (role_path + 'divested.vars.' + {{ target_model }} + '.j2') | is_file
+  when: devvar.stat.exists
