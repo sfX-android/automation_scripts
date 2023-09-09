@@ -2,6 +2,8 @@
 # human readable model name
 target_model_full: "OnePlus 6T"
 
+extendrom_preroot_boot: "false"
+
 # boot debugger path & config
 extendrom_debug_path_default: /persist
 extendrom_debug_path_size_full_default: 500 
