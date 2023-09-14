@@ -13,6 +13,9 @@ SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}-aosp"
 #git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git"
 git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp.git"
 
+# specify lunch target
+LUNCHTARGET: "twrp_{{ target_model }}-eng"
+
 # notification vars
 rom_cl: |-
   ***Changes:***
