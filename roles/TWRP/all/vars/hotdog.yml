@@ -13,8 +13,8 @@ git_repo_main_branch: "twrp-12.1"
 LUNCHTARGET: "twrp_hotdog-eng"
 
 # device tree
-DTURI: "https://github.com/sfX-android/android_device_oneplus_hotdog.git"
-DTBRANCH: "android-12_twrp"
+DTURI: "https://github.com/AXP-OS/android_device_oneplus_hotdog.git"
+DTBRANCH: "twrp-a12"
 DTPATH: "{{ SRCPATH }}/device/oneplus/hotdog"
 
 # kernel
