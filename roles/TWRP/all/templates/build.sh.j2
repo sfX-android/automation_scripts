@@ -42,7 +42,7 @@ export TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}"
 # BUILD #
 source build/envsetup.sh
 lunch {{ LUNCHTARGET }}
-TW_DEVICE_VERSION="{{ PIPETWRPBUILDVER }}" mka recoveryimage
+mka {{ RECOVERY_MKA_EXTRA_TARGETS }}{{ RECOVERY_MKA_TARGET }}image
 
 # special post-handling for LG G4
 if [ "{{ target_model }}" == "g4" ];then
@@ -68,7 +68,7 @@ fi
 
 cd $LOCPATH
 [ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-mv -v recovery.img {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}_{{ target_model }}.img
+mv -v {{ RECOVERY_MKA_TARGET }}.img {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}_{{ target_model }}.img
 
 # remove compat bin links
 if [ -e ~/.local/bin/python ];then
