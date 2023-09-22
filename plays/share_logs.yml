@@ -27,13 +27,13 @@
 
     - name: Fetch build log
       fetch:
-        src: "{{BUILDHOME}}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+        src: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
         dest: /tmp/
 
     - name: paste build log
       connection: local
       shell: >-
-        gist-paste --private  -d "BUILD LOG - {{ ansible_date_time.iso8601 }}" -f build.log.{{ ansible_date_time.epoch }}.sh /tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
+        gist-paste --private  -d "BUILD LOG - {{ ansible_date_time.iso8601 }}" -f build.log.{{ ansible_date_time.epoch }}.sh /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
       register: paste_build
 
     - set_fact:
