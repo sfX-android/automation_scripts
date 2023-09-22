@@ -15,14 +15,10 @@
         tasks_from: justvault.yml
         public: yes
 
-    - name: moo
+    - name: re-set cfg path
       connection: local
       set_fact:
         cfg: "{{ ansible_config_file }}"
-
-
-    - fail:
-        msg: "booooo: {{ cfg }}"
         
     - name: paste ansible log
       connection: local
@@ -30,6 +26,12 @@
         gist-paste --private  -d "ANSIBLE LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=cfg) }}
       register: paste_ansible
       when: skip_fetch_ansible_log is undefined or skip_fetch_ansible_log
+
+
+
+    - fail:
+        msg: "booooo: {{ cfg }}"
+
 
     - name: Fetch build log
       fetch:
