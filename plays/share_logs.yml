@@ -24,7 +24,7 @@
     - name: paste ansible log
       connection: local
       shell: >-
-        HOME="{{ BUILDHOME }}" gist-paste --private  -d "ANSIBLE LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ ansiblecfg.stdout }}
+        HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "ANSIBLE LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ ansiblecfg.stdout }}
       register: paste_ansible
       when: skip_fetch_ansible_log is undefined or not skip_fetch_ansible_log
 
@@ -37,7 +37,7 @@
     - name: paste build log
       connection: local
       shell: >-
-        HOME="{{ BUILDHOME }}" gist-paste --private  -d "BUILD LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f build.log.{{ ansible_facts['date_time']['iso8601'] }}.sh /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
+        HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "BUILD LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f build.log.{{ ansible_facts['date_time']['iso8601'] }}.sh /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
       register: paste_build
       when: skip_fetch_build_log is undefined or not skip_fetch_build_log
 
