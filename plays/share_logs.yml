@@ -30,7 +30,8 @@
 
     - name: Fetch build log
       fetch:
-        src: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+        flat: true
+        src: "{{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
         dest: /tmp/
       when: skip_fetch_build_log is undefined or not skip_fetch_build_log
 
