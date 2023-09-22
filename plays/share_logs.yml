@@ -8,7 +8,6 @@
   tasks:
     
     - name: gather needed facts
-      connection: local
       ansible.builtin.setup:
 
     - include_role:
