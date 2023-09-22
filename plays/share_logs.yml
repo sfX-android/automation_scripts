@@ -17,7 +17,7 @@
 
     - name: moo
       debug:
-        msg: "{{ hostvars[inventory_hostname]['ansible_facts'] }}"
+        msg: "{{ hostvars[inventory_hostname][ansible_config_file] }}"
 
     - fail:
         msg: booooo
