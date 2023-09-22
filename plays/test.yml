@@ -1,6 +1,6 @@
 ---
 
-- name: "Debug"
+- name: "Testing stuff"
   hosts: buildserver
   gather_facts: false
       
