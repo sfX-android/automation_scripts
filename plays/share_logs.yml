@@ -10,10 +10,13 @@
     - name: gather some needed facts
       connection: local
       ansible.builtin.setup:
-        filter:
-          - ansible_date_time
-          - ansible_config_file
+#        filter:
+#          - ansible_date_time
+#          - ansible_config_file
 
+    - debug:
+        var: inventory_hostname
+        
     - debug:
         var: ansible_facts
 
