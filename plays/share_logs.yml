@@ -1,6 +1,7 @@
 ---
 
 - name: "Sharing debug logs"
+  connection: local
   hosts: buildserver
   gather_facts: false
       
