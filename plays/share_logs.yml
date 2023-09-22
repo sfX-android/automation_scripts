@@ -21,17 +21,20 @@
       shell: >-
         gist-paste --private  -d "ANSIBLE LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=ansible_config_file) }}
       register: paste_ansible
+      when: skip_fetch_ansible_log is undefined or skip_fetch_ansible_log
 
     - name: Fetch build log
       fetch:
         src: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
         dest: /tmp/
+      when: skip_fetch_build_log is undefined or skip_fetch_build_log
 
     - name: paste build log
       connection: local
       shell: >-
         gist-paste --private  -d "BUILD LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f build.log.{{ ansible_facts['date_time']['iso8601'] }}.sh /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
       register: paste_build
+      when: skip_fetch_build_log is undefined or skip_fetch_build_log
 
     - name: "Print generated links"
       connection: local
@@ -39,8 +42,8 @@
         msg: |
           Please share the following links:
           
-          - ansible: {{ paste_ansible.stdout }}
-          - build: {{ paste_build.stdout }}
+          - ansible: {{ paste_ansible.stdout | d('empty') }}
+          - build: {{ paste_build.stdout | d('empty') }}
     
     - name: "Telegram notify"
       connection: local
@@ -52,7 +55,7 @@
           text: |
             Debug logs uploaded:
           
-            \- ansible: [log]({{ paste_ansible.stdout }})
-            \- build: [log]({{ paste_build.stdout }})
+            \- ansible: [log]({{ paste_ansible.stdout | d('empty') }})
+            \- build: [log]({{ paste_build.stdout | d('empty') }})
           disable_web_page_preview: True
       when: telegram_notifications | bool
