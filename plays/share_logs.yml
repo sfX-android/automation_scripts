@@ -2,10 +2,13 @@
 
 - name: "Sharing debug logs"
   hosts: buildserver
-  gather_facts: false
+  gather_facts: true
       
   tasks:
 
+    - debug:
+        var: ansible_facts
+    
     - ansible.builtin.setup:
         filter:
           - ansible_date_time
