@@ -1,0 +1,52 @@
+---
+
+- name: "Sharing debug logs"
+  hosts: buildserver
+  gather_facts: false
+      
+  tasks:
+
+    - ansible.builtin.setup:
+        filter:
+          - ansible_date_time
+          - ansible_log_path
+      
+    - import_role:
+        name: common
+
+    - name: paste ansible log
+      shell: >-
+        gist-paste --private  -d "{{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml {{ ansible_log_path }}
+      register: paste_ansible
+
+    - name: Fetch build log
+      fetch:
+        src: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+        dest: /tmp/
+
+    - name: paste build log
+      shell: >-
+        gist-paste --private  -d "{{ ansible_date_time.iso8601 }}" -f build.log.{{ ansible_date_time.epoch }}.sh /tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
+      register: paste_build
+
+    - set_fact:
+        output: |
+          Please share the following links:
+          
+          - ansible: [log]({{ paste_ansible.stdout }})
+          - build: [log]({{ paste_build.stdout }})
+
+    - name: Print
+      debug:
+        msg: "{{ output }}"
+    
+    - name: "Telegram notify"
+      connection: local
+      community.general.telegram:
+        token: "{{ vault_tg_token }}"
+        api_args:
+          chat_id: "{{ vault_tg_group_id_failing }}"
+          parse_mode: "MarkdownV2"
+          text: "{{ output | regex_escape() }}"
+          disable_web_page_preview: True
+      when: telegram_notifications | bool
