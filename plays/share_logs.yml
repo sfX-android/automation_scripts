@@ -12,6 +12,9 @@
           - ansible_date_time
           - ansible_config_file
 
+    - debug:
+        var: ansible_facts
+
     - include_role:
         name: common
         tasks_from: justvault.yml
