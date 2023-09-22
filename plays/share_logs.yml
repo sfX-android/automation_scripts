@@ -3,7 +3,7 @@
 - name: "Sharing debug logs"
   connection: local
   become: no
-  hosts: localhost
+  hosts: buildserver
   gather_facts: false
       
   tasks:
