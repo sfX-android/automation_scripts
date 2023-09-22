@@ -11,11 +11,12 @@
     - ansible.builtin.setup:
         filter:
           - ansible_date_time
+          - ansible_config_file
       
     - name: paste ansible log
       shell: >-
         pwd;
-        gist-paste --private  -d "{{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file='ansible.cfg') }}
+        gist-paste --private  -d "{{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=ansible_config_file) }}
       register: paste_ansible
 
     - name: Fetch build log
