@@ -18,10 +18,11 @@
         pwd;
         gist-paste --private  -d "ANSIBLE LOG - {{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=ansible_config_file) }}
       register: paste_ansible
+      when: dontskipme is defined
 
     - name: Fetch build log
       fetch:
-        src: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+        src: "{{BUILDHOME}}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
         dest: /tmp/
       delegate_to: buildserver
 
