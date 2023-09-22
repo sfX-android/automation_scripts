@@ -12,7 +12,11 @@
         filter:
           - ansible_date_time
           - ansible_config_file
-      
+
+    - include_role:
+        name: common
+        tasks_from: empty.yml
+
     - name: paste ansible log
       shell: >-
         pwd;
