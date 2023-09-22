@@ -2,24 +2,20 @@
 
 - name: "Sharing debug logs"
   hosts: buildserver
-  gather_facts: true
+  gather_facts: false
       
   tasks:
-
-    - debug:
-        var: ansible_facts
     
     - ansible.builtin.setup:
         filter:
           - ansible_date_time
-          - ansible_log_path
       
     - import_role:
         name: common
 
     - name: paste ansible log
       shell: >-
-        gist-paste --private  -d "{{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml {{ ansible_log_path }}
+        gist-paste --private  -d "{{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml $ANSIBLE_LOG_PATH
       register: paste_ansible
 
     - name: Fetch build log
