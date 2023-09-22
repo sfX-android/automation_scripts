@@ -11,9 +11,6 @@
       connection: local
       ansible.builtin.setup:
 
-    - debug:
-        var: ansible_facts
-
     - include_role:
         name: common
         tasks_from: justvault.yml
