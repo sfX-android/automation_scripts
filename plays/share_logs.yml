@@ -12,7 +12,7 @@
       ansible.builtin.setup:
 
     - debug:
-        var: inventory_hostname
+        var: ansible_facts
 
     - include_role:
         name: common
