@@ -29,7 +29,6 @@
       fetch:
         src: "{{BUILDHOME}}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
         dest: /tmp/
-      delegate_to: buildserver
 
     - name: paste build log
       shell: >-
