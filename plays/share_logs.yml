@@ -16,17 +16,18 @@
     - name: paste ansible log
       shell: >-
         pwd;
-        gist-paste --private  -d "{{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=ansible_config_file) }}
+        gist-paste --private  -d "ANSIBLE LOG - {{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=ansible_config_file) }}
       register: paste_ansible
 
     - name: Fetch build log
       fetch:
         src: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
         dest: /tmp/
+      delegate_to: buildserver
 
     - name: paste build log
       shell: >-
-        gist-paste --private  -d "{{ ansible_date_time.iso8601 }}" -f build.log.{{ ansible_date_time.epoch }}.sh /tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
+        gist-paste --private  -d "BUILD LOG - {{ ansible_date_time.iso8601 }}" -f build.log.{{ ansible_date_time.epoch }}.sh /tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
       register: paste_build
 
     - set_fact:
