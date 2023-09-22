@@ -20,7 +20,6 @@
     - name: paste ansible log
       connection: local
       shell: >-
-        pwd;
         gist-paste --private  -d "ANSIBLE LOG - {{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=ansible_config_file) }}
       register: paste_ansible
 
