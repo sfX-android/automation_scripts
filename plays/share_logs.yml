@@ -37,7 +37,6 @@
       register: paste_build
 
     - set_fact:
-      connection: local
         output: |
           Please share the following links:
           
