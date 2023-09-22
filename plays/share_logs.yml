@@ -16,15 +16,10 @@
         public: yes
 
     - name: moo
-      debug:
-        msg: "{{ ansible_config_file }}"
+      connection: local
+      set_fact:
+        cfg: "{{ ansible_config_file }}"
 
-    - name: get cfg
-      ansible.builtin.ini:
-        option: log_path
-        section: defaults
-        path: "{{ ansible_config_file }}"
-      register: cfg
 
     - fail:
         msg: "booooo: {{ cfg }}"
@@ -32,7 +27,7 @@
     - name: paste ansible log
       connection: local
       shell: >-
-        gist-paste --private  -d "ANSIBLE LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=ansible_config_file) }}
+        gist-paste --private  -d "ANSIBLE LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=cfg) }}
       register: paste_ansible
       when: skip_fetch_ansible_log is undefined or skip_fetch_ansible_log
 
