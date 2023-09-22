@@ -16,6 +16,7 @@
     - include_role:
         name: common
         tasks_from: empty.yml
+        public: yes
 
     - name: paste ansible log
       shell: >-
