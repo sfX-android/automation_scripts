@@ -1,7 +1,6 @@
 ---
 
 - name: "Sharing debug logs"
-  connection: local
   become: no
   hosts: buildserver
   gather_facts: false
@@ -19,6 +18,7 @@
         public: yes
 
     - name: paste ansible log
+      connection: local
       shell: >-
         pwd;
         gist-paste --private  -d "ANSIBLE LOG - {{ ansible_date_time.iso8601 }}" -f ansible.log.{{ ansible_date_time.epoch }}.yaml  {{ lookup('ansible.builtin.ini', 'log_path', section='defaults',  file=ansible_config_file) }}
@@ -31,11 +31,13 @@
         dest: /tmp/
 
     - name: paste build log
+      connection: local
       shell: >-
         gist-paste --private  -d "BUILD LOG - {{ ansible_date_time.iso8601 }}" -f build.log.{{ ansible_date_time.epoch }}.sh /tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
       register: paste_build
 
     - set_fact:
+      connection: local
         output: |
           Please share the following links:
           
@@ -43,6 +45,7 @@
           - build: [log]({{ paste_build.stdout }})
 
     - name: Print
+      connection: local
       debug:
         msg: "{{ output }}"
     
