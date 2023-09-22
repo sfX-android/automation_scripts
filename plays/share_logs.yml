@@ -14,7 +14,7 @@
 
     - include_role:
         name: common
-        tasks_from: empty.yml
+        tasks_from: justvault.yml
         public: yes
 
     - name: paste ansible log
@@ -35,17 +35,14 @@
         gist-paste --private  -d "BUILD LOG - {{ ansible_date_time.iso8601 }}" -f build.log.{{ ansible_date_time.epoch }}.sh /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
       register: paste_build
 
-    - set_fact:
-        output: |
-          Please share the following links:
-          
-          - ansible: [log]({{ paste_ansible.stdout }})
-          - build: [log]({{ paste_build.stdout }})
-
-    - name: Print
+    - name: "Print generated links"
       connection: local
       debug:
-        msg: "{{ output }}"
+        msg: |
+          Please share the following links:
+          
+          - ansible: {{ paste_ansible.stdout }}
+          - build: {{ paste_build.stdout }}
     
     - name: "Telegram notify"
       connection: local
@@ -54,6 +51,10 @@
         api_args:
           chat_id: "{{ vault_tg_group_id_failing }}"
           parse_mode: "MarkdownV2"
-          text: "{{ output | regex_escape() }}"
+          text: |
+            Debug logs uploaded:
+          
+            \- ansible: [log]({{ paste_ansible.stdout }})
+            \- build: [log]({{ paste_build.stdout }})
           disable_web_page_preview: True
       when: telegram_notifications | bool
