@@ -23,10 +23,12 @@ cdtree_cl: |-
 
 # security patches from LOS topics
 sec_patch_pick_branch: "lineage-17.1" 
-sec_patch_date_last: "{{current_year }}-07"
+sec_patch_date_last: "{{current_year }}-09"
 sec_patch_topics: >-
       topic:Q_asb_2023-03 OR
       topic:Q_asb_2023-04 OR
       topic:Q_asb_2023-05 OR
       topic:Q_asb_2023-06 OR
+      topic:Q_asb_2023-07 OR
+      topic:Q_asb_2023-08 OR
       topic:Q_asb_{{ sec_patch_date_last }}
