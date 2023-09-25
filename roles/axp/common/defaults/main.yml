@@ -23,6 +23,8 @@ rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 RELEASE_TYPE: dos
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
+# if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
+axp_build_eng: false
 
 # extendrom stuff
 use_extendrom: "true"
