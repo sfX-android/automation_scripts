@@ -134,4 +134,8 @@ SH_COMMON_BUILD_SNIPPET: |
         mka generate_verity_key \
          && mka sepolicy && \
         {% endif %}
+        {% if axp_build_eng | bool %}
+         buildDeviceDebug {{ target_model }}
+        {% else %}
          buildDevice {{ target_model }}
+        {% endif %}
