@@ -98,7 +98,11 @@ SH_COMMON_BUILD_SNIPPET: |
         
         # setup build env including stupid DOS workarounds
         {{ DOS_INIT }}
+        {% if axp_build_eng | bool %}
+        breakfast lineage_{{ target_model }}-eng
+        {% else %}
         breakfast lineage_{{ target_model }}-user
+        {% endif %}
         
         # CCACHE
         export USE_CCACHE={{ USE_CCACHE }}
