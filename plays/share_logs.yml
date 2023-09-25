@@ -15,7 +15,7 @@
         tasks_from: justvault.yml
         public: yes
 
-    - name: re-set cfg path
+    - name: grab configured ansible log path
       connection: local
       shell: >-
         grep -E '^log_path\s+=' "{{ ansible_config_file }}" | cut -d '=' -f 2
@@ -24,21 +24,21 @@
     - name: paste ansible log
       connection: local
       shell: >-
-        HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "ANSIBLE LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ ansiblecfg.stdout }}
+        HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "ANSIBLE LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ ansiblecfg.stdout }}.{{ log_build_id }}
       register: paste_ansible
       when: skip_fetch_ansible_log is undefined or not skip_fetch_ansible_log
 
     - name: Fetch build log
       fetch:
         flat: true
-        src: "{{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+        src: "{{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ log_build_id }}.log"
         dest: /tmp/
       when: skip_fetch_build_log is undefined or not skip_fetch_build_log
 
     - name: paste build log
       connection: local
       shell: >-
-        HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "BUILD LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f build.log.{{ ansible_facts['date_time']['iso8601'] }}.sh /tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log
+        HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "BUILD LOG - {{ ansible_facts['date_time']['iso8601'] }}" -f build.log.{{ ansible_facts['date_time']['iso8601'] }}.sh /tmp/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ log_build_id }}.log
       register: paste_build
       when: skip_fetch_build_log is undefined or not skip_fetch_build_log
 
