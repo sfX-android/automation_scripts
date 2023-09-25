@@ -6,6 +6,7 @@ REPOBRANCH: undefined
 
 # semaphore working/tmp dir
 semaphore_work_dir: /opt/scs-work
+semaphore_home_dir: "{{ semaphore_work_dir }}"
 semaphore_lock_dir: "{{ semaphore_work_dir }}/run"
 
 # ensure we have a normalized & clean version tag (e.g. removing slashes from a git tag etc)
