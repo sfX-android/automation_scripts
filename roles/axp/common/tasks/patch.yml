@@ -8,6 +8,11 @@
   when:
     - clean_out != "true" or (override_clean_out != "true") or (skip_gpg_verify | bool)
 
+- name: "wireguard handling by vendor/axp"
+  file:
+    path: "{{ SRCPATH }}/.wg.patched"
+  when: skip_wireguard is defined and skip_wireguard | bool
+
 - name: "apply DOS patches"
   raw: |
     {{ DOS_INIT }}
@@ -32,13 +37,3 @@
       vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/common
   args:
     executable: /bin/bash
-
-- name: "apply AXP.OS patches (wireguard)"
-  raw: |
-      {{ DOS_INIT }}
-      vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/kernel \
-        && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
-  args:
-    executable: /bin/bash
-  when: skip_wireguard is undefined or not skip_wireguard
-
