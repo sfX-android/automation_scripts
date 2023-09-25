@@ -6,13 +6,16 @@
     grep -E '^log_path\s+=' "{{ ansible_config_file }}" | cut -d '=' -f 2
   register: ansible_log
 
+- set_fact:
+    ansible_log_flatten:  "{{ ansible_log.stdout | regex_replace("$HOME", semaphore_home_dir) }}
+    
 - name: rotate ansible log
   connection: local
   copy:
-    src: "{{ ansible_log.stdout }}"
-    dest: "{{ ansible_log.stdout }}.{{ build_no }}"
+    src: "{{ ansible_log_flatten }}"
+    dest: "{{ ansible_log_flatten }}.{{ build_no }}"
 
 - name: clear old ansible log
   file:
-    path: "{{ ansible_log.stdout }}"
+    path: "{{ ansible_log_flatten }}"
     state: absent
