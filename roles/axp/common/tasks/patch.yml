@@ -40,5 +40,5 @@
         && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
   args:
     executable: /bin/bash
-  when: skip_wireguard is undefined or skip_wireguard is false
+  when: skip_wireguard is undefined or not skip_wireguard
 
