@@ -1,4 +1,4 @@
- ---
+---
 
 - name: "get ansible log path"
   connection: local
