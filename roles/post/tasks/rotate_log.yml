@@ -4,7 +4,7 @@
   connection: local
   shell: >-
     grep -E '^log_path\s+=' "{{ ansible_config_file }}" | cut -d '=' -f 2
-  register: ansible_logpath
+  register: ansible_log
 
 - name: rotate ansible log
   connection: local
