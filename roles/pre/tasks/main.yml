@@ -1,7 +1,5 @@
 ---
 
-- include: rotate_log.yml
-
 - include: stop_service.yml
   when: 
     - blocking_service_name is defined
