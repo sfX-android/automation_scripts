@@ -11,6 +11,7 @@
 - name: "wireguard handling by vendor/axp"
   file:
     path: "{{ SRCPATH }}/.wg.patched"
+    state: touch
   when: skip_wireguard is defined and skip_wireguard | bool
 
 - name: "apply DOS patches"
