@@ -7,7 +7,7 @@
   register: ansible_log
 
 - set_fact:
-    ansible_log_flatten:  "{{ ansible_log.stdout | regex_replace("$HOME", semaphore_home_dir) }}
+    ansible_log_flatten:  "{{ ansible_log.stdout | regex_replace('$HOME', semaphore_home_dir) }}
     
 - name: rotate ansible log
   connection: local
