@@ -11,11 +11,4 @@
 
 - name: rotate ansible log
   connection: local
-  copy:
-    src: "{{ ansible_log_flatten }}"
-    dest: "{{ ansible_log_flatten }}.{{ build_no }}"
-
-- name: clear old ansible log
-  file:
-    path: "{{ ansible_log_flatten }}"
-    state: absent
+  shell: "mv {{ ansible_log_flatten }} {{ ansible_log_flatten }}.{{ build_no }}"
