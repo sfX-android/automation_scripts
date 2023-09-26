@@ -20,5 +20,7 @@ RECOVERY_MKA_TARGET: boot
 # kernel 
 # UNUSED atm - as kernel building in twrp-12 fails 
 KERNPATH: "{{ SRCPATH }}/kernel/oneplus/sdm845"
-KERNGIT: "https://github.com/AXP-OS/android_kernel_oneplus_sdm845.git"
-KERNBRANCH: "axp-a13"
+#KERNGIT: "https://github.com/AXP-OS/android_kernel_oneplus_sdm845.git"
+KERNGIT: "https://github.com/LineageOS/android_kernel_oneplus_sdm845.git"
+#KERNBRANCH: "axp-a13"
+KERNBRANCH: "lineage-20"
