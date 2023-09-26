@@ -4,6 +4,7 @@ target_model_full: "Samsung J5 - 2017"
 
 # TWRP repo branch
 git_repo_main_branch: "twrp-9.0"
+los_revision: "lineage-16.0"
 
 # specify lunch target
 LUNCHTARGET: "omni_j5y17lte-eng"
