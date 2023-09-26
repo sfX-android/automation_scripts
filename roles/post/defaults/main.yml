@@ -1,10 +1,3 @@
 ---
 
-sm_build_no: >-
-    {% if semaphore_vars.task_details.id is undefined %}
-    {{ semaphore_vars.task_details.incoming_version | d('0000') }}
-    {% else %}
-    {{ semaphore_vars.task_details.id }}
-    {% endif %}
-
-build_no: "{{ sm_build_no| regex_replace(' ','') }}"
+build_no: "{{ semaphore_vars.task_details.id | d('000000') | regex_replace(' ','') }}"
