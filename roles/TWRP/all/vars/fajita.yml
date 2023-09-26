@@ -12,11 +12,12 @@ DTBRANCH: "twrp-a12"
 DTPATH: "{{ SRCPATH }}/device/oneplus/{{ target_model }}"
 
 # extra make targets build with TWRP (e.g. "adbd")
-RECOVERY_MKA_EXTRA_TARGETS: "adbd"
+#RECOVERY_MKA_EXTRA_TARGETS: ""
 # "recovery" when dedicated partition, otherwise "boot"
 RECOVERY_MKA_TARGET: boot
 
-# kernel
-#KERNPATH: "{{ SRCPATH }}/kernel/oneplus/sdm845"
-#KERNGIT: "https://github.com/AXP-OS/android_kernel_oneplus_sdm845.git"
-#KERNBRANCH: "axp-a13"
+# kernel 
+# UNUSED atm - as kernel building in twrp-12 fails 
+KERNPATH: "{{ SRCPATH }}/kernel/oneplus/sdm845"
+KERNGIT: "https://github.com/AXP-OS/android_kernel_oneplus_sdm845.git"
+KERNBRANCH: "axp-a13"
