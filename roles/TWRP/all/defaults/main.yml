@@ -17,7 +17,7 @@ git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_mani
 LUNCHTARGET: "twrp_{{ target_model }}-eng"
 
 # extra make targets build with TWRP (e.g. "adbd")
-RECOVERY_MKA_EXTRA_TARGETS: ""
+RECOVERY_MKA_EXTRA_TARGETS: "vim"
 # "recovery" when dedicated partition, otherwise "boot"
 RECOVERY_MKA_TARGET: recovery
 
