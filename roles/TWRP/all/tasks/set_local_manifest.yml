@@ -1,0 +1,12 @@
+---
+
+- name: ensure local manifest exists
+  file:
+    path: "{{ SRCPATH }}/.repo/local_manifests"
+    state: directory
+
+- name: Upload local manifest
+  template:
+    src: local_manifest.xml.j2
+    dest: "{{ SRCPATH }}/.repo/local_manifests/ansible_added.xml"
+    mode: 0644
