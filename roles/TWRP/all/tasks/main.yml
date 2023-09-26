@@ -7,6 +7,7 @@
 - include: set_buildid.yml
 
 - include: set_local_manifest.yml
+  when: los_revision is defined
 
 - include: ../../common/tasks/sync.yml
   when:
