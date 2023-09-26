@@ -8,6 +8,7 @@ target_model_full: "OnePlus 7T pro"
 
 # TWRP repo branch
 git_repo_main_branch: "twrp-12.1"
+los_revision: "lineage-19.1"
 
 # specify lunch target
 LUNCHTARGET: "twrp_hotdog-eng"
