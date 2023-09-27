@@ -73,7 +73,7 @@ cd {{ SRCPATH }}
 # build
 cd {{ SRCPATH }}
 choosecombo release {{ target_model }} {{ lunch_buildtype }}
-m -j{{ max_processes }} vendorbootimage target-files-package
+m -j{{ max_processes }} otatools-package vendorbootimage target-files-package
 
 # packaging & signing
 time script/release.sh {{ target_model }}
