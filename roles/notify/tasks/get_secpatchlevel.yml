@@ -2,7 +2,7 @@
 
 - name: "Read Security patch date"
   shell: |-
-    grep -E 'PLATFORM_SECURITY_PATCH\s+:=\s+' build/core/version_defaults.mk| cut -d "=" -f 2 | tr -d " "
+    grep -E 'PLATFORM_SECURITY_PATCH\s+:=\s+' build/core/version_defaults.mk| cut -d "=" -f 2 | tr -d " " | tail -n1
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
