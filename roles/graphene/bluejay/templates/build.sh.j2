@@ -17,7 +17,10 @@ if [ "{{ USE_CCACHE }}" -eq 1 ];then
     {{ CCACHE_EXEC }} --max-size=10G
 fi
 
-# setup build env    
+# enable/add Updater app
+export OFFICIAL_BUILD=true
+
+# setup build env
 cd {{ SRCPATH }}
 [ -L releases ] && rm releases
 
@@ -29,6 +32,13 @@ export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_TYPE }}"
 sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
 
 source script/envsetup.sh
+{% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
+# fetch & extract blobs
+yarn install --cwd vendor/adevtool/
+m -j{{ max_processes }} aapt2
+sudo rm -rf vendor/adevtool/dl/*
+vendor/adevtool/bin/run generate-all -d {{ target_model }}
+{% endif %}
 
 # extendrom
 {% if use_extendrom is defined and use_extendrom == "true" %}
@@ -57,32 +67,13 @@ LTO=thin BUILD_KERNEL=1 ./build_{{ target_model }}.sh
 cd {{ SRCPATH }}
 {% endif %}
 
-# prepare fetching blobs
-source script/envsetup.sh
-choosecombo release {{ target_model }} {{ lunch_buildtype }}
-
-# fetch & extract blobs
-{% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
-yarn install --cwd vendor/adevtool/
-source script/envsetup.sh
-m -j{{ max_processes }} aapt2
-sudo rm -rf vendor/adevtool/dl/*
-vendor/adevtool/bin/run download vendor/adevtool/dl/ -d bluejay -t factory ota -b {{ normalized_target_version }}
-sudo vendor/adevtool/bin/run generate-all vendor/adevtool/config/{{ target_model }}.yml -c vendor/state/{{ target_model }}.json -s vendor/adevtool/dl/{{ target_model }}-{{ normalized_target_version | lower() }}-*.zip
-sudo chown -R ${USER}:${USER} vendor/google_devices
-vendor/adevtool/bin/run ota-firmware vendor/adevtool/config/{{ target_model }}.yml -f vendor/adevtool/dl/{{ target_model }}-ota-{{ normalized_target_version | lower() }}-*.zip
-{% endif %}
-
-# enable/add Updater app
-export OFFICIAL_BUILD=true
-
 # icons replacements
 {{ SH_GRAPHENE_VPN_ICON }}
 
 # build
 cd {{ SRCPATH }}
-source script/envsetup.sh
-m -j{{ max_processes }} target-files-package otatools-package
+choosecombo release {{ target_model }} {{ lunch_buildtype }}
+m -j{{ max_processes }} vendorbootimage target-files-package
 
 # packaging & signing
 time script/release.sh {{ target_model }}
