@@ -10,6 +10,8 @@ KEYS_CN: safeOS
 KEYS_SIZE: 8192
 KEYS_HASHTYPE: sha512
 
+# build vars
+custom_release_script: true
 ROM_VERSION: "{{ build_id }}"
 keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}_{{ ROM_TYPE }}'
 
