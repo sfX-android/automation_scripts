@@ -1,5 +1,0 @@
----
-
-#- include: ../../common/tasks/clean.yml
-#- include: ../../common/tasks/sync.yml
-- include: ../../common/tasks/build.yml
