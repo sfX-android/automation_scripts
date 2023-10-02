@@ -81,7 +81,7 @@ time script/release.sh {{ target_model }}
 echo -e '\n\n\t\e[32m\e[1mBUILDING '$BUILD_ID' for {{ target_model }} FINISHED SUCCESSFULLY!!\e[0m\n'
 
 # prepare release
-export GBUILDID=$(grep 'ro.build.version.incremental' out/target/product/{{ target_model }}/system/build.prop | cut -d = -f 2)
+export GBUILDID=$(grep 'ro.system.build.version.incremental' out/target/product/{{ target_model }}/system/build.prop | cut -d = -f 2)
 ln -s ../graphene_releases releases
 
 # find (the latest) previous release
