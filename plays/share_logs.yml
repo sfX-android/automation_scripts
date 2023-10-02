@@ -38,11 +38,7 @@
     - name: paste build log
       connection: local
       shell: |
-        if [ -f "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ log_build_id }}.log" ];then
           HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "BUILD LOG - ID {{ log_build_id }} - {{ ansible_facts['date_time']['iso8601'] }}" -f build.log.{{ ansible_facts['date_time']['iso8601'] }}.sh /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ log_build_id }}
-        else
-          true
-        fi
       register: paste_build
       when:
         - buildlogfile.stat.isreg is defined
