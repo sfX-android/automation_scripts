@@ -23,6 +23,7 @@
   loop:
     - build.prop
     - build_number.txt
+    - buildinfo.prop
     - build_date.txt
     - boot.img
     - recovery.img
