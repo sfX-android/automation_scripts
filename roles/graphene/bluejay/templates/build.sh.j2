@@ -33,6 +33,7 @@ export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_TYPE }}"
 # replace aosp build id
 #sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
 sed -i "s/BUILD_ID :=.*/BUILD_ID := $BUILD_ID/g" build/make/core/version_defaults.mk
+# ensure mismatching build is non-fatal
 sed -i 's/error /warning /g' vendor/google_devices/{{ target_model }}/{{ target_model }}.mk
 echo "ro.build.display.id=$BUILD_ID" > vendor/sos/vendor.prop
 
