@@ -29,8 +29,11 @@ export password=""
 export BUILD_NUMBER="v{{ ROM_VERSION }}"
 export ROM_TYPE="{{ ROM_TYPE }}"
 export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_TYPE }}"
+
+# replace aosp build id
 #sed -i "s/BUILD_ID=.*/BUILD_ID=$BUILD_ID/g" build/make/core/build_id.mk
 sed -i "s/BUILD_ID :=.*/BUILD_ID := $BUILD_ID/g" build/make/core/version_defaults.mk
+sed -i 's/error /warning /g' vendor/google_devices/{{ target_model }}/{{ target_model }}.mk
 echo "ro.build.display.id=$BUILD_ID" > vendor/sos/vendor.prop
 
 source script/envsetup.sh
