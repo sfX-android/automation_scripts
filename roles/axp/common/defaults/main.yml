@@ -107,7 +107,17 @@ SH_COMMON_BUILD_SNIPPET: |
         unset EXTENDROM_DEBUG_PATH_SIZE_FULL EXTENDROM_DEBUG_PATH_SIZE_KERNEL EXTENDROM_DEBUG_PATH_SIZE_SELINUX 
         unset EXTENDROM_DEBUG_PATH_SIZE_CRASH EXTENDROM_SIGNATURE_SPOOFING EXTENDROM_SIGSPOOF_FORCE_PDIR EXTENDROM_PATCHER_RESET
         unset EXTENDROM_SIGNING_PATCHES EXTENDROM_PACKAGES_SKIP_DL
-        
+
+        ########################### PREPARE #########################
+
+        # set legacy python2 env - if needed
+        # 1. sudo apt-get install python2 virtualenv python2-pip-whl python2-setuptools-whl
+        # 2. mkdir -p ~/.venv/python2
+        # 3. virtualenv --python=$(which python2) ~/.venv/python2
+        case {{ android_shortversion }} in
+            a9|a10) source ~/.venv/python2/bin/activate ;;
+        esac
+
         ########################### BUILD #########################
         
         # setup build env including stupid DOS workarounds
