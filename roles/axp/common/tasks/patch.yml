@@ -35,6 +35,6 @@
 - name: "apply AXP.OS patches (common)"
   raw: |
       {{ DOS_INIT }}
-      vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/common
+      vendor/extendrom/tools/apply_patches.sh vendor/axp/patches/common/{{ android_shortversion }}
   args:
     executable: /bin/bash
