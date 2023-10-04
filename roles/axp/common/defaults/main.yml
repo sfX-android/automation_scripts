@@ -25,6 +25,20 @@ ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 # if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
 axp_build_eng: false
+# directories to be cleaned on a clean build
+axp_clean_paths:
+    - "{{ SRCPATH }}/DOS_PATCHED_FLAG"
+    - "{{ SRCPATH }}/packages/apps/Fennec_DOS-Shim"
+    - "{{ SRCPATH }}/vendor/divested"
+    - "{{ SRCPATH }}/vendor/fdroid_prebuilt"
+    - "{{ SRCPATH }}/packages/apps/SupportDivestOS"
+    - "{{ SRCPATH }}/vendor/oneplus"
+    - "{{ SRCPATH }}/vendor/samsung"
+    - "{{ SRCPATH }}/hardware/oplus"
+    - "{{ SRCPATH }}/hardware/samsung"
+    - "{{ SRCPATH }}/external/firebase-messaging"
+    - "{{ SRCPATH }}/kernel"
+    - "{{ SRCPATH }}/device"
 
 # extendrom stuff
 use_extendrom: "true"
