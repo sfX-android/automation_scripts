@@ -32,7 +32,7 @@
         path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ log_build_id }}"
       register: buildlogfile
       connection: local
-      no_log: true
+      #no_log: true
       when: skip_fetch_build_log is undefined or not skip_fetch_build_log
 
     - name: paste build log
