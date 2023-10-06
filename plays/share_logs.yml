@@ -26,7 +26,7 @@
       shell: >-
         HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "ANSIBLE LOG - ID {{ log_build_id }} - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ ansiblecfg.stdout }}.{{ log_build_id }}
       register: paste_ansible
-      when: skip_fetch_ansible_log is undefined or not skip_fetch_ansible_log
+      when: skip_fetch_ansible_log is undefined or (not skip_fetch_ansible_log | bool)
 
     - stat:
         path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ log_build_id }}"
