@@ -90,6 +90,6 @@ export DOS_WEBVIEW_LFS=true #Whether to `git lfs pull` in the WebView repository
 export DOS_MICROG_SUPPORT=false #Opt-in unprivileged microG support on 17.1+18.1+19.1+20.0
 export DOS_USE_KSM=false #Set true to use KSM for increased memory efficiency at the cost of easier side-channel attacks and increased CPU usage #XXX: testing only
 
-
 # AXP global defaults
 export EXTENDROM_PATCHER_RESET=false  # never reset before applying custom patches (as this will break DOS changes)
+export DOS_DEBLOBBER_REMOVE_WIDEVINE_DRM=false # do not remove widevine drm
