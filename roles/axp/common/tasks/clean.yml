@@ -44,6 +44,6 @@
   loop:
     - { path: "vendor/axp", file: "EXTENDROM_PATCHER_DONE" }
     - { path: "vendor/extendrom", file: "EXTENDROM_PATCHER_DONE" }
-    - { path: "./", file: ".wg.patched", extra: "-maxdepth 0" }
+    - { path: "./", file: ".wg.patched", extra: "-maxdepth 1" }
   when:
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
