@@ -15,7 +15,7 @@ rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ target_model }
 
 # build vars
 RELEASE_TYPE: "{{ EOS_RELEASE_TYPE }}"
-EOS_ZIP_DIR: ""/ssd/{{ ROM_FLAVOR }}/zips"
+EOS_ZIP_DIR: "/ssd/{{ ROM_FLAVOR }}/zips"
 
 # notification vars
 ota_hint: |-
