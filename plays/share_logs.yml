@@ -24,7 +24,7 @@
     - name: paste ansible log
       connection: local
       shell: >-
-        HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "ANSIBLE LOG - ID {{ log_build_id }} - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ ansiblecfg.stdout }}.{{ log_build_id }}
+        HOME="{{ gist_home_dir | d(ansible_home_dir) }}" gist-paste --private  -d "ANSIBLE LOG - ID {{ log_build_id }} - {{ ansible_facts['date_time']['iso8601'] }}" -f ansible.log.{{ ansible_facts['date_time']['iso8601'] }}.yaml  {{ ansiblecfg.stdout }}.{{ log_build_id }}
       register: paste_ansible
       when: skip_fetch_ansible_log is undefined or (skip_fetch_ansible_log | bool == False)
 
@@ -38,7 +38,7 @@
     - name: paste build log
       connection: local
       shell: |
-          HOME="{{ gist_home_dir | d(BUILDHOME) }}" gist-paste --private  -d "BUILD LOG - ID {{ log_build_id }} - {{ ansible_facts['date_time']['iso8601'] }}" -f build.log.{{ ansible_facts['date_time']['iso8601'] }}.sh /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ log_build_id }}
+          HOME="{{ gist_home_dir | d(ansible_home_dir) }}" gist-paste --private  -d "BUILD LOG - ID {{ log_build_id }} - {{ ansible_facts['date_time']['iso8601'] }}" -f build.log.{{ ansible_facts['date_time']['iso8601'] }}.sh /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ log_build_id }}
       register: paste_build
       when:
         - buildlogfile.stat.isreg is defined
