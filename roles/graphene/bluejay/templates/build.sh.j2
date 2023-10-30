@@ -54,7 +54,7 @@ export EXTENDROM_PACKAGES="{{ extendrom_package_list }} sDevice"
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
 find out/target/product/ -type f -name sDevice.apk -delete
 {%    endif %}
-vendor/extendrom/er.sh
+$PWD/vendor/extendrom/er.sh
 {% endif %}
 
 # verify manifests
