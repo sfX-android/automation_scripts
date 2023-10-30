@@ -41,11 +41,10 @@
 
 - name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
   shell: >
-     source ./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1
-  #environment:
-  #  PATH: "~/.local/bin:{{ ansible_env.PATH }}"
+     source ~/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh > ~/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log 2>&1
   args:
     executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
   async: 14400
   poll: 30
   register: buildresult
