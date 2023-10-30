@@ -29,7 +29,7 @@ if [ "{{ use_extendrom }}" == "true" ];then
     export EXTENDROM_DEBUG_PATH=/mnt/vendor
     #export EXTENDROM_DEBUG_PATH_SIZE_FULL=200
     #export EXTENDROM_DEBUG_PATH_SIZE_KERNEL=100
-    vendor/extendrom/er.sh
+    $PWD/vendor/extendrom/er.sh
 fi
 
 mka eos
