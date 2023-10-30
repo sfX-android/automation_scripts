@@ -155,7 +155,7 @@ SH_COMMON_BUILD_SNIPPET: |
         export EXTENDROM_PATCHER_RESET={{ extendrom_patcher_reset }}
         export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
         # execute extendrom
-        vendor/extendrom/er.sh
+        $PWD/vendor/extendrom/er.sh
         
         # build
         {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
