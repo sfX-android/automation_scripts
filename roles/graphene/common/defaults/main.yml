@@ -15,6 +15,7 @@ custom_release_script: true
 ROM_VERSION: "{{ build_id }}"
 keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}_{{ ROM_TYPE }}'
 create_delta_update: "no"
+ROM_TYPE: "wq" # wq = with QR license, nq = no QR license
 
 # notification vars
 ota_hint: |-
