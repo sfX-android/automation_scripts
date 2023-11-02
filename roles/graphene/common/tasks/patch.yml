@@ -1,0 +1,21 @@
+---
+- name: "Get all available patches"
+  find:
+    paths: "{{ SRCPATH }}/external/patches"
+    patterns: "*.diff"
+  register: patch
+  
+- name: "Apply patches"
+  shell: "bash external/patches/apply.sh"
+  args:
+    chdir: "{{ SRCPATH }}"
+  register: patchres
+  #failed_when: patchres.rc == 2
+  when: patch.examined > 0
+
+- name: "Update ROM version"
+  lineinfile:
+    path: "{{ SRCPATH }}/build/make/core/build_id.mk"
+    regexp: BUILD_ID=.*
+    line: "BUILD_ID={{ ROM_NAME }}-v{{ ROM_VERSION }}"
+    state: present

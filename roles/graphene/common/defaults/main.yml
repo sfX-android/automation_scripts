@@ -84,3 +84,141 @@ SH_GRAPHENE_VPN_ICON: |
       cp -v vendor/sos/icons/{{ vpn_icon }}.png frameworks/base/core/res/res/drawable-ldpi/vpn_disconnected.png
       cp -v vendor/sos/icons/{{ vpn_icon }}.png frameworks/base/core/res/res/drawable-xhdpi/vpn_disconnected.png
       ln -sf vendor/sos/overlay/frameworks/base/packages/SystemUI/res/drawable/stat_sys_vpn_ic.xml.{{ vpn_icon }} stat_sys_vpn_ic.xml
+
+SH_GRAPHENE_BUILD: |
+      #!/bin/bash
+
+      # special handling for yarn shit
+      export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH" 
+
+      # be strict on failures
+      set -e
+
+      {{ SH_GRAPHENE_GPG }}
+
+      # CCACHE
+      export USE_CCACHE={{ USE_CCACHE }}
+      if [ "{{ USE_CCACHE }}" -eq 1 ];then
+          export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
+          mkdir -p {{ CCACHE_DIR }}
+          export CCACHE_DIR="{{ CCACHE_DIR }}"
+          {{ CCACHE_EXEC }} --max-size=10G
+      fi
+
+      # enable/add Updater app
+      export OFFICIAL_BUILD=true
+
+      # setup build env
+      cd {{ SRCPATH }}
+      [ -L releases ] && rm releases
+
+      # set build id
+      export password=""
+      export BUILD_NUMBER="v{{ ROM_VERSION }}"
+      export ROM_TYPE="{{ ROM_TYPE }}"
+      export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_TYPE }}"
+
+      # replace aosp build id
+      sed -i "s/BUILD_ID :=.*/BUILD_ID := $BUILD_ID/g" build/make/core/version_defaults.mk
+      # ensure mismatching build is non-fatal
+      sed -i 's/error /warning /g' vendor/google_devices/{{ target_model }}/{{ target_model }}.mk
+      echo "ro.build.display.id=$BUILD_ID" > vendor/sos/vendor.prop
+
+      source script/envsetup.sh
+      {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
+      # fetch & extract blobs
+      yarn install --cwd vendor/adevtool/
+      m -j{{ max_processes }} aapt2
+      sudo rm -rf vendor/adevtool/dl/*
+      vendor/adevtool/bin/run generate-all -d {{ target_model }}
+      {% endif %}
+
+      # extendrom
+      {% if use_extendrom is defined and use_extendrom == "true" %}
+      export ENABLE_EXTENDROM={{ use_extendrom }}
+      {%    if ROM_TYPE == "wq" %}
+      export EXTENDROM_PACKAGES="{{ extendrom_package_list }} sDevice"
+      {%    else %}
+      export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+      find out/target/product/ -type f -name sDevice.apk -delete
+      {%    endif %}
+      $PWD/vendor/extendrom/er.sh
+      {% endif %}
+
+      # verify manifests
+      {{ SH_GRAPHENE_VERIFY }}
+
+      # The kernel needs to be built in advance, since it uses a separate build system.
+      # Prebuilts are provided for all the officially supported devices, so this step is optional.
+      # https://grapheneos.org/build#kernel-6th-generation-pixels
+      {% if BUILD_GOS_KERNEL is defined and BUILD_GOS_KERNEL == "true" %}
+      mkdir android/kernel/{{ target_model }}
+      cd android/kernel/{{ target_model }}
+      repo init -u https://github.com/GrapheneOS/kernel_{{ target_model }}-manifest.git -b {{ GOS_KERNEL_BRANCH }}
+      repo sync -j{{ max_processes }}
+      LTO=thin BUILD_KERNEL=1 ./build_{{ target_model }}.sh
+      cd {{ SRCPATH }}
+      {% endif %}
+
+      # icons replacements
+      {{ SH_GRAPHENE_VPN_ICON }}
+
+      # build
+      cd {{ SRCPATH }}
+      choosecombo release {{ target_model }} {{ lunch_buildtype }}
+      m -j{{ max_processes }} otatools-package vendorbootimage target-files-package
+
+      # packaging & signing
+      time script/release.sh {{ target_model }}
+      echo -e '\n\n\t\e[32m\e[1mBUILDING '$BUILD_ID' for {{ target_model }} FINISHED SUCCESSFULLY!!\e[0m\n'
+
+      # prepare release
+      export GBUILDID=$(grep 'ro.system.build.version.incremental' out/target/product/{{ target_model }}/system/build.prop | cut -d = -f 2)
+      ln -s ../graphene_releases releases
+
+      # find (the latest) previous release
+      PREV_GBUILDID=$(find releases/ -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1 | cut -d '/' -f 2)
+
+      # ... and move current one
+      [ ! -d "releases/${GBUILDID}" ] && mkdir releases/${GBUILDID}/
+      cp -a out/release-{{ target_model }}-${GBUILDID} releases/${GBUILDID}/
+
+      {% if create_delta_update | d("yes") == "yes" %}
+      # create incremental / delta updates if requested
+      unset DELTABUILD
+      if [ ! -z "${PREV_GBUILDID}" -a "${PREV_GBUILDID}" -lt "${GBUILDID}" ];then
+          script/generate_delta.sh {{ target_model }} ${PREV_GBUILDID} ${GBUILDID}
+          DELTABUILD="releases/${GBUILDID}/{{ target_model }}-incremental-${PREV_GBUILDID}-${GBUILDID}.zip"
+      else
+          echo "... skipping delta as PREV_GBUILDID (${PREV_GBUILDID}) is empty / does not exist or is not lower then GBUILDID (${GBUILDID})"
+      fi
+      {% endif %}
+
+      # release & cleanup previous build (if requested)
+      if [ ! -z "{{ release_channel }}" -a "{{ release_channel }}" == "skip" ];then
+          echo ".. skipping release as requested ({{ release_channel }})"
+      else
+          # the cloud VM has issues to response sometimes so lets loop
+          # several times in the hope this get fixed
+          TRY=1
+          while [ $TRY -le 10 ];do
+              echo "trying to upload to {{ custom_release_server }} ... (try $TRY of 10)"
+              timeout 5m scp releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-ota_update-${GBUILDID}.zip \
+                  releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-factory-${GBUILDID}.zip \
+                  releases/${GBUILDID}/release-{{ target_model }}-${GBUILDID}/{{ target_model }}-{{ release_channel }} \
+                  $DELTABUILD \
+                  {{ custom_release_server }}:{{ custom_release_server_path }}-{{ ROM_TYPE }} && TRY=999
+               TRY=$(( TRY + 1 ))
+          done
+          [ $TRY -ne 1000 ] && echo "Error while uploading update to {{ custom_release_server }}" && exit 3
+          echo "Uploaded build ${GBUILDID} successfully to {{ custom_release_server }}"
+
+          # cleanup prev delta build
+          if [ ! -z "$DELTABUILD" ] && [ -d "releases/${PREV_GBUILDID}" ] && [ "{{ post_cleanup }}" == "true" ] ;then
+              rm -rfv releases/${PREV_GBUILDID} && echo "... deleted previous delta files: ${PREV_GBUILDID}"
+          else
+              echo "... skipping previous delta cleanup"
+          fi
+      fi
+
+      echo -e "\nALL FINISHED!\nYou can find the build here: releases/${GBUILDID}/\n\n"

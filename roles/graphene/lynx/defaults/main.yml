@@ -1,0 +1,16 @@
+---
+
+# human readable model name
+target_model_full: "Google Pixel 7a"
+
+# extendrom stuff
+use_extendrom: "true"
+
+# do not gen a ROM checksum
+skip_gen_checksum: true
+
+# GOS_KERNEL_BRANCH:
+# ROM_NAME:
+# ROM_BL_TYPE:
+# lunch_buildtype:
+
