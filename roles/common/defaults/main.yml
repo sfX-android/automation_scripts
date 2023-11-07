@@ -1,5 +1,7 @@
 ---
 # misc common vars used for all tasks
+# never overwrite anything here - use either semaphore to set an override
+# or override a var in a specific device vars/main.yml
 
 # fallback / legacy var
 REPOBRANCH: undefined
@@ -76,6 +78,7 @@ post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
 manifest_paths_file: "/tmp/manifest_paths.{{ ROM_FLAVOR }}"
 BUILD_LOG: "~/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
+post_cleanup: 'false'    # will delete the output directory after a successful build if set to true
 
 # build signing
 sign_build: true
