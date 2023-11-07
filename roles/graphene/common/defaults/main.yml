@@ -120,8 +120,6 @@ SH_GRAPHENE_BUILD: |
 
       # replace aosp build id
       sed -i "s/BUILD_ID :=.*/BUILD_ID := $BUILD_ID/g" build/make/core/version_defaults.mk
-      # ensure mismatching build is non-fatal
-      sed -i 's/error /warning /g' vendor/google_devices/{{ target_model }}/{{ target_model }}.mk
       echo "ro.build.display.id=$BUILD_ID" > vendor/sos/vendor.prop
 
       source script/envsetup.sh
@@ -133,6 +131,9 @@ SH_GRAPHENE_BUILD: |
       vendor/adevtool/bin/run generate-all -d {{ target_model }}
       {% endif %}
 
+      # ensure mismatching build is non-fatal
+      sed -i 's/error /warning /g' vendor/google_devices/{{ target_model }}/{{ target_model }}.mk
+      
       # extendrom
       {% if use_extendrom is defined and use_extendrom == "true" %}
       export ENABLE_EXTENDROM={{ use_extendrom }}
