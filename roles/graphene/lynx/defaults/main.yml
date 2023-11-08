@@ -14,3 +14,5 @@ skip_gen_checksum: true
 # ROM_BL_TYPE:
 # lunch_buildtype:
 
+# see https://grapheneos.org/build#building
+graphene_build_targets: vendorbootimage vendorkernelbootimage target-files-package
