@@ -8,6 +8,7 @@
       chdir: "{{ SRCPATH }}"
     environment:
       KEYS_DIR: "{{ SRC_KEYSDIR }}"
+      KEYS_DIR_LINKNAME: "{{ keysdir }}"
 
   - name: "Ensure we actually have keys (i.e. generate them if needed)"
     shell: external/buildtools/sign/sign_generate_keys.sh
