@@ -17,7 +17,7 @@
       KEYS_DIR_LINKNAME: "{{ SRC_KEYSDIR }}"
 
   - fail:
-    msg: booooo
+      msg: booooo
 
   - name: "Ensure we actually have keys (i.e. generate them if needed)"
     shell: external/buildtools/sign/sign_generate_keys.sh
