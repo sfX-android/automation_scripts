@@ -22,3 +22,6 @@
       HASHTYPE: "{{ KEYS_HASHTYPE }}"
 
   when: sign_build is defined and sign_build == "true"
+
+- fail:
+    msg: booooo
