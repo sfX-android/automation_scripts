@@ -4,7 +4,7 @@
 
   - name: "create directory if needed (i.e when using sub dirs in SRC_KEYSDIR)"
     file:
-      path: "{{ SRC_KEYSDIR_BASE }}"
+      path: "{{ SRCPATH }}/{{ SRC_KEYSDIR_BASE }}"
       state: directory
     when: SRC_KEYSDIR_BASE is defined
   
