@@ -5,7 +5,7 @@ git_repo_local_manifests: "ssh://git@code.binbash.rocks:22227/secureOS/local_man
 git_repo_main_manifests: "https://github.com/GrapheneOS/platform_manifest.git"
 
 # key dir in sources dir
-SRC_KEYSDIR: keys
+SRC_KEYSDIR: "keys/{{ target_model }}"
 KEYS_CN: safeOS
 KEYS_SIZE: 8192
 KEYS_HASHTYPE: sha512
