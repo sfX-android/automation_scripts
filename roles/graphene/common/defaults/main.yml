@@ -5,7 +5,8 @@ git_repo_local_manifests: "ssh://git@code.binbash.rocks:22227/secureOS/local_man
 git_repo_main_manifests: "https://github.com/GrapheneOS/platform_manifest.git"
 
 # key dir in sources dir
-SRC_KEYSDIR: "keys/{{ target_model }}"
+SRC_KEYSDIR_BASE: keys
+SRC_KEYSDIR: "{{ SRC_KEYSDIR_BASE }}/{{ target_model }}"
 KEYS_CN: safeOS
 KEYS_SIZE: 8192
 KEYS_HASHTYPE: sha512
@@ -91,6 +92,12 @@ SH_GRAPHENE_BUILD: |
       # special handling for yarn shit
       export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH" 
 
+      # special handling for A14 and their BS bazel
+      touch {{ SRC_KEYSDIR_BASE }}/BUILD
+      # special handling as we HAVE to use a sub dir to satisfy the graphene build scripts
+      # while setting an own dev key breaks signing when using a sub dir..
+      #for r in pk8 pem x509.pem; do ln -fs {{ target_model }}/releasekey.${r} {{ SRC_KEYSDIR_BASE }}/ ;done
+      
       # be strict on failures
       set -e
 
