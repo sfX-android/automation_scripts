@@ -10,9 +10,9 @@ extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
 # while debugging we need this:
-extendrom_signature_spoofing: false
-extendrom_patcher_reset: false
-extendrom_signing_patches: false
+extendrom_signature_spoofing: 'false'
+extendrom_patcher_reset: 'false'
+extendrom_signing_patches: 'false'
 
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/samsung/exynos7870
