@@ -10,3 +10,10 @@
     src: rename
     dest: "{{ SRCPATH }}/"
     mode: 0755
+
+- name: "grab DOS CVE Checker"
+  ansible.builtin.get_url:
+    url: "{{ divest_cve_checker_download }}"
+    dest: "{{ divest_cve_checker_jar }}"
+    mode: '0440'
+  when: divest_unsupported_device
