@@ -40,6 +40,11 @@ axp_clean_paths:
     - "{{ SRCPATH }}/kernel"
     - "{{ SRCPATH }}/device"
 
+# kernel patching
+divest_cve_checker_download: "https://gitlab.com/divested-mobile/cve_checker/-/jobs/4820813129/artifacts/raw/build/libs/cve_checker-0.6.8.jar?inline=false"
+divest_cve_checker_jar: "{{ SRCPATH }}/cve_checker.jar"
+divest_unsupported_device: false    # should be overwritten in a device's vars/main.yml if needed
+
 # extendrom stuff
 use_extendrom: "true"
 extendrom_package_list: "additional_repos.xml Phonesky_AXP-OS Magisk AuroraServices AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG NeoLauncher-latest"
