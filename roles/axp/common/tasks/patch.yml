@@ -23,6 +23,14 @@
   args:
     executable: /bin/bash
 
+- name: "apply DOS kernel patches (unsupported DOS devices)"
+  raw: |
+    {{ DOS_INIT }}
+    startPatcher {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
+  args:
+    executable: /bin/bash
+  when: divest_unsupported_device
+
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
   raw: |
