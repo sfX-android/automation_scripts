@@ -15,5 +15,5 @@
   ansible.builtin.get_url:
     url: "{{ divest_cve_checker_download }}"
     dest: "{{ divest_cve_checker_jar }}"
-    mode: '0440'
+    mode: 0640
   when: divest_unsupported_device
