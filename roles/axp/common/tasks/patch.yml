@@ -27,6 +27,7 @@
   raw: |
     {{ DOS_INIT }}
     CROOT=$PWD
+    set -e
     cd {{ DOSPATH }}
     patch -p1 < {{ BUILDHOME }}/cve_fixup.patch
     cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/; bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh; cd $CROOT
