@@ -26,6 +26,10 @@
 - name: "apply DOS kernel patches (unsupported DOS devices)"
   raw: |
     {{ DOS_INIT }}
+    CROOT=$PWD
+    cd {{ DOSPATH }}
+    patch -p1 < {{ BUILDHOME }}/cve_fixup.patch
+    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/; bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh; cd $CROOT
     startPatcher {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
