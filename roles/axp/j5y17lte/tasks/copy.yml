@@ -10,10 +10,3 @@
     src: build.sh.j2
     dest: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
     mode: 0700
-
-- name: Upload DOS CVE fixup
-  copy:
-    src: cve_fixup.patch
-    dest: cve_fixup.patch
-    mode: 0640
-  when: divest_unsupported_device
