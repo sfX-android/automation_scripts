@@ -35,12 +35,15 @@ sm_build_id: >-
     {% endif %}
 build_id: "{{ sm_build_id | regex_replace(' ','') }}"
 
+# sync stuff
 # full path to the repo binary
 repo_bin: /home/androidsource/bin/repo
-
 # number of threads used e.g. with repo binary etc
 max_processes: 16
 max_processes_sync: 8    # will set --jobs-network={{ max_processes_sync }} for repo sync
+# default args for the (rest of the) repo sync command
+# can be overwritten e.g with a semaphore var
+repo_sync_args: "--force-sync --force-remove-dirty --no-clone-bundle -c"
 
 # ssh port where the release server is reachable (coming from the build server)
 RELEASESVR_port: 22
