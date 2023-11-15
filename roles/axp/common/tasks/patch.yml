@@ -29,9 +29,11 @@
     CROOT=$PWD
     set -e
     cd {{ DOSPATH }}
+    startPatcher {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
     patch -p1 < {{ BUILDHOME }}/cve_fixup.patch
     cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/; bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh; cd $CROOT
-    startPatcher {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
+    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git reset --hard"
+    bash {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/android_{{ target_kernel_dir | replace('/','_') }}.sh
   args:
     executable: /bin/bash
   when: divest_unsupported_device
