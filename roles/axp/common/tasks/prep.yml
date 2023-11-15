@@ -11,9 +11,18 @@
     dest: "{{ SRCPATH }}/"
     mode: 0755
 
-- name: "grab DOS CVE Checker"
-  ansible.builtin.get_url:
-    url: "{{ divest_cve_checker_download }}"
-    dest: "{{ divest_cve_checker_jar }}"
-    mode: 0640
+- block:
+
+    - name: "grab DOS CVE Checker"
+      ansible.builtin.get_url:
+        url: "{{ divest_cve_checker_download }}"
+        dest: "{{ divest_cve_checker_jar }}"
+        mode: 0640
+    
+    - name: Upload DOS CVE fixup
+      copy:
+        src: "cve_fixup/{{ target_model }}.patch"
+        dest: cve_fixup.patch
+        mode: 0640
+
   when: divest_unsupported_device
