@@ -21,10 +21,3 @@
     when: android_shortversion == "a9"
 
   when: android_shortversion is defined
-
-- name: Upload DOS CVE fixup
-  copy:
-    src: "cve_fixup/{{ target_model }}.patch"
-    dest: cve_fixup.patch
-    mode: 0640
-  when: divest_unsupported_device
