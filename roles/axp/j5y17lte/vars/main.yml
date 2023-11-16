@@ -9,10 +9,9 @@ extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
-extendrom_package_list: "{{ extendrom_package_list}} opencamera_j5_latest"
-
-# path to the kernel dir (req for e.g. wireguard)
-#target_kernel_dir: kernel/samsung/exynos7870
+# extend extendrom_package_list
+extendrom_package_list_j5: "{{ extendrom_package_list }} opencamera_j5_latest"
+extendrom_package_list: "{{ extendrom_package_list_j5 }}"
 
 # enable kernel patching
 divest_unsupported_device: true
