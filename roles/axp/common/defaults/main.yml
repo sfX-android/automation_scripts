@@ -145,7 +145,7 @@ SH_COMMON_BUILD_SNIPPET: |
         
         # extendrom flags
         export ENABLE_EXTENDROM={{ use_extendrom }}
-        export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+        export EXTENDROM_PACKAGES="{{ extendrom_package_list | d(extendrom_package_list_default) }}"
         export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
         {% if extendrom_packages_skip_dl is defined %}export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}{% endif %}
         export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
