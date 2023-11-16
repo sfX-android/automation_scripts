@@ -1,0 +1,9 @@
+diff --git a/Scripts/Common/Functions.sh b/Scripts/Common/Functions.sh
+index beaa1c0c..ed592e30 100644
+--- a/Scripts/Common/Functions.sh
++++ b/Scripts/Common/Functions.sh
+@@ -914,3 +914,3 @@ getDefconfig() {
+        fi;
+-       echo $defconfigPath;
++       echo $defconfigPath "arch/arm64/configs/exynos7870-j5y17lte_defconfig";
+ }
