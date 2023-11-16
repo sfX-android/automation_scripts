@@ -25,4 +25,10 @@
         dest: cve_fixup.patch
         mode: 0640
 
+    - name: Upload DOS getDefconfig fixup
+      copy:
+        src: extend_dos/getDefconfig.patch
+        dest: getDefconfig.patch
+        mode: 0640
+
   when: divest_unsupported_device
