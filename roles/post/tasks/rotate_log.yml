@@ -14,12 +14,12 @@
   shell: "mv {{ ansible_log_flatten }} {{ ansible_log_flatten }}.{{ build_no }}"
 
 - stat:
-    path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+    path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
   register: buildlogfile
   connection: local
   no_log: true
 
 - name: rotate build log
   connection: local
-  shell: "mv /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ build_no }}"
+  shell: "mv /tmp/{{ inventory_hostname }}/{{ build_log_name }} /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ build_no }}"
   when: buildlogfile.stat.isreg is defined
