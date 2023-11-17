@@ -31,4 +31,11 @@
         dest: getDefconfig.patch
         mode: 0640
 
+    - name: Upload DOS Rebrand fixup
+      copy:
+        src: "extend_dos/{{ android_shortversion }}/Rebrand.patch"
+        dest: rebrand_fixup.patch
+        mode: 0640
+      when: android_shortversion == "a10"
+
   when: divest_unsupported_device
