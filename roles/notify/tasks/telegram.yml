@@ -26,7 +26,7 @@
   when: buildresult.rc is undefined or buildresult.rc != 0
 
 - stat:
-    path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+    path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
   register: logfile
   connection: local
   no_log: true
