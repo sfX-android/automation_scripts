@@ -8,20 +8,11 @@
   when:
     - clean_out != "true" or (override_clean_out != "true") or (skip_gpg_verify | bool)
 
-- name: "wireguard handling by vendor/axp"
+- name: "disable wireguard handling by vendor/axp"
   file:
     path: "{{ SRCPATH }}/.wg.patched"
     state: touch
   when: skip_wireguard is defined and skip_wireguard | bool
-
-- name: "apply DOS patches"
-  raw: |
-    {{ DOS_INIT }}
-    patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
-      && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
-  register: patchout
-  args:
-    executable: /bin/bash
 
 - name: "apply DOS kernel patches (unsupported DOS devices)"
   raw: |
@@ -38,6 +29,15 @@
   args:
     executable: /bin/bash
   when: divest_unsupported_device
+
+- name: "apply DOS patches"
+  raw: |
+    {{ DOS_INIT }}
+    patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
+      && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+  register: patchout
+  args:
+    executable: /bin/bash
 
 - name: "overlay workaround for older Android"
   shell: cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
