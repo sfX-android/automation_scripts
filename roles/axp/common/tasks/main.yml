@@ -6,13 +6,9 @@
 
 - block:
 
-  - include_tasks: sync.yml
- #   when: (override_sync == "true")
-    
+  - include_tasks: sync.yml    
   - include_tasks: patch.yml
-  - include_tasks: selinux_permissive.yml
-    when: 
-      - axp_allow_permissive is defined and axp_allow_permissive | bool
+  - include_tasks: adjust_DOS_options.yml
 
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
