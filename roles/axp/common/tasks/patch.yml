@@ -28,7 +28,9 @@
     bash {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/android_{{ target_kernel_dir | regex_replace('/','_') }}.sh
   args:
     executable: /bin/bash
-  when: divest_unsupported_device
+  when:
+    - divest_unsupported_device
+    - unsupported_device_kernel_patch
 
 - name: "apply DOS patches"
   raw: |
