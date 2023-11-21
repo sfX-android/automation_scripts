@@ -18,7 +18,7 @@
   raw: |
     {{ DOS_INIT }}
     CROOT=$PWD
-    set -e
+    set +e
     cd {{ DOSPATH }}
     patch -p1 < {{ BUILDHOME }}/cve_fixup.patch
     patch -p1 < {{ BUILDHOME }}/getDefconfig.patch
