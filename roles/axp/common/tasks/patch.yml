@@ -17,13 +17,15 @@
 - name: "apply DOS kernel patches (unsupported DOS devices)"
   raw: |
     {{ DOS_INIT }}
-    CROOT=$PWD
+    CROOT="{{ SRCPATH }}"
     set +e
     cd {{ DOSPATH }}
     patch -p1 < {{ BUILDHOME }}/cve_fixup.patch
     patch -p1 < {{ BUILDHOME }}/getDefconfig.patch
+    cd $CROOT
     startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
-    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/; bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh; cd $CROOT
+    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/; bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh
+    cd $CROOT
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir | regex_replace('/','_') }} -c "git am --abort; git rebase --abort; git reset --hard"
     bash {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/android_{{ target_kernel_dir | regex_replace('/','_') }}.sh
   args:
