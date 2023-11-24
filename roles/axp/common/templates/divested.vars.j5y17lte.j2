@@ -11,3 +11,6 @@
 
 # CONFIG_ARM64_SW_TTBR0_PAN breaks boot!
 export AXP_DEFCONFIG_DEVICE="CONFIG_ARM64_SW_TTBR0_PAN=n"
+
+# deblobbing audiofx breaks video recording due to the removal of libLifevibes_lvverx.so + libLifevibes_lvvetx.so
+export DOS_DEBLOBBER_REMOVE_AUDIOFX=false
