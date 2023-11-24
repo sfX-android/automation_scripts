@@ -1,0 +1,4 @@
+# overwrite/add device specific vars
+
+# CONFIG_ARM64_SW_TTBR0_PAN breaks boot!
+AXP_DEFCONFIG_DEVICE="CONFIG_ARM64_SW_TTBR0_PAN=n"
