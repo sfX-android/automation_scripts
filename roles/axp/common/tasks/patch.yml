@@ -35,15 +35,6 @@
     - divest_unsupported_device
     - unsupported_device_kernel_patch | bool
 
-- name: "apply DOS patches"
-  raw: |
-    {{ DOS_INIT }}
-    patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
-      && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
-  register: patchout
-  args:
-    executable: /bin/bash
-
 - block:
 
     - name: "overlay workaround for older Android"
@@ -57,6 +48,15 @@
         chdir: "{{ DOSPATH }}"
 
   when: android_shortversion == "a10"
+
+- name: "apply DOS patches"
+  raw: |
+    {{ DOS_INIT }}
+    patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
+      && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+  register: patchout
+  args:
+    executable: /bin/bash
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
