@@ -35,18 +35,10 @@
     - divest_unsupported_device
     - unsupported_device_kernel_patch | bool
 
-- block:
-
-    - name: "overlay workaround for older Android"
-      shell: cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
-      args:
-        chdir: "{{ SRCPATH }}"
-
-    - name: "Rebrand workaround for older Android"
-      shell: patch -p1 < {{ BUILDHOME }}/rebrand_fixup.patch
-      args:
-        chdir: "{{ DOSPATH }}"
-
+- name: "Rebrand workaround for older Android"
+  shell: patch -p1 < {{ BUILDHOME }}/rebrand_fixup.patch
+  args:
+    chdir: "{{ DOSPATH }}"
   when: android_shortversion == "a10"
 
 - name: "apply DOS patches"
@@ -57,6 +49,12 @@
   register: patchout
   args:
     executable: /bin/bash
+
+- name: "overlay workaround for older Android"   
+  shell: cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
+  args:
+    chdir: "{{ SRCPATH }}"
+  when: android_shortversion == "a10"
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
