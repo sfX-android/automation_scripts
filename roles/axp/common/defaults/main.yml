@@ -168,8 +168,10 @@ SH_COMMON_BUILD_SNIPPET: |
         mka generate_verity_key \
          && mka sepolicy && \
         {% endif %}
-        {% if axp_build_eng | bool %}
-         buildDeviceDebug {{ target_model }}
+        {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
+          mka recoveryimage
+        {% elif axp_build_eng | bool %}
+          buildDeviceDebug {{ target_model }}
         {% else %}
-         buildDevice {{ target_model }}
+          buildDevice {{ target_model }}
         {% endif %}
