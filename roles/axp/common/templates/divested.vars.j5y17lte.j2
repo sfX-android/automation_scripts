@@ -15,5 +15,11 @@ export AXP_DEFCONFIG_DEVICE="CONFIG_ARM64_SW_TTBR0_PAN=n"
 # deblobbing audiofx breaks video recording due to the removal of libLifevibes_lvverx.so + libLifevibes_lvvetx.so
 export DOS_DEBLOBBER_REMOVE_AUDIOFX=false
 
-# temp test for recovery:
-#export DOS_GRAPHENE_MALLOC=false
+{% if axp_build_recovery_only is defined and axp_build_recovery_only %}
+# disable hardened malloc. likely related to the increased key size of the AXP signature
+# > I:comment is 3915 bytes; signature is 3897 bytes from end
+# > libc: malloc(65536) failed: returning null pointer
+# > terminating with uncaught exception of type std::bad_alloc: std::bad_alloc
+# > libc++abi: terminating with uncaught exception of type std::bad_alloc: std::bad_alloc
+export DOS_GRAPHENE_MALLOC=false
+{% endif %}
