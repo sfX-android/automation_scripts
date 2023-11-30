@@ -170,6 +170,8 @@ SH_COMMON_BUILD_SNIPPET: |
         {% endif %}
         {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
           mka recoveryimage
+        {% elif custom_build_command is defined %}
+          {{ custom_build_command }}
         {% elif axp_build_eng | bool %}
           buildDeviceDebug {{ target_model }}
         {% else %}
