@@ -21,7 +21,7 @@
         LOCFILE: "recovery.img"
       when:
         - ROM_FLAVOR == "axp"
-        - axp_build_recovery_only | bool
+        - axp_build_recovery_only is defined and axp_build_recovery_only
     
     - set_fact:
         JKZIPDIR: "{{ axp_finalzip_dir }}"
