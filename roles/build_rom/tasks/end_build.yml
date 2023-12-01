@@ -16,6 +16,12 @@
         LOCFILE: "{{ PREFIXFNAME }}.*-{{ RELEASE_TYPE }}.*\\.img"
       when:
         - ROM_FLAVOR == "TWRP"
+
+    - set_fact:
+        LOCFILE: "recovery.img"
+      when:
+        - ROM_FLAVOR == "axp"
+        - axp_build_recovery_only | bool
     
     - set_fact:
         JKZIPDIR: "{{ axp_finalzip_dir }}"
