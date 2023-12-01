@@ -12,7 +12,7 @@
 - name: "AXP.OS: sync LOS base & local manifests"
   include_tasks: ../../../common/tasks/sync.yml
 
-- name: "activate special recovery xml if needed"
+- name: "activate special recovery manifest if needed"
   shell: "mv -v {{ SRCPATH }}/.repo/local_manifests/recovery.xml.disabled {{ SRCPATH }}/.repo/local_manifests/recovery.xml"
   when:
     - axp_build_recovery_only | bool
