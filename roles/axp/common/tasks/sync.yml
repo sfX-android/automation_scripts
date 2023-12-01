@@ -12,6 +12,12 @@
 - name: "AXP.OS: sync LOS base & local manifests"
   include_tasks: ../../../common/tasks/sync.yml
 
+- name: "activate special recovery xml if needed"
+  shell: "mv -v {{ SRCPATH }}/.repo/local_manifests/recovery.xml.disabled {{ SRCPATH }}/.repo/local_manifests/recovery.xml"
+  when:
+    - axp_build_recovery_only | bool
+    - target_model == "j5y17lte"
+
 # (needs to be done in DOS more early then for others)
 - name: "AXP.OS: ensure the keys dir is set correctly"
   include_tasks: ../../../common/tasks/set_keys.yml
