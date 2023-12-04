@@ -18,15 +18,10 @@
         - ROM_FLAVOR == "TWRP"
 
     - set_fact:
-        LOCFILE: "recovery.img"
+        LOCFILE: "{{ axp_recovery_filename }}"
       when:
         - ROM_FLAVOR == "axp"
         - axp_build_recovery_only is defined and axp_build_recovery_only
-    
-    - set_fact:
-        JKZIPDIR: "{{ axp_finalzip_dir }}"
-      when:
-        - ROM_FLAVOR == "axp"
     
     - name: "Get current build filename"
       shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"
