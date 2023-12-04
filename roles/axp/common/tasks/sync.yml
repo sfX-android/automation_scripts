@@ -15,7 +15,7 @@
 - name: "activate special recovery manifest if needed"
   shell: "mv -v {{ SRCPATH }}/.repo/local_manifests/recovery.xml.disabled {{ SRCPATH }}/.repo/local_manifests/recovery.xml"
   when:
-    - axp_build_recovery_only | bool
+    - axp_build_recovery_only is defined and axp_build_recovery_only
     - target_model == "j5y17lte"
 
 # (needs to be done in DOS more early then for others)
