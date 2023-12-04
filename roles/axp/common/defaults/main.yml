@@ -24,7 +24,7 @@ rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 RELEASE_TYPE: dos
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
-axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY.img"
+axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
 # if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
 axp_build_eng: false
 # directories to be cleaned on a clean build
