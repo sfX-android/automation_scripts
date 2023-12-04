@@ -3,7 +3,7 @@
 tg_success: |
         {{ ICON_GOOD }} ***New build has finished\!***
         
-        {{ device_cl }}
+        {{ device_cl }}{% if axp_build_recovery_only is defined and axp_build_recovery_only %} \- RECOVERY image{% endif %}
         Build ID: {{ build_id | replace(".","\.") }}
         {% if release_channel is defined %}
         Release channel: {{ release_channel | regex_escape() }}
@@ -23,7 +23,7 @@ tg_success: |
         {% endif %}
         
         {{ dl_links }}
-        {% if ota_hint is defined %}
+        {% if ota_hint is defined and (axp_build_recovery_only is undefined or (axp_build_recovery_only is defined and not axp_build_recovery_only)) %}
         {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         {% endif %}
         
