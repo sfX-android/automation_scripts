@@ -11,6 +11,8 @@
     - ROM_FLAVOR != "TWRP"
     - ROM_FLAVOR != "SHRP"
     - ROM_FLAVOR != "MAID"
+    - axp_build_recovery_only is undefined or (axp_build_recovery_only is defined and not axp_build_recovery_only)
+    
 
 - name: "Release RECOVERY for {{ BDEVICE }}"
   shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
@@ -19,5 +21,4 @@
     - "{{ ROMFILE.stdout }}"
     - "{{ ROMFILE.stdout }}.sha256sum"
   when:
-    - ROM_FLAVOR == "TWRP" or ROM_FLAVOR == "SHRP"
-
+    - ROM_FLAVOR == "TWRP" or ROM_FLAVOR == "SHRP" or (axp_build_recovery_only is defined and axp_build_recovery_only)
