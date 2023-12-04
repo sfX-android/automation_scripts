@@ -18,11 +18,13 @@ DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 # but ensure you leave the directory structure intact then
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
 axp_finalzip_dir: "{{ ZIPDIR }}/LineageOS-{{ los_version }}/release_keys/"
+JKZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 RELEASE_TYPE: dos
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
+axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY.img"
 # if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
 axp_build_eng: false
 # directories to be cleaned on a clean build
@@ -170,6 +172,8 @@ SH_COMMON_BUILD_SNIPPET: |
         {% endif %}
         {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
           mka recoveryimage
+          if [ ! -d {{ JKZIPDIR }} ]; then mkdir -p {{ JKZIPDIR }};fi
+          mv -v out/target/product/{{ target_model }}/recovery.img {{ JKZIPDIR }}/{{ axp_recovery_filename }}
         {% elif custom_build_command is defined %}
           {{ custom_build_command }}
         {% elif axp_build_eng | bool %}
