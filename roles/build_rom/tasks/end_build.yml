@@ -40,4 +40,4 @@
         - ROM_FLAVOR != "TWRP"
         - ROM_FLAVOR != "SHRP"
 
-  when: custom_release_script is undefined or not custom_release_script
+ # when: custom_release_script is undefined or not custom_release_script
