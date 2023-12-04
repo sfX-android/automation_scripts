@@ -18,6 +18,6 @@
   when: devvar.stat.exists
 
 - name: "Set remote path (recovery only)"
-  set_local:
+  set_fact:
     rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/recovery"
   when: axp_build_recovery_only is defined and axp_build_recovery_only
