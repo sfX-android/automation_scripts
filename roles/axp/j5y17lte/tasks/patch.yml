@@ -1,0 +1,7 @@
+---
+
+- name: "Remove AudioFX app"
+  shell: >
+    awk -i inplace '!/AudioFX/' vendor/lineage/config/*.mk
+  args:
+    chdir: "{{ SRCPATH }}"
