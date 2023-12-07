@@ -7,10 +7,16 @@
 #  loop:
 #    - build_make_tools_releasetools_fixpython.patch
 
-- name: "apply AXP.OS kernel patches (hotdog)"
-  raw: |
-      {{ DOS_INIT }}
-      vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/kernel \
-        && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
+#- name: "apply AXP.OS kernel patches (hotdog)"
+#  raw: |
+#      {{ DOS_INIT }}
+#      vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/kernel \
+#        && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
+#  args:
+#    executable: /bin/bash
+
+- name: "temporary hotfix for page_alloc.c"
+  shell: >
+    git fetch https://github.com/LineageOS/android_kernel_oneplus_sm8150 refs/changes/34/376534/1 && git cherry-pick FETCH_HEAD
   args:
-    executable: /bin/bash
+    chdir: "{{ SRCPATH }}/{{ target_kernel_dir }}"
