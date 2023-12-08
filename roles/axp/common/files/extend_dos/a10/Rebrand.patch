@@ -1,8 +1,0 @@
-diff --git a/Scripts/LineageOS-17.1/Rebrand.sh b/Scripts/LineageOS-17.1/Rebrand.sh
-index c3f959b9..95962819 100644
---- a/Scripts/LineageOS-17.1/Rebrand.sh
-+++ b/Scripts/LineageOS-17.1/Rebrand.sh
-@@ -40,2 +40,3 @@ sed -i 's|LineageOS|'"$DOS_BRANDING_NAME"'|' recovery_ui/*ui.cpp;
- sed -i 's|Lineage |'"$DOS_BRANDING_NAME"' |' recovery.cpp;
-+sed -i 's|"Version "|"'$DOS_BRANDING_NAME' "|' recovery.cpp
- fi;
