@@ -1,11 +1,11 @@
 ---
 
-- name: "Re-add hibernate"
-  lineinfile:
-    path: "{{ DOSPATH }}/Scripts/Common/Functions.sh"
-    regexp: '(^\s+optionsNo.*"HIBERNATION")'
-    line: '        ### DISABLED by AXP to enhance battery life: \1'
-    backrefs: true
+#- name: "Re-add hibernate"
+#  lineinfile:
+#    path: "{{ DOSPATH }}/Scripts/Common/Functions.sh"
+#    regexp: '(^\s+optionsNo.*"HIBERNATION")'
+#    line: '        ### DISABLED by AXP to enhance battery life: \1'
+#    backrefs: true
 
 - name: "Allow to set SElinux = Permissive"
   lineinfile:
