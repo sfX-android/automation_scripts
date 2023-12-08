@@ -35,12 +35,6 @@
     - divest_unsupported_device
     - unsupported_device_kernel_patch | bool
 
-- name: "Rebrand workaround for older Android"
-  shell: patch -p1 < {{ BUILDHOME }}/rebrand_fixup.patch
-  args:
-    chdir: "{{ DOSPATH }}"
-  when: android_shortversion == "a10"
-
 - name: "apply DOS patches"
   raw: |
     {{ DOS_INIT }}
