@@ -5,15 +5,9 @@ target_model_full: "Google Pixel 6a"
 
 # extendrom stuff
 use_extendrom: "true"
-#extendrom_package_list: "noGOSpdfviewer noGOSvanadium noGOSauditor noGOScontacts noSeedvault noWizard"
 
 # do not gen a ROM checksum
 skip_gen_checksum: true
-
-# GOS_KERNEL_BRANCH:
-# ROM_NAME:
-# ROM_BL_TYPE:
-# lunch_buildtype:
 
 # see https://grapheneos.org/build#building
 graphene_build_targets: otatools-package vendorbootimage target-files-package
