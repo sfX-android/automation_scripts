@@ -51,7 +51,7 @@ unsupported_device_kernel_patch: true    # enable kernel patching by default, ov
 # extendrom stuff
 use_extendrom: "true"
 extendrom_package_list_default: "additional_repos.xml Phonesky_AXP-OS Magisk AuroraServices AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG NeoLauncher-latest"
-extendrom_fdroid_repos: "microg.xml molly.xml nailyk.xml threema.xml futo_org.xml"
+extendrom_fdroid_repos: "molly.xml nailyk.xml threema.xml futo_org.xml"
 extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
 #extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
