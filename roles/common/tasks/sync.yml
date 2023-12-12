@@ -9,7 +9,7 @@
   when: git_repo_local_manifests is defined
 
 - name: "Init Android sources"
-  shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }}" >> {{ BUILD_LOG }}
+  shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }} >> {{ BUILD_LOG }}"
   args:
     chdir: "{{ SRCPATH }}"
 
