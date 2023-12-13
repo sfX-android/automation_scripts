@@ -12,6 +12,7 @@
 - name: "temp secpatch prep fix"
   shell: >-
     sed -i 's/1\.0\.2/1.1.0/g' external/webp/README.android external/webp/README.version
+    cd external/webp && git add . && git commit -m "tempfix for 376568"
   args:
     chdir: "{{ SRCPATH }}"
   
