@@ -20,3 +20,19 @@ dtree_cl: |-
 
 cdtree_cl: |-
   \- Common tree: [commits](https://code.binbash.rocks:8443/MVA-VoLTE/android_device_samsung_exynos7870-common/commits/branch/eos-q)
+
+# DEVICE specific security patch handling
+# depends on the used custom OS and device model so has to be in the device vars
+sec_patch_pick_branch: "lineage-17.1" 
+sec_patch_date_last: "{{ current_year }}-11"
+# checking for topics: https://review.lineageos.org/q/topic:Q_asb_2023-11
+sec_patch_topics: >-
+      topic:Q_asb_2023-03 OR
+      topic:Q_asb_2023-04 OR
+      topic:Q_asb_2023-05 OR
+      topic:Q_asb_2023-06 OR
+      topic:Q_asb_2023-07 OR
+      topic:Q_asb_2023-08 OR
+      topic:Q_asb_2023-09 OR
+      topic:Q_asb_2023-10 OR
+      topic:Q_asb_{{ sec_patch_date_last }}
