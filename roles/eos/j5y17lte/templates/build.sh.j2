@@ -27,7 +27,7 @@ if [ "{{ use_extendrom }}" == "true" ];then
     
     export EXTENDROM_BOOT_DEBUG=true
     export EXTENDROM_DEBUG_PATH=/cache
-    export EXTENDROM_DEBUG_PATH_SIZE_FULL=2000
+    export EXTENDROM_DEBUG_PATH_SIZE_FULL=1000
     export EXTENDROM_DEBUG_PATH_SIZE_KERNEL=500
     $PWD/vendor/extendrom/er.sh
 fi
