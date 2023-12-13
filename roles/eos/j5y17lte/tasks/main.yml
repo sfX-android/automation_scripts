@@ -7,5 +7,13 @@
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
+# can be removed once this is fixed:
+# https://review.lineageos.org/c/LineageOS/android_external_webp/+/376568
+- name: "temp secpatch prep fix"
+  shell: >-
+    sed -i 's/1\.0\.2/1.1.0/g' external/webp/README.android external/webp/README.version
+  args:
+    chdir: "{{ SRCPATH }}"
+  
 - include: ../../../common/tasks/secpatch.yml
 - include: copy.yml
