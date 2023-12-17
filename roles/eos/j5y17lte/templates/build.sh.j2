@@ -24,7 +24,7 @@ if [ "{{ use_extendrom }}" == "true" ];then
     # enable & use extendrom
     export ENABLE_EXTENDROM={{ use_extendrom }}
     export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
-    
+    export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
     export EXTENDROM_BOOT_DEBUG=true
     export EXTENDROM_DEBUG_PATH=/cache
     export EXTENDROM_DEBUG_PATH_SIZE_FULL=1000
