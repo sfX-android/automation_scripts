@@ -10,6 +10,7 @@ git_repo_local_manifests_branch: "eos-q"
 # extendrom stuff
 use_extendrom: "true"
 extendrom_package_list: "Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore AuroraServices Phonesky noEOSCamera opencamera_j5_latest"
+extendrom_fdroid_repos: "microg.xml divest.xml izzysoft.xml nanolx.xml molly.xml nailyk.xml threema.xml futo_org.xml"
 
 # notification vars (overwriting the defaults
 kernel_cl: |-
