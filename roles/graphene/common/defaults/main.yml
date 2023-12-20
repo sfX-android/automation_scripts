@@ -71,7 +71,7 @@ SH_GRAPHENE_VERIFY: |
        git verify-tag $(git describe)
        cd {{ SRCPATH }}
 
-
+# sets the icon on the top right site
 SH_GRAPHENE_VPN_ICON: |
       cd {{ SRCPATH }}
       cp -v vendor/sos/icons/{{ vpn_icon }}.png frameworks/base/core/res/res/drawable-hdpi/vpn_connected.png
