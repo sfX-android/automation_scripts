@@ -54,8 +54,12 @@
 - name: "apply AXP.OS adjustments"
   raw: |
     {{ DOS_INIT }}
-    lunch lineage_{{ target_model }}-user && echo lunch success \
-      && vendor/axp/axp.sh
+    {% if sub_model is defined %}
+    lunch lineage_{{ sub_model }}-user && echo lunch success
+    {% else %}
+    lunch lineage_{{ target_model }}-user && echo lunch success
+    {% endif %}
+    vendor/axp/axp.sh
   args:
     executable: /bin/bash
 
