@@ -16,8 +16,9 @@
       path: "{{ item.lname }}"
       state: link
     loop:
-      - { lname: "~/.local/bin/python", target: "/usr/bin/python2" }
       - { lname: "~/.local/bin/gcc", target: "/usr/bin/gcc-9"  }
     when: android_shortversion == "a9"
+
+#      - { lname: "~/.local/bin/python", target: "/usr/bin/python2" }
 
   when: android_shortversion is defined
