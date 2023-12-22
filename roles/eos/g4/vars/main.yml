@@ -17,6 +17,10 @@ git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
 
+# all g4 builds are custom
+extendrom_package_list: "DNS66 noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky_AXP-OS"
+extendrom_fdroid_repos: "microg.xml divest.xml izzysoft.xml nanolx.xml molly.xml threema.xml futo_org.xml"
+
 # notification vars
 device_cl: |-
   ***{{ target_model_full }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
