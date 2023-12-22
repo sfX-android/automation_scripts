@@ -31,6 +31,7 @@ lunch lineage_{{ sub_model }}-userdebug
 if [ "$EOS_RELEASE_TYPE" == "CUSTOM" ];then
     export ENABLE_EXTENDROM={{ use_extendrom }}
     export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+    export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
     export EXTENDROM_BOOT_DEBUG=true
     export EXTENDROM_DEBUG_PATH=/persist
     #export EXTENDROM_DEBUG_PATH=/metadata
