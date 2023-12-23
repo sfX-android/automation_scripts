@@ -8,6 +8,7 @@
   loop:
     - "repopick --gerrit https://review.lineageos.org -f 307334/2 -P frameworks/base/"  # scale font patch
     - "git apply external/patches/frameworks_base_shadercache.patch"                    # always use shader cache
+    - "cd art && git fetch https://android.googlesource.com/platform/art refs/changes/78/2226578/2 && git cherry-pick FETCH_HEAD" # fix mmap build error on kernel >= 5.18
 
 - name: "Create repopick list (required to find path names)"
   shell: >
