@@ -9,7 +9,12 @@
     when: SRC_KEYSDIR_BASE is defined
   
   - name: "Ensure keys dir is set correctly"
-    shell: "external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR | regex_replace('e-os','eos') }} {{ android_shortversion }}"
+    shell: >
+      {% if ROM_FLAVOR != "eos" and android_shortversion != "a9" %}
+      external/buildtools/sign/sign_set_keysdir.sh {{ ROM_FLAVOR | regex_replace('e-os','eos') }} {{ android_shortversion }}
+      {% else %}
+      external/buildtools/sign/sign_set_keysdir.sh lineage {{ android_shortversion }}
+      {% endif %}
     args:
       chdir: "{{ SRCPATH }}"
     environment:
