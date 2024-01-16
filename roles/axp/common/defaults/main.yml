@@ -27,6 +27,8 @@ PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
 # if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
 axp_build_eng: false
+# should we verify all build images via the created vbmeta.img?
+vbmeta_verify: True
 # directories to be cleaned on a clean build
 axp_clean_paths:
     - "{{ SRCPATH }}/DOS_PATCHED_FLAG"
@@ -180,4 +182,8 @@ SH_COMMON_BUILD_SNIPPET: |
           buildDeviceDebug {{ target_model }}
         {% else %}
           buildDevice {{ target_model }}
+        {% endif %}
+        {% if vbmeta_verify %}
+        out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img
+        out/host/linux-x86/bin/avbtool verify_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img
         {% endif %}
