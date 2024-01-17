@@ -106,4 +106,4 @@
     path: "{{ SRCPATH }}/.repo/local_manifests"
     state: absent
   when:
-    - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
