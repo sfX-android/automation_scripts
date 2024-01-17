@@ -18,8 +18,8 @@
     - "{{ SRCPATH }}"
     
 - include_tasks: ../../../common/tasks/clean.yml
-  vars:
-    override_reset_git: 'true'
+  #vars:
+  #  override_reset_git: 'true'
  
 - name: "Specific DOS -basic- cleanup"
   file:
