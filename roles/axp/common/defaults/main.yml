@@ -184,6 +184,15 @@ SH_COMMON_BUILD_SNIPPET: |
           buildDevice {{ target_model }}
         {% endif %}
         {% if vbmeta_verify %}
+        # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
+        FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
+        echo -e "\nBOOTLOADER minimal ID"
+        echo -e "\t${FPID:0:8}\n"
+        echo -e "BOOTLOADER full ID:"
+        echo -e "\t${FPID:0:16}"
+        echo -e "\t${FPID:16:16}"
+        echo -e "\t${FPID:32:16}"
+        echo -e "\t${FPID:48:16}\n"
         out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img
         out/host/linux-x86/bin/avbtool verify_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img
         {% endif %}
