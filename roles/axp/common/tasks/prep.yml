@@ -19,16 +19,13 @@
         dest: "{{ divest_cve_checker_jar }}"
         mode: 0640
     
-    - name: Upload DOS CVE fixup
+    - name: "Upload extend-DOS patches"
       copy:
-        src: "extend_dos/cve_fixup.patch"
+        src: "extend_dos/{{ item }}"
         dest: cve_fixup.patch
         mode: 0640
-
-    - name: Upload DOS getDefconfig fixup
-      copy:
-        src: extend_dos/getDefconfig.patch
-        dest: getDefconfig.patch
-        mode: 0640
+      loop:
+        - cve_fixup.patch
+        - getDefconfig.patch
 
   when: divest_unsupported_device
