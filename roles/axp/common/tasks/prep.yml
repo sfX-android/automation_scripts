@@ -21,7 +21,7 @@
     
     - name: Upload DOS CVE fixup
       copy:
-        src: "cve_fixup/cve_fixup.patch"
+        src: "extend_dos/cve_fixup.patch"
         dest: cve_fixup.patch
         mode: 0640
 
