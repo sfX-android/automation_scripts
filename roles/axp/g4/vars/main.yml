@@ -18,10 +18,13 @@ target_kernel_dir: kernel/lge/msm8992
 # set output dir to sub model (specific g4 use case - this overwrites roles/common)
 JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ sub_model }}"
 
-# defaults override:
+# common defaults override:
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
 vbmeta_verify: false
+
+# enable kernel patching
+divest_unsupported_device: true
 
 # defaults override (notify):
 device_cl: |-
