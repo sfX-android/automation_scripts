@@ -21,8 +21,9 @@ JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ sub_model }}"
 # defaults override:
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
+vbmeta_verify: false
 
-# defaults overridei (notify):
+# defaults override (notify):
 device_cl: |-
   ***{{ target_model_full }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR }} {{ android_shortversion }}***
 
