@@ -1,18 +1,9 @@
 ---
-
-- name: "reset DOS"
-  git: 
-    repo: "{{ axp_git_repo }}"
-    dest: "{{ DOSPATH }}"
-    force: true
-    version: "{{ axp_main_branch | d('HEAD') }}"
-    clone: true
-  when:
-     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
-
+ 
 - name: "hard reset DOS"
   shell: |
-    git status
+    echo "BEFORE reset:" >> {{ BUILD_LOG }}
+    git status >> {{ BUILD_LOG }} 2>&1
     if [ $? -eq 128 ];then
       true
     else
@@ -21,12 +12,13 @@
       git reset --hard >> {{ BUILD_LOG }} 2>&1
       git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
     fi
-    git status
-    echo debug abort >> {{ BUILD_LOG }}
-    false
+    echo "AFTER reset:" >> {{ BUILD_LOG }}
+    git status >> {{ BUILD_LOG }} 2>&1
   args:
     chdir: "{{ DOSPATH }}"
     executable: /bin/bash
+  when:
+     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
 - name: Prepare DOS build
   file:
