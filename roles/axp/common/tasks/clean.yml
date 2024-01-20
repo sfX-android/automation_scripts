@@ -10,11 +10,21 @@
   when:
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
-- name: debug
+- name: "hard reset DOS"
   shell: |
-    cd "{{ DOSPATH }}"
     git status
+    if [ $? -eq 128 ];then
+      true
+    else
+      git am --abort >> {{ BUILD_LOG }} 2>&1
+      git rebase --abort >> {{ BUILD_LOG }} 2>&1
+      git reset --hard >> {{ BUILD_LOG }} 2>&1
+    fi
+    echo debug abort >> {{ BUILD_LOG }}
     false
+  args:
+    chdir: "{{ DOSPATH }}"
+    executable: /bin/bash
 
 - name: Prepare DOS build
   file:
