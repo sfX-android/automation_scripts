@@ -20,6 +20,16 @@
   when:
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
+- name: "clone DOS"
+  git: 
+    repo: "{{ axp_git_repo }}"
+    dest: "{{ DOSPATH }}"
+    force: true
+    version: "{{ axp_main_branch | d('HEAD') }}"
+    clone: true
+  when:
+     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+
 - name: Prepare DOS build
   file:
     path: "{{ item }}"
