@@ -26,11 +26,11 @@
        version: "{{ axp_main_branch | d('HEAD') }}"
        clone: true
        
-    - name: "DOS State"
-      shell: |
+   - name: "DOS State"
+     shell: |
         echo "AFTER reset + sync:" >> {{ BUILD_LOG }}
         git status >> {{ BUILD_LOG }} 2>&1
-      args:
+     args:
        chdir: "{{ DOSPATH }}"
 
   when: (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
