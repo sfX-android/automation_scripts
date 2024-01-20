@@ -1,9 +1,12 @@
 ---
 
-- name: "Ensure the defined sources path exists"
+- name: "Ensure the defined sources paths exist"
   file:
-    path: "{{ SRCPATH }}"
+    path: "{{ item }}"
     state: directory
+  loop:
+    - "{{ SRCPATH }}"
+    - "{{ DOSPATH }}"
 
 - name: Copy DOS renamer
   copy:
