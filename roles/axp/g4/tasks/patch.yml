@@ -2,14 +2,14 @@
  
 - name: "apply specific LG G4 picks"
   shell: >-
-      cd {{ item.path }} && git fetch {{ item.fetch }} && git cherry-pick FETCH_HEAD
+      cd {{ item.path }} && git fetch {{ item.fetch }} && git cherry-pick {{ item.pick }}
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   loop:
-    - { path: "external/perfetto", fetch: "https://github.com/LineageOS/android_external_perfetto refs/changes/06/287706/8" }
-    - { path: "system/bpf", fetch: "https://github.com/LineageOS/android_system_bpf refs/changes/91/320591/2" }
-    - { path: "system/netd", fetch: "https://github.com/LineageOS/android_system_netd refs/changes/92/320592/2" }
-    - { path: "art", fetch: "https://github.com/LineageOS/android_art refs/changes/97/318097/1" }
-    - { path: "packages/modules/adb", fetch: "https://github.com/LineageOS/android_packages_modules_adb refs/changes/85/326385/3" }
-
+    - { path: "external/perfetto", fetch: "https://github.com/LineageOS/android_external_perfetto refs/changes/06/287706/8", pick: "FETCH_HEAD" }
+    - { path: "system/bpf", fetch: "https://github.com/LineageOS/android_system_bpf refs/changes/91/320591/2", pick: "FETCH_HEAD" }
+    - { path: "system/netd", fetch: "https://github.com/LineageOS/android_system_netd refs/changes/92/320592/2", pick: "FETCH_HEAD" }
+    - { path: "art", fetch: "https://github.com/LineageOS/android_art refs/changes/97/318097/1", pick: "FETCH_HEAD" }
+    - { path: "packages/modules/adb", fetch: "https://github.com/LineageOS/android_packages_modules_adb refs/changes/85/326385/3", pick: "FETCH_HEAD" }
+    - { path: "system/sepolicy", fetch: "https://github.com/LineageOS-OP2/android_system_sepolicy lineage-19.1", pick: "23468e3d6afe8d88b5bd024c697d698704f9db47" }
