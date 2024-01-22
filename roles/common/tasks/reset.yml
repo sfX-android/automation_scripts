@@ -19,7 +19,7 @@
 
 - name: "Reset path (simple)"
   shell: |
-    {{ repo_bin }} forall -j{{ max_processes }} -c "git am --abort; git rebase --abort; git reset --hard"  
+    {{ repo_bin }} forall -j{{ max_processes }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard"  
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
