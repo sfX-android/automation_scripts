@@ -12,4 +12,4 @@
     - { path: "system/netd", fetch: "https://github.com/LineageOS/android_system_netd refs/changes/92/320592/2", pick: "FETCH_HEAD" }
     - { path: "art", fetch: "https://github.com/LineageOS/android_art refs/changes/97/318097/1", pick: "FETCH_HEAD" }
     - { path: "packages/modules/adb", fetch: "https://github.com/LineageOS/android_packages_modules_adb refs/changes/85/326385/3", pick: "FETCH_HEAD" }
-    - { path: "system/sepolicy", fetch: "https://github.com/LineageOS-OP2/android_system_sepolicy lineage-19.1", pick: "23468e3d6afe8d88b5bd024c697d698704f9db47" }
+    - { path: "system/sepolicy", fetch: "https://github.com/LineageOS-OP2/android_system_sepolicy 23468e3d6afe8d88b5bd024c697d698704f9db47", pick: "23468e3d6afe8d88b5bd024c697d698704f9db47" }
