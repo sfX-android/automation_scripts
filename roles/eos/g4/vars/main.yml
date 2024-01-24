@@ -16,7 +16,7 @@ git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 # defaults override:
 rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
-repo_bin: /home/androidsource/bin/repo.python2
+repo_bin: /home/androidsource/bin/repo.pie
 
 # all g4 builds are custom
 extendrom_package_list: "DNS66 noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky_AXP-OS"
