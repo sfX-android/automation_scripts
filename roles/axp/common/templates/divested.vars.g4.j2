@@ -9,3 +9,6 @@
 # https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
 ################################################################################################################
 
+# removing IMS will break boot
+# > "/vendor/bin/imscmservice": library "lib-imsrcscmservice.so" not found: needed by main executable
+export DOS_DEBLOBBER_REMOVE_IMS=False
