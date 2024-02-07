@@ -7,11 +7,3 @@
         && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
   args:
     executable: /bin/bash
-
-- name: "temporary hotfix for page_alloc.c"
-  shell: |
-    git stash save page_alloc.c
-    git fetch https://github.com/LineageOS/android_kernel_oneplus_sm8150 refs/changes/34/376534/1 && git cherry-pick FETCH_HEAD
-    git stash pop
-  args:
-    chdir: "{{ SRCPATH }}/{{ target_kernel_dir }}"
