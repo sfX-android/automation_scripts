@@ -5,6 +5,10 @@
   when:
     - buildresult.rc is undefined or buildresult.rc != 0
 
+- name: "get build date"
+  shell: "grep ro.build.date.utc {{ SRCPATH }}/out/target/product/*/system/build.prop"
+  register: build_date_utc
+
 - block:
     
     - set_fact:
