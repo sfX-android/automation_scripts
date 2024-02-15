@@ -5,3 +5,4 @@
 - include: patch.yml
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - android_shortversion == "a12"
