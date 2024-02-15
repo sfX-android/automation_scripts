@@ -12,8 +12,8 @@
     - name: "Correct ZIP timestamp for {{ BDEVICE }} to fix recurring OTA offering"
       file:
         path: "{{ rempath }}/{{ ROMFILE.stdout }}"
-        modification_time: "{{ "%Y%m%d%H%M.%S" | strftime(build_date_utc) }}"
-        access_time: "{{ "%Y%m%d%H%M.%S" | strftime(build_date_utc) }}"
+        modification_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc) }}"
+        access_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc) }}"
         state: touch
       delegate_to: "{{ groups.downloadserver[0] }}"
   
