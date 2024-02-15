@@ -24,7 +24,7 @@ post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_mod
 vbmeta_verify: false
 
 # enable kernel patching
-divest_unsupported_device: true
+#divest_unsupported_device: true
 
 # defaults override (notify):
 device_cl: |-
