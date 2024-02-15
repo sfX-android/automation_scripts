@@ -38,7 +38,7 @@
 - name: "apply DOS patches"
   raw: |
     {{ DOS_INIT }}
-    patchWorkspace >> {{ BUILD_LOG }} 2>&1 \
+    patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1 \
       && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
   args:
