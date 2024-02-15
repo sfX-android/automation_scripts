@@ -12,3 +12,6 @@
 # removing IMS will break boot
 # > "/vendor/bin/imscmservice": library "lib-imsrcscmservice.so" not found: needed by main executable
 export DOS_DEBLOBBER_REMOVE_IMS=False
+
+# libcir is needed by consumerir
+export DOS_DEBLOBBER_REMOVE_IR=False
