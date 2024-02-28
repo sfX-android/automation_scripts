@@ -6,7 +6,7 @@
     - buildresult.rc is undefined or buildresult.rc != 0
 
 - name: "get build date"
-  shell: "grep ro.build.date.utc {{ SRCPATH }}/out/target/product/*/system/build.prop"
+  shell: "grep ro.build.date.utc {{ SRCPATH }}/out/target/product/*/system/build.prop | cut -d '=' -f2 "
   register: build_date_utc
 
 - block:
