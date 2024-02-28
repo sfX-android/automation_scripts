@@ -31,7 +31,7 @@ device_cl: |-
   ***{{ target_model_full }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR }} {{ android_shortversion }}***
 
 dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/e-os/{{ android_shortversion }}/{{ sub_model }})
+  ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/axp/{{ sub_model }})
 
 dtree_cl: |-
   \- device tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
