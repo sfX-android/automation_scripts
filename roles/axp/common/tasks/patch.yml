@@ -48,7 +48,7 @@
   shell: cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
   args:
     chdir: "{{ SRCPATH }}"
-  when: android_shortversion == "a10"
+  when: android_shortversion == "a10" or android_shortversion == "a11"
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
