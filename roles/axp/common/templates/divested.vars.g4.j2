@@ -15,6 +15,7 @@ export AXP_DEFCONFIG_DEVICE="CONFIG_STRICT_MEMORY_RWX=n"
 # removing IMS will break boot
 # > "/vendor/bin/imscmservice": library "lib-imsrcscmservice.so" not found: needed by main executable
 export DOS_DEBLOBBER_REMOVE_IMS=False
+export DOS_DEBLOBBER_REMOVE_RCS=False
 
 # libcir is needed by consumerir
 export DOS_DEBLOBBER_REMOVE_IR=False
