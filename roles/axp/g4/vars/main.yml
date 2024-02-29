@@ -24,7 +24,9 @@ post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_mod
 vbmeta_verify: false
 
 # enable kernel patching
-#divest_unsupported_device: true
+# this kernel is special bc it (still) exists in Fix_CVE_Patchers.sh (they supported it a while ago)
+# but as they removed the patcher script we need to set it to unsupported:
+divest_unsupported_device: true
 
 # defaults override (notify):
 device_cl: |-
