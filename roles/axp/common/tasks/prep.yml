@@ -25,7 +25,7 @@
     - name: "Upload extend-DOS patches"
       copy:
         src: "extend_dos/{{ item }}"
-        dest: cve_fixup.patch
+        dest: "{{ item }}"
         mode: 0640
       loop:
         - cve_fixup.patch
