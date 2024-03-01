@@ -1,6 +1,6 @@
 ---
 
-- name: "apply specific LG G4 picks (general)"
+- name: "apply specific LG G4 fixes (general)"
   shell: |-
      sed -i 's/voldmanaged=sdcard1:auto,forceencrypt/voldmanaged=sdcard1:auto,encryptable/g' device/lge/g4-common/rootdir/etc/fstab.qcom  # do not forceencrypt ext. sdcard
   args:
