@@ -1,6 +1,13 @@
 ---
+
+- name: "apply specific LG G4 picks (general)"
+  shell: |-
+     sed -i 's/voldmanaged=sdcard1:auto,forceencrypt/voldmanaged=sdcard1:auto,encryptable/g' device/lge/g4-common/rootdir/etc/fstab.qcom  # do not forceencrypt ext. sdcard
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
  
-- name: "apply specific LG G4 picks"
+- name: "apply specific LG G4 picks (A12 only)"
   shell: >-
       cd {{ item.path }} && git fetch {{ item.fetch }} && git cherry-pick {{ item.pick }}
   args:
@@ -13,3 +20,4 @@
     - { path: "art", fetch: "https://github.com/LineageOS/android_art refs/changes/97/318097/1", pick: "FETCH_HEAD" }
     - { path: "packages/modules/adb", fetch: "https://github.com/LineageOS/android_packages_modules_adb refs/changes/85/326385/3", pick: "FETCH_HEAD" }
     - { path: "system/sepolicy", fetch: "https://github.com/LineageOS-OP2/android_system_sepolicy 23468e3d6afe8d88b5bd024c697d698704f9db47", pick: "23468e3d6afe8d88b5bd024c697d698704f9db47" }
+  when: android_shortversion == "a12"
