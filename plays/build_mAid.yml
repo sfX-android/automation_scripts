@@ -69,6 +69,7 @@
       rescue:
         - import_role:
             name: post
+          ignore_errors: true
 
         - set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
