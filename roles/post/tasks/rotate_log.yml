@@ -13,13 +13,16 @@
   connection: local
   shell: "mv {{ ansible_log_flatten }} {{ ansible_log_flatten }}.{{ build_no }}"
 
-- stat:
-    path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
-  register: buildlogfile
-  connection: local
-  ignore_errors: true 
+- block:
 
-- name: rotate build log
-  connection: local
-  shell: "mv /tmp/{{ inventory_hostname }}/{{ build_log_name }} /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ build_no }}"
-  when: buildlogfile.stat.isreg is defined
+  - stat:
+      path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
+    register: buildlogfile
+    connection: local
+  
+  - name: rotate build log
+    connection: local
+    shell: "mv /tmp/{{ inventory_hostname }}/{{ build_log_name }} /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ build_no }}"
+    when: buildlogfile.stat.isreg is defined
+
+  when: ROM_FLAVOR != "MAID"
