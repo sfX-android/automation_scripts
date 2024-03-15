@@ -17,7 +17,7 @@
     path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
   register: buildlogfile
   connection: local
-  no_log: true
+  ignore_errors: true 
 
 - name: rotate build log
   connection: local
