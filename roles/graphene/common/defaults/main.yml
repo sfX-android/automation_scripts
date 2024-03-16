@@ -126,7 +126,12 @@ SH_GRAPHENE_BUILD: |
       export BUILD_ID="{{ ROM_NAME }}_v{{ ROM_VERSION }}-{{ ROM_TYPE }}"
 
       # replace aosp build id
-      sed -i "s/BUILD_ID :=.*/BUILD_ID := $BUILD_ID/g" build/make/core/version_defaults.mk
+      if [ -f build/make/core/version_defaults.mk ]; then
+          sed -i "s/BUILD_ID :=.*/BUILD_ID := $BUILD_ID/g" build/make/core/version_defaults.mk
+      fi
+      if [ -f build/make/core/version_util.mk ];then
+          sed -i "s/BUILD_ID :=.*/BUILD_ID := $BUILD_ID/g" build/make/core/version_util.mk
+      fi
       echo "ro.build.display.id=$BUILD_ID" > vendor/sos/vendor.prop
 
       source script/envsetup.sh
