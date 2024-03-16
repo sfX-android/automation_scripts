@@ -10,7 +10,7 @@
   args:
     chdir: "{{ SRCPATH }}"
   register: patchres
-  #failed_when: patchres.rc == 2
+  failed_when: patchres.rc == 2
   when: patch.examined > 0
 
 - name: "Update ROM version"
