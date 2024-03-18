@@ -1,0 +1,22 @@
+---
+# human readable model name
+target_model_full: "OnePlus 7T"
+
+# boot debugger path & config
+extendrom_debug_path_default: /metadata
+extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_kernel_default: 100
+extendrom_debug_path_size_selinux_default: 200
+extendrom_debug_path_size_crash_default: 200
+
+# path to the kernel dir (req for e.g. wireguard)
+target_kernel_dir: kernel/oneplus/sm8150
+
+dtree_cl: |-
+  \- device tree: [commits](https://github.com/AXP-OS/android_device_oneplus_hotdogb/commits/axp-a13)
+
+cdtree_cl: |-
+  \- common tree: [commits](https://github.com/AXP-OS/android_device_oneplus_sm8150-common/commits/axp-a13)
+
+kernel_cl: |-
+  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_oneplus_sm8150/commits/axp-a13)

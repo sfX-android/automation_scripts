@@ -1,0 +1,9 @@
+---
+
+- name: "apply AXP.OS kernel wireguard patch"
+  raw: |
+      {{ DOS_INIT }}
+      vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/kernel \
+        && cp -v kernel/wireguard-linux-compat/src/compat/compat.h {{ target_kernel_dir }}/net/wireguard/compat/
+  args:
+    executable: /bin/bash
