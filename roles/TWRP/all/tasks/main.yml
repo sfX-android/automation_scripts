@@ -1,18 +1,19 @@
 ---
 
 - include: ../../common/tasks/setvars.yml
-- include: ../../common/tasks/clean.yml
-- include: clean_dts.yml
 - include: set_buildid.yml
 
-- include: set_local_manifest.yml
-  when: los_revision is defined
+- block:
 
-- include: ../../common/tasks/sync.yml
-  when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - include: ../../common/tasks/clean.yml
+    - include: clean_dts.yml
+    
+    - include: set_local_manifest.yml
+      when: los_revision is defined
+    
+    - include: ../../common/tasks/sync.yml
+    - include: sync.yml
 
-- include: sync.yml
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
