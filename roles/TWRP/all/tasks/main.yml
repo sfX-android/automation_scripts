@@ -1,9 +1,8 @@
 ---
 
 - include: ../../common/tasks/setvars.yml
-
 - include: ../../common/tasks/clean.yml
-
+- include: clean_dts.yml
 - include: set_buildid.yml
 
 - include: set_local_manifest.yml
