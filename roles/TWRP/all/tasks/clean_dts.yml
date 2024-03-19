@@ -1,0 +1,7 @@
+---
+
+- name: "clean all device trees"
+  file:
+    path: "{{ SRCPATH }}/device/"
+    recursive: true
+    state: absent
