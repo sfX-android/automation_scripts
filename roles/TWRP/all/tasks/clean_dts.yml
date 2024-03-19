@@ -3,5 +3,5 @@
 - name: "clean all device trees"
   file:
     path: "{{ SRCPATH }}/device/"
-    recursive: true
+    recurse: true
     state: absent
