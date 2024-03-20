@@ -9,6 +9,9 @@
 # https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
 ################################################################################################################
 
+# release directory
+export DOS_BUILDS="{{ ZIPDIR }}"
+
 # CONFIG_STRICT_MEMORY_RWX=y breaks boot!
 export AXP_DEFCONFIG_DEVICE="CONFIG_STRICT_MEMORY_RWX=n"
 
