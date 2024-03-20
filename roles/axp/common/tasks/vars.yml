@@ -11,11 +11,23 @@
     path: "{{ role_path }}/templates/divested.vars.{{ target_model }}.j2"
   register: devvar
 
+- name: "check if a device overwrite exists (sub_model)"
+  connection: local
+  stat:
+    path: "{{ role_path }}/templates/divested.vars.{{ sub_model }}.j2"
+  register: devvarsub
+
 - name: "Set device vars"
   template:
     src: "divested.vars.{{ target_model }}.j2"
     dest: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
   when: devvar.stat.exists
+
+- name: "Set device vars (sub_model)"
+  template:
+    src: "divested.vars.{{ sub_model }}.j2"
+    dest: "{{ BUILDHOME }}/.divested.vars.{{ sub_model }}"
+  when: devvarsub.stat.exists
 
 - name: "Set remote path (recovery only)"
   set_fact:
