@@ -31,3 +31,22 @@
     - "{{ ROMFILE.stdout }}.sha256sum"
   when:
     - ROM_FLAVOR == "TWRP" or ROM_FLAVOR == "SHRP" or (axp_build_recovery_only is defined and axp_build_recovery_only)
+
+- block:
+
+    - name: "Prep AXP.OS RECOVERY vars"
+      ansible.builtin.set_facts:
+          axp_fastboot_zip: "{{ axp_finalzip_dir }}/fastboot/{{ ROMFILE.stdout | regex_replace('.zip', '-fastboot.zip') }}"
+          axp_recovery_name: "{{ axp_finalzip_dir }}/{{ ROMFILE.stdout | regex_replace('-dos-', '-RECOVERY-') | regex_replace('.zip', '.img') }}"
+          
+    - name: "Release AXP.OS RECOVERY for {{ BDEVICE }}"
+      shell: |
+          unzip {{ axp_fastboot_zip }} recovery.img -p > {{ axp_recovery_name }} || \
+              unzip {{ axp_fastboot_zip }} boot.img -p > {{ axp_recovery_name }}
+          sha256sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha256
+          scp "{{ axp_recovery_name }}*" {{ groups.downloadserver[0] }}:{{ rempath }}/recovery/"
+      delegate_to: "{{ groups.buildserver[0] }}"
+
+  when:
+    - ROM_FLAVOR == "axp"
+    - (axp_build_recovery_only is undefined or not axp_build_recovery_only)
