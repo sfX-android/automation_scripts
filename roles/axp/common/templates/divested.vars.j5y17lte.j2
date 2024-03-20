@@ -9,6 +9,9 @@
 # https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
 ################################################################################################################
 
+# release directory
+export DOS_BUILDS="{{ ZIPDIR }}"
+
 # CONFIG_ARM64_SW_TTBR0_PAN breaks boot!
 export AXP_DEFCONFIG_DEVICE="CONFIG_ARM64_SW_TTBR0_PAN=n"
 
