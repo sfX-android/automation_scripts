@@ -1,0 +1,13 @@
+#!/bin/bash
+################################################################################################################
+# device specific vars for AXP.OS 
+#
+# overwrites/extends the global vars in: 
+# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/templates/divested.vars.j2
+#
+# additional / current list of possible options:
+# https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
+################################################################################################################
+
+# release directory
+export DOS_BUILDS="{{ ZIPDIR }}"
