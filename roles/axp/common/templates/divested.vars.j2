@@ -14,7 +14,6 @@
 export DOS_MAX_THREADS_REPO={{ max_processes_sync }}   # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 10)
 export DOS_MAX_THREADS_BUILD={{ max_processes }}   # Max amount of threads used for build, e.g. used by make (shouldn't exceed your CPU cores count)
 export DOS_WORKSPACE_ROOT="{{ DOSPATH }}/"
-export DOS_BUILDS="{{ ZIPDIR }}"
 export DOS_SIGNING_KEYS="$DOS_WORKSPACE_ROOT/Signing_Keys/4096pro"
 export DOS_SIGNING_GPG="$DOS_WORKSPACE_ROOT/Signing_Keys/gnupg"
 export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
