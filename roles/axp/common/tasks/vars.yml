@@ -27,7 +27,9 @@
   template:
     src: "divested.vars.{{ sub_model }}.j2"
     dest: "{{ BUILDHOME }}/.divested.vars.{{ sub_model }}"
-  when: devvarsub.stat.exists
+  when: 
+   - devvarsub.stat.exists
+   - sub_model is defined
 
 - name: "Set remote path (recovery only)"
   set_fact:
