@@ -16,6 +16,7 @@
   stat:
     path: "{{ role_path }}/templates/divested.vars.{{ sub_model }}.j2"
   register: devvarsub
+  when: sub_model is defined
 
 - name: "Set device vars"
   template:
