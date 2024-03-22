@@ -119,8 +119,9 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         # this will create a fastboot flashable factory image
         # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
         VERSION="{{ los_version }}-{{ build_id }}-dos"
-        eval $(cat vendor/firmware/{{ target_model }}/0SOURCE)
-        if [ ! -f out/{{ target_model }}-factory.zip ];then wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip;fi
+        source vendor/firmware/{{ target_model }}/0SOURCE
+        if [ ! -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
+        wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip
         cd out/target/product/{{ target_model }}
         if [ -d factory ];then rm -rf factory;fi
         if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
