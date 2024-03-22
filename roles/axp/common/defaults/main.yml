@@ -101,6 +101,27 @@ DOS_INIT: |
     source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
     source {{ DOSPATH }}/Scripts/init.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing init: success" >> {{ BUILD_LOG }}
 
+# enable the following in a device's vars file with:
+#custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+SH_COMMON_PIXEL_CREATE_FACTORY: |
+        # this will create a fastboot flashable factory image
+        # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
+        VERSION={{ los_version }}-{{ build_id }}-dos
+        eval $(cat vendor/firmware/{{ target_model }}/0SOURCE)
+        [ ! -f out/{{ target_model }}-factory.zip ] && wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip
+        cd out/target/product/{{ target_model }}
+        [ -d factory ] && rm -rf factory
+        [ -f {{ os_name }}-${VERSION}-factory.zip ] && rm {{ os_name }}-${VERSION}-factory.zip
+        unzip /home/androidsource/do-not-touch/axp/Build/LineageOS-20.0/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
+        cd factory/{{ target_model }}-${FACTORYID}
+        cp ../../{{ os_name }}-$VERSION-{{ target_model }}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip
+        cp /home/androidsource/do-not-touch/axp/Build/LineageOS-20.0/user-keys/avb_pkmd.bin .
+        for f in flash-base.sh flash-all.sh;do
+            awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
+        done
+        awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat        
+        zip -r ../../{{ os_name }}-${VERSION}-factory.zip .
+
 # the build script which will be executed after all the resets, syncs and patching have been done
 SH_COMMON_BUILD_SNIPPET: |
         #!/bin/bash
