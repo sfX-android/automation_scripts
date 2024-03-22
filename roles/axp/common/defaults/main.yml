@@ -134,6 +134,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         done
         awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat        
         zip -r ../../{{ os_name }}-${VERSION}-factory.zip .
+        cd {{ SRCPATH }}
         {% endif %}
 
 # the build script which will be executed after all the resets, syncs and patching have been done
