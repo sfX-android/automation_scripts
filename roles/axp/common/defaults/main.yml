@@ -108,17 +108,25 @@ generate_pixel_factory_image: False
 #custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 #generate_pixel_factory_image: True (in semaphore)
 SH_COMMON_PIXEL_CREATE_FACTORY: |
+        {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
+        mka generate_verity_key
+        {% endif %}
+        {% if axp_build_eng | bool %}
+        mka sepolicy
+        buildDeviceDebug {{ target_model }}
+        {% else %}
         buildDevice {{ target_model }}
+        {% endif %}
         {% if generate_pixel_factory_image | bool %}
         
         # this will create a fastboot flashable factory image
         # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
-        VERSION={{ los_version }}-{{ build_id }}-dos
+        VERSION="{{ los_version }}-{{ build_id }}-dos"
         eval $(cat vendor/firmware/{{ target_model }}/0SOURCE)
-        [ ! -f out/{{ target_model }}-factory.zip ] && wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip
+        if [ ! -f out/{{ target_model }}-factory.zip ];then wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip;fi
         cd out/target/product/{{ target_model }}
-        [ -d factory ] && rm -rf factory
-        [ -f {{ os_name }}-${VERSION}-factory.zip ] && rm {{ os_name }}-${VERSION}-factory.zip
+        if [ -d factory ];then rm -rf factory;fi
+        if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
         unzip /home/androidsource/do-not-touch/axp/Build/LineageOS-20.0/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
         cd factory/{{ target_model }}-${FACTORYID}
         cp ../../{{ os_name }}-$VERSION-{{ target_model }}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip
@@ -198,19 +206,19 @@ SH_COMMON_BUILD_SNIPPET: |
         
         # build
         {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
-        mka generate_verity_key \
-         && mka sepolicy && \
+        mka generate_verity_key
         {% endif %}
         {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
-          mka recoveryimage
-          if [ ! -d {{ JKZIPDIR }} ]; then mkdir -p {{ JKZIPDIR }};fi
-          mv -v out/target/product/{{ target_model }}/recovery.img {{ JKZIPDIR }}/{{ axp_recovery_filename }}
+        mka recoveryimage
+        if [ ! -d {{ JKZIPDIR }} ]; then mkdir -p {{ JKZIPDIR }};fi
+        mv -v out/target/product/{{ target_model }}/recovery.img {{ JKZIPDIR }}/{{ axp_recovery_filename }}
         {% elif custom_build_command is defined %}
-          {{ custom_build_command }}
+        {{ custom_build_command }}
         {% elif axp_build_eng | bool %}
-          buildDeviceDebug {{ target_model }}
+        mka sepolicy
+        buildDeviceDebug {{ target_model }}
         {% else %}
-          buildDevice {{ target_model }}
+        buildDevice {{ target_model }}
         {% endif %}
         {% if vbmeta_verify %}
         # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
