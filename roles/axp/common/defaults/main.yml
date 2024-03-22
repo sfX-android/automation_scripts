@@ -101,10 +101,15 @@ DOS_INIT: |
     source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
     source {{ DOSPATH }}/Scripts/init.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing init: success" >> {{ BUILD_LOG }}
 
+# we do not want to generate a fastboot factory image by default (override in semaphore if needed)
+generate_pixel_factory_image: False
+
 # enable the following in a device's vars file with:
 #custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+#generate_pixel_factory_image: True (in semaphore)
 SH_COMMON_PIXEL_CREATE_FACTORY: |
         buildDevice {{ target_model }}
+        {% if generate_pixel_factory_image | bool %}
         
         # this will create a fastboot flashable factory image
         # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
@@ -123,6 +128,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         done
         awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat        
         zip -r ../../{{ os_name }}-${VERSION}-factory.zip .
+        {% endif %}
 
 # the build script which will be executed after all the resets, syncs and patching have been done
 SH_COMMON_BUILD_SNIPPET: |
