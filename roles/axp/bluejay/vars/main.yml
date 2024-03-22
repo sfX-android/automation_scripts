@@ -20,3 +20,5 @@ cdtree_cl: |-
 
 kernel_cl: |-
   \- Kernel: [commits](https://github.com/LineageOS/android_kernel_google_gs101/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+
+custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
