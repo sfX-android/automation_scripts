@@ -104,6 +104,8 @@ DOS_INIT: |
 # enable the following in a device's vars file with:
 #custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 SH_COMMON_PIXEL_CREATE_FACTORY: |
+        buildDevice {{ target_model }}
+        
         # this will create a fastboot flashable factory image
         # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
         VERSION={{ los_version }}-{{ build_id }}-dos
