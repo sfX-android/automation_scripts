@@ -16,9 +16,9 @@ dtree_cl: |-
   \- device tree: [commits](https://github.com/AXP-OS/android_device_google_bluejay/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
 
 cdtree_cl: |-
-  \- common tree: [commits](https://github.com/LineageOS/android_device_google_gs201/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+  \- common tree: [commits](https://github.com/LineageOS/android_device_google_gs101/commits/{{ git_repo_main_branch | replace('20.0','20') }})
 
 kernel_cl: |-
-  \- Kernel: [commits](https://github.com/LineageOS/android_kernel_google_gs101/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+  \- Kernel: [commits](https://github.com/LineageOS/android_kernel_google_gs201/commits/{{ git_repo_main_branch | replace('20.0','20') }})
 
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
