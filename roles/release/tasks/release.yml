@@ -41,8 +41,8 @@
           
     - name: "Release AXP.OS RECOVERY for {{ BDEVICE }}"
       shell: |
-          unzip {{ axp_fastboot_zip }} recovery.img -p > {{ axp_recovery_name }} || \
-              unzip {{ axp_fastboot_zip }} boot.img -p > {{ axp_recovery_name }}
+          unzip -p {{ axp_fastboot_zip }} recovery.img > {{ axp_recovery_name }} || \
+              unzip -p {{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name }}
           sha256sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha256
           scp "{{ axp_recovery_name }}*" {{ groups.downloadserver[0] }}:{{ rempath }}/recovery/
       delegate_to: "{{ groups.buildserver[0] }}"
