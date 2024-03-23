@@ -120,7 +120,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
         VERSION="{{ los_version }}-{{ BUILDIDENT }}-dos"
         source vendor/firmware/{{ target_model }}/0SOURCE
-        if [ ! -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
+        if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
         wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip
         cd out/target/product/{{ target_model }}
         if [ -d factory ];then rm -rf factory;fi
