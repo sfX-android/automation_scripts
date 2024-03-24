@@ -132,8 +132,11 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         for f in flash-base.sh flash-all.sh;do
             awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
         done
-        awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat        
-        zip -r ../../{{ os_name }}-${VERSION}-factory.zip .
+        awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat
+        cd ..
+        zip -r ../{{ os_name }}-${VERSION}-factory.zip {{ target_model }}-${FACTORYID}
+        cd ..
+        sha256sum {{ os_name }}-${VERSION}-factory.zip > {{ os_name }}-${VERSION}-factory.zip.sha256
         cd {{ SRCPATH }}
         {% endif %}
 
