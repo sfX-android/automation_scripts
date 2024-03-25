@@ -1,0 +1,24 @@
+---
+# human readable model name
+target_model_full: "Google Pixel 7 Pro"
+
+# boot debugger path & config
+extendrom_debug_path_default: /mnt/vendor/persist
+extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_kernel_default: 100
+extendrom_debug_path_size_selinux_default: 200
+extendrom_debug_path_size_crash_default: 200
+
+# path to the kernel dir (req for e.g. wireguard)
+target_kernel_dir: kernel/google/gs201
+
+dtree_cl: |-
+  \- device tree: [commits](https://github.com/AXP-OS/android_device_google_pantah/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
+
+cdtree_cl: |-
+  \- common tree: [commits](https://github.com/LineageOS/android_device_google_gs201/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+
+kernel_cl: |-
+  \- Kernel: [commits](https://github.com/LineageOS/android_kernel_google_gs201/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+
+custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
