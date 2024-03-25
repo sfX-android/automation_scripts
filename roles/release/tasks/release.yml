@@ -49,4 +49,5 @@
 
   when:
     - ROM_FLAVOR == "axp"
+    - (axp_release_recovery is defined and axp_release_recovery)
     - (axp_build_recovery_only is undefined or not axp_build_recovery_only)
