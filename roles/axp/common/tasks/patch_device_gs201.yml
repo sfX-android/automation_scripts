@@ -1,0 +1,9 @@
+---
+
+- name: "apply specific gs201 common fixup"
+  shell: |-
+     # the divest deblobber removes the clearkey entry AND PRODUCT_PACKAGES += so we need to re-add it
+     sed -iE 's/\s+android.hardware.drm-service.widevine/PRODUCT_PACKAGES += android.hardware.drm-service.widevine/g' device/google/gs201/widevine/device.mk
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
