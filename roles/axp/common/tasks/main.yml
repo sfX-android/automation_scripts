@@ -8,6 +8,11 @@
 
   - include_tasks: sync.yml    
   - include_tasks: patch.yml
+  
+  - include_tasks: patch_device_gs201.yml
+    when: 
+      - target_model == "cheetah"
+  
   - include_tasks: adjust_DOS_options.yml
 
   when:
