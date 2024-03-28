@@ -15,4 +15,4 @@ skip_gen_checksum: true
 # lunch_buildtype:
 
 # see https://grapheneos.org/build#building
-graphene_build_targets: vendorbootimage vendorkernelbootimage target-files-package otatools
+graphene_build_targets: vendorbootimage vendorkernelbootimage target-files-package otatools-package
