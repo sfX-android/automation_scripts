@@ -180,7 +180,7 @@ SH_GRAPHENE_BUILD: |
       # build
       cd {{ SRCPATH }}
       # choosecombo release {{ target_model }} {{ lunch_buildtype }}
-      lunch {{ target_model }}-{{ lunch_buildtype }}
+      lunch {{ target_model }}-ap1a-{{ lunch_buildtype }}
       m -j{{ max_processes }} {{ graphene_build_targets }}
 
       # packaging & signing
