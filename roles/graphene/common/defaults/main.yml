@@ -154,7 +154,7 @@ SH_GRAPHENE_BUILD: |
       export EXTENDROM_PACKAGES="{{ extendrom_package_list }} sDevice"
       {%    else %}
       export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
-      find out/target/product/ -type f -name sDevice.apk -delete
+      find out/target/product/ -type f -name sDevice.apk -delete || true
       {%    endif %}
       $PWD/vendor/extendrom/er.sh
       {% endif %}
