@@ -51,6 +51,24 @@
   register: patchout
   args:
     executable: /bin/bash
+  when: disabledblock is defined
+
+- name: "apply DOS patches (shell)"
+  shell: |
+    {{ DOS_INIT }}
+
+    # tensor need additional fixups
+    if [ -f "{{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch" ];then
+      cd {{ SRCPATH }}/.repo/manifests && git am {{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch; cd {{ SRCPATH }}
+      PIXELDIRS=$(grep -o "name=.*" .repo/manifests/snippets/pixel.xml |cut -d '"' -f2 | tr '\n' ' ')
+      {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} $PIXELDIRS
+    fi
+    
+    patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1 \
+      && awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+  register: patchout
+  args:
+    executable: /bin/bash
 
 - name: "Logo: overlay workaround"   
   shell: cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
