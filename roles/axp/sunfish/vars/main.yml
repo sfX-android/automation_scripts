@@ -12,6 +12,9 @@ extendrom_debug_path_size_crash_default: 200
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/google/msm-4.14
 
+# add OpenEUICC
+extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
+
 dtree_cl: |-
   \- device tree: [commits](https://github.com/AXP-OS/android_device_google_sunfish/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
 
