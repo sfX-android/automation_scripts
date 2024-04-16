@@ -1,5 +1,5 @@
 ---
 
-- include: ../../common/tasks/clean.yml
-- include: ../../common/tasks/sync.yml
-# - include: patch.yml
+- include_tasks: ../../common/tasks/clean.yml
+- include_tasks: ../../common/tasks/sync.yml
+# - include_tasks: patch.yml

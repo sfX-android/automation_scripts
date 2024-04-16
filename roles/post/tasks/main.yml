@@ -2,7 +2,7 @@
 
 - include_tasks: rotate_log.yml
 
-- include: start_service.yml
+- include_tasks: start_service.yml
   when: 
     - blocking_service_name is defined
     - blocking_service_host is defined

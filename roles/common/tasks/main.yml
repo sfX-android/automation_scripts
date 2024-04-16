@@ -4,6 +4,6 @@
   no_log: true
   when: (use_secrets_yaml is not defined or use_secrets_yaml == "true")
 
-- include: semaphore_run_dir.yml
+- include_tasks: semaphore_run_dir.yml
 
-- include: prep.yml
+- include_tasks: prep.yml

@@ -1,21 +1,21 @@
 ---
 
-- include: ../../common/tasks/setvars.yml
+- include_tasks: ../../common/tasks/setvars.yml
 
-- include: ../../common/tasks/clean.yml
+- include_tasks: ../../common/tasks/clean.yml
 
-- include: set_buildid.yml
+- include_tasks: set_buildid.yml
 
-- include: ../../common/tasks/sync.yml
+- include_tasks: ../../common/tasks/sync.yml
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
-- include: sync.yml
+- include_tasks: sync.yml
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
-- include: patch.yml
+- include_tasks: patch.yml
   when: 
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
 
-- include: copy.yml
+- include_tasks: copy.yml
