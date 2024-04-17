@@ -207,6 +207,7 @@ SH_COMMON_BUILD_SNIPPET: |
         $PWD/vendor/extendrom/er.sh
         
         # build
+        resetEnv
         {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
         mka generate_verity_key
         {% endif %}
