@@ -2,8 +2,8 @@
 
 - name: "ensure .ansible dir is where we expect it"
   file:
-    src: "{{ semaphore_work_dir }}/.ansible"
-    dest: "{{ BUILDHOME }}"
+    src: "{{ BUILDHOME }}/.ansible"
+    dest: "{{ semaphore_work_dir }}"
     state: link
 
 - block:
