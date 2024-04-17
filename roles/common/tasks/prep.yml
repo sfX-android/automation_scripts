@@ -1,5 +1,11 @@
 ---
 
+- name: "ensure .ansible dir is where we expect it"
+  file:
+    src: "{{ semaphore_work_dir }}/.ansible"
+    dest: "{{ BUILDHOME }}"
+    state: link
+
 - block:
 
   - name: "Ensure no compat bin links exist"
