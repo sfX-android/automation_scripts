@@ -4,9 +4,10 @@
   git: 
     repo: "{{ axp_git_repo }}"
     dest: "{{ DOSPATH }}"
-    force: false
+    force: true
     version: "{{ axp_main_branch | d('HEAD') }}"
     clone: yes
+    recursive: true
     track_submodules: true
 
 - name: "AXP.OS: sync LOS base & local manifests"
