@@ -14,6 +14,7 @@
   shell: |
       sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules
       git submodule update --init --recursive
+      git lfs pull
   args:
     executable: /bin/bash
     chdir: "{{ DOSPATH }}"
