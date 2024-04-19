@@ -93,6 +93,7 @@
 - name: "apply AXP.OS patches (common)"
   raw: |
       {{ DOS_INIT }}
+      resetEnv
       {{ SRCPATH }}/vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/common/{{ android_shortversion }}
   args:
     executable: /bin/bash
