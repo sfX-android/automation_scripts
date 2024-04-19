@@ -15,11 +15,12 @@ export DOS_BUILDS="{{ ZIPDIR }}"
 # this causes device.mk issues due to Iwlan* removal
 export DOS_DEBLOBBER_REMOVE_CNE=false
 
-# add hmalloc toogle
-export DOS_GRAPHENE_HMALLOC_TOGGLE=true
+# add hmalloc toogle (abandoned atm)
+#export DOS_GRAPHENE_HMALLOC_TOGGLE=true
 
-# build OpenEUICC
+# build OpenEUICC with AOSP
 #export AXP_BUILD_OPENEUICC=true
 
-# Do not add a toggle for OpenEUICC enablement
-export DOS_DEBLOBBER_REMOVE_EUICC_FULL=true
+# Add the toggle for OpenEUICC but we use AXP's prebuilt apk
+export DOS_DEBLOBBER_REMOVE_EUICC=true
+export DOS_DEBLOBBER_REMOVE_EUICC_FULL=false
