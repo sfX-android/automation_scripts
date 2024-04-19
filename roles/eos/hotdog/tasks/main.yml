@@ -1,19 +1,19 @@
 ---
 
-- include: ../../common/tasks/setvars.yml
-- include: setvars.yml
+- include_tasks: ../../common/tasks/setvars.yml
+- include_tasks: setvars.yml
 
-- include: ../../common/tasks/clean.yml
+- include_tasks: ../../common/tasks/clean.yml
 
-- include: ../../common/tasks/sync.yml
+- include_tasks: ../../common/tasks/sync.yml
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
-- include: fetch_recovery.yml
+- include_tasks: fetch_recovery.yml
 
-- include: patch.yml
+- include_tasks: patch.yml
   when: 
     - EOS_RELEASE_TYPE == "CUSTOM"
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
 
-- include: copy.yml
+- include_tasks: copy.yml

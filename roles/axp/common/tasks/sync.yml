@@ -4,10 +4,21 @@
   git: 
     repo: "{{ axp_git_repo }}"
     dest: "{{ DOSPATH }}"
-    force: false
+    force: true
     version: "{{ axp_main_branch | d('HEAD') }}"
     clone: yes
+    recursive: true
     track_submodules: true
+
+- name: "Sync DOS (lfs)"
+  shell: |
+      sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules
+      git submodule update --init --recursive
+      git lfs pull
+  args:
+    executable: /bin/bash
+    chdir: "{{ DOSPATH }}"
+  no_log: "{{ debug_off | d(true) }}"
 
 - name: "AXP.OS: sync LOS base & local manifests"
   include_tasks: ../../../common/tasks/sync.yml

@@ -1,6 +1,6 @@
 ---
 
-- include: get_secpatchlevel.yml
+- include_tasks: get_secpatchlevel.yml
   when: 
     - ROM_FLAVOR != "MAID"
     - ROM_FLAVOR != "TWRP"
@@ -8,5 +8,5 @@
     - sec_level_date.stdout is undefined
     - buildresult.rc is defined and buildresult.rc == 0
 
-- include: telegram.yml
+- include_tasks: telegram.yml
   when: telegram_notifications | bool

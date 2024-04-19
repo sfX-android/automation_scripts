@@ -1,11 +1,11 @@
 ---
 
 # release if not failed before and not using a custom release script
-- include: release.yml
+- include_tasks: release.yml
   when: custom_release_script is undefined or custom_release_script != true
 
 # use a custom release script if defined
-- include: "{{ custom_release_script_yml }}"
+- include_tasks: "{{ custom_release_script_yml }}"
   when:
     - custom_release_script
     - custom_release_script_yml is defined

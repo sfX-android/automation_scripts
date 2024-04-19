@@ -1,14 +1,14 @@
 ---
 
-- include: set_vars.yml
+- include_tasks: set_vars.yml
   become: no
   
-- include: sync.yml
+- include_tasks: sync.yml
   become: no
   
-- include: build.yml
+- include_tasks: build.yml
   become: no
 
-- include: get_hash.yml
+- include_tasks: get_hash.yml
   become: no
   when: buildresult.rc == 0

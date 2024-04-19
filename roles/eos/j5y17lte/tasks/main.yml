@@ -1,9 +1,9 @@
 ---
 
-- include: ../../common/tasks/setvars.yml
-- include: ../../common/tasks/clean.yml
+- include_tasks: ../../common/tasks/setvars.yml
+- include_tasks: ../../common/tasks/clean.yml
 
-- include: ../../common/tasks/sync.yml
+- include_tasks: ../../common/tasks/sync.yml
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
@@ -16,5 +16,5 @@
   args:
     chdir: "{{ SRCPATH }}"
   
-- include: ../../../common/tasks/secpatch.yml
-- include: copy.yml
+- include_tasks: ../../../common/tasks/secpatch.yml
+- include_tasks: copy.yml

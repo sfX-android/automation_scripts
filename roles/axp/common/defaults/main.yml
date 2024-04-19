@@ -2,7 +2,7 @@
 
 # git stuff
 axp_git_repo: "git@github.com:AXP-OS/build.git"
-axp_main_branch: latest
+axp_main_branch: axp
 git_repo_local_manifests: "https://github.com/AXP-OS/manifest.git"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 # main LOS manifest

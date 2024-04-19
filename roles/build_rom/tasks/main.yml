@@ -1,14 +1,14 @@
 ---
 
 # build process 
-- include: build.yml
-- include: grab_log.yml
+- include_tasks: build.yml
+- include_tasks: grab_log.yml
 # failure checking of build
-- include: end_build.yml
+- include_tasks: end_build.yml
 # generate sha hash
-- include: gen_checksum.yml
+- include_tasks: gen_checksum.yml
   when: not skip_gen_checksum
 # post clean up if requested
-- include: post_cleanup.yml
+- include_tasks: post_cleanup.yml
   when: post_cleanup is defined and post_cleanup == "true"
 
