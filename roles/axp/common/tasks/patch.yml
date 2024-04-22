@@ -15,7 +15,7 @@
   when: skip_wireguard is defined and skip_wireguard | bool
 
 - name: "apply DOS kernel patches (unsupported DOS devices)"
-  raw: |
+  shell: |
     {{ DOS_INIT }}
     CROOT="{{ SRCPATH }}"
     set +e
@@ -36,7 +36,7 @@
     - unsupported_device_kernel_patch | bool
 
 - name: "apply DOS patches"
-  raw: |
+  shell: |
     # tensor need additional fixups
     if [ -f "{{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch" ];then
       cd {{ SRCPATH }}/.repo/manifests && git am {{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch; cd {{ SRCPATH }}
