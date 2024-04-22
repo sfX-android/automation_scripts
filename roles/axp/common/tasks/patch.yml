@@ -51,6 +51,7 @@
   register: patchout
   args:
     executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
 
 - name: "Logo: overlay workaround"   
   shell: cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
@@ -61,7 +62,7 @@
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
-  raw: |
+  shell: |
     {{ DOS_INIT }}
     {% if sub_model is defined %}
     lunch lineage_{{ sub_model }}-user && echo lunch success
@@ -71,11 +72,13 @@
     vendor/axp/axp.sh
   args:
     executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
 
 - name: "apply AXP.OS patches (common)"
-  raw: |
+  shell: |
       {{ DOS_INIT }}
       resetEnv
       {{ SRCPATH }}/vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/common/{{ android_shortversion }}
   args:
     executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
