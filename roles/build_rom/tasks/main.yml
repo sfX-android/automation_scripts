@@ -10,5 +10,5 @@
   when: not skip_gen_checksum
 # post clean up if requested
 - include_tasks: post_cleanup.yml
-  when: post_cleanup is defined and post_cleanup == "true"
+  when: post_cleanup | bool | d(False)
 
