@@ -15,6 +15,9 @@ target_kernel_dir: kernel/google/gs201
 # add OpenEUICC
 extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
+# allow creating factory image
+custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+
 dtree_cl: |-
   \- device tree: [commits](https://github.com/AXP-OS/android_device_google_pantah/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
 
@@ -23,5 +26,3 @@ cdtree_cl: |-
 
 kernel_cl: |-
   \- Kernel: [commits](https://github.com/LineageOS/android_kernel_google_gs201/commits/{{ git_repo_main_branch | replace('20.0','20') }})
-
-custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
