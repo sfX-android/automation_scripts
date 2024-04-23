@@ -2,11 +2,11 @@
 
 - name: Ensure a previous build script is gone
   file:
-    path: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
+    path: "{{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
     state: absent
 
 - name: Upload build script
   template:
     src: build.sh.j2
-    dest: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
+    dest: "{{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
     mode: 0700
