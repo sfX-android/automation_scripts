@@ -12,7 +12,7 @@
 - name: "POST: Clean-Up out/ (SEPARATE_OUT_DIR)"
   no_log: true
   file:
-    path: "{{ SEPARATE_OUT_DIR }}/out/target/product/{{ target_model }}"
+    path: "{{ SEPARATE_OUT_DIR }}/"
     state: absent
   when:
     - SEPARATE_OUT_DIR is defined
