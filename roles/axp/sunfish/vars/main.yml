@@ -15,6 +15,9 @@ target_kernel_dir: kernel/google/msm-4.14
 # add OpenEUICC
 extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
+# allow creating factory image
+custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+
 dtree_cl: |-
   \- device tree: [commits](https://github.com/AXP-OS/android_device_google_sunfish/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
 
