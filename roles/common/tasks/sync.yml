@@ -6,6 +6,7 @@
     dest: "{{ SRCPATH }}/.repo/local_manifests"
     version: "{{ git_repo_local_manifests_branch }}"
     force: true
+  timeout: 90
   when: git_repo_local_manifests is defined
 
 - name: "Init Android sources"
