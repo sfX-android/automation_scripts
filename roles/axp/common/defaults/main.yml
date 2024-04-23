@@ -104,6 +104,9 @@ DOS_INIT: |
 # we do not want to generate a fastboot factory image by default (override in semaphore if needed)
 generate_pixel_factory_image: False
 
+# get & upload a recovery image
+upload_recovery_image: False
+
 # enable the following in a device's vars file with:
 #custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 #generate_pixel_factory_image: True (in semaphore)
