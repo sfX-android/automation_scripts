@@ -69,10 +69,12 @@ SH_GRAPHENE_GPG: |
        }
 
 SH_GRAPHENE_VERIFY: |
+       echo "BUILDHOME: {{ BUILDHOME }}"
+       export HOME="{{ BUILDHOME }}"
        cd {{ SRCPATH }}
        curl https://grapheneos.org/allowed_signers > ~/.ssh/grapheneos_allowed_signers
        cd .repo/manifests
-       git config gpg.ssh.allowedSignersFile ~/.ssh/grapheneos_allowed_signers
+       git config gpg.ssh.allowedSignersFile  {{ BUILDHOME }}/.ssh/grapheneos_allowed_signers
        git verify-tag $(git describe)
        cd {{ SRCPATH }}
 
