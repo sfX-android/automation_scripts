@@ -141,7 +141,7 @@ SH_GRAPHENE_BUILD: |
 
       export TARGET_RELEASE=ap1a
       source script/envsetup.sh >> /dev/null 2>&1 || source build/envsetup.sh
-      lunch {{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }}
+      lunch {{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }} || lunch aosp_{{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }}
       
       {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
       # fetch & extract blobs
