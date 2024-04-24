@@ -20,6 +20,7 @@ ROM_TYPE: "wq" # wq = with QR license, nq = no QR license
 extendrom_package_list: "noGOSpdfviewer noGOSvanadium noGOSauditor noGOScontacts noSeedvault noWizard noStk EmRes"
 #OpenEUICC_hidden_AXP-OS"
 extendrom_signing_patches: 'false' # we patch graphene's source directly atm
+extendrom_patcher_reset: "false"  # as this resets divest patches (e.g. boot animation)
 extendrom_signing_force_dir: /home/androidsource/do-not-touch/graphene/vendor/extendrom/config/signing/aosp/A14
 
 # notification vars
@@ -158,6 +159,7 @@ SH_GRAPHENE_BUILD: |
       export ENABLE_EXTENDROM={{ use_extendrom }}
       export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
       export EXTENDROM_SIGNING_FORCE_PDIR="{{ extendrom_signing_force_dir }}"
+      export EXTENDROM_PATCHER_RESET={{ extendrom_patcher_reset }}
       {%    if ROM_TYPE == "wq" %}
       export EXTENDROM_PACKAGES="{{ extendrom_package_list }} sDevice"
       {%    else %}
