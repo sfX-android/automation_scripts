@@ -139,7 +139,7 @@ SH_GRAPHENE_BUILD: |
       echo "ro.build.display.id=$BUILD_ID" > vendor/sos/vendor.prop
 
       export TARGET_RELEASE=ap1a
-      source script/envsetup.sh || source build/envsetup.sh
+      source script/envsetup.sh >> /dev/null 2>&1 || source build/envsetup.sh
       {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
       # fetch & extract blobs
       yarn install --cwd vendor/adevtool/
