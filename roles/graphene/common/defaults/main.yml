@@ -19,6 +19,7 @@ create_delta_update: "no"
 ROM_TYPE: "wq" # wq = with QR license, nq = no QR license
 extendrom_package_list: "noGOSpdfviewer noGOSvanadium noGOSauditor noGOScontacts noSeedvault noWizard noStk EmRes"
 #OpenEUICC_hidden_AXP-OS"
+extendrom_signing_patches: 'true'
 
 # notification vars
 ota_hint: |-
