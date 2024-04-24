@@ -153,6 +153,7 @@ SH_GRAPHENE_BUILD: |
       # extendrom
       {% if use_extendrom is defined and use_extendrom == "true" %}
       export ENABLE_EXTENDROM={{ use_extendrom }}
+      export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
       {%    if ROM_TYPE == "wq" %}
       export EXTENDROM_PACKAGES="{{ extendrom_package_list }} sDevice"
       {%    else %}
