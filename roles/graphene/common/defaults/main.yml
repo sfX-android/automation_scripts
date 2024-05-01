@@ -157,6 +157,7 @@ SH_GRAPHENE_BUILD: |
       
       # extendrom
       {% if use_extendrom is defined and use_extendrom == "true" %}
+      sed -i "s#user-keys#keys/{{ target_model }}#g" vendor/extendrom/repo/packages.txt
       export ENABLE_EXTENDROM={{ use_extendrom }}
       export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
       export EXTENDROM_SIGNING_FORCE_PDIR="{{ extendrom_signing_force_dir }}"
