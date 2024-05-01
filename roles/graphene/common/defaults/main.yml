@@ -17,7 +17,7 @@ ROM_VERSION: "{{ build_id }}"
 keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}_{{ ROM_TYPE }}'
 create_delta_update: "no"
 ROM_TYPE: "wq" # wq = with QR license, nq = no QR license
-extendrom_package_list: "noGOSpdfviewer noGOSvanadium noGOSauditor noGOScontacts noSeedvault noWizard2 noStk EmRes OpenEUICC_hidden_AXP-OS"
+extendrom_package_list: "noGOSpdfviewer noGOSvanadium noGOSauditor noGOScontacts noSeedvault noWizard2 noStk EmRes OpenEUICC-hidden_AXP-OS"
 extendrom_signing_patches: 'false' # we patch graphene's source directly atm
 extendrom_patcher_reset: "false"  # as this resets divest patches (e.g. boot animation)
 extendrom_signing_force_dir: /home/androidsource/do-not-touch/graphene/vendor/extendrom/config/signing/aosp/A14
