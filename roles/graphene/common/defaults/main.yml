@@ -129,7 +129,7 @@ SH_GRAPHENE_BUILD: |
       export password=""
       export BUILD_NUMBER="v{{ ROM_VERSION }}"
       export ROM_TYPE="{{ ROM_TYPE }}"
-      export BUILD_ID="{{ ROM_VERSION }}-{{ ROM_TYPE }}"
+      export BUILD_ID="{{ ROM_VERSION }}"
 
       # replace aosp build id
       if [ -f build/make/core/version_defaults.mk ]; then
