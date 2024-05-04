@@ -1,102 +1,104 @@
 ---
-
-- block:
+ 
+- name: "mAid build info"
+  debug:
+    msg: |
+      __________________________________________________
+      
+      Build variables:
+      
+      Version: {{ MAID_VERSION | d('nightly') }}
+      Type: {{ RELEASE_TYPE | d('nightly') }}
+      Build server: {{ groups.buildserver[0] }}
+      ISO server: {{ groups.downloadserver[0] }}
+      private notify: {{ debug_build }}
+      
+      release ISO: {{ release_build_def }} (default: {{ release_build }})
+      Selected mAid Kernel: {{ maid_kernel }}
+      mAid build size: {{ maid_size }}
+      
+      __________________________________________________
+   
+- name: "clean-up"
   become: no
-  
-  - name: "mAid build info"
-    debug:
-      msg: |
-        __________________________________________________
-        
-        Build variables:
-        
-        Version: {{ MAID_VERSION | d('nightly') }}
-        Type: {{ RELEASE_TYPE | d('nightly') }}
-        Build server: {{ groups.buildserver[0] }}
-        ISO server: {{ groups.downloadserver[0] }}
-        private notify: {{ debug_build }}
-        
-        release ISO: {{ release_build_def }} (default: {{ release_build }})
-        Selected mAid Kernel: {{ maid_kernel }}
-        mAid build size: {{ maid_size }}
-        
-        __________________________________________________
-     
-  - name: "clean-up"
-    shell: "sudo rm -rf {{ maid_build_path }}/mAid_work"
-    ignore_errors: yes
-    when: not skip_clean_build | bool
-    delegate_to: "{{ groups.buildserver[0] }}"
-    no_log: true
-  
-  - name: "check mAid hook"
-    lineinfile:
-      path: /usr/bin/buildiso
-      regexp: ^import /home/jenkins/build_maid/mAid.func
-      line: import /home/jenkins/build_maid/mAid.func
-      state: present
-    check_mode: true
-    register: maid_hook
-    delegate_to: "{{ groups.buildserver[0] }}"
-  
-  - fail:
-      msg: |
-        ERROR: mAid HOOK IS MISSING! CHECK /usr/bin/buildiso!!
-  
-        It must have this line after the last import line:
-  
-        import /home/jenkins/build_maid/mAid.func
-        (yes NOT build_m>A<id here)
-        
-    when: (maid_hook is changed) or (maid_hook is failed)
-  
-  - name: "Starting mAid build"
-    debug:
-      msg: |
-        __________________________________________________
-  
-        Starting a mAid build - let the CPUs burn ......
-  
-        __________________________________________________
-  
-  - name: "mAid build process"
-    shell: >
-      buildiso \
-        -k {{ maid_kernel }} \
-        -p mAid \
-        {% if skip_clean_build | bool %}-c{% endif %} \
-        -r {{ maid_build_path }}/mAid_work \
-        -t {{ maid_build_path }}/mAid_work/iso \
-        -d xz \
-        1> /tmp/build_MAID_stdout.log \
-        2> /tmp/build_MAID_error.log
-    environment:
-      MAID_VERSION: "{{ MAID_VERSION | d('') }}"
-      MAID_TYPE: "{{ RELEASE_TYPE | d('nightly') }}"
-      MAID_KERNEL: "{{ maid_kernel }}"
-      MAID_SIZE: "{{ maid_size }}"
-      REPO_UPLOAD_ISO_SRV: >-
-          {% if release_build_def %}{{ REPO_UPLOAD_ISO_SRV }}{% endif %}
-      REPO_UPLOAD_ISO_USER: "{{ vault_buildmaidserver_user }}"
-      REPO_UPLOAD_ISO_PATH: "/home/nightlies/roms/mAid/"
-      build_mirror: "True"
-    args:
-      executable: /bin/bash
-      chdir: build_maid
-    register: buildresult
-    ignore_errors: yes
-    delegate_to: "{{ groups.buildserver[0] }}"
-  
-  - name: Fetch build logs
-    fetch:
-      flat: true
-      src: "{{ item }}"
-      dest: /tmp/
-    loop:
-      - "/tmp/build_{{ ROM_FLAVOR }}_error.log"
-      - "/tmp/build_{{ ROM_FLAVOR }}_stdout.log"
-  
-  - fail:
-      msg: "Build FAILED! Check log for details: /tmp/build_{{ ROM_FLAVOR }}_error.log"
-    when:
-      - buildresult.rc is undefined or buildresult.rc != 0
+  shell: "sudo rm -rf {{ maid_build_path }}/mAid_work"
+  ignore_errors: yes
+  when: not skip_clean_build | bool
+  delegate_to: "{{ groups.buildserver[0] }}"
+  no_log: true
+
+- name: "check mAid hook"
+  become: no
+  lineinfile:
+    path: /usr/bin/buildiso
+    regexp: ^import /home/jenkins/build_maid/mAid.func
+    line: import /home/jenkins/build_maid/mAid.func
+    state: present
+  check_mode: true
+  register: maid_hook
+  delegate_to: "{{ groups.buildserver[0] }}"
+
+- fail:
+    msg: |
+      ERROR: mAid HOOK IS MISSING! CHECK /usr/bin/buildiso!!
+
+      It must have this line after the last import line:
+
+      import /home/jenkins/build_maid/mAid.func
+      (yes NOT build_m>A<id here)
+      
+  when: (maid_hook is changed) or (maid_hook is failed)
+
+- name: "Starting mAid build"
+  become: no
+  debug:
+    msg: |
+      __________________________________________________
+
+      Starting a mAid build - let the CPUs burn ......
+
+      __________________________________________________
+
+- name: "mAid build process"
+  become: no
+  shell: >
+    buildiso \
+      -k {{ maid_kernel }} \
+      -p mAid \
+      {% if skip_clean_build | bool %}-c{% endif %} \
+      -r {{ maid_build_path }}/mAid_work \
+      -t {{ maid_build_path }}/mAid_work/iso \
+      -d xz \
+      1> /tmp/build_MAID_stdout.log \
+      2> /tmp/build_MAID_error.log
+  environment:
+    MAID_VERSION: "{{ MAID_VERSION | d('') }}"
+    MAID_TYPE: "{{ RELEASE_TYPE | d('nightly') }}"
+    MAID_KERNEL: "{{ maid_kernel }}"
+    MAID_SIZE: "{{ maid_size }}"
+    REPO_UPLOAD_ISO_SRV: >-
+        {% if release_build_def %}{{ REPO_UPLOAD_ISO_SRV }}{% endif %}
+    REPO_UPLOAD_ISO_USER: "{{ vault_buildmaidserver_user }}"
+    REPO_UPLOAD_ISO_PATH: "/home/nightlies/roms/mAid/"
+    build_mirror: "True"
+  args:
+    executable: /bin/bash
+    chdir: build_maid
+  register: buildresult
+  ignore_errors: yes
+  delegate_to: "{{ groups.buildserver[0] }}"
+
+- name: Fetch build logs
+  become: no
+  fetch:
+    flat: true
+    src: "{{ item }}"
+    dest: /tmp/
+  loop:
+    - "/tmp/build_{{ ROM_FLAVOR }}_error.log"
+    - "/tmp/build_{{ ROM_FLAVOR }}_stdout.log"
+
+- fail:
+    msg: "Build FAILED! Check log for details: /tmp/build_{{ ROM_FLAVOR }}_error.log"
+  when:
+    - buildresult.rc is undefined or buildresult.rc != 0
