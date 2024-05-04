@@ -1,6 +1,7 @@
 ---
 
 - name: "Get current build hash"
+  become: no
   shell: >
     find /var/tmp/mAid_work/iso/ -type f -name *{{ MAID_VERSION | d('nightly') }}*.iso.md5 -exec cat {} \; | cut -d " " -f1
   args:
