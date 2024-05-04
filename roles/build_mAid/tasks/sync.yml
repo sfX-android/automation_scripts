@@ -1,12 +1,14 @@
 ---
 
 - name: "Ensure we do not delete local changes w/o a backup"
+  become: no
   shell: git add -A . && git stash save befreset-$(date +%F_%T)
   args:
     executable: /bin/bash
     chdir: "{{ maid_home_path }}"
 
 - name: "Synching mAid build repo"
+  become: no
   git:
     repo: "{{ repo_mAid_http }}"
     dest: "{{ maid_home_path }}"
