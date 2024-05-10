@@ -11,7 +11,7 @@
 
 - name: rotate ansible log
   connection: local
-  shell: "mv {{ ansible_log_flatten }} {{ ansible_log_flatten }}.{{ build_no }}"
+  shell: "mv {{ ansible_log_flatten }} {{ ansible_log_flatten }}.{{ build_no }} || true"
 
 - block:
 
