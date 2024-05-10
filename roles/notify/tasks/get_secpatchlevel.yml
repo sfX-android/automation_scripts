@@ -16,4 +16,4 @@
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   register: sec_level_date
-  
+  when: ROM_TYPE == "graphene"
