@@ -7,3 +7,13 @@
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   register: sec_level_date
+  when: ROM_TYPE != "graphene"
+  
+- name: "Read Security patch date (gOS)"
+  shell: |-
+    find build/release/build_config/ -type f -name '*.scl' ! -name trunk_versions.scl -exec grep RELEASE_PLATFORM_SECURITY_PATCH {} \; | cut -d '"' -f4
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
+  register: sec_level_date
+  
