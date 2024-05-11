@@ -7,7 +7,7 @@
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   register: sec_level_date
-  when: ROM_TYPE != "graphene"
+  when: ROM_FLAVOR != "graphene"
   
 - name: "Read Security patch date (gOS)"
   shell: |-
@@ -16,4 +16,4 @@
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   register: sec_level_date
-  when: ROM_TYPE == "graphene"
+  when: ROM_FLAVOR == "graphene"
