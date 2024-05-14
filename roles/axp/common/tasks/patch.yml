@@ -19,9 +19,6 @@
     {{ DOS_INIT }}
     CROOT="{{ SRCPATH }}"
     set +e
-    cd {{ DOSPATH }}
-    patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ BUILDHOME }}/cve_fixup.patch >> {{ BUILD_LOG }} 2>&1
-    patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ BUILDHOME }}/getDefconfig.patch >> {{ BUILD_LOG }} 2>&1
     cd $CROOT
     startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git reset --hard" >> {{ BUILD_LOG }} 2>&1
