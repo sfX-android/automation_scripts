@@ -185,8 +185,8 @@ incompat_cross_version_paths_DISABLED:
 #topic:P_asb_2022-02 OR # merged officially!
 #topic:P_asb_2022-03 OR # merged officially!
 #topic:P_asb_2022-04 OR # merged officially!
-# https://review.lineageos.org/q/topic:xxxx
-SECPATCH_DATE_PIE: "2024-03"
+# e.g.: https://review.lineageos.org/q/topic:P_asb_2024-02
+SECPATCH_DATE_PIE: "2024-05"
 sec_patch_topics_pie:
       - topic:P_asb_2022-05
       - topic:P_asb_2022-06
@@ -210,4 +210,6 @@ sec_patch_topics_pie:
       - topic:P_asb_2023-12
       - topic:P_asb_2024-01
       - topic:P_asb_2024-02
+      - topic:P_asb_2024-03
+      - topic:P_asb_2024-04
       - topic:P_asb_{{ SECPATCH_DATE_PIE }}
