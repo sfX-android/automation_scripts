@@ -88,7 +88,6 @@ export DOS_SENSORS_PERM=false #Set true to provide a per-app sensors permission 
 #export DOS_STRONG_ENCRYPTION_ENABLED=false #Set true to enable AES 256-bit FDE encryption on 14.1+15.1 XXX: THIS WILL **DESTROY** EXISTING INSTALLS!
 export DOS_WEBVIEW_LFS=true #Whether to `git lfs pull` in the WebView repository
 #alias DOS_WEBVIEW_CHERRYPICK='git pull "https://github.com/LineageOS/android_external_chromium-webview" refs/changes/00/316600/2'
-export DOS_MICROG_SUPPORT=false #Opt-in unprivileged microG support on 17.1+18.1+19.1+20.0
 export DOS_USE_KSM=false #Set true to use KSM for increased memory efficiency at the cost of easier side-channel attacks and increased CPU usage #XXX: testing only
 
 # Kernel patching
@@ -106,6 +105,7 @@ export DOS_DEBLOBBER_REMOVE_WIDEVINE_DRM=false # do not remove widevine drm
 export AXP_DEFCONFIG_GLOBALS="CONFIG_NET CONFIG_INET CONFIG_NET_UDP_TUNNEL CONFIG_CRYPTO_ALGAPI CONFIG_WIREGUARD" # add to kernel defconfig
 export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC by default
 #export DOS_GRAPHENE_HMALLOC_TOGGLE=false # do not enable the hmalloc disable toogle (bc it is supported on specific Android releases only) - WIP
+export DOS_MICROG_SUPPORT=false #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
 
 #OTAs
 export DOS_OTA_SERVER_PRIMARY="https://sfxota.binbash.rocks:8010"
