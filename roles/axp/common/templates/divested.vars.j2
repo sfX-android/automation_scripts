@@ -38,10 +38,8 @@ export DOS_BRANDING_ZIP_PREFIX="{{ os_name }}"
 export DOS_BRANDING_BOOTANIMATION_FONT="Fira-Sans-Heavy" #Options: $ convert -list font
 export DOS_BRANDING_BOOTANIMATION_STYLE="gradient" #Options: gradient, plasma
 export DOS_BRANDING_BOOTANIMATION_COLOR="#000000-#808080" #plasma
-export DOS_BRANDING_LINK_ABOUT="https://divestos.org/index.php?page=about"
+export DOS_BRANDING_LINK_ABOUT="https://axp.binbash.rocks"
 export DOS_BRANDING_LINK_PRIVACY="https://divestos.org/index.php?page=privacy_policy"
-export DOS_BRANDING_SERVER_OTA="https://sfxota.binbash.rocks:8010"
-export DOS_BRANDING_SERVER_OTA_ONION="$DOS_BRANDING_SERVER_OTA"
 
 # Theme
 export DOS_THEME_50="FFCA28" #Amber 400
@@ -110,6 +108,7 @@ export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC by default
 export DOS_MICROG_SUPPORT=false #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
 
 # OTA
+export DOS_BRANDING_LINK_NEWS="https://github.com/AXP-OS/build/wiki/Changelog"
 export DOS_OTA_SERVER_PRIMARY="https://sfxota.binbash.rocks:8010"
 export DOS_OTA_SERVER_EXTENDED=true #Enable to provide multiple choices as set below
 export DOS_OTA_SERVER_SECONDARY_NAME="BETA updates"
