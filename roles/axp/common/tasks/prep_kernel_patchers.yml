@@ -4,28 +4,13 @@
   shell: |
     export LC_ALL=C
     {{ DOS_INIT }}
-     
-    case {{ phase }} in
-      dos)
-        git_author_name="$DOS_GIT_AUTHOR"
-        git_author_mail="$DOS_GIT_MAIL"
-      ;;
-      axp)
-        git_author_name="$AXP_GIT_AUTHOR"
-        git_author_mail="$AXP_GIT_MAIL"
-      ;;
-      *)
-        echo "ERROR: no (valid) phase specified >{{ phase }}<"
-        exit 4
-        ;;
-    esac
 
     # ensure we make proper commits
     # i.e.: git am instead of apply, fallback to "patch" + commit msg = patch name and a valid author
     P="patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 <"
 
     # massage kernel patchers
-    sed -i -E 's#(^git apply )(\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#git am \2\3 || \(git am --abort; '"$P"' \2\3 \&\& git add -A \&\& git commit --author="${git_author_name} <${git_author_mail}>" -m "\3\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\3"\)#g' \
+    sed -i -E 's#(^git apply )(\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#git am \2\3 || \(git am --abort; '"$P"' \2\3 \&\& git add -A \&\& git commit --author="${$DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "\3\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\3"\)#g' \
       {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/*.sh
 
   args:
