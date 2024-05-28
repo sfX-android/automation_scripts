@@ -1,0 +1,85 @@
+---
+
+- name: "Push any detected change"
+  shell: |
+    export LC_ALL=C
+    {{ DOS_INIT }}
+    
+    TAG=$(date +%F)"_$BDEVICE"
+    
+    # starting new manifest
+    cat > .repo/local_manifests/axp_cicd.xml <<_EOFMS
+    <?xml version="1.0" encoding="UTF-8"?>
+    <manifest>
+      <!-- automatic created build manifest -->
+      
+    _EOFMS
+    
+    # check where we changed origin
+    for repo in $(repo list | tr -d ' ');do
+      reponame_orig=$(echo "$repo" | cut -d ':' -f2)
+      reponame=$(echo "$repo" | cut -d ':' -f2 | sed 's#LineageOS/##g;s#/#_#g')
+      localpath=$(echo "$repo" | cut -d ':' -f1)
+
+      #if [[ $(echo "$localpath" | grep -q 'kernel/') ]];then
+      #  grep '^CONFIG_LOCALVERSION=' "$localpath"
+      #  ="-dos.p217"
+      #  DOSVER=$(grep editKernelLocalversion {{ DOSPATH }}/Scripts/LineageOS-${ los_version }}/CVE_Patchers/${{ matrix.version.patcher || matrix.version.name }}.sh | cut -d '"' -f2)
+      #  TAG="${TAG}${DOSVER}"
+      # fi
+    
+      cd $localpath
+
+      # check and add new repo if needed only
+      CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
+      REMHASH=$(repo info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
+      
+      if [ "$CURHASH" != "$REMHASH" ]; then
+        echo -e "\nWARNING: changes detected in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
+      else
+        echo "no changes in $localpath, skipping" >> {{ BUILD_LOG }}
+        continue
+      fi
+
+      # (re-)create remote
+      git remote remove up || true
+      git remote add up git@github.com/AXP-OS/${reponame}.git
+
+      # create repo if non-existent
+      git ls-remote git@github.com:AXP-OS/${reponame}.git 2>&1 >> /dev/null || (git push -u up axp-{{ android_shortversion }} && echo "wow that worked, exiting here to check...!" && exit 3333)
+
+      # tag and push
+      git tag -a "$TAG" -m "axp.os: tagged on $TAG" || (git tag -d "$TAG"; git push up --delete "$TAG" || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
+      git tag latest || (git tag -d latest; git push up --delete latest; git tag latest)
+      
+      echo "exiting here to check...!" && exit 4444
+      
+      git push --set-upstream up $TAG latest
+
+      # add to manifest
+      croot
+      cat >> .repo/local_manifests/axp_cicd.xml <<_EOFM
+      
+          <remove-project name="$reponame_orig" />
+          <project path="$localpath" name="$reponame" remote="axp.os" revision="refs/tags/$TAG" />
+      _EOFM
+    done
+    # closing new manifest
+    cat > .repo/local_manifests/axp_cicd.xml <<_EOFMS
+    </manifest>      
+    _EOFMS
+
+    # push manifest
+    cd .repo/local_manifests/
+    # (re-)create remote
+    git remote remove up || true
+    git remote add up git@github.com/AXP-OS/manifest.git
+    git add axp_cicd.xml && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "added/changed $TAG"
+    git tag -a "$TAG" -m "axp.os: tagged on $TAG" || (git tag -d "$TAG"; git push up --delete "$TAG" || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
+    #git tag latest || (git tag -d latest; git push up --delete latest; git tag latest)
+    git push --set-upstream up $TAG
+    # latest
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+    
