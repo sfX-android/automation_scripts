@@ -97,7 +97,7 @@
       {{ SRCPATH }}/vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/common/{{ android_shortversion }}
       # commit
       CHANGED=$(find -L vendor/axp/patches/common/{{ android_shortversion }} -type f -name '*.patch' -exec grep -H project {} \; | tr ' ' '#' | cut -d '#' -f2 | sort -u | tr '\n' ' ')
-      {{ repo_bin }} forall -j{{ max_processes }} ${CHANGED} -c "git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "axp.os: applied vendor patches\n\nhttps://github.com/AXP-OS/vendor_axp/tree/main/patches/common/{{ android_shortversion }}" >> {{ BUILD_LOG }} 2>&1
+      {{ repo_bin }} forall -j{{ max_processes }} ${CHANGED} -c "git add -A && git commit --author='${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>' -m 'axp.os: applied vendor patches\n\nhttps://github.com/AXP-OS/vendor_axp/tree/main/patches/common/{{ android_shortversion }}'" >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
