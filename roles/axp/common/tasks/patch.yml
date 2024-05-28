@@ -14,24 +14,34 @@
     state: touch
   when: skip_wireguard is defined and skip_wireguard | bool
 
-- name: "apply DOS kernel patches (unsupported DOS devices)"
-  shell: |
-    {{ DOS_INIT }}
-    CROOT="{{ SRCPATH }}"
-    set +e
-    cd $CROOT
-    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
-    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git reset --hard" >> {{ BUILD_LOG }} 2>&1
-    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers
-    bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
-    cd $CROOT
-    bash {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/android_{{ target_kernel_dir | regex_replace('/','_') }}.sh >> {{ BUILD_LOG }} 2>&1
-  args:
-    executable: /bin/bash
-  when:
-    - divest_unsupported_device
-    - unsupported_device_kernel_patch | bool
-    - DISABLED_ATM is defined
+#- name: "setup DOS kernel patchers (unsupported DOS devices)"
+#  shell: |
+#    {{ DOS_INIT }}
+#    CROOT="{{ SRCPATH }}"
+#    set +e
+#    cd $CROOT
+#    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
+#    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git reset --hard" >> {{ BUILD_LOG }} 2>&1
+#    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers
+#    bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
+#  args:
+#    executable: /bin/bash
+#  when:
+#    - divest_unsupported_device
+#    - unsupported_device_kernel_patch | bool
+
+- name: "Prepare kernel patchers"
+  include_tasks: prep_kernel_patchers.yml
+
+#- name: "apply DOS kernel patches (unsupported DOS devices)"
+#  shell: |
+#    {{ DOS_INIT }}
+#    bash {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/android_{{ target_kernel_dir | regex_replace('/','_') }}.sh >> {{ BUILD_LOG }} 2>&1
+#  args:
+#    executable: /bin/bash
+#  when:
+#    - divest_unsupported_device
+#    - unsupported_device_kernel_patch | bool
 
 - name: "apply DOS patches"
   shell: |
@@ -46,23 +56,24 @@
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+
+    #cd vendor/divested
+    #TODO: commit, prob: not a real repo!
   register: patchout
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
 
 - name: "Logo: overlay workaround"   
-  shell: cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
+  shell: |
+    cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
+    #cd vendor/divested
+    #TODO: commit, prob: not a real repo!
+    #git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "XXXXXXXX"
   args:
     chdir: "{{ SRCPATH }}"
   # overlay sometimes work, sometimes not. lets do it always instead.
   #when: android_shortversion == "a10" or android_shortversion == "a11"
-
-- name: "Commit & push"
-  include_tasks: commit_push.yml
-  vars:
-    phase: dos
-  when: commit_push | d(False)
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
@@ -82,13 +93,15 @@
   shell: |
       {{ DOS_INIT }}
       resetEnv
+      # apply
       {{ SRCPATH }}/vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/common/{{ android_shortversion }}
+      # commit
+      CHANGED=$(find -L vendor/axp/patches/common/{{ android_shortversion }} -type f -name '*.patch' -exec grep -H project {} \; | tr ' ' '#' | cut -d '#' -f2 | sort -u | tr '\n' ' ')
+      {{ repo_bin }} forall -j{{ max_processes }} ${CHANGED} -c "git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "axp.os: applied vendor patches\n\nhttps://github.com/AXP-OS/vendor_axp/tree/main/patches/common/{{ android_shortversion }}" >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
 
 - name: "Commit & push"
-  include_tasks: commit_push.yml
-  vars:
-    phase: axp
+  include_tasks: git_push.yml
   when: commit_push | d(False)
