@@ -1,6 +1,6 @@
 ---
 
-- name: "Ensure kernel patches wil be committed properly"
+- name: "Ensure kernel patches will be committed properly"
   shell: |
     export LC_ALL=C
     {{ DOS_INIT }}
