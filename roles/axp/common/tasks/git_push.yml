@@ -8,12 +8,13 @@
     TAG=$(date +%F)"_$BDEVICE"
     
     # starting new manifest
-    cat > .repo/local_manifests/axp_cicd.xml << _EOFMS
-    <?xml version="1.0" encoding="UTF-8"?>
-    <manifest>
-      <!-- automatic created build manifest -->
-      
-    _EOFMS
+    echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n<!-- automatic created build manifest -->\n' > .repo/local_manifests/axp_cicd.xml
+    #cat > .repo/local_manifests/axp_cicd.xml << _EOFMS
+    #<?xml version="1.0" encoding="UTF-8"?>
+    #<manifest>
+    #  <!-- automatic created build manifest -->
+    #  
+    #_EOFMS
     
     # check where we changed origin
     for repo in $(repo list | tr -d ' ');do
@@ -58,17 +59,21 @@
 
       # add to manifest
       croot
-      cat >> .repo/local_manifests/axp_cicd.xml << _EOFM
-      
-          <remove-project name="$reponame_orig" />
-          <project path="$localpath" name="$reponame" remote="axp.os" revision="refs/tags/$TAG" />
-    _EOFM
+
+      echo -e '\n<remove-project name="'$reponame_orig'" />' >> .repo/local_manifests/axp_cicd.xml
+      echo -e '<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />’ >> .repo/local_manifests/axp_cicd.xml
+      #cat >> .repo/local_manifests/axp_cicd.xml << _EOFM
+      #
+      #    <remove-project name="$reponame_orig" />
+      #    <project path="$localpath" name="$reponame" remote="axp.os" revision="refs/tags/$TAG" />
+      #_EOFM
     done
     # closing new manifest
-    cat > .repo/local_manifests/axp_cicd.xml << _EOFMS
-    
-    </manifest>      
-    _EOFMS
+    echo -e '\n</manifest>' >> .repo/local_manifests/axp_cicd.xml
+    #cat > .repo/local_manifests/axp_cicd.xml << _EOFMS
+    #
+    #</manifest>      
+    #_EOFMS
 
     # push manifest
     cd .repo/local_manifests/
