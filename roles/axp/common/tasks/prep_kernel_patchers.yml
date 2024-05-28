@@ -10,7 +10,7 @@
     P="patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 <"
 
     # massage kernel patchers
-    sed -i -E 's#(^git apply )(\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#git am \2\3 || \(git am --abort; '"$P"' \2\3 \&\& git add -A \&\& git commit --author="${$DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "\3\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\3"\)#g' \
+    sed -i -E 's#(^git apply )(\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#git am \2\3 || \(git am --abort; '"$P"' \2\3 \&\& git add -A \&\& git commit --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "\3\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\3"\)#g' \
       {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/*.sh
 
   args:
