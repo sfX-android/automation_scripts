@@ -58,6 +58,12 @@
   # overlay sometimes work, sometimes not. lets do it always instead.
   #when: android_shortversion == "a10" or android_shortversion == "a11"
 
+- name: "Commit & push"
+  include_tasks: commit_push.yml
+  vars:
+    phase: dos
+  when: commit_push | d(False)
+
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
   shell: |
@@ -80,3 +86,9 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
+
+- name: "Commit & push"
+  include_tasks: commit_push.yml
+  vars:
+    phase: axp
+  when: commit_push | d(False)
