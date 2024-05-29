@@ -45,7 +45,7 @@
 
       # (re-)create remote
       git remote remove up || true
-      git remote add up git@github.com/AXP-OS/${reponame}.git
+      #git remote add up git@github.com/AXP-OS/${reponame}.git
 
       # create repo if non-existent
       git checkout -b axp-{{ android_shortversion }} || true
