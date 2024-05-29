@@ -55,7 +55,7 @@
       fi
       
       # push origin sources first
-      git push -u up ORIG_HEAD:refs/heads/upstream_{{ android_shortversion }}
+      git push --force -u up m/lineage-{{ los_version }}:refs/heads/upstream_{{ android_shortversion }}
       echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
 
       # tag the current patched state and push accordingly
