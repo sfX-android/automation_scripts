@@ -32,9 +32,9 @@
       REMHASH=$(repo info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
       
       if [ "$CURHASH" != "$REMHASH" ]; then
-        echo -e "\nWARNING: changes detected in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
+        echo -e "\n[GIT] WARNING: changes detected in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
       else
-        echo "no changes in $localpath, skipping" >> {{ BUILD_LOG }}
+        echo "[GIT] no changes in $localpath, skipping" >> {{ BUILD_LOG }}
         continue
       fi
       
@@ -53,18 +53,22 @@
       fi
       
       # push origin sources first
-      git push -u up HEAD:refs/heads/axp
+      git push -u up FETCH_HEAD:refs/heads/upstream_{{ android_shortversion }}
+      echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
 
       # tag the current patched state and push accordingly
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" || (git tag -d "$TAG"; git push up --delete "$TAG" || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
       git tag latest || (git tag -d latest; git push up --delete latest; git tag latest)      
       git push --set-upstream up $TAG latest
+      echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
 
       # add to manifest
       croot
       echo -e '\n\t<remove-project name="'$reponame_orig'" />' >> ${REPRMANIFEST}
       echo -e '\t<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> ${REPRMANIFEST}
-
+      echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}
+      
+      break
       echo "exiting here to check...!" && exit 4444
       
     done
@@ -81,6 +85,8 @@
     #git tag latest || (git tag -d latest; git push up --delete latest; git tag latest)
     git push --set-upstream up $TAG
     # latest
+    echo "[GIT] pushed manifest tag: $TAG" >> {{ BUILD_LOG }}
+    echo "[GIT] fully completed!" >> {{ BUILD_LOG }}
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
