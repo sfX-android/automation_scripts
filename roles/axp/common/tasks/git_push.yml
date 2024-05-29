@@ -60,8 +60,8 @@
 
       # tag the current patched state and push accordingly
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" 2>> /dev/null || (git tag -d "$TAG"; git push up --delete "$TAG" 2>> /dev/null || true; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
-      git tag latest 2>> /dev/null || (git tag -d latest; git push up --delete latest 2>> /dev/null || true; git tag latest)      
-      git push --set-upstream up $TAG latest
+      #git tag latest 2>> /dev/null || (git tag -d latest; git push up --delete latest 2>> /dev/null || true; git tag latest)      
+      git push --set-upstream up $TAG
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
 
       # add to manifest
