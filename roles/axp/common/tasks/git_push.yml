@@ -18,6 +18,7 @@
     
     # check where we changed origin
     for repo in $(repo list | tr -d ' ');do
+      croot
       reponame_orig=$(echo "$repo" | cut -d ':' -f2)
       reponame=$(echo "$repo" | cut -d ':' -f2 | sed 's#LineageOS/##g;s#/#_#g')
       localpath=$(echo "$repo" | cut -d ':' -f1)
