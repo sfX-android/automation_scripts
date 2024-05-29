@@ -55,6 +55,7 @@
       fi
       
       # push origin sources first
+      git fetch --all
       git push --force -u up FETCH_HEAD:refs/heads/upstream_{{ android_shortversion }}
       echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
 
