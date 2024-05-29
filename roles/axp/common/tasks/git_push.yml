@@ -69,11 +69,8 @@
       echo -e '\n\t<remove-project name="'$reponame_orig'" />' >> ${REPRMANIFEST}
       echo -e '\t<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> ${REPRMANIFEST}
       echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}
-      
-      break
-      echo "should never reach this.....!" && exit 4444
-      
     done
+    
     # closing new manifest
     echo -e '\n</manifest>' >> ${REPRMANIFEST}
 
@@ -81,11 +78,11 @@
     cd .repo/local_manifests/
     # (re-)create remote
     git remote remove up 2>> /dev/null || true
-    git remote add up git@github.com/AXP-OS/manifest.git
-    git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "added/changed $TAG"
+    git remote add up git@github.com:AXP-OS/manifest.git
+    git add -A || true
+    git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "added/changed $TAG"
     git tag -a "$TAG" -m "axp.os: tagged on $TAG" 2>> /dev/null || (git tag -d "$TAG"; git push up --delete "$TAG" 2>> /dev/null || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
     git push --set-upstream up $TAG
-    # latest
     echo "[GIT] pushed manifest tag: $TAG" >> {{ BUILD_LOG }}
     echo "[GIT] fully completed!" >> {{ BUILD_LOG }}
   args:
