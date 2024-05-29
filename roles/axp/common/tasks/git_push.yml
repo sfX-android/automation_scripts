@@ -48,6 +48,7 @@
       git remote add up git@github.com/AXP-OS/${reponame}.git
 
       # create repo if non-existent
+      git checkout -b axp-{{ android_shortversion }} || true
       git ls-remote git@github.com:AXP-OS/${reponame}.git 2>&1 >> /dev/null || (git push -u up axp-{{ android_shortversion }} && echo "wow that worked, exiting here to check...!" && exit 3333)
 
       # tag and push
