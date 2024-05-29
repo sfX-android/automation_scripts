@@ -8,7 +8,7 @@
     TAG=$(date +%F)"_$BDEVICE"
     
     # starting new manifest
-    echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n<!-- automatic created build manifest -->\n' > .repo/local_manifests/axp_cicd.xml
+    echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n<!-- automatic created build manifest -->\n' > .repo/local_manifests/axp_cicd.xml.tmp
     #cat > .repo/local_manifests/axp_cicd.xml << _EOFMS
     #<?xml version="1.0" encoding="UTF-8"?>
     #<manifest>
@@ -60,8 +60,8 @@
       # add to manifest
       croot
 
-      echo -e '\n<remove-project name="'$reponame_orig'" />' >> .repo/local_manifests/axp_cicd.xml
-      echo -e '<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> .repo/local_manifests/axp_cicd.xml
+      echo -e '\n<remove-project name="'$reponame_orig'" />' >> .repo/local_manifests/axp_cicd.xml.tmp
+      echo -e '<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> .repo/local_manifests/axp_cicd.xml.tmp
       #cat >> .repo/local_manifests/axp_cicd.xml << _EOFM
       #
       #    <remove-project name="$reponame_orig" />
@@ -69,7 +69,7 @@
       #_EOFM
     done
     # closing new manifest
-    echo -e '\n</manifest>' >> .repo/local_manifests/axp_cicd.xml
+    echo -e '\n</manifest>' >> .repo/local_manifests/axp_cicd.xml.tmp
     #cat > .repo/local_manifests/axp_cicd.xml << _EOFMS
     #
     #</manifest>      
