@@ -55,8 +55,8 @@
       fi
       
       # push origin sources first
-      git fetch --all --no-tags
-      git push --force -u up FETCH_HEAD:refs/heads/upstream_{{ android_shortversion }}
+      git fetch --all --no-tags >> /dev/null
+      git push --force -u up FETCH_HEAD:refs/heads/upstream_{{ android_shortversion }} >> /dev/null
       echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
 
       # tag the current patched state and push accordingly
