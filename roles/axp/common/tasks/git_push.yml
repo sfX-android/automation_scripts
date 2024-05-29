@@ -49,7 +49,7 @@
 
       # create repo if non-existent
       git checkout -b axp-{{ android_shortversion }} || true
-      git ls-remote git@github.com:AXP-OS/${reponame}.git 2>&1 >> /dev/null || (git push -u up axp-{{ android_shortversion }} && echo "wow that worked, exiting here to check...!" && exit 3333)
+      git ls-remote git@github.com:AXP-OS/${reponame}.git 2>&1 >> /dev/null || (gh repo create AXP-OS/${reponame} --public --source=. --remote=up && git push -u up axp-{{ android_shortversion }} && echo "wow that worked, exiting here to check...!" && exit 3333)
 
       # tag and push
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" || (git tag -d "$TAG"; git push up --delete "$TAG" || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
