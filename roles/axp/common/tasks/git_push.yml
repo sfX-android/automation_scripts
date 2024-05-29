@@ -6,15 +6,10 @@
     {{ DOS_INIT }}
     
     TAG=$(date +%F)"_$BDEVICE"
+    REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
     
     # starting new manifest
-    echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n<!-- automatic created build manifest -->\n' > .repo/local_manifests/axp_cicd.xml.tmp
-    #cat > .repo/local_manifests/axp_cicd.xml << _EOFMS
-    #<?xml version="1.0" encoding="UTF-8"?>
-    #<manifest>
-    #  <!-- automatic created build manifest -->
-    #  
-    #_EOFMS
+    echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n\t<!-- auto-created build manifest -->\n' > ${REPRMANIFEST}
     
     # check where we changed origin
     for repo in $(repo list | tr -d ' ');do
@@ -42,51 +37,39 @@
         echo "no changes in $localpath, skipping" >> {{ BUILD_LOG }}
         continue
       fi
-
-      # (re-)create remote
-      git remote remove up || true
-      #git remote add up git@github.com/AXP-OS/${reponame}.git
-
+      
       # create repo if non-existent
       # using a workaround as github cli does not allow to set permission on create
       # see: https://github.com/cli/cli/issues/2241#issuecomment-1402316546
-      git checkout -b axp-{{ android_shortversion }} || true
-      git ls-remote git@github.com:AXP-OS/${reponame}.git 2>&1 >> /dev/null || \
-        (gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" \
-         && gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain' \
-         && git push -u up axp-{{ android_shortversion }} \
-         && echo "wow that worked, exiting here to check...!" \
-         && exit 3333)
+      # requires to auth via gh first: $> gh auth login
+      git remote remove up 2>> /dev/null || true
       
+      if $(git ls-remote git@github.com:AXP-OS/${reponame}.git >> /dev/null 2>&1);then
+        git remote add up git@github.com/AXP-OS/${reponame}.git
+      else
+        git ls-remote git@github.com:AXP-OS/${reponame}.git 2>&1 >> /dev/null \
+          || (gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" \
+              && gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain')
+      fi
       
-        
-      #&& git push -u up axp-{{ android_shortversion }} && echo "wow that worked, exiting here to check...!" && exit 3333)
+      # push origin sources first
+      git push -u up HEAD:refs/heads/axp
 
-      # tag and push
+      # tag the current patched state and push accordingly
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" || (git tag -d "$TAG"; git push up --delete "$TAG" || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
-      git tag latest || (git tag -d latest; git push up --delete latest; git tag latest)
-      
-      echo "exiting here to check...!" && exit 4444
-      
+      git tag latest || (git tag -d latest; git push up --delete latest; git tag latest)      
       git push --set-upstream up $TAG latest
 
       # add to manifest
       croot
+      echo -e '\n\t<remove-project name="'$reponame_orig'" />' >> ${REPRMANIFEST}
+      echo -e '\t<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> ${REPRMANIFEST}
 
-      echo -e '\n<remove-project name="'$reponame_orig'" />' >> .repo/local_manifests/axp_cicd.xml.tmp
-      echo -e '<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> .repo/local_manifests/axp_cicd.xml.tmp
-      #cat >> .repo/local_manifests/axp_cicd.xml << _EOFM
-      #
-      #    <remove-project name="$reponame_orig" />
-      #    <project path="$localpath" name="$reponame" remote="axp.os" revision="refs/tags/$TAG" />
-      #_EOFM
+      echo "exiting here to check...!" && exit 4444
+      
     done
     # closing new manifest
-    echo -e '\n</manifest>' >> .repo/local_manifests/axp_cicd.xml.tmp
-    #cat > .repo/local_manifests/axp_cicd.xml << _EOFMS
-    #
-    #</manifest>      
-    #_EOFMS
+    echo -e '\n</manifest>' >> ${REPRMANIFEST}
 
     # push manifest
     cd .repo/local_manifests/
