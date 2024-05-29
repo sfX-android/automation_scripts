@@ -61,7 +61,7 @@
       croot
 
       echo -e '\n<remove-project name="'$reponame_orig'" />' >> .repo/local_manifests/axp_cicd.xml
-      echo -e '<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />’ >> .repo/local_manifests/axp_cicd.xml
+      echo -e '<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> .repo/local_manifests/axp_cicd.xml
       #cat >> .repo/local_manifests/axp_cicd.xml << _EOFM
       #
       #    <remove-project name="$reponame_orig" />
