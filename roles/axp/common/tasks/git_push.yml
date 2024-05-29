@@ -9,7 +9,7 @@
     REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
     
     # starting new manifest
-    echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n\t<!-- auto-created build manifest -->\n' > ${REPRMANIFEST}
+    echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n\t<!-- auto-created by https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/tasks/git_push.yml -->\n' > ${REPRMANIFEST}
     
     # check where we changed origin
     for repo in $(repo list | tr -d ' ');do
