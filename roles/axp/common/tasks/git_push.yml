@@ -25,7 +25,7 @@
       #if [[ $(echo "$localpath" | grep -q 'kernel/') ]];then
       #  grep '^CONFIG_LOCALVERSION=' "$localpath"
       #  ="-dos.p217"
-      #  DOSVER=$(grep editKernelLocalversion {{ DOSPATH }}/Scripts/LineageOS-${ los_version }}/CVE_Patchers/${{ matrix.version.patcher || matrix.version.name }}.sh | cut -d '"' -f2)
+      #  DOSVER=$(grep editKernelLocalversion {{ DOSPATH }}/Scripts/LineageOS-${ los_version }}/CVE_Patchers/$matrix.version.patcher  matrix.version.name .sh | cut -d '"' -f2)
       #  TAG="${TAG}${DOSVER}"
       # fi
     
