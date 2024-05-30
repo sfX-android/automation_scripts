@@ -56,10 +56,10 @@
       
       # push origin sources first
       # falls back to push in batches to workaround issues when index pack is too big
-      git push --force -u up ORIG_HEAD:refs/heads/upstream_a{{ android_shortversion }} >> /dev/null \
-          || max=$(git log --oneline|wc -l); for i in $(seq  $max -60000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_a{{ android_shortversion }}; done \
-          || max=$(git log --oneline|wc -l); for i in $(seq  $max -10000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_a{{ android_shortversion }}; done \
-          || max=$(git log --oneline|wc -l); for i in $(seq  $max -1000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_a{{ android_shortversion }}; done
+      git push --force -u up ORIG_HEAD:refs/heads/upstream_{{ android_shortversion }} >> /dev/null \
+          || max=$(git log --oneline|wc -l); for i in $(seq  $max -60000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done \
+          || max=$(git log --oneline|wc -l); for i in $(seq  $max -10000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done \
+          || max=$(git log --oneline|wc -l); for i in $(seq  $max -1000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done
       echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
 
       # tag the current patched state and push accordingly
