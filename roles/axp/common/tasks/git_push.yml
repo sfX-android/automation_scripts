@@ -62,12 +62,12 @@
           resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>&1 || true)
           echo "$resp" | tail -n 20 | grep -q "pack exceeds maximum allowed size" || err=$rerr
           if [ $? -eq 0 ]; then
-              echo "[GIT] pack size too big, pushing in chunks now.." >> {{ BUILD_LOG }}
+              echo "[GIT] pack size too big for $reponame, pushing in chunks now.." >> {{ BUILD_LOG }}
               max=$(git log --oneline|wc -l); for i in $(seq  $max -60000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done \
-              || max=$(git log --oneline|wc -l); for i in $(seq  $max -10000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done \
-              || max=$(git log --oneline|wc -l); for i in $(seq  $max -1000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done
+              || (echo "[GIT] reducing chunk size to: 10000" >> {{ BUILD_LOG }} ; max=$(git log --oneline|wc -l); for i in $(seq  $max -10000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done) \
+              || (echo "[GIT] reducing chunk size even more to: 1000"  >> {{ BUILD_LOG }}; max=$(git log --oneline|wc -l); for i in $(seq  $max -1000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done)
               if [ $? -ne 0 ];then
-                  echo "$resp" | tail -n 20
+                  echo "$resp" | tail -n 20 >> {{ BUILD_LOG }}
                   exit 3
               fi
           else
