@@ -94,6 +94,7 @@
     done
     
     # closing new manifest
+    croot
     echo -e '\n</manifest>' >> ${REPRMANIFEST}
 
     # push manifest
