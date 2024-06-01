@@ -70,6 +70,8 @@
                   echo "$resp" | tail -n 20 >> {{ BUILD_LOG }}
                   exit 3
               fi
+              # now the previous push should just work
+              git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }}
           else
              echo "[GIT] error $rerr occured while pushing" >> {{ BUILD_LOG }}
              exit $rerr
