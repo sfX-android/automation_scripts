@@ -240,4 +240,4 @@ SH_COMMON_BUILD_SNIPPET: |
         out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img
         {% endif %}
 
-        echo -e "\nSUCCESS: You should find your build here: {{ JKZIPDIR }}"
+        echo -e "\n\nSUCCESS: You should find your build here:\n{{ JKZIPDIR }}\n"
