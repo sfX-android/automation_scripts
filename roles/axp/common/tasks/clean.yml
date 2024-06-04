@@ -26,13 +26,13 @@
        executable: /bin/bash
        chdir: "{{ DOSPATH }}"
 
-   - name: "clone DOS"
-     git: 
-       repo: "{{ axp_git_repo }}"
-       dest: "{{ DOSPATH }}"
-       force: true
-       version: "{{ axp_main_branch | d('HEAD') }}"
-       clone: true
+   #- name: "clone DOS"
+   #  git: 
+   #    repo: "{{ axp_git_repo }}"
+   #    dest: "{{ DOSPATH }}"
+   #    force: true
+   #    version: "{{ axp_main_branch | d('HEAD') }}"
+   #    clone: true
        
    - name: "DOS State"
      shell: |
