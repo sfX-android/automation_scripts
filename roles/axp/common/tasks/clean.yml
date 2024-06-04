@@ -21,7 +21,7 @@
 
    - name: "fix DOS module locations"
      shell: |
-       sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules
+       sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
      args:
        executable: /bin/bash
        chdir: "{{ DOSPATH }}"
