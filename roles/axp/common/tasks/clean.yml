@@ -25,7 +25,6 @@
      args:
        executable: /bin/bash
        chdir: "{{ DOSPATH }}"
-     no_log: "{{ debug_off | d(true) }}"
 
    - name: "clone DOS"
      git: 
