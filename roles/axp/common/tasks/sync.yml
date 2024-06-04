@@ -8,7 +8,7 @@
     version: "{{ axp_main_branch | d('HEAD') }}"
     clone: yes
     recursive: true
-    track_submodules: true
+    #track_submodules: true
 
 - name: "Sync DOS (lfs)"
   shell: |
