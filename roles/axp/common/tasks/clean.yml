@@ -18,7 +18,15 @@
      args:
        chdir: "{{ DOSPATH }}"
        executable: /bin/bash
-   
+
+  - name: "fix DOS module locations"
+    shell: |
+      sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules
+    args:
+      executable: /bin/bash
+      chdir: "{{ DOSPATH }}"
+    no_log: "{{ debug_off | d(true) }}"
+
    - name: "clone DOS"
      git: 
        repo: "{{ axp_git_repo }}"
