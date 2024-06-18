@@ -14,21 +14,21 @@
     state: touch
   when: skip_wireguard is defined and skip_wireguard | bool
 
-#- name: "setup DOS kernel patchers (unsupported DOS devices)"
-#  shell: |
-#    {{ DOS_INIT }}
-#    CROOT="{{ SRCPATH }}"
-#    set +e
-#    cd $CROOT
-#    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
-#    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git reset --hard" >> {{ BUILD_LOG }} 2>&1
+- name: "setup DOS kernel patchers (unsupported DOS devices)"
+  shell: |
+    {{ DOS_INIT }}
+    CROOT="{{ SRCPATH }}"
+    set +e
+    cd $CROOT
+    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
+    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git reset --hard" >> {{ BUILD_LOG }} 2>&1
 #    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers
 #    bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
-#  args:
-#    executable: /bin/bash
-#  when:
-#    - divest_unsupported_device
-#    - unsupported_device_kernel_patch | bool
+  args:
+    executable: /bin/bash
+  when:
+    - divest_unsupported_device
+    - unsupported_device_kernel_patch | bool
 
 - name: "Prepare kernel patchers"
   include_tasks: prep_kernel_patchers.yml
