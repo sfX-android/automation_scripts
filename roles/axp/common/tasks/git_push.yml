@@ -5,7 +5,7 @@
     export LC_ALL=C
     {{ DOS_INIT }}
     
-    TAG=$(date +%F)"_$BDEVICE"
+    TAG=$(date +%F)"_$BDEVICE_{{ android_shortversion }}"
     REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
     
     # starting new manifest
