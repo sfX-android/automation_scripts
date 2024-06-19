@@ -22,8 +22,9 @@
     cd $CROOT
     startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git reset --hard" >> {{ BUILD_LOG }} 2>&1
-#    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers
-#    bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
+    # comment out buggy ones
+    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers
+    bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
   when:
