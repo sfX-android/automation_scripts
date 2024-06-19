@@ -4,11 +4,14 @@
   shell: |
     export LC_ALL=C
     {{ DOS_INIT }}
+
+    # tag name
+    TAG=$(date +%F)"_${BDEVICE}_{{ android_shortversion }}"
     
-    TAG=$(date +%F)"_$BDEVICE_{{ android_shortversion }}"
+    # reproduce manifest
     REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
     
-    # starting new manifest
+    # starting new reproduce manifest
     echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n\t<!-- auto-created by https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/tasks/git_push.yml -->\n' > ${REPRMANIFEST}
     
     # check where we changed origin
