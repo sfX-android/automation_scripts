@@ -115,8 +115,8 @@
     #echo -e '\n</manifest>' >> ${REPRMANIFEST}
 
     # push manifest
+    mv ${REPRMANIFEST} .repo/local_manifests/axp.xml
     cd .repo/local_manifests/
-    mv ${REPRMANIFEST} axp.xml
     cp -a {{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh . || true
     git remote remove up 2>> /dev/null || true
     git remote add up git@github.com:AXP-OS/manifest.git
