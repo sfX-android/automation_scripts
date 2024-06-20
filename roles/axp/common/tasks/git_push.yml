@@ -10,12 +10,16 @@
     
     # reproduce manifest
     REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
+
+    # write full manifest
+    {{ repo_bin }} manifest -r -o ${REPRMANIFEST}
+    
     
     # starting new reproduce manifest
-    echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n\t<!-- auto-created by https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/tasks/git_push.yml -->\n' > ${REPRMANIFEST}
+    #echo -e '<?xml version="1.0" encoding="UTF-8"?>\n<manifest>\n\t<!-- auto-created by https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/tasks/git_push.yml -->\n' > ${REPRMANIFEST}
     
     # check where we changed origin
-    for repo in $(repo list | tr -d ' ');do
+    for repo in $({{ repo_bin }} list | tr -d ' ');do
       croot
       reponame_orig=$(echo "$repo" | cut -d ':' -f2)
       reponame=$(echo "$repo" | cut -d ':' -f2 | sed 's#LineageOS/##g;s#/#_#g')
@@ -32,7 +36,7 @@
 
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-      REMHASH=$(repo info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
+      REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
       
       if [ "$CURHASH" != "$REMHASH" ]; then
         echo -e "\n[GIT] WARNING: changes detected in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
@@ -98,20 +102,21 @@
       git push --set-upstream up $TAG
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
 
-      # add to manifest
+      # change manifest line to point to AXP.OS org
       croot
-      echo -e '\n\t<remove-project name="'$reponame_orig'" />' >> ${REPRMANIFEST}
-      echo -e '\t<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> ${REPRMANIFEST}
+      #echo -e '\n\t<remove-project name="'$reponame_orig'" />' >> ${REPRMANIFEST}
+      #echo -e '\t<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> ${REPRMANIFEST}
+      sed -i -E 's|(name=".*") (path="'$localpath'")|name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
       echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}
     done
     
     # closing new manifest
     croot
-    echo -e '\n</manifest>' >> ${REPRMANIFEST}
+    #echo -e '\n</manifest>' >> ${REPRMANIFEST}
 
     # push manifest
     cd .repo/local_manifests/
-    # (re-)create remote
+    mv ${REPRMANIFEST} axp.xml
     git remote remove up 2>> /dev/null || true
     git remote add up git@github.com:AXP-OS/manifest.git
     git add -A || true
