@@ -5,7 +5,7 @@
 
 - block:
 
-    #- include_tasks: patch.yml
+    - include_tasks: patch.yml
 
     - name: "Late git push to AXP.OS org"
       include_tasks: ../../common/tasks/git_push.yml
