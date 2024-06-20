@@ -19,10 +19,10 @@ vbmeta_verify: false
 divest_unsupported_device: true
 
 dtree_cl: |-
-  \- device tree: [commits](https://github.com/AXP-OS/device_samsung_j5y17lte/commits/{{ git_repo_main_branch }})
+  \- device tree: [commits](https://github.com/AXP-OS/device_samsung_j5y17lte/commits/{{ build_tag }})
 
 cdtree_cl: |-
-  \- common tree: [commits](https://github.com/AXP-OS/device_samsung_exynos7870-common/commits/{{ git_repo_local_manifests_branch }})
+  \- common tree: [commits](https://github.com/AXP-OS/device_samsung_exynos7870-common/commits/{{ build_tag }}})
 
 kernel_cl: |-
-  \- Kernel: [commits](https://github.com/AXP-OS/kernel_samsung_exynos7870/commits/{{ git_repo_main_branch }})
+  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_samsung_exynos7870/commits/{{ build_tag }})
