@@ -4,9 +4,9 @@
 - include_tasks: vars.yml
 - include_tasks: clean.yml
 
-- include_tasks: git_push.yml
-- fail:
-    msg: WANTED
+#- include_tasks: git_push.yml
+#- fail:
+#    msg: WANTED
 
 - block:
 
