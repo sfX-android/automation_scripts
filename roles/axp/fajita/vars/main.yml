@@ -16,10 +16,10 @@ target_kernel_dir: kernel/oneplus/sdm845
 #axp_release_recovery: True
 
 dtree_cl: |-
-  \- device tree: [commits](https://github.com/AXP-OS/android_device_oneplus_fajita/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
+  \- device tree: [commits](https://github.com/AXP-OS/android_device_oneplus_fajita/commits/{{ build_tag }})
 
 cdtree_cl: |-
-  \- common tree: [commits](https://github.com/LineageOS/android_device_oneplus_sdm845-common/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+  \- common tree: [commits](https://github.com/AXP-OS/android_device_oneplus_sdm845-common/commits/{{ build_tag }})
 
 kernel_cl: |-
-  \- Kernel: [commits](https://github.com/LineageOS/android_kernel_oneplus_sdm845/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_oneplus_sdm845/commits/{{ build_tag }})
