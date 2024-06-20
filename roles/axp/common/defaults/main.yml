@@ -76,9 +76,6 @@ rom_cl: |-
   \- AXP\.OS: [Changelog](https://github.com/AXP-OS/build/wiki/Changelog)
   \- Reproducible tag: [{{ build_tag | regex_escape() }}](https://github.com/AXP-OS/manifest/tree/{{ build_tag }})
 
-#device_cl: |-
-#  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() }}***
-
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})
 
