@@ -69,13 +69,14 @@ KEYS_HASHTYPE: sha512
 keysdir: "{{ DOSPATH }}/Signing_Keys/4096pro/{{ target_model }}/"
 
 # notification vars
+build_tag: "{{ ansible_date_time.year }}-{{ ansible_date_time.month }}-{{ ansible_date_time.day }}_{{ target_model }}_{{ android_shortversion }}"
 ota_hint: |-
   ***OTA Update:*** supported
 
 rom_cl: |-
   ***Changes:***
-  \- divestOS: [Changelog](https://divestos.org/pages/news)
   \- AXP\.OS: [Changelog](https://github.com/AXP-OS/build/wiki/Changelog)
+  \- Reproducible tag: [{{ build_tag | regex_escape() }}](https://github.com/AXP-OS/manifest/tree/{{ build_tag }})
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})
