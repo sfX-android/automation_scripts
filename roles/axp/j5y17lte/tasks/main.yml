@@ -6,7 +6,7 @@
 - block:
     - include_tasks: patch.yml
     
-    - name: "Late push to AXP.OS org"
+    - name: "Late git push to AXP.OS org"
       include_tasks: ../../common/tasks/git_push.yml
       when:
         - commit_push | d(False)
