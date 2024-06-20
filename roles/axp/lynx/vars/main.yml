@@ -19,10 +19,10 @@ extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 
 dtree_cl: |-
-  \- device tree: [commits](https://github.com/AXP-OS/android_device_google_lynx/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
+  \- device tree: [commits](https://github.com/AXP-OS/android_device_google_lynx/commits/{{ build_tag }})
 
 cdtree_cl: |-
-  \- common tree: [commits](https://github.com/LineageOS/android_device_google_gs201/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+  \- common tree: [commits](https://github.com/AXP-OS/android_device_google_gs201/commits/{{ build_tag }})
 
 kernel_cl: |-
-  \- Kernel: [commits](https://github.com/LineageOS/android_kernel_google_gs201/commits/{{ git_repo_main_branch | replace('20.0','20') }})
+  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_google_gs201/commits/{{ build_tag }})
