@@ -15,7 +15,7 @@
   
   - include_tasks: adjust_DOS_options.yml
 
-  - name: "Push to AXP.OS org"
+  - name: "Early git push to AXP.OS org"
     include_tasks: git_push.yml
     when:
       - commit_push | d(False)
