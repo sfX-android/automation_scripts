@@ -16,10 +16,10 @@ target_kernel_dir: kernel/oneplus/sm8150
 axp_release_recovery: True
 
 dtree_cl: |-
-  \- device tree: [commits](https://github.com/AXP-OS/android_device_oneplus_hotdog/commits/axp-a13)
+  \- device tree: [commits](https://github.com/AXP-OS/android_device_oneplus_hotdog/commits/{{ build_tag }})
 
 cdtree_cl: |-
-  \- common tree: [commits](https://github.com/AXP-OS/android_device_oneplus_sm8150-common/commits/axp-a13)
+  \- common tree: [commits](https://github.com/AXP-OS/android_device_oneplus_sm8150-common/commits/{{ build_tag }})
 
 kernel_cl: |-
-  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_oneplus_sm8150/commits/axp-a13)
+  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_oneplus_sm8150/commits/{{ build_tag }})
