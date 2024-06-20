@@ -17,8 +17,12 @@ tg_success: |
         {% endif %}
         
         {{ rom_cl }}
+        {% if kernel_cl is defined %}
         {{ kernel_cl }}
+        {% endif %}
+        {% if dtree_cl is defined %}
         {{ dtree_cl }}
+        {% endif %}
         {% if cdtree_cl is defined %}
         {{ cdtree_cl }}
         {% endif %}
