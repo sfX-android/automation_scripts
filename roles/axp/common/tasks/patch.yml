@@ -102,9 +102,3 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-
-- name: "Push to AXP.OS org"
-  include_tasks: git_push.yml
-  when:
-    - commit_push | d(False)
-    - early_push | d(False)
