@@ -3,13 +3,6 @@
 - include_tasks: ../../common/tasks/setvars.yml
 - include_tasks: copy.yml
 
-- block:
-    - include_tasks: patch.yml
-    
-    - name: "Late git push to AXP.OS org"
-      include_tasks: ../../common/tasks/git_push.yml
-      when:
-        - commit_push | d(False)
-        - not early_push | d(False)
+- include_tasks: patch.yml
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
