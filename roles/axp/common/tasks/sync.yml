@@ -22,7 +22,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ DOSPATH }}"
-  no_log: "{{ debug_off | d(true) }}"
+#  no_log: "{{ debug_off | d(true) }}"
 
 - name: "AXP.OS: sync LOS base & local manifests"
   include_tasks: ../../../common/tasks/sync.yml
