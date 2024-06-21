@@ -35,7 +35,7 @@
 
     - name: "AXP: set unstable (rename zip)"
       shell: |
-          mv {{ JKZIPDIR }}/{{ ROMFILE.stdout }} {{ JKZIPDIR }}/{{ ROMFILE.stdout | regex_replace('-dos-','-dos-unstable-') }}
+          mv {{ JKZIPDIR }}/{{ ROMFILE_NONAXP.stdout }} {{ JKZIPDIR }}/{{ ROMFILE_NONAXP.stdout | regex_replace('-dos-','-dos-unstable-') }}
       when: axp_unstable_build | bool | d(False)
 
     - name: "AXP: set unstable (reset variable)"
@@ -44,8 +44,8 @@
       when: axp_unstable_build | bool | d(False)
 
     - name: "Set ROMFILE var"
-      set_fact:
-          ROMFILE: "{{ ROMFILE_NONAXP | d(ROMFILE_AXP) }}"
+      shell: "echo '{{ ROMFILE_NONAXP | d(ROMFILE_AXP) }}'"
+      register: ROMFILE
     
     - name: "Copy build.prop for OTA"
       shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
