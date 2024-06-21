@@ -39,7 +39,7 @@
       when: axp_unstable_build | bool | d(False)
 
     - name: "AXP: set unstable (reset variable)"
-      shell: "echo {{ ROMFILE.stdout | regex_replace('-dos-','-dos-unstable-') }}"
+      shell: "echo {{ ROMFILE_NONAXP.stdout | regex_replace('-dos-','-dos-unstable-') }}"
       register: ROMFILE_AXP
       when: axp_unstable_build | bool | d(False)
 
