@@ -12,6 +12,7 @@
 
 - name: "Sync DOS (lfs)"
   shell: |
+      git fetch --all
       git checkout {{ axp_main_branch | d('HEAD') }}
       git pull
       sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
