@@ -12,11 +12,12 @@
 
 - name: "Sync DOS (lfs)"
   shell: |
+      git checkout {{ axp_main_branch | d('HEAD') }}
+      git pull
       sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
       git submodule update --init --recursive
       git pull
       git lfs pull
-      git checkout {{ axp_main_branch | d('HEAD') }}
   args:
     executable: /bin/bash
     chdir: "{{ DOSPATH }}"
