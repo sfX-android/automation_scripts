@@ -32,6 +32,16 @@
       args:
         chdir: "{{ JKZIPDIR }}"
       register: ROMFILE
+
+    - name: "AXP: set unstable (rename zip)"
+      shell: |
+          mv {{ JKZIPDIR }}/{{ ROMFILE.stdout }} {{ JKZIPDIR }}/{{ ROMFILE.stdout | regex_replace('-dos-','-dos-unstable-') }}
+      when: axp_unstable_build | d(False)
+
+    - name: "AXP: set unstable (reset variable)"
+      shell: "echo {{ ROMFILE.stdout | regex_replace('-dos-','-dos-unstable-') }}"
+      register: ROMFILE
+      when: axp_unstable_build | d(False)
     
     - name: "Copy build.prop for OTA"
       shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
