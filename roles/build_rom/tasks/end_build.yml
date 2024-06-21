@@ -31,7 +31,7 @@
       shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"
       args:
         chdir: "{{ JKZIPDIR }}"
-      register: ROMFILE
+      register: ROMFILE_NONAXP
 
     - name: "AXP: set unstable (rename zip)"
       shell: |
@@ -40,8 +40,12 @@
 
     - name: "AXP: set unstable (reset variable)"
       shell: "echo {{ ROMFILE.stdout | regex_replace('-dos-','-dos-unstable-') }}"
-      register: ROMFILE
+      register: ROMFILE_AXP
       when: axp_unstable_build | d(False)
+
+    - name: "Set ROMFILE var"
+      set_fact:
+          ROMFILE: "{{ ROMFILE_NONAXP | d(ROMFILE_AXP) }}"
     
     - name: "Copy build.prop for OTA"
       shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
