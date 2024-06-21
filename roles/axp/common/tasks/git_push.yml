@@ -125,6 +125,8 @@
     git tag -a "$TAG" -m "axp.os: tagged on $TAG" 2>> /dev/null || (git tag -d "$TAG"; git push up --delete "$TAG" 2>> /dev/null || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
     git push --set-upstream up $TAG
     echo "[GIT] pushed manifest tag: $TAG" >> {{ BUILD_LOG }}
+    croot
+    mv .repo/local_manifests/axp.xml ${REPRMANIFEST}
     echo "[GIT] fully completed!" >> {{ BUILD_LOG }}
   args:
     executable: /bin/bash
