@@ -12,3 +12,9 @@
 - include_tasks: post_cleanup.yml
   when: post_cleanup | bool | d(False)
 
+- name: "Late git push to AXP.OS org"
+  include_tasks: ../../axp/common/tasks/git_push.yml
+  when:
+    - ROM_FLAVOR == "axp"
+    - commit_push | d(False)
+    - not early_push | d(False)
