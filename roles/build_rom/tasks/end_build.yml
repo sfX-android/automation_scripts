@@ -44,8 +44,8 @@
       when: axp_unstable_build | bool | d(False)
 
     - name: "Set ROMFILE var"
-      shell: "echo '{{ ROMFILE_NONAXP | d(ROMFILE_AXP) }}'"
-      register: ROMFILE
+      set_fact:
+          ROMFILE: "{{ ROMFILE_NONAXP | d(ROMFILE_AXP) }}"
     
     - name: "Copy build.prop for OTA"
       shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
