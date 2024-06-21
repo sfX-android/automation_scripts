@@ -45,7 +45,7 @@
 
     - name: "Set ROMFILE var"
       set_fact:
-          ROMFILE: "{{ ROMFILE_NONAXP | d(ROMFILE_AXP) }}"
+          ROMFILE: "{{ ROMFILE_AXP | d(ROMFILE_NONAXP) }}"
     
     - name: "Copy build.prop for OTA"
       shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
