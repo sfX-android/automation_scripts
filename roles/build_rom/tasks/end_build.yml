@@ -36,12 +36,12 @@
     - name: "AXP: set unstable (rename zip)"
       shell: |
           mv {{ JKZIPDIR }}/{{ ROMFILE.stdout }} {{ JKZIPDIR }}/{{ ROMFILE.stdout | regex_replace('-dos-','-dos-unstable-') }}
-      when: axp_unstable_build | d(False)
+      when: axp_unstable_build | bool | d(False)
 
     - name: "AXP: set unstable (reset variable)"
       shell: "echo {{ ROMFILE.stdout | regex_replace('-dos-','-dos-unstable-') }}"
       register: ROMFILE_AXP
-      when: axp_unstable_build | d(False)
+      when: axp_unstable_build | bool | d(False)
 
     - name: "Set ROMFILE var"
       set_fact:
