@@ -4,7 +4,12 @@
   block:
 
     - name: "Release OS for {{ BDEVICE }}"
-      shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
+      shell: |-
+        {% if unstable_build | bool | d(False) %}
+        scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/', '\1-unstable/') }}
+        {% else %}
+        scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}
+        {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
       loop:
         - "{{ ROMFILE.stdout }}"
