@@ -5,7 +5,7 @@
 
     - name: "Release OS for {{ BDEVICE }}"
       shell: |-
-        {% if unstable_build | bool | d(False) %}
+        {% if unstable_build | d(False) | bool %}
         scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/', '\1-unstable/') }}
         {% else %}
         scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}
