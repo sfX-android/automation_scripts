@@ -14,6 +14,7 @@
       loop:
         - "{{ ROMFILE.stdout }}"
         - "{{ ROMFILE.stdout }}.sha*sum"
+        - "{{ ROMFILE.stdout }}.prop"
 
     - name: "Correct ZIP timestamp for {{ BDEVICE }} to fix recurring OTA offering"
       file:
