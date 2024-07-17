@@ -1,5 +1,18 @@
 ---
 
+- name: "Enable global CarrierSettings"
+  ansible.builtin.shell: |
+    #if [ -d vendor/firmware/{{ target_model }}/CarrierSettings ];then
+      mkdir -p vendor/divested-carriersettings/CarrierSettings2
+      #cp -a vendor/firmware/{{ target_model }}/CarrierSettings/* vendor/divested-carriersettings/CarrierSettings2/
+      cp -a vendor/firmware/CarrierSettings/* vendor/divested-carriersettings/CarrierSettings2/
+    #else
+    #  echo "WARNING: vendor/firmware/{{ target_model }}/CarrierSettings does not exist!"
+    #fi
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+
 - name: "disable GPG verify if dirty build"
   ansible.builtin.lineinfile:
     path: "{{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/Functions.sh"
