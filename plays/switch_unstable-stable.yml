@@ -8,7 +8,13 @@
   vars:
     os_zip_filename_no_ext: "{{ os_zip_filename | regex_replace('.zip','') }}"
     rempath_unstable: >-
-      {{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
+        {{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
+    tg_success: |
+        {{ ICON_GOOD }} ***Stable build released\!***
+        {{ target_model }}: successfully switched {{ os_zip_filename_no_ext }} to STABLE
+    tg_failed: |
+        {{ ICON_BAD }} ***ERROR***
+        {{ target_model }}: switching {{ os_zip_filename_no_ext }} to STABLE failed\!
     
   tasks:
     - block:
@@ -25,6 +31,18 @@
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: 
           - vault_tg_group_id_failing is undefined
+          - telegram_notifications | bool
+
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_automation }}"
+        when:
+          - debug_build is not defined or (debug_build is defined and debug_build == "false")
+          - telegram_notifications | bool
+
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_failing }}"
+        when:
+          - debug_build is defined and debug_build == "true"
           - telegram_notifications | bool
           
       - name: "Switch to stable"
