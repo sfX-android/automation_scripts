@@ -7,7 +7,8 @@
 
   vars:
     os_zip_filename_no_ext: "{{ os_zip_filename | regex_replace('.zip','') }}"
-    rempath_unstable: "{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}"
+    rempath_unstable: >-
+      {{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
     
   tasks:
     - block:
