@@ -9,7 +9,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  when: android_version_int >= 11
+  when: android_version_int | int >= 11
 
 - name: "disable GPG verify if dirty build"
   ansible.builtin.lineinfile:
