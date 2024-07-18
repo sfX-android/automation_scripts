@@ -4,8 +4,9 @@
   ansible.builtin.shell: |
     #if [ -d vendor/firmware/{{ target_model }}/CarrierSettings ];then
       mkdir -p vendor/divested-carriersettings/CarrierSettings2
-      #cp -a vendor/firmware/{{ target_model }}/CarrierSettings/* vendor/divested-carriersettings/CarrierSettings2/
-      cp -a vendor/firmware/CarrierSettings/* vendor/divested-carriersettings/CarrierSettings2/
+      #cp -a vendor/firmware/{{ target_model }}/CarrierSettings/ vendor/divested-carriersettings/CarrierSettings2/
+      cp -a vendor/firmware/CarrierSettings/*.pb vendor/divested-carriersettings/CarrierSettings2/
+      cp -a vendor/firmware/CarrierSettings/*.mk vendor/divested-carriersettings/
     #else
     #  echo "WARNING: vendor/firmware/{{ target_model }}/CarrierSettings does not exist!"
     #fi
