@@ -18,7 +18,7 @@ ansible_home_dir: "{{ semaphore_work_dir }}"
 parsed_target_version: "{{ git_repo_main_branch | regex_replace('.*/','') | regex_replace('^v','') }}"
 normalized_target_version: "{{ parsed_target_version | regex_replace('(\\d+)\\.(\\d+)(.*)','\\1.\\2') }}"
 # just the integer of the given android version
-android_version_int: "{{ android_shortversion | replace('a','') | replace('A','') }} | int"
+android_version_int: "{{ android_shortversion | replace('a','') | replace('A','') }}"
 
 # normalize current date (used in several places later
 current_year: "{{ ansible_date_time.year }}"
