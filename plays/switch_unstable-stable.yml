@@ -1,0 +1,89 @@
+---
+
+- name: "Switch from unstable to stable"
+  hosts: "{{ groups.downloadserver[0] }}"
+  gather_facts: false
+  become: no
+
+  vars:
+    os_zip_filename_no_ext: "{{ os_zip_filename | regex_replace('.zip','') }}"
+    rempath_unstable: "{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}"
+    
+  tasks:
+    - block:
+    
+      - import_role:
+          name: common
+
+      - include_role:
+          name: "{{ ROM_FLAVOR }}/common"
+          public: yes
+        when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
+
+      - fail:
+          msg: "boo.. vault_tg_group_id_failing is undefined"
+        when: 
+          - vault_tg_group_id_failing is undefined
+          - telegram_notifications | bool
+          
+      - name: "Switch to stable"
+        ansible.builtin.copy:
+          remote_src: yes
+          src: "{{ rempath_unstable }}/{{ os_zip_filename_no_ext }}.{{ item }}"
+          dest: "{{ rempath }}/"
+        loop:
+          - zip
+          - zip.sha512sum
+          - zip.sha256sum
+          - zip.prop
+  
+      - name: "Delete from unstable"
+        ansible.builtin.file:
+          path: "{{ rempath_unstable }}/{{ os_zip_filename_no_ext }}.{{ item }}"
+          state: absent
+        loop:
+          - zip
+          - zip.sha512sum
+          - zip.sha256sum
+          - zip.prop
+  
+      - name: "Identify unstable build date"
+        ansible.builtin.shell: |
+          grep ro.build.date.utc {{ rempath }}/{{ os_zip_filename }}.prop | cut -d "=" -f2
+        register: build_date_utc
+  
+      - name: "Correct ZIP timestamp for stable to fix recurring OTA offering"
+        ansible.builtin.file:
+          path: "{{ rempath }}/{{ os_zip_filename }}"
+          modification_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
+          access_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
+          state: touch
+  
+      - name: "Post commands"
+        ansible.builtin.shell: |
+          {{ postcmd_switch_to_stable }}
+        args:
+          executable: /bin/bash
+        when: switch_to_stable_postcmd is defined
+
+      - include_role:
+          name: notify
+
+      # when any of the above fails notify always 
+      rescue:
+
+        - set_fact:
+            tg_group_id: "{{ vault_tg_group_id_failing }}"
+          when:
+            - telegram_notifications | bool
+
+        - include_role:
+            name: notify
+           
+        - fail:
+            msg: |
+              ERROR OCCURED:
+              
+              {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
+              
+              See above for details.
