@@ -10,7 +10,7 @@
   when: not skip_gen_checksum
 # post clean up if requested
 - include_tasks: post_cleanup.yml
-  when: post_cleanup | bool | d(False)
+  when: post_cleanup | bool
 
 - name: "Late git push to AXP.OS org"
   include_tasks: ../../axp/common/tasks/git_push.yml
