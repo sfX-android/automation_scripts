@@ -23,6 +23,7 @@
         access_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
         state: touch
       delegate_to: "{{ groups.downloadserver[0] }}"
+      when: not unstable_build | d(False) | bool
   
   when:
     - ROM_FLAVOR != "TWRP"
