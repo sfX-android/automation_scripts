@@ -11,10 +11,10 @@
         {{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
     tg_success: |
         {{ ICON_GOOD }} ***Stable build released\!***
-        {{ target_model }}: successfully switched {{ os_zip_filename_no_ext }} to STABLE
+        {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE
     tg_failed: |
         {{ ICON_BAD }} ***ERROR***
-        {{ target_model }}: switching {{ os_zip_filename_no_ext }} to STABLE failed\!
+        {{ target_model | regex_escape() }}: switching {{ os_zip_filename_no_ext | regex_escape() }} to STABLE failed\!
     
   tasks:
     - block:
