@@ -27,6 +27,12 @@
 
       cd $localpath
 
+      # commit any leftovers!
+      # besides "normal" patches divest also run several patch scripts(!) which by design can not be
+      # catched regularly (i.e. they do not use git am, git apply, patch .. but awk, sed etc to modify)
+      # to also make these changes available for reproducible builds and transparency we commit them once now:
+      git add -A && git commit --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "uncatched DOS scripted patch(es)"
+
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
       REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
