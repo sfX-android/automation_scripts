@@ -24,6 +24,7 @@
 
       - include_role:
           name: "{{ ROM_FLAVOR }}/common"
+          tasks_from: vars.yml
           public: yes
         when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
 
