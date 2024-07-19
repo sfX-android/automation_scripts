@@ -78,6 +78,9 @@
           modification_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
           access_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
           state: touch
+
+      - name: "Set result (compat fix for release role)"
+        ansible.builtin.shell: 'true'
         register: buildresult
   
       - name: "Post commands"
