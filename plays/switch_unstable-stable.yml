@@ -78,13 +78,16 @@
           modification_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
           access_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
           state: touch
+        register: buildresult
   
       - name: "Post commands"
         ansible.builtin.shell: |
           {{ postcmd_switch_to_stable }}
         args:
           executable: /bin/bash
-        when: switch_to_stable_postcmd is defined
+        when: 
+          - postcmd_switch_to_stable is defined
+          - buildresult.rc == 0
 
       - include_role:
           name: notify
