@@ -14,3 +14,7 @@ export DOS_BUILDS="{{ ZIPDIR }}"
 
 # fix build error on sunfish
 export DISABLE_ARTIFACT_PATH_REQUIREMENTS="true"
+
+# Add the toggle for OpenEUICC but we use AXP's prebuilt apk
+export DOS_DEBLOBBER_REMOVE_EUICC=true
+export DOS_DEBLOBBER_REMOVE_EUICC_FULL=false
