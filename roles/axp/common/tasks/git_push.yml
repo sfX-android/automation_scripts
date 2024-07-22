@@ -31,7 +31,12 @@
       # besides "normal" patches divest also run several patch scripts(!) which by design can not be
       # catched regularly (i.e. they do not use git am, git apply, patch .. but awk, sed etc to modify)
       # to also make these changes available for reproducible builds and transparency we commit them once now:
-      git add -A && git commit --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "uncatched DOS scripted patch(es)"
+      CMT=0
+      git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+      if [ $CMT -eq 1 ];then 
+          git commit --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "uncatched DOS scripted patch(es)"
+          echo "[GIT] committed scripted divest changes for $reponame" >> {{ BUILD_LOG }}
+      fi
 
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
