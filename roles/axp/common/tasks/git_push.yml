@@ -72,9 +72,9 @@
       # push origin sources first
       # falls back to push in batches to workaround issues when index pack is too big
       rerr=0
-      git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>&1 || rerr=$?
+      git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
       if [ $rerr -ne 0 ]; then
-          resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>&1 || true)
+          resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || true)
           found=0
           echo "$resp" | tail -n 20 | grep -q "pack exceeds maximum allowed size" || found=1
           if [ $found -eq 0 ]; then
