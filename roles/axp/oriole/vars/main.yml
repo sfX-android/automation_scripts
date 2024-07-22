@@ -1,0 +1,28 @@
+---
+# human readable model name
+target_model_full: "Google Pixel 6"
+
+# boot debugger path & config
+extendrom_debug_path_default: /mnt/vendor/persist
+extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_kernel_default: 100
+extendrom_debug_path_size_selinux_default: 200
+extendrom_debug_path_size_crash_default: 200
+
+# path to the kernel dir (req for e.g. wireguard)
+target_kernel_dir: kernel/google/gs101
+
+# allow creating factory image
+custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+
+# add OpenEUICC
+extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
+
+dtree_cl: |-
+  \- device tree: [commits](https://github.com/AXP-OS/android_device_google_oriole/commits/{{ build_tag }})
+
+cdtree_cl: |-
+  \- common tree: [commits](https://github.com/AXP-OS/android_device_google_raviole/commits/{{ build_tag }})
+
+kernel_cl: |-
+  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_google_gs101/commits/{{ build_tag }})
