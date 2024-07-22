@@ -4,9 +4,15 @@
 - include_tasks: vars.yml
 - include_tasks: clean.yml
 
-#- include_tasks: git_push.yml
-#- fail:
-#    msg: WANTED
+- name: "Just push to git selected!"
+  block:
+
+  - include_tasks: git_push.yml
+  - debug:
+      msg: Stopping here as just_git_push=true
+  - meta: end_play
+  
+  when: just_git_push
 
 - block:
 
