@@ -63,7 +63,7 @@
       # $> gh auth login
       # $> tea login add (see common/defaults/main.yml for details)
       git remote remove up 2>> /dev/null || true
-
+      git fetch --unshallow
       # first check if this is a problematic repo
       prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame" || true)
       if [ -z "$prepo" ];then
@@ -100,7 +100,7 @@
       if [ $rerr -ne 0 ]; then
           resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>&1 || true)
           found=0
-          echo "$resp" | tail -n 20 | grep -Eq "pack exceeds maximum allowed size|index-pack failed" || found=1
+          echo "$resp" | tail -n 20 | grep -q "pack exceeds maximum allowed size" || found=1
           if [ $found -eq 0 ]; then
               echo "[GIT] pack size too big for $reponame, pushing in chunks now.." >> {{ BUILD_LOG }}
               max=$(git log --oneline|wc -l); for i in $(seq  $max -60000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1; done \
