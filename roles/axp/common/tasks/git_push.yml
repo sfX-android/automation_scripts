@@ -63,9 +63,15 @@
       # $> gh auth login
       # $> tea login add (see common/defaults/main.yml for details)
       git remote remove up 2>> /dev/null || true
-      
-      git remote add up git@github.com:AXP-OS/${reponame}.git
 
+      # first check if this is a problematic (e.g. extreme big repos or containing proprietary stuff which shouldn't go public)
+      prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame" || true)
+      if [ -z "$prepo" ];then
+        git remote add up git@github.com:AXP-OS/${reponame}.git
+      else
+        git remote add up {{ git_axpos_org_private }}/${reponame}.git
+      fi
+      
       if $(git fetch up >> /dev/null 2>&1);then
         echo "[GIT] repo exists within the org already" >> {{ BUILD_LOG }}
       else
