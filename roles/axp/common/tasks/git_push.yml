@@ -84,12 +84,12 @@
           git checkout $REMHASH
           tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }} >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] repo created..." >> {{ BUILD_LOG }}
-          for lf in $(find . -type f -size +10M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
+          for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
             git lfs track \"*.${lf}\"
           done
           cat .gitattributes >> {{ BUILD_LOG }}
           git add -A .  >> /dev/null 2>> {{ BUILD_LOG }}
-          git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 10M"  >> /dev/null 2>> {{ BUILD_LOG }}
+          git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
           export REMHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
           echo "[GIT] overwrite REMHASH->$REMHASH" >> {{ BUILD_LOG }}
           git checkout $CURHASH  >> /dev/null 2>> {{ BUILD_LOG }}
@@ -149,12 +149,7 @@
     
     # closing new manifest
     croot
-
-    exit 44
-
-    
-    #echo -e '\n</manifest>' >> ${REPRMANIFEST}
-    
+        
     # push manifest
     mv ${REPRMANIFEST} .repo/local_manifests/axp.xml
     cd .repo/local_manifests/
