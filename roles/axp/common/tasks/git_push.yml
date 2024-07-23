@@ -65,7 +65,8 @@
       git remote remove up 2>> /dev/null || true
       
      
-      git remote add up git@github.com:AXP-OS/${reponame}.git
+      git remote add up {{ git_axpos_org_private }}/${reponame}.git
+      exit 44
 
       
       if $(git fetch up >> /dev/null 2>&1);then
