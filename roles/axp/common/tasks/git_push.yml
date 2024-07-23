@@ -4,16 +4,16 @@
   shell: |
     export LC_ALL=C
     {{ DOS_INIT }}
-
+    
     # tag name
     TAG=$(date +%F)"_${BDEVICE}_{{ android_shortversion }}"
     
     # reproduce manifest
     REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
-
+    
     # write full manifest
     {{ repo_bin }} manifest -r -o ${REPRMANIFEST}
-      
+    
     # check where we changed origin
     for repo in $({{ repo_bin }} list | tr -d ' ');do
       croot
@@ -127,13 +127,13 @@
           fi
       fi
       echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
-
+      
       # tag the current patched state and push accordingly
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" 2>> /dev/null || (git tag -d "$TAG"; git push up --delete "$TAG" 2>> /dev/null || true; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
       #git tag latest 2>> /dev/null || (git tag -d latest; git push up --delete latest 2>> /dev/null || true; git tag latest)      
       git push --set-upstream up $TAG
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
-
+      
       # change manifest line to point to AXP.OS org
       croot
       #echo -e '\n\t<remove-project name="'$reponame_orig'" />' >> ${REPRMANIFEST}
@@ -145,7 +145,7 @@
     # closing new manifest
     croot
     #echo -e '\n</manifest>' >> ${REPRMANIFEST}
-
+    
     # push manifest
     mv ${REPRMANIFEST} .repo/local_manifests/axp.xml
     cd .repo/local_manifests/
