@@ -94,6 +94,7 @@
           echo "[GIT] overwrite REMHASH->$REMHASH" >> {{ BUILD_LOG }}
           git checkout $CURHASH  >> /dev/null 2>> {{ BUILD_LOG }}
           echo "[GIT] checked out CURHASH=$CURHASH" >> {{ BUILD_LOG }}
+          git remote add up {{ git_axpos_org_private }}/${reponame}.git
         fi
       fi
       
