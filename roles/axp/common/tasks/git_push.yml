@@ -144,6 +144,10 @@
     
     # closing new manifest
     croot
+
+    exit 44
+
+    
     #echo -e '\n</manifest>' >> ${REPRMANIFEST}
     
     # push manifest
