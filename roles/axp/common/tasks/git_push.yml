@@ -69,7 +69,7 @@
       if [ -z "$prepo" ];then
         git remote add up git@github.com:AXP-OS/${reponame}.git
       else
-        git remote add up {{ git_axpos_org_private }}/${reponame}.git
+        git remote add up git_axpos_org_private/${reponame}.git
       fi
       
       if $(git fetch up >> /dev/null 2>&1);then
