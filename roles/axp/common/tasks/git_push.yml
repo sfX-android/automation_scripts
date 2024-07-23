@@ -20,7 +20,7 @@
       reponame_orig=$(echo "$repo" | cut -d ':' -f2)
       reponame=$(echo "$repo" | cut -d ':' -f2 | sed 's#LineageOS/##g;s#/#_#g')
       localpath=$(echo "$repo" | cut -d ':' -f1)
-
+      
       ################### TEMP SKIP ALL
       prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame" || true)
       if [ -z "$prepo" ];then
@@ -29,7 +29,7 @@
       ################### END: TEMP SKIP ALL
       
       cd $localpath
-
+      
       # commit any leftovers!
       # besides "normal" patches divest also run several patch scripts(!) which by design can not be
       # catched regularly (i.e. they do not use git am, git apply, patch .. but awk, sed etc to modify)
@@ -44,7 +44,7 @@
           git commit --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "uncatched DOS scripted change(s)"
           echo "[GIT] committed scripted divest changes for $reponame" >> {{ BUILD_LOG }}
       fi
-
+      
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
       REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
@@ -63,13 +63,13 @@
       # $> gh auth login
       # $> tea login add (see common/defaults/main.yml for details)
       git remote remove up 2>> /dev/null || true
-
+      
       # first check if this is a problematic (e.g. extreme big repos or containing proprietary stuff which shouldn't go public)
       prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame" || true)
       if [ -z "$prepo" ];then
         git remote add up git@github.com:AXP-OS/${reponame}.git
       else
-        git remote add up "{{ git_axpos_org_private }}/${reponame}.git"
+        git remote add up {{ git_axpos_org_private }}/${reponame}.git
       fi
       
       if $(git fetch up >> /dev/null 2>&1);then
