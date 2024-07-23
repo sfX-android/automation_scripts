@@ -27,6 +27,15 @@
       #  continue
       #fi
       ################### END: TEMP SKIP ALL
+
+      # kernel match
+      kpcheck=$(echo "$reponame" | grep kernel || true)
+      if [ ! -z "$kpcheck" ];then
+          kcheck=$(echo "$reponame" | grep -Eo "{{ target_kernel_dir | regex_replace('/','_') }}" || true)
+          if [ -z "$kcheck" ];then
+              continue
+          fi
+      fi
       
       cd $localpath
       
