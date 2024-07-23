@@ -22,7 +22,7 @@
       localpath=$(echo "$repo" | cut -d ':' -f1)
       
       ################### TEMP SKIP ALL
-      prepo=$(echo "{ git_private_repos }" | grep -o "$reponame" || true)
+      prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame" || true)
       if [ -z "$prepo" ];then
         continue
       fi
