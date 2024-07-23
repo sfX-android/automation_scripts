@@ -43,8 +43,23 @@ axp_clean_paths:
     - "{{ SRCPATH }}/external/firebase-messaging"
     - "{{ SRCPATH }}/kernel"
     - "{{ SRCPATH }}/device"
+
+# git stuff
+# install tea cli: wget https://dl.gitea.com/tea/main/tea-main-linux-amd64 -O ~/.local/bin/tea && chmod +x ~/.local/bin/tea
+# create token for a bot user. must have at least these permissions: write:organization, write:repository, read:user
+# login once: tea login add --name repocr --url https://code.binbash.rocks:8443 --token xxxxx
+# the login name used in "tea login add" command
+gitea_login_name: repocr
+# the organization name within git(ea):
+git_axpos_org_name: "AXP.OS"
 # just push changes after patching, skip build
 just_git_push: False
+# private git URI for creating/updating repos for AXP.OS
+git_axpos_org_private: "ssh://git@code.binbash.rocks:22443/{{ git_axpos_org_name }}"
+# list of private repos within the AXP.OS org
+# reasons for listing them here are e.g. they get rejected on github, containing proprietary stuff or sim.
+# comma separated list:
+git_private_repos: "platform_prebuilts_tools"
 
 # kernel patching
 divest_cve_checker_download: "https://gitlab.com/divested-mobile/cve_checker/-/jobs/4820813129/artifacts/raw/build/libs/cve_checker-0.6.8.jar?inline=false"
