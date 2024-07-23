@@ -87,7 +87,7 @@
         else
           git checkout $REMHASH
           tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }}
-          for lf in $find . -type f -size +10M -name '*.*'| while read file; do f="${file##*.}"; [ ${#f} -ge 2 ] && echo "$f" ; done | sort -u);do
+          for lf in $(find . -type f -size +10M -name '*.*'| while read file; do f="${file##*.}"; [ ${#f} -ge 2 ] && echo "$f" ; done | sort -u);do
             git lfs track "*.${lf}"
           done
           git add .gitattributes
