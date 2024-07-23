@@ -25,6 +25,13 @@
       reponame=$(echo "$repo" | cut -d ':' -f2 | sed 's#LineageOS/##g;s#/#_#g')
       localpath=$(echo "$repo" | cut -d ':' -f1)
 
+      ################### TEMP SKIP ALL
+      prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame" || true)
+      if [ -z "$prepo" ];then
+        continue
+      fi
+      ################### END: TEMP SKIP ALL
+      
       cd $localpath
 
       # commit any leftovers!
@@ -78,7 +85,15 @@
           gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)"
           gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain'
         else
+          git checkout $REMHASH
           tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }}
+          for lf in $find . -type f -size +10M -name '*.*'| while read file; do f="${file##*.}"; [ ${#f} -ge 2 ] && echo "$f" ; done | sort -u);do
+            git lfs track "*.${lf}"
+          done
+          git add .gitattributes
+          git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 10M"
+          REMHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
+          git checkout $CURHASH
         fi
       fi
       
