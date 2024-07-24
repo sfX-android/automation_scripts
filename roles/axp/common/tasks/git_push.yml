@@ -46,6 +46,15 @@
               continue
           fi
       fi
+      # device match
+      dpcheck=$(echo "$reponame" | grep -E "$AXP_GIT_PUSH_DEVICE_EXCLUDE" || true)
+      if [ ! -z "$dpcheck" ];then
+          dcheck=$(echo "$reponame" | grep -Eo "$AXP_GIT_PUSH_DEVICE_INCLUDE" || true)
+          if [ -z "$dcheck" ];then
+              echo "[GIT] skipped $reponame as its not our device" >> {{ BUILD_LOG }}
+              continue
+          fi
+      fi
       
       cd $localpath
       
