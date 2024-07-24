@@ -115,7 +115,9 @@
           export REMHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
           echo "[GIT] overwrite REMHASH->$REMHASH" >> {{ BUILD_LOG }}
           git checkout $CURHASH >> /dev/null 2>> {{ BUILD_LOG }}
-          git cherry-pick $REMHASH >> /dev/null 2>> {{ BUILD_LOG }}
+          for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
+            git lfs track \"*.${lf}\"
+          done
           (git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} &&
            git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) || true
           export CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
