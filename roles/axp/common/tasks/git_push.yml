@@ -87,10 +87,6 @@
       # generic vendor match
       repoisvendor=$(echo "$reponame" | grep vendor_ || true)
       
-      if [ -z "$repoisvendor" ];then
-         continue
-      fi
-      
       # create repo if non-existent
       # using a workaround as github cli does not allow to set permission on create
       # see: https://github.com/cli/cli/issues/2241#issuecomment-1402316546
