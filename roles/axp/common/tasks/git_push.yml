@@ -87,6 +87,10 @@
       # generic vendor match
       repoisvendor=$(echo "$reponame" | grep vendor_ || true)
       
+      if [ -z "$repoisvendor" ];then
+         continue
+      fi
+      
       # create repo if non-existent
       # using a workaround as github cli does not allow to set permission on create
       # see: https://github.com/cli/cli/issues/2241#issuecomment-1402316546
@@ -179,16 +183,11 @@
       # change manifest line to point to AXP.OS org, ensures private org for proprietary
       croot
       if [ -z "$prepo" ];then
-        sed -i -E 's|(name=".*") (path="'$localpath'")|name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
+        sed -i -E 's/remote="(.*)"/remote="axp.os"/g;s|(name=".*") (path="'$localpath'")|name="'$reponame'" \2|g' ${REPRMANIFEST}
       else
-        sed -i -E 's|(name=".*") (path="'$localpath'")|name="'$reponame'" \2 remote="axp.os-private" |g' ${REPRMANIFEST}
+        sed -i -E 's/remote="(.*)"/remote="axp.os-private"/g;s|(name=".*") (path="'$localpath'")|name="'$reponame'" \2|g' ${REPRMANIFEST}
       fi
-      echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}
-      
-      if [ ! -z "$repoisvendor" ];then
-         exit 55
-      fi
-      
+      echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}      
     done
     
     # closing new manifest
