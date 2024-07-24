@@ -155,7 +155,7 @@
       git push --set-upstream up $TAG
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
 
-      if [ ! -z "$prepo" ];then
+      if [ ! -z "$repoisvendor" ];then
          exit 55
       fi
       
