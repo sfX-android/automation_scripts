@@ -155,7 +155,9 @@
       git push --set-upstream up $TAG
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
 
-      exit 55
+      if [ ! -z "$prepo" ];then
+         exit 55
+      fi
       
       # change manifest line to point to AXP.OS org
       croot
