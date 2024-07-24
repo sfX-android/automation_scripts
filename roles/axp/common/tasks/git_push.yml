@@ -29,7 +29,7 @@
       ################### END: TEMP SKIP ALL
 
       # kernel match
-      kpcheck=$(echo "$reponame" | grep kernel || true)
+      kpcheck=$(echo "$reponame" | grep kernel_ || true)
       if [ ! -z "$kpcheck" ];then
           kcheck=$(echo "$reponame" | grep -Eo "{{ target_kernel_dir | regex_replace('/','_') }}" || true)
           if [ -z "$kcheck" ];then
@@ -64,6 +64,9 @@
         echo "[GIT] no changes in $localpath, skipping" >> {{ BUILD_LOG }}
         continue
       fi
+
+      # vendor match
+      repoisvendor=$(echo "$reponame" | grep vendor_ || true)
       
       # create repo if non-existent
       # using a workaround as github cli does not allow to set permission on create
@@ -74,7 +77,7 @@
       git remote remove up 2>> /dev/null || true
       git fetch --unshallow >> /dev/null 2>> {{ BUILD_LOG }} || true
       # first check if this is a problematic repo
-      prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame" || true)
+      prepo=$(echo "{{ git_private_repos }},${repoisvendor}" | grep -o "$reponame" || true)
       if [ -z "$prepo" ];then
         git remote add up git@github.com:AXP-OS/${reponame}.git
       else
@@ -101,7 +104,11 @@
           git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
           export REMHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
           echo "[GIT] overwrite REMHASH->$REMHASH" >> {{ BUILD_LOG }}
-          git checkout $CURHASH  >> /dev/null 2>> {{ BUILD_LOG }}
+          git checkout $CURHASH >> /dev/null 2>> {{ BUILD_LOG }}
+          git cherry-pick $REMHASH >> /dev/null 2>> {{ BUILD_LOG }}
+          (git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} &&
+           git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) || true
+          export CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
           echo "[GIT] checked out CURHASH=$CURHASH" >> {{ BUILD_LOG }}
           git remote add up {{ git_axpos_org_private }}/${reponame}.git
         fi
@@ -147,6 +154,8 @@
       #git tag latest 2>> /dev/null || (git tag -d latest; git push up --delete latest 2>> /dev/null || true; git tag latest)      
       git push --set-upstream up $TAG
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
+
+      exit 55
       
       # change manifest line to point to AXP.OS org
       croot
