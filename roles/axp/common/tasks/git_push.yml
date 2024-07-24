@@ -166,15 +166,20 @@
       #git tag latest 2>> /dev/null || (git tag -d latest; git push up --delete latest 2>> /dev/null || true; git tag latest)
       git push --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
-
+      
+      # change manifest line to point to AXP.OS org, ensures private org for proprietary
+      croot
+      if [ -z "$prepo" ];then
+        sed -i -E 's|(name=".*") (path="'$localpath'")|name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
+      else
+        sed -i -E 's|(name=".*") (path="'$localpath'")|name="'$reponame'" \2 remote="axp.os-private" |g' ${REPRMANIFEST}
+      fi
+      echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}
+      
       if [ ! -z "$repoisvendor" ];then
          exit 55
       fi
       
-      # change manifest line to point to AXP.OS org
-      croot
-      sed -i -E 's|(name=".*") (path="'$localpath'")|name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
-      echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}
     done
     
     # closing new manifest
