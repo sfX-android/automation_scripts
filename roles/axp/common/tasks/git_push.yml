@@ -33,6 +33,16 @@
       if [ ! -z "$kpcheck" ];then
           kcheck=$(echo "$reponame" | grep -Eo "{{ target_kernel_dir | regex_replace('/','_') }}" || true)
           if [ -z "$kcheck" ];then
+              echo "[GIT] skipped $reponame as its not our kernel" >> {{ BUILD_LOG }}
+              continue
+          fi
+      fi
+      # vendor match
+      vpcheck=$(echo "$reponame" | grep -E "$AXP_GIT_PUSH_VENDOR_EXCLUDE" || true)
+      if [ ! -z "$vpcheck" ];then
+          vcheck=$(echo "$reponame" | grep -Eo "$AXP_GIT_PUSH_VENDOR_INCLUDE" || true)
+          if [ -z "$vcheck" ];then
+              echo "[GIT] skipped $reponame as its not our vendor" >> {{ BUILD_LOG }}
               continue
           fi
       fi
