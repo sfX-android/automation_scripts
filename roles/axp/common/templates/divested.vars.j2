@@ -127,6 +127,6 @@ export DOS_OTA_SERVER_ONION_DOMAIN_PRIMARY="http://sfxota.binbash.rocks:8009"  #
 export DOS_OTA_SERVER_ONION_DOMAIN_SECONDARY="http://sfxota-beta.binbash.rocks:8009" # allow cleartext traffic
 
 # git
-export AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC="device_generic_car|device_generic_goldfish|device_generic_goldfish-opengl|device_generic_trusty|device_generic_uml|device_generic_x86|device_generic_x86_64" # skipped by git push, not used for building Android
+export AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC="device_generic_car|device_generic_goldfish|device_generic_goldfish-opengl|device_generic_trusty|device_generic_uml|device_generic_x86|device_generic_x86_64" # skipped by git push, not used for building AXP.OS
 export AXP_GIT_PUSH_DEVICE_EXCLUDE="${AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC}|device_google_|device_sony_|device_oneplus_|vendor_lge_|device_samsung_" # skipped by git push, use AXP_GIT_PUSH_DEVICE_INCLUDE to overwrite per device
 export AXP_GIT_PUSH_VENDOR_EXCLUDE="vendor_google|vendor_sony|vendor_oneplus|vendor_lge|vendor_samsung|vendor_axp" # skipped by git push, use AXP_GIT_PUSH_VENDOR_INCLUDE to overwrite per device
