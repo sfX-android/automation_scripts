@@ -183,9 +183,9 @@
       # change manifest line to point to AXP.OS org, ensures private org for proprietary
       croot
       if [ -z "$prepo" ];then
-        sed -i -E 's/remote="(.*)"/remote="axp.os"/g;s|(name=".*") (path="'$localpath'")|name="'$reponame'" \2|g' ${REPRMANIFEST}
+        sed -i -E 's/remote="([[:graph:]]+)"/remote="axp.os" /g;s|(name=".*") (path="'$localpath'")|name="'$reponame'" \2|g' ${REPRMANIFEST}
       else
-        sed -i -E 's/remote="(.*)"/remote="axp.os-private"/g;s|(name=".*") (path="'$localpath'")|name="'$reponame'" \2|g' ${REPRMANIFEST}
+        sed -i -E 's/remote="([[:graph:]]+)"/remote="axp.os-private" /g;s|(name=".*") (path="'$localpath'")|name="'$reponame'" \2|g' ${REPRMANIFEST}
       fi
       echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}      
     done
