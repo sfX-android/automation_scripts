@@ -12,7 +12,7 @@
     REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
     
     # write full manifest
-    {{ repo_bin }} manifest -r -o ${REPRMANIFEST}
+    {{ repo_bin }} manifest -r -o ${REPRMANIFEST} >> {{ BUILD_LOG }} 2>&1
     
     # check where we changed origin
     for repo in $({{ repo_bin }} list | tr -d ' ');do
@@ -75,7 +75,7 @@
         continue
       fi
 
-      # vendor match
+      # generic vendor match
       repoisvendor=$(echo "$reponame" | grep vendor_ || true)
       
       # create repo if non-existent
