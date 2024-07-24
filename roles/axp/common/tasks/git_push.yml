@@ -162,9 +162,9 @@
       echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
       
       # tag the current patched state and push accordingly
-      git tag -a "$TAG" -m "axp.os: tagged on $TAG" 2>> /dev/null || (git tag -d "$TAG"; git push up --delete "$TAG" 2>> /dev/null || true; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
-      #git tag latest 2>> /dev/null || (git tag -d latest; git push up --delete latest 2>> /dev/null || true; git tag latest)      
-      git push --set-upstream up $TAG
+      git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || (git tag -d "$TAG" >> {{ BUILD_LOG }} 2>&1; git push up --delete "$TAG" >> {{ BUILD_LOG }} 2>&1 || true; git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1)
+      #git tag latest 2>> /dev/null || (git tag -d latest; git push up --delete latest 2>> /dev/null || true; git tag latest)
+      git push --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
 
       if [ ! -z "$repoisvendor" ];then
@@ -173,8 +173,6 @@
       
       # change manifest line to point to AXP.OS org
       croot
-      #echo -e '\n\t<remove-project name="'$reponame_orig'" />' >> ${REPRMANIFEST}
-      #echo -e '\t<project path="'$localpath'" name="'$reponame'" remote="axp.os" revision="refs/tags/'$TAG'" />' >> ${REPRMANIFEST}
       sed -i -E 's|(name=".*") (path="'$localpath'")|name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
       echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}
     done
