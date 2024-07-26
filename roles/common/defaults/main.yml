@@ -39,7 +39,7 @@ build_id: "{{ sm_build_id | regex_replace(' ','') }}"
 # full path to the repo binary
 repo_bin: /home/androidsource/bin/repo
 # number of threads used e.g. with repo binary etc
-max_processes: 16
+max_processes: 32
 max_processes_sync: 6    # will set --jobs-network={{ max_processes_sync }} for repo sync, beware you can easily get throttled by Google or/and github/lab
 # default args for the (rest of the) repo sync command
 # can be overwritten e.g with a semaphore var
