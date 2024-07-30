@@ -99,8 +99,10 @@
       prepo=$(echo "{{ git_private_repos }},${repoisvendor}" | grep -o "$reponame" || true)
       if [ -z "$prepo" ];then
         git remote add up git@github.com:AXP-OS/${reponame}.git
+        echo "[GIT] $reponame is/becomes a PUBLIC repo" >> {{ BUILD_LOG }}
       else
         git remote add up {{ git_axpos_org_private }}/${reponame}.git
+        echo "[GIT] $reponame is/becomes a PRIVATE repo" >> {{ BUILD_LOG }}
       fi
       
       if $(git fetch up >> /dev/null 2>&1);then
