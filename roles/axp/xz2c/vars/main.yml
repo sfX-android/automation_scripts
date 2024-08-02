@@ -16,10 +16,10 @@ target_kernel_dir: kernel/sony/sdm845
 axp_release_recovery: True
 
 dtree_cl: |-
-  \- device tree: [commits](https://github.com/LineageOS/android_device_sony_xz2c/commits/{{ build_tag }})
+  \- device tree: [commits](https://github.com/AXP-OS/android_device_sony_xz2c/commits/{{ build_tag }})
 
 cdtree_cl: |-
   \- common tree: [commits](https://github.com/AXP-OS/android_device_sony_tama-common/commits/{{ build_tag }})
 
 kernel_cl: |-
-  \- Kernel: [commits](https://github.com/LineageOS/android_kernel_sony_sdm845/commits/{{ build_tag }})
+  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_sony_sdm845/commits/{{ build_tag }})
