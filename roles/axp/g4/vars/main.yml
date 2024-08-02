@@ -37,10 +37,10 @@ dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/axp/{{ sub_model }})
 
 dtree_cl: |-
-  \- device tree: [commits](https://github.com/LGgFour/android_device_lge_g4/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
+  \- device tree: [commits](https://github.com/AXP-OS/android_device_lge_g4/commits/{{ build_tag }})
 
 cdtree_cl: |-
-  \- common tree: [commits](https://github.com/LGgFour/android_device_lge_g4-common/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
+  \- common tree: [commits](https://github.com/AXP-OS/android_device_lge_g4-common/commits/{{ build_tag }})
 
 kernel_cl: |-
-  \- Kernel: [commits](https://github.com/LGgFour/kernel_lge_msm8992/commits/{{ ROM_FLAVOR }}-{{ android_shortversion }})
+  \- Kernel: [commits](https://github.com/AXP-OS/kernel_lge_msm8992/commits/{{ build_tag }})
