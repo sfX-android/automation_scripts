@@ -9,6 +9,8 @@ los_revision: "lineage-16.0"
 # specify lunch target
 LUNCHTARGET: "omni_g4-eng"
 
+git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git"
+
 # device tree
 DTURI: "https://github.com/LGgFour/android_device_lge_g4_recovery.git"
 DTBRANCH: "android-9.0"
