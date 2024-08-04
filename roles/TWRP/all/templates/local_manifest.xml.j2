@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-{% android_version_int > 9 %}
+{% if android_version_int > 9 %}
 <remote
       name="ansible_los"
       fetch="https://github.com/LineageOS/"
