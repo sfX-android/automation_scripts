@@ -20,6 +20,10 @@ normalized_target_version: "{{ parsed_target_version | regex_replace('(\\d+)\\.(
 # just the integer of the given android version
 android_version_int: "{{ android_shortversion | replace('a','') | replace('A','') }}"
 
+# construct LOS version/git branch based on android version
+los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','19.1') | replace('a11','18.1') | replace('a10','17.1') | replace('a9','16.0') }}"
+los_version_gitbranch: "lineage-{{ los_version }}"
+
 # normalize current date (used in several places later
 current_year: "{{ ansible_date_time.year }}"
 current_month: "{{ ansible_date_time.month }}"
