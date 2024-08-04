@@ -15,7 +15,7 @@ git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_mani
 
 # device tree
 DTURI: "https://github.com/LGgFour/android_device_lge_g4_recovery.git"
-DTBRANCH: "android-9.0"
+DTBRANCH: "android-9.0_enc"
 DTPATH: "{{ SRCPATH }}/device/lge/g4"
 
 # kernel
