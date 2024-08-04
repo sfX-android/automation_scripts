@@ -3,7 +3,8 @@
 target_model_full: "LG G4 - all models - unified"
 
 # TWRP repo branch
-git_repo_main_branch: "twrp-9.0"
+#git_repo_main_branch: "twrp-9.0"
+git_repo_main_branch: "android-9.0"
 los_revision: "lineage-16.0"
 
 # specify lunch target
