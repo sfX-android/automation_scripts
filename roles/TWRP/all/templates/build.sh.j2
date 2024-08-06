@@ -71,28 +71,28 @@ cd $LOCPATH
 mv -v {{ RECOVERY_MKA_TARGET }}.img {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}_{{ target_model }}.img
 
 # remove compat bin links
-if [ -e ~/.local/bin/python ];then
-    rm ~/.local/bin/python
-else
-    true
-fi
-if [ -e ~/.local/bin/gcc ];then
-    rm ~/.local/bin/gcc
-else
-    true
-fi
+#if [ -e ~/.local/bin/python ];then
+#    rm ~/.local/bin/python
+#else
+#    true
+#fi
+#if [ -e ~/.local/bin/gcc ];then
+#    rm ~/.local/bin/gcc
+#else
+#    true
+#fi
+#
+## remove compat bin links
+#if [ -e ~/.local/bin/python ];then
+#    rm ~/.local/bin/python
+#else
+#    true
+#fi
+#if [ -e ~/.local/bin/gcc ];then
+#    rm ~/.local/bin/gcc
+#else
+#    true
+#fi
 
-# remove compat bin links
-if [ -e ~/.local/bin/python ];then
-    rm ~/.local/bin/python
-else
-    true
-fi
-if [ -e ~/.local/bin/gcc ];then
-    rm ~/.local/bin/gcc
-else
-    true
-fi
-
-gcc --version
-python --version
+#gcc --version
+#python --version
