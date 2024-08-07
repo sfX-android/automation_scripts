@@ -1,2 +1,12 @@
 ---
 
+- name: "Applying patches"
+  shell: |
+    source build/envsetup.sh > /dev/null \
+      && echo 'applying patch:' \
+      && {{ item }}
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  loop:
+    - "repopick --gerrit https://gerrit.twrp.me -f 7524/2 -P bootable/recovery"  # f2fs: fix repair/format patch
