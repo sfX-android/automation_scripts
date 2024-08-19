@@ -60,7 +60,7 @@
     - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
   
 - name: "Clean-Up out/ ({{ SEPARATE_OUT_DIR }})"
-   ansible.builtin.shell: "rm -rf {{ SEPARATE_OUT_DIR }}"
+  ansible.builtin.shell: "rm -rf {{ SEPARATE_OUT_DIR }}"
   register: rm_other_out
   when: 
     - (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true")
