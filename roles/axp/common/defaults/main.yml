@@ -68,8 +68,8 @@ unsupported_device_kernel_patch: true    # enable kernel patching by default, ov
 
 # extendrom stuff
 use_extendrom: "true"
-extendrom_package_list_default: "Phonesky_AXP-OS additional_repos.xml Magisk AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG NeoLauncher-latest"
-#extendrom_package_list_default: "Phonesky_AXP-OS_testing additional_repos.xml Magisk AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG NeoLauncher-latest"
+#extendrom_package_list_default: "Phonesky_AXP-OS additional_repos.xml Magisk AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG NeoLauncher-latest"
+extendrom_package_list_default: "Phonesky_AXP-OS_testing additional_repos.xml Magisk AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG NeoLauncher-latest"
 extendrom_fdroid_repos: "molly.xml nailyk.xml threema.xml futo_org.xml"
 extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
