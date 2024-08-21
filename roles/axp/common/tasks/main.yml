@@ -14,6 +14,15 @@
   
   when: just_git_push
 
+- name: "Get local manifests (if set)"
+  git:
+    repo: "{{ git_repo_local_manifests }}"
+    dest: "{{ SRCPATH }}/.repo/local_manifests"
+    version: "{{ git_repo_local_manifests_branch }}"
+    force: true
+  timeout: 180
+  when: git_repo_local_manifests is defined
+
 - block:
 
   - include_tasks: sync.yml    
