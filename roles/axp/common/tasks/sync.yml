@@ -16,6 +16,9 @@
       git checkout {{ axp_main_branch | d('HEAD') }}
       sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
       git submodule update --init --recursive
+      git submodule status >> {{ BUILD_LOG }} 2>&1
+      git submodule update >> {{ BUILD_LOG }} 2>&1
+      git submodule status >> {{ BUILD_LOG }} 2>&1
       git pull
       git lfs pull
       git log -1
