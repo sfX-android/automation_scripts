@@ -6,6 +6,17 @@
      shell: |
        export HOME="{{ BUILDHOME }}"
        echo "BEFORE reset:" >> {{ BUILD_LOG }}
+       git log -1 >> {{ BUILD_LOG }} 2>&1
+       git status >> {{ BUILD_LOG }} 2>&1
+       if [ $? -eq 128 ];then
+         true
+       else
+         git am --abort >> {{ BUILD_LOG }} 2>&1
+         git rebase --abort >> {{ BUILD_LOG }} 2>&1
+         git reset --hard >> {{ BUILD_LOG }} 2>&1
+         git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
+       fi
+       cd Patches/Linux
        git status >> {{ BUILD_LOG }} 2>&1
        if [ $? -eq 128 ];then
          true
@@ -18,25 +29,11 @@
      args:
        chdir: "{{ DOSPATH }}"
        executable: /bin/bash
-
-#   - name: "fix DOS module locations"
-#     shell: |
-#       sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
-#     args:
-#       executable: /bin/bash
-#       chdir: "{{ DOSPATH }}"
-
-   #- name: "clone DOS"
-   #  git: 
-   #    repo: "{{ axp_git_repo }}"
-   #    dest: "{{ DOSPATH }}"
-   #    force: true
-   #    version: "{{ axp_main_branch | d('HEAD') }}"
-   #    clone: true
        
    - name: "DOS State"
      shell: |
         echo "AFTER reset + sync:" >> {{ BUILD_LOG }}
+        git log -1 >> {{ BUILD_LOG }} 2>&1
         git status >> {{ BUILD_LOG }} 2>&1
      args:
        chdir: "{{ DOSPATH }}"
