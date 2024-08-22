@@ -21,7 +21,7 @@
     version: "{{ git_repo_local_manifests_branch }}"
     force: true
   timeout: 180
-  when: git_repo_local_manifests is defined
+  when: git_repo_local_manifests is defined and foo is defined
 
 - block:
 
