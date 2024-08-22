@@ -16,16 +16,8 @@
          git reset --hard >> {{ BUILD_LOG }} 2>&1
          git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
        fi
-       cd Patches/Linux
-       git status >> {{ BUILD_LOG }} 2>&1
-       if [ $? -eq 128 ];then
-         true
-       else
-         git am --abort >> {{ BUILD_LOG }} 2>&1
-         git rebase --abort >> {{ BUILD_LOG }} 2>&1
-         git reset --hard >> {{ BUILD_LOG }} 2>&1
-         git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
-       fi
+       git submodule status >> {{ BUILD_LOG }} 2>&1
+       git submodule update >> {{ BUILD_LOG }} 2>&1
      args:
        chdir: "{{ DOSPATH }}"
        executable: /bin/bash
