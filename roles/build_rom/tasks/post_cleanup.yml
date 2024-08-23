@@ -1,7 +1,7 @@
 ---
 
 - name: "POST: Clean-Up out/ (post_cleanup_product_dir)"
-  anible.builtin.shell: "rm -rf {{ post_cleanup_product_dir }}/"
+  ansible.builtin.shell: "rm -rf {{ post_cleanup_product_dir }}/"
   no_log: true
   when:
     - SEPARATE_OUT_DIR is not defined
@@ -9,19 +9,19 @@
 
 - name: "POST: Clean-Up out/ (SEPARATE_OUT_DIR)"
   no_log: true
-  anible.builtin.shell: "rm -rf {{ SEPARATE_OUT_DIR }}/"
+  ansible.builtin.shell: "rm -rf {{ SEPARATE_OUT_DIR }}/"
   when:
     - SEPARATE_OUT_DIR is defined
     - post_cleanup_product_override is not defined
 
 - name: "POST: Clean-Up out/ (post_cleanup_product_override)"
   no_log: true
-  anible.builtin.shell: "rm -rf {{ post_cleanup_product_override }}"
+  ansible.builtin.shell: "rm -rf {{ post_cleanup_product_override }}"
   when:
     - post_cleanup_product_override is defined
 
 - name: "POST: Clean-Up build script"
-  file:
+  ansible.builtin.file:
     path: "./build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
     state: absent
   when: keep_build_sh is undefined and DISABLED_ATM is defined
