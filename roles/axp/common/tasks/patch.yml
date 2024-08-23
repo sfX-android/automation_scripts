@@ -21,7 +21,7 @@
 
 - name: "disable wireguard handling by vendor/axp"
   file:
-    path: "{{ SRCPATH }}/.wg.patched"
+    path: "{{ SRCPATH }}/{{ target_kernel_dir }}/.wg.patched"
     state: touch
   when: skip_wireguard is defined and skip_wireguard | bool
 
