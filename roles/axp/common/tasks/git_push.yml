@@ -175,8 +175,10 @@
       # tag the current patched state and push accordingly
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || (git tag -d "$TAG" >> {{ BUILD_LOG }} 2>&1; git push up --delete "$TAG" >> {{ BUILD_LOG }} 2>&1 || true; git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1)
       #git tag latest 2>> /dev/null || (git tag -d latest; git push up --delete latest 2>> /dev/null || true; git tag latest)
+      {% if not just_git_push %}
       git push --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[GIT] pushed/updated tag: $TAG" >> {{ BUILD_LOG }}
+      {% endif %}
       
       # change manifest line to point to AXP.OS org, ensures private org for proprietary
       croot
