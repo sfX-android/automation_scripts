@@ -4,6 +4,7 @@
   file:
     path: "{{ JKZIPDIR }}"
     state: absent
+  when:  (override_clean_basic == "undef" and clean_basic == "true") or (override_clean_basic == "true")
 
 - name: "Cleanup old build log"
   file:
