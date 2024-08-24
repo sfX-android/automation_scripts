@@ -85,7 +85,7 @@
       fi
 
       # generic vendor match
-      repoisvendor=$(echo "$reponame" | grep vendor_ || true)
+      repoisvendor=$(echo "$reponame" | grep vendor_ | grep -vE "packages|qcom|nxp|lineage" || true)
       
       # create repo if non-existent
       # using a workaround as github cli does not allow to set permission on create
