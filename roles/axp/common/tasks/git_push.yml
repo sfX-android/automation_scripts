@@ -107,7 +107,6 @@
       
       if $(git fetch up >> /dev/null 2>&1);then
         echo "[GIT] repo exists within the org already" >> {{ BUILD_LOG }}
-        git fetch --unshallow up >> /dev/null 2>> {{ BUILD_LOG }} || true
       else
         echo "[GIT] repo does not exist within the org yet! Creating..." >> {{ BUILD_LOG }}
         git remote remove up 2>> /dev/null || true
