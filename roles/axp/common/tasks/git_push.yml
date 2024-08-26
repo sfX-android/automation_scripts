@@ -94,7 +94,7 @@
       # $> gh auth login
       # $> tea login add (see common/defaults/main.yml for details)
       git remote remove up 2>> /dev/null || true
-      git fetch --unshallow >> /dev/null 2>> {{ BUILD_LOG }} || true
+      git fetch --unshallow >> /dev/null 2>&1 || true
       # first check if this is a problematic repo
       prepo=$(echo "{{ git_private_repos }},${repoisvendor}" | grep -o "$reponame" || true)
       if [ -z "$prepo" ];then
