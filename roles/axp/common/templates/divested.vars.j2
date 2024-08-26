@@ -60,7 +60,7 @@ export DOS_DEBLOBBER_REMOVE_ATFWD=true #Set true to remove basic ATFWD blobs
 export DOS_DEBLOBBER_REMOVE_AUDIOFX=true #Set true to remove AudioFX
 export DOS_DEBLOBBER_REMOVE_APTX=false #Set true to remove aptX Bluetooth codec
 export DOS_DEBLOBBER_REMOVE_CAMEXT=false #Set true to remove camera extensions
-export DOS_DEBLOBBER_REMOVE_CNE=true #Set true to remove all CNE blobs #XXX: Breaks Wi-Fi calling
+#export DOS_DEBLOBBER_REMOVE_CNE=true #Set true to remove all CNE blobs #XXX: Breaks Wi-Fi calling
 export DOS_DEBLOBBER_REMOVE_DPM=false #Set true to remove all DPM blobs #XXX: Maybe breaks multi-sim and carrier aggregation (LTE+)
 export DOS_DEBLOBBER_REMOVE_DPP=false #Set true to remove all Display Post Processing blobs #XXX: Breaks boot on select devices
 export DOS_DEBLOBBER_REMOVE_FP=false #Set true to remove all fingerprint reader blobs
@@ -107,6 +107,7 @@ export AXP_DEFCONFIG_GLOBALS="CONFIG_NET CONFIG_INET CONFIG_NET_UDP_TUNNEL CONFI
 export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC by default
 #export DOS_GRAPHENE_HMALLOC_TOGGLE=false # do not enable the hmalloc disable toogle (bc it is supported on specific Android releases only) - WIP
 export DOS_MICROG_SUPPORT=false #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
+export DOS_DEBLOBBER_REMOVE_CNE=false # allow VoLTE/WiFi calling
 
 # git stuff used for commiting changes within the sources
 export DOS_PATCHER_URI_KERNEL=https://gitlab.com/divested-mobile/kernel_patches/-/blob/master
