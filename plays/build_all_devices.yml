@@ -9,9 +9,8 @@
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
 
-      - include_role:
-          name: vault
-          public: yes
+      - import_role:
+          name: common
     
       - debug:
           var: vault_tg_group_id_failing
