@@ -12,7 +12,7 @@
         { 
           "debug": false,
           "dry_run": true,
-          "environment": "{ \"debug_build\":\"{{ item.debug_build | d(True) }}\", \"post_cleanup\":\"{{ post_cleanup | d(True) }}\", \"unstable_build\":\"{{ item.unstable_build | d(True) }}\",  }",
+          "environment": "{ \"debug_build\":\"{{ item.debug_build | d(True) }}\", \"post_cleanup\":\"{{ item.post_cleanup | d(True) }}\", \"unstable_build\":\"{{ item.unstable_build | d(True) }}\",  }",
           "template_id": {{ item.tid }}
         }
     status_code: [ 201, 200 ]
@@ -22,5 +22,6 @@
   loop: "{{ semaphore_template_ids }}"
 
   # the loop item (semaphore_template_ids) must be set as:
-  #   - { tid: XXX, debug_build: True, unstable_build: True }
-  #   - { ... }
+  #   - { tid: XXX, debug_build: False, unstable_build: False, post_cleanup: False }
+  # while only tid is a mandatory key as the others have common defaults set:
+  #   - { tid: XXX }
