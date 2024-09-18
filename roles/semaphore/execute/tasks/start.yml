@@ -11,7 +11,7 @@
     body: |
         { 
           "debug": false,
-          "dry_run": false,
+          "dry_run": true,
           "environment": "{ \"debug_build\":\"{{ debug_build | d(True) }}\", \"post_cleanup\":\"{{ post_cleanup | d(True) }}\", \"unstable_build\":\"{{ unstable_build | d(True) }}\",  }",
           "template_id": {{ item }}
         }
