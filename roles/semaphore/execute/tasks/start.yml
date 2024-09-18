@@ -12,11 +12,15 @@
         { 
           "debug": false,
           "dry_run": true,
-          "environment": "{ \"debug_build\":\"{{ debug_build | d(True) }}\", \"post_cleanup\":\"{{ post_cleanup | d(True) }}\", \"unstable_build\":\"{{ unstable_build | d(True) }}\",  }",
-          "template_id": {{ item }}
+          "environment": "{ \"debug_build\":\"{{ item.debug_build | d(True) }}\", \"post_cleanup\":\"{{ post_cleanup | d(True) }}\", \"unstable_build\":\"{{ item.unstable_build | d(True) }}\",  }",
+          "template_id": {{ item.tid }}
         }
     status_code: [ 201, 200 ]
   register: tmpltask
   changed_when: tmpltask.status == 201
   #no_log: True
   loop: "{{ semaphore_template_ids }}"
+
+  # the loop item (semaphore_template_ids) must be set as:
+  #   - { tid: XXX, debug_build: True, unstable_build: True }
+  #   - { ... }
