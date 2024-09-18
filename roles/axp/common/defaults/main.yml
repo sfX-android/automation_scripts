@@ -59,6 +59,8 @@ axp_clean_paths:
     - "{{ SRCPATH }}/external/firebase-messaging"
     - "{{ SRCPATH }}/kernel"
     - "{{ SRCPATH }}/device"
+# allow to (manually) set selinux permissive
+axp_allow_permissive: True
 
 # kernel patching
 divest_cve_checker_download: "https://gitlab.com/divested-mobile/cve_checker/-/jobs/4820813129/artifacts/raw/build/libs/cve_checker-0.6.8.jar?inline=false"
