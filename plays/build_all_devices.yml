@@ -1,0 +1,25 @@
+---
+
+- name: "Execute full build run"
+  hosts: localhost
+  connection: local
+  gather_facts: false
+    
+  tasks:
+    # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
+    - block:
+
+      - include_role:
+          name: vault
+          public: yes
+    
+      - debug:
+          var: vault_tg_group_id_failing
+
+      - fail:
+          msg: "boo.. vault_tg_group_id_failing is undefined"
+        when: vault_tg_group_id_failing is undefined
+
+      - include_role:
+          name: semaphore/execute
+          public: true
