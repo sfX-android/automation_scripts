@@ -12,7 +12,7 @@
         { 
           "debug": false,
           "dry_run": true,
-          "environment": "{ \"debug_build\":\"{{ item.debug_build | d(True) }}\", \"post_cleanup\":\"{{ item.post_cleanup | d(True) }}\", \"unstable_build\":\"{{ item.unstable_build | d(True) }}\"  }",
+          "environment": "{ \"debug_build\":\"{{ item.debug_build | d('true') }}\", \"post_cleanup\":\"{{ item.post_cleanup | d('true') }}\", \"unstable_build\":\"{{ item.unstable_build | d('true') }}\"  }",
           "template_id": {{ item.tid }}
         }
     status_code: [ 201, 200 ]
