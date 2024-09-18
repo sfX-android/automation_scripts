@@ -1,0 +1,22 @@
+---
+
+- name: "Start Semaphore task(s)"
+  ansible.builtin.uri:
+    url: "{{ semaphore_api_uri }}/project/{{ semaphore_project_id }}/tasks"
+    method: POST
+    headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ vault_semaphore_api_rw }}"
+    body_format: json
+    body: |
+        { 
+          "debug": false,
+          "dry_run": false,
+          "environment": "{ \"debug_build\":\"{{ debug_build | d(True) }}\", \"post_cleanup\":\"{{ post_cleanup | d(True) }}\", \"unstable_build\":\"{{ unstable_build | d(True) }}\",  }",
+          "template_id": {{ item }}
+        }
+    status_code: [ 201, 200 ]
+  register: tmpltask
+  changed_when: tmpltask.status == 201
+  #no_log: True
+  loop: "{{ semaphore_template_ids }}"
