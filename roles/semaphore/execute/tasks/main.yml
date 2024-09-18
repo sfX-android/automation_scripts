@@ -1,3 +1,4 @@
 ---
 
-- include_tasks: start.yml
+- include_tasks: build_all_axp.yml
+  when: build_schedule_axp is defined and build_schedule_axp
