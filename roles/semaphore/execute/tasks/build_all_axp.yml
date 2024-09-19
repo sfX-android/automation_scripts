@@ -1,6 +1,6 @@
 ---
 
-- name: "Start Semaphore task(s)"
+- name: "Start Semaphore task(s) - AXP.OS supported"
   ansible.builtin.uri:
     url: "{{ semaphore_api_uri }}/project/{{ semaphore_project_id }}/tasks"
     method: POST
@@ -23,11 +23,36 @@
   loop:
 #    - { tid: 105 } # cheetah
     - { tid: 86 } # j5y17lte
-    - { tid: 109 } # lynx
+#    - { tid: 109 } # lynx
     - { tid: 103 } # bluejay
     - { tid: 84 } # hotdog
-    - { tid: 87 } # fajita
-    - { tid: 113, debug_build: "false", unstable_build: "false"  } # xz2c
-    - { tid: 102, debug_build: "false", unstable_build: "false"  } # hotdogb
-    - { tid: 111, debug_build: "false", unstable_build: "false" } # oriole
-    - { tid: 100, debug_build: "false", unstable_build: "false" } # sunfish
+#    - { tid: 87 } # fajita
+  when: build_axp_official is defined and build_axp_official
+
+# the same as above but with flipped defaults as we have no test devices
+- name: "Start Semaphore task(s) - Community supported"
+  ansible.builtin.uri:
+    url: "{{ semaphore_api_uri }}/project/{{ semaphore_project_id }}/tasks"
+    method: POST
+    headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ vault_semaphore_api_rw }}"
+    body_format: json
+    body: |
+        { 
+          "debug": false,
+          "dry_run": false,
+          "environment": "{ \"debug_build\":\"{{ item.debug_build | d('false') }}\", \"post_cleanup\":\"{{ item.post_cleanup | d('true') }}\", \"unstable_build\":\"{{ item.unstable_build | d('false') }}\"  }",
+          "template_id": {{ item.tid }}
+        }
+    status_code: [ 201, 200 ]
+  register: tmpltask
+  changed_when: tmpltask.status == 201
+  #no_log: True
+  # the following list also indicates the order in which a full build run will be done
+  loop:
+#    - { tid: 113  } # xz2c
+#    - { tid: 102  } # hotdogb
+    - { tid: 111 } # oriole
+    - { tid: 100 } # sunfish
+  when: build_axp_community is defined and build_axp_community
