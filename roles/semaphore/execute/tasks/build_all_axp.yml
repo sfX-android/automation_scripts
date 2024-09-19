@@ -22,7 +22,7 @@
   # the following list also indicates the order in which a full build run will be done
   loop:
 #    - { tid: 105 } # cheetah
-    - { tid: 86 } # j5y17lte
+#    - { tid: 86 } # j5y17lte
 #    - { tid: 109 } # lynx
     - { tid: 103 } # bluejay
     - { tid: 84 } # hotdog
@@ -51,8 +51,8 @@
   #no_log: True
   # the following list also indicates the order in which a full build run will be done
   loop:
-#    - { tid: 113  } # xz2c
-#    - { tid: 102  } # hotdogb
     - { tid: 111 } # oriole
     - { tid: 100 } # sunfish
+    - { tid: 102, unstable_build: 'true'  } # hotdogb
+#    - { tid: 113, unstable_build: 'true' } # xz2c
   when: build_axp_community is defined and build_axp_community
