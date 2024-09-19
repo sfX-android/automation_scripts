@@ -22,11 +22,11 @@
   # the following list also indicates the order in which a full build run will be done
   loop:
 #    - { tid: 105 } # cheetah
+    - { tid: 86 } # j5y17lte
     - { tid: 109 } # lynx
     - { tid: 103 } # bluejay
     - { tid: 84 } # hotdog
     - { tid: 87 } # fajita
-    - { tid: 86 } # j5y17lte
     - { tid: 113, debug_build: "false", unstable_build: "false"  } # xz2c
     - { tid: 102, debug_build: "false", unstable_build: "false"  } # hotdogb
     - { tid: 111, debug_build: "false", unstable_build: "false" } # oriole
