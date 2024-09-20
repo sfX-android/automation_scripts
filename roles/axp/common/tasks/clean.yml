@@ -9,15 +9,18 @@
        git log -1 >> {{ BUILD_LOG }} 2>&1
        git status >> {{ BUILD_LOG }} 2>&1
        if [ $? -eq 128 ];then
-         true
+         echo "No local changes in DOS repo found!"  >> {{ BUILD_LOG }}
        else
          git am --abort >> {{ BUILD_LOG }} 2>&1
          git rebase --abort >> {{ BUILD_LOG }} 2>&1
-         git reset --hard >> {{ BUILD_LOG }} 2>&1
          git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
        fi
+       git reset --hard >> {{ BUILD_LOG }} 2>&1
+       git submodule update --init --recursive
        git submodule status >> {{ BUILD_LOG }} 2>&1
        git submodule update >> {{ BUILD_LOG }} 2>&1
+       git submodule status >> {{ BUILD_LOG }} 2>&1
+       git reset --hard >> {{ BUILD_LOG }} 2>&1
      args:
        chdir: "{{ DOSPATH }}"
        executable: /bin/bash
