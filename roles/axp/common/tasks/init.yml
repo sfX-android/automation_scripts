@@ -33,4 +33,4 @@
         executable: /bin/bash
         chdir: "{{ DOSPATH }}"
 
-  when: not dosdir.stat.isdir
+  when: dosdir.stat.isdir is defined and not dosdir.stat.isdir
