@@ -28,11 +28,13 @@ os_name: "AXP.OS"
 #los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','19.1') | replace('a11','18.1') | replace('a10','17.1') | replace('a9','16.0') }}"
 #git_repo_main_branch: "lineage-{{ los_version }}"
 git_repo_main_branch: "{{ los_version_gitbranch }}"
-DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
+#DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
+DOSPATH: "/ssd2/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 # SRCPATH HAS TO be part of DOSPATH - this is a divestOS limitation and cannot be changed
 # If you need to use a different path for any reason you can use symlinks for the "LineageOS-XX" folders
 # but ensure you leave the directory structure intact then
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
+
 axp_finalzip_dir: "{{ ZIPDIR }}/LineageOS-{{ los_version }}/release_keys/"
 JKZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
