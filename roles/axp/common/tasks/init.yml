@@ -1,0 +1,36 @@
+---
+
+- name: "Check init DOS state"
+  ansible.builtin.stat:
+    path: "{{ DOSPATH }}/.git"
+  register: dosdir
+
+- block:
+
+    - name: "Init DOS"
+      git: 
+        repo: "{{ axp_git_repo }}"
+        dest: "{{ DOSPATH }}"
+        force: true
+        version: "{{ axp_main_branch | d('HEAD') }}"
+        clone: yes
+        recursive: true
+        track_submodules: true
+    
+    - name: "Init DOS: syncing submodules/LFS"
+      shell: |
+          git fetch --all
+          git checkout {{ axp_main_branch | d('HEAD') }}
+          sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
+          git submodule update --init --recursive
+          git submodule status >> {{ BUILD_LOG }} 2>&1
+          git submodule update >> {{ BUILD_LOG }} 2>&1
+          git submodule status >> {{ BUILD_LOG }} 2>&1
+          git pull
+          git lfs pull
+          git log -1
+      args:
+        executable: /bin/bash
+        chdir: "{{ DOSPATH }}"
+
+  when: not dosdir.stat.isdir
