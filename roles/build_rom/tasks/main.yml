@@ -18,5 +18,5 @@
     - ROM_FLAVOR == "axp"
     - commit_push | d(False)
     - not early_push | d(False)
-    - not axp_release_recovery | d(False)
+    - not axp_build_recovery_only | d(False)
     - (override_release_build == "undef" and release_build == "true") or (override_release_build == "true")
