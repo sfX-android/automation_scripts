@@ -9,9 +9,12 @@
       
     - name: "Init DOS: initial Sync!"
       shell: |
-          git clone {{ axp_git_repo }} . -b "{{ axp_main_branch | d('HEAD') }}"
-          git fetch --all
-          git checkout {{ axp_main_branch | d('HEAD') }}
+          git init
+          git remote add origin {{ axp_git_repo }}
+          git pull
+          git checkout "{{ axp_main_branch | d('HEAD') }}" -f
+          #git branch --set-upstream-to origin/{{ axp_main_branch | d('HEAD') }}
+          
           sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
           git submodule update --init --recursive
           git submodule status >> {{ BUILD_LOG }} 2>&1
