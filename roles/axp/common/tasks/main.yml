@@ -2,6 +2,7 @@
 
 - include_tasks: prep.yml
 - include_tasks: vars.yml
+- include_tasks: init.yml
 - include_tasks: clean.yml
 
 - name: "Just push to git selected!"
