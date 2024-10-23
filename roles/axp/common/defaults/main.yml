@@ -150,10 +150,10 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         cd out/target/product/{{ target_model }}
         if [ -d factory ];then rm -rf factory;fi
         if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
-        unzip /home/androidsource/do-not-touch/axp/Build/LineageOS-20.0/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
+        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
         cd factory/{{ target_model }}-${FACTORYID}
         cp ../../{{ os_name }}-$VERSION-{{ target_model }}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip
-        cp /home/androidsource/do-not-touch/axp/Build/LineageOS-20.0/user-keys/avb_pkmd.bin .
+        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
         for f in flash-base.sh flash-all.sh;do
             awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
         done
