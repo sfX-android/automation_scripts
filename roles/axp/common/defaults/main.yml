@@ -14,6 +14,8 @@ git_repo_main_manifests: "https://github.com/LineageOS/android.git"
 gitea_login_name: repocr
 # the organization name within git(ea):
 git_axpos_org_name: "AXP.OS"
+# always push changes for reproducible builds
+commit_push: True
 # just push changes after patching, skip build
 just_git_push: False
 # private git URI (incl org) for creating/updating repos for AXP.OS
