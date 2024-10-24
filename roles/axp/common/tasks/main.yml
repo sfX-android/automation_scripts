@@ -5,24 +5,23 @@
 - include_tasks: init.yml
 - include_tasks: clean.yml
 
-- name: "Just push to git selected!"
+- name: "Just push-to-git selected!"
   block:
+      - name: "Get local manifests (if set)"
+        git:
+          repo: "{{ git_repo_local_manifests }}"
+          dest: "{{ SRCPATH }}/.repo/local_manifests"
+          version: "{{ git_repo_local_manifests_branch }}"
+          force: true
+        timeout: 180
+        when: git_repo_local_manifests is defined
+    
+      - include_tasks: git_push.yml
+      - debug:
+          msg: Stopping here as just_git_push=true
+      - meta: end_play
 
-  - include_tasks: git_push.yml
-  - debug:
-      msg: Stopping here as just_git_push=true
-  - meta: end_play
-  
   when: just_git_push
-
-- name: "Get local manifests (if set)"
-  git:
-    repo: "{{ git_repo_local_manifests }}"
-    dest: "{{ SRCPATH }}/.repo/local_manifests"
-    version: "{{ git_repo_local_manifests_branch }}"
-    force: true
-  timeout: 180
-  when: git_repo_local_manifests is defined and foo is defined
 
 - block:
 
