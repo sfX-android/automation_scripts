@@ -191,17 +191,17 @@
       # change manifest line to point to AXP.OS org, ensures private org for proprietary
       croot
       if [ -z "$prepo" ];then
-        sed -i -E 's/remote="([[:graph:]]+)"/remote="axp.os" /g;s|(name=".*") (path="'$localpath'")|name="'$reponame'" \2|g' ${REPRMANIFEST}
+        echo "[GIT] setting manifest for $reponame to AXP.OS >github<" >> {{ BUILD_LOG }}
+        sed -i -E 's|(name=".*")\s+(path="'$localpath'")\s+remote="([[:graph:]]+)" |name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
       else
-        sed -i -E 's/remote="([[:graph:]]+)"/remote="axp.os-private" /g;s|(name=".*") (path="'$localpath'")|name="'$reponame'" \2|g' ${REPRMANIFEST}
+        echo "[GIT] setting manifest for $reponame to AXP.OS >bbr<" >> {{ BUILD_LOG }}
+        sed -i -E 's|(name=".*")\s+(path="'$localpath'")\s+remote="([[:graph:]]+)" |name="'$reponame'" \2 remote="axp.os-private" |g' ${REPRMANIFEST}
       fi
       echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}      
     done
-    
-    # closing new manifest
-    croot
         
     # push manifest
+    croot
     mv ${REPRMANIFEST} .repo/local_manifests/axp.xml
     cd .repo/local_manifests/
     cp -a {{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh . || true
