@@ -1,7 +1,7 @@
 ---
 
 #- name: "ensure .ansible dir is where we expect it"
-#  file:
+#  ansible.builtin.file:
 #    src: "{{ BUILDHOME }}/.ansible"
 #    dest: "{{ semaphore_work_dir }}"
 #    state: link
@@ -9,7 +9,7 @@
 - block:
 
       - name: "Ensure no compat bin links exist"
-        file:
+        ansible.builtin.file:
           path: "{{ item }}"
           state: absent
         loop:
@@ -18,7 +18,7 @@
         when: android_shortversion != "a9"
     
       - name: "Ensure compat bin links exist"
-        file:
+        ansible.builtin.file:
           src: "{{ item.target }}"
           path: "{{ item.lname }}"
           state: link
@@ -26,6 +26,11 @@
           - { lname: "~/.local/bin/gcc", target: "/usr/bin/gcc-9"  }
           - { lname: "~/.local/bin/python", target: "/usr/bin/python2" }
         when: android_shortversion == "a9"
+
+      - name: "Remove any previous log file"
+        ansible.builtin.shell: >-
+            find {{ BUILDHOME }} -name '{{ build_log_name_noid }}.*' -delete
+        when: not keep_build_logs
 
       - name: "Setup logging symlink for 'latest'"
         ansible.builtin.file:
