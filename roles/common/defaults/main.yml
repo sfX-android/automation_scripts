@@ -86,6 +86,9 @@ post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 manifest_paths_file: "/tmp/manifest_paths.{{ ROM_FLAVOR }}"
 build_log_name: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
 BUILD_LOG: "{{ BUILDHOME }}/{{ build_log_name }}"
+build_log_name_latest: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_latest.log"
+build_log_name_latest_full: "{{ BUILDHOME }}/{{ build_log_name_latest }}"
+keep_build_logs: True    # if you override this in your env with >False< ANY previous build log will be deleted in advance
 post_cleanup: 'false'    # will delete the output directory after a successful build if set to true
 
 # build signing
