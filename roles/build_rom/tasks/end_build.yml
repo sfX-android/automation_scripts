@@ -27,8 +27,8 @@
         - ROM_FLAVOR == "axp"
         - axp_build_recovery_only is defined and axp_build_recovery_only
     
-    - name: "Get current build filename"
-      shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' | tr -d '\\n' | sed 's#^\\./##g'"
+    - name: "Get current/latest build filename"
+      shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' -printf '%T@ %p\\n' | sort -n | tail -1 | cut -d' ' -f2- | tr -d '\\n' | sed 's#^\\./##g'"
       args:
         chdir: "{{ JKZIPDIR }}"
       register: ROMFILE
