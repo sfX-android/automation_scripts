@@ -84,12 +84,14 @@ SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 #SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
 manifest_paths_file: "/tmp/manifest_paths.{{ ROM_FLAVOR }}"
-build_log_name: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
-BUILD_LOG: "{{ BUILDHOME }}/{{ build_log_name }}"
-build_log_name_latest: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_latest.log"
-build_log_name_latest_full: "{{ BUILDHOME }}/{{ build_log_name_latest }}"
-keep_build_logs: True    # if you override this in your env with >False< ANY previous build log will be deleted in advance
 post_cleanup: 'false'    # will delete the output directory after a successful build if set to true
+
+# build logging
+build_log_name: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
+BUILD_LOG_ID: "{{ BUILDHOME }}/{{ build_log_name }}"
+build_log_name_latest: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_latest.log"
+BUILD_LOG: "{{ BUILDHOME }}/{{ build_log_name_latest }}"
+keep_build_logs: True    # if you override this in your env with >False< ANY previous build log will be deleted in advance
 
 # build signing
 sign_build: true
@@ -192,8 +194,8 @@ incompat_cross_version_paths_DISABLED:
 #topic:P_asb_2022-02 OR # merged officially!
 #topic:P_asb_2022-03 OR # merged officially!
 #topic:P_asb_2022-04 OR # merged officially!
-# e.g.: https://review.lineageos.org/q/topic:P_asb_2024-02
-SECPATCH_DATE_PIE: "2024-08"
+# e.g.: https://review.lineageos.org/q/topic:P_asb_2024-10
+SECPATCH_DATE_PIE: "2024-10"
 sec_patch_topics_pie:
       - topic:P_asb_2022-05
       - topic:P_asb_2022-06
@@ -222,4 +224,6 @@ sec_patch_topics_pie:
       - topic:P_asb_2024-05
       - topic:P_asb_2024-06
       - topic:P_asb_2024-07
+      - topic:P_asb_2024-08
+      - topic:P_asb_2024-09
       - topic:P_asb_{{ SECPATCH_DATE_PIE }}
