@@ -8,23 +8,30 @@
 
 - block:
 
-  - name: "Ensure no compat bin links exist"
-    file:
-      path: "{{ item }}"
-      state: absent
-    loop:
-      - "~/.local/bin/python"
-      - "~/.local/bin/gcc"
-    when: android_shortversion != "a9"
+      - name: "Ensure no compat bin links exist"
+        file:
+          path: "{{ item }}"
+          state: absent
+        loop:
+          - "~/.local/bin/python"
+          - "~/.local/bin/gcc"
+        when: android_shortversion != "a9"
+    
+      - name: "Ensure compat bin links exist"
+        file:
+          src: "{{ item.target }}"
+          path: "{{ item.lname }}"
+          state: link
+        loop:
+          - { lname: "~/.local/bin/gcc", target: "/usr/bin/gcc-9"  }
+          - { lname: "~/.local/bin/python", target: "/usr/bin/python2" }
+        when: android_shortversion == "a9"
 
-  - name: "Ensure compat bin links exist"
-    file:
-      src: "{{ item.target }}"
-      path: "{{ item.lname }}"
-      state: link
-    loop:
-      - { lname: "~/.local/bin/gcc", target: "/usr/bin/gcc-9"  }
-      - { lname: "~/.local/bin/python", target: "/usr/bin/python2" }
-    when: android_shortversion == "a9"
+      - name: "Setup logging symlink for 'latest'"
+        ansible.builtin.file:
+          src: "{{ BUILD_LOG }}"
+          dest: "{{ BUILD_LOG_LATEST }}"
+          force: true
+          state: link
 
   when: android_shortversion is defined
