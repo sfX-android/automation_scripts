@@ -16,8 +16,8 @@
 
 - name: "Sync"
   shell: >
-      {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} 2>> {{ BUILD_LOG }}\
-        || {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} --fail-fast 
+      {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} >> {{ BUILD_LOG }} 2>&1\
+        || {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} --fail-fast >> {{ BUILD_LOG }} 2>&1
   args:
     chdir: "{{ SRCPATH }}"
   no_log: "{{ debug_off | d(true) }}"
