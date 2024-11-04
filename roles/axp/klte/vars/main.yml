@@ -1,0 +1,19 @@
+---
+# human readable model name
+target_model_full: "Samsung S5"
+
+# boot debugger path & config
+extendrom_debug_path_default: /cache
+extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_kernel_default: 100
+extendrom_debug_path_size_selinux_default: 200
+extendrom_debug_path_size_crash_default: 200
+
+# extend extendrom_package_list
+#extendrom_package_list: "{{ extendrom_package_list_default }} opencamera_j5_latest"
+
+# common defaults overrides
+#vbmeta_verify: false
+
+# enable kernel patching for unsupported devices
+#divest_unsupported_device: true

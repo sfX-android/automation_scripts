@@ -1,0 +1,20 @@
+#!/bin/bash
+################################################################################################################
+# device specific vars for AXP.OS 
+#
+# overwrites/extends the global vars in: 
+# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/templates/divested.vars.j2
+#
+# additional / current list of possible options:
+# https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
+################################################################################################################
+
+# git push
+export AXP_GIT_PUSH_DEVICE_INCLUDE="device_samsung_klte|device_samsung_klte-common"
+export AXP_GIT_PUSH_VENDOR_INCLUDE="vendor_samsung"
+
+# CONFIG_ARM64_SW_TTBR0_PAN breaks boot!
+#export AXP_DEFCONFIG_DEVICE="CONFIG_ARM64_SW_TTBR0_PAN=n"
+
+# deblobbing audiofx breaks video recording due to the removal of libLifevibes_lvverx.so + libLifevibes_lvvetx.so
+#export DOS_DEBLOBBER_REMOVE_AUDIOFX=false
