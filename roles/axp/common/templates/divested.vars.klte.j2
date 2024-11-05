@@ -18,3 +18,6 @@ export AXP_GIT_PUSH_VENDOR_INCLUDE="vendor_samsung"
 
 # deblobbing audiofx breaks video recording due to the removal of libLifevibes_lvverx.so + libLifevibes_lvvetx.so
 #export DOS_DEBLOBBER_REMOVE_AUDIOFX=false
+
+# disable Wireguard patching (unsupported, bc kernel = v3.4)
+export AXP_DEFCONFIG_GLOBALS=""
