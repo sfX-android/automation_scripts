@@ -29,18 +29,7 @@ vbmeta_verify: false
 divest_unsupported_device: true
 unsupported_device_kernel_patch: true
 
-# defaults override (notify):
-device_cl: |-
-  ***{{ target_model_full }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR }} {{ android_shortversion }}***
+extendrom_allow_any_call_recording: 'true'
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/axp/{{ sub_model }})
-
-dtree_cl: |-
-  \- device tree: [commits](https://github.com/AXP-OS/android_device_lge_g4/commits/{{ build_tag }})
-
-cdtree_cl: |-
-  \- common tree: [commits](https://github.com/AXP-OS/android_device_lge_g4-common/commits/{{ build_tag }})
-
-kernel_cl: |-
-  \- Kernel: [commits](https://github.com/AXP-OS/kernel_lge_msm8992/commits/{{ build_tag }})
