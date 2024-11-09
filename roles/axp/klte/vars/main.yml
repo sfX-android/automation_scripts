@@ -24,4 +24,7 @@ target_kernel_dir: kernel/samsung/msm8974
 # disable Wireguard patching (unsupported, bc kernel = v3.4)
 skip_wireguard: True
 
+# no verified boot:
+vbmeta_verify: false
+
 extendrom_allow_any_call_recording: 'true'
