@@ -221,7 +221,7 @@ SH_COMMON_BUILD_SNIPPET: |
         export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
         {% if extendrom_packages_skip_dl is defined %}export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}{% endif %}
         export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
-        export MAGISK_TARGET_ARCH=arm64
+        #export MAGISK_TARGET_ARCH=
         export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
         export EXTENDROM_DEBUG_PATH={{ extendrom_debug_path |d (extendrom_debug_path_default) }}
         export EXTENDROM_DEBUG_PATH_SIZE_FULL={{ extendrom_debug_path_size_full | d(extendrom_debug_path_size_full_default) }}
