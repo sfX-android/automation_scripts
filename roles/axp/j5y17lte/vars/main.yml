@@ -21,11 +21,11 @@ vbmeta_verify: false
 # enable kernel patching
 divest_unsupported_device: true
 
-dtree_cl: |-
-  \- device tree: [commits](https://github.com/AXP-OS/device_samsung_j5y17lte/commits/{{ build_tag }})
+#dtree_cl: |-
+#  \- device tree: [commits](https://github.com/AXP-OS/device_samsung_j5y17lte/commits/{{ build_tag }})
 
-cdtree_cl: |-
-  \- common tree: [commits](https://github.com/AXP-OS/device_samsung_exynos7870-common/commits/{{ build_tag }}})
+#cdtree_cl: |-
+#  \- common tree: [commits](https://github.com/AXP-OS/device_samsung_exynos7870-common/commits/{{ build_tag }}})
 
-kernel_cl: |-
-  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_samsung_exynos7870/commits/{{ build_tag }})
+#kernel_cl: |-
+#  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_samsung_exynos7870/commits/{{ build_tag }})
