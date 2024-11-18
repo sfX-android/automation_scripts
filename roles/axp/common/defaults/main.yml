@@ -262,8 +262,8 @@ SH_COMMON_BUILD_SNIPPET: |
         echo -e "\t${FPID:16:16}"
         echo -e "\t${FPID:32:16}"
         echo -e "\t${FPID:48:16}\n"
-        out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/vbmeta.img || true
-        out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/vbmeta.img \
+        out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null || true
+        out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null \
             || (out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img;\
                 out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img)
         {% endif %}
