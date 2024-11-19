@@ -49,6 +49,11 @@
           - zip.sha512sum
           - zip.sha256sum
           - zip.prop
+
+      - name: "Verify ZIP integrity"
+        ansible.builtin.shell: "sha512sum --check {{ ROMFILE.stdout }}.sha512sum"
+        args:
+          chdir: "{{ rempath }}"
   
       - name: "Delete from unstable"
         ansible.builtin.file:
