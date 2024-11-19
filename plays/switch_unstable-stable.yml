@@ -51,7 +51,7 @@
           - zip.prop
 
       - name: "Verify ZIP integrity"
-        ansible.builtin.shell: "sha512sum --check {{ ROMFILE.stdout }}.sha512sum"
+        ansible.builtin.shell: "sha512sum --check {{ os_zip_filename_no_ext }}.zip.sha512sum"
         args:
           chdir: "{{ rempath }}"
   
