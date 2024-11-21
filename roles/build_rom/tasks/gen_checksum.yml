@@ -7,6 +7,6 @@
   register: hash
 
 - name: "Write hash {{ ROMFILE.stdout }}.sha256sum"
-  shell: "echo '{{ hash.stat.checksum }}    {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha256sum"
+  shell: "echo '{{ hash.stat.checksum }} {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha256sum"
   args:
     chdir: "{{ JKZIPDIR }}"
