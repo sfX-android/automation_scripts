@@ -24,7 +24,7 @@
   - name: "Ensure common 'apps' keys are used instead of generating them"
     ansible.builtin.file:
       src: "{{ common_apps_keydir }}/{{ item }}"
-      dest: "{{ SRC_KEYSDIR }}/{{ item }}"
+      dest: "{{ keysdir }}/{{ item }}"
       force: true
       state: link
     loop:
