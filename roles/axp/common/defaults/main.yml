@@ -37,6 +37,9 @@ DOSPATH: "/ssd2/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 # but ensure you leave the directory structure intact then
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
 
+# ensure we use our common apps key used to signed our own apps (e.g. Phonesky)
+common_apps_keydir: "/home/androidsource/do-not-touch/KEYS/AXP.OS"
+
 axp_finalzip_dir: "{{ ZIPDIR }}/LineageOS-{{ los_version }}/release_keys/"
 JKZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
