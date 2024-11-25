@@ -15,7 +15,7 @@ extendrom_package_list: "{{ extendrom_package_list_default }} opencamera_j5_late
 # path to the kernel dir (req for e.g. wireguard)
 #target_kernel_dir: kernel/samsung/exynos7870
 
-# common defaults overrides
+# disable verified boot
 vbmeta_verify: false
 
 # enable kernel patching
