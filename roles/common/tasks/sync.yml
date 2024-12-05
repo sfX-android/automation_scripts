@@ -31,6 +31,8 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
+  register: synclfs
+  failed_when: synclfs.rc not in [ 0, 1 ]  # 1 means all have been skipped/no changes at all
   when: ROM_FLAVOR != 'MAID'
   # or (sync_lfs is defined and sync_lfs == 'true')
   no_log: "{{ debug_off | d(true) }}"
