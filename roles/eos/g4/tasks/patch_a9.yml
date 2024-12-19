@@ -8,7 +8,8 @@
   loop:
     - "repopick --gerrit https://review.lineageos.org -f 307334/2 -P frameworks/base/"  # scale font patch
     - "git apply external/patches/frameworks_base_shadercache.patch"                    # always use shader cache
-    - "cd art && git fetch https://android.googlesource.com/platform/art refs/changes/78/2226578/2 && git cherry-pick FETCH_HEAD" # fix mmap build error on kernel >= 5.18
+    - "cd frameworks/base && patch --forward --no-backup-if-mismatch --verbose -p1 < ../../external/patches/eos_frameworks-base-services-core-java-com-android-server-pm-PackageManagerService.patch" # sigspoof patch for SigningInfo
+    - "cd art && git fetch https://android.googlesource.com/platform/art refs/changes/78/2226578/2 && git cherry-pick FETCH_HEAD" # fix mmap build error when build server kernel >= 5.18
 
 - name: "Create repopick list (required to find path names)"
   shell: >
