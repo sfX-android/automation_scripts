@@ -66,6 +66,7 @@ axp_clean_paths:
     - "{{ SRCPATH }}/external/firebase-messaging"
     - "{{ SRCPATH }}/kernel"
     - "{{ SRCPATH }}/device"
+    - "{{ SRCPATH }}/vendor/axp"
 # allow to (manually) set selinux permissive
 axp_allow_permissive: True
 
