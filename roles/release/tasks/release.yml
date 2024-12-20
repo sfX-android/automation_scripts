@@ -26,7 +26,12 @@
       when: not unstable_build | d(False) | bool
 
     - name: "Verify ZIP integrity"
-      ansible.builtin.shell: "sha512sum --check {{ ROMFILE.stdout }}.sha512sum"
+      ansible.builtin.shell: |
+          if [ -f {{ ROMFILE.stdout }}.sha512sum ];then
+            sha512sum --check {{ ROMFILE.stdout }}.sha512sum
+          else
+            sha256sum --check {{ ROMFILE.stdout }}.sha256sum
+          fi
       args:
         chdir: "{{ rempath }}"
       delegate_to: "{{ groups.downloadserver[0] }}"
