@@ -1,6 +1,6 @@
 ---
 
-- name: "PIE: applying misc patches"
+- name: "Pre-applying misc patches"
   shell: "source build/envsetup.sh > /dev/null && echo 'applying misc patch:' && {{ item }}"
   args:
     executable: /bin/bash
@@ -8,7 +8,6 @@
   loop:
     - "repopick --gerrit https://review.lineageos.org -f 307334/2 -P frameworks/base/"  # scale font patch
     - "git apply external/patches/frameworks_base_shadercache.patch"                    # always use shader cache
-    - "cd frameworks/base && patch --forward --no-backup-if-mismatch --verbose -p1 < ../../external/patches/eos_frameworks-base-services-core-java-com-android-server-pm-PackageManagerService.patch" # sigspoof patch for SigningInfo
     - "cd art && git fetch https://android.googlesource.com/platform/art refs/changes/78/2226578/2 && git cherry-pick FETCH_HEAD" # fix mmap build error when build server kernel >= 5.18
 
 - name: "Create repopick list (required to find path names)"
@@ -28,12 +27,12 @@
     path: "{{ SRCPATH }}/out/target/product"
     state: directory
 
-- name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-05"
+- name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-01"
   shell: |
     source build/envsetup.sh > /dev/null
     {% for ritem in item.stdout.splitlines() | map('from_yaml') | list %}
     echo 'applying SECURITY PATCH: {{ ritem }}'
-    {{ ritem }} -fv 2> /dev/null || {{ ritem }} -fv 1>&2
+    {{ ritem }} -fv 2> /dev/null || {{ ritem }} -fv 1>&2 || exit 123
     {% endfor %}
   args:
     executable: /bin/bash
@@ -46,3 +45,11 @@
     path: "{{ SRCPATH }}/build/core/version_defaults.mk"
     regexp: "PLATFORM_SECURITY_PATCH := .*"
     line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE_PIE }}-01"
+
+- name: "Post-applying misc patches"
+  shell: "source build/envsetup.sh > /dev/null && echo 'applying misc patch:' && {{ item }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  loop:
+    - "cd frameworks/base && patch --forward --no-backup-if-mismatch --verbose -p1 < ../../external/patches/eos_frameworks-base-services-core-java-com-android-server-pm-PackageManagerService.patch" # sigspoof patch for SigningInfo
