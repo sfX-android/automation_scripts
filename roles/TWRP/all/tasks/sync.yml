@@ -17,3 +17,11 @@
     - KERNGIT is defined
     - KERNPATH is defined
     - KERNBRANCH is defined
+
+- name: "Clone buildtools"
+  git:
+    repo: "{{ external_buildtools_uri }}"
+    dest: "{{ external_buildtools_path }}/"
+    version: "{{ external_buildtools_branch }}"
+    force: true
+  when: fetch_external_buildtools | d(False)
