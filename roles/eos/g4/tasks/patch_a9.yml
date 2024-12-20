@@ -32,7 +32,7 @@
     source build/envsetup.sh > /dev/null
     {% for ritem in item.stdout.splitlines() | map('from_yaml') | list %}
     echo 'applying SECURITY PATCH: {{ ritem }}'
-    {{ ritem }} -fv 2> /dev/null || {{ ritem }} -fv 1>&2 || exit 123
+    {{ ritem }} -fv >> {{ BUILD_LOG }} 2>&1 || {{ ritem }} -fv >> {{ BUILD_LOG }} || exit 123
     {% endfor %}
   args:
     executable: /bin/bash
