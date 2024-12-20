@@ -45,10 +45,9 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  register: sperr
-  when: sperr.rc != 123
+  #register: sperr
+  #when: sperr.rc != 123
   loop: "{{ picklist.results }}"
-  #.stdout.splitlines() | map('from_yaml') | list }}"
 
 - name: "PIE: bump security patch version string to: {{ SECPATCH_DATE_PIE }}-01"
   lineinfile:
