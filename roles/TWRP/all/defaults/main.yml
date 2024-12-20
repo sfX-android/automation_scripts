@@ -21,8 +21,11 @@ RECOVERY_MKA_EXTRA_TARGETS: "vim"
 # "recovery" when dedicated partition, otherwise "boot"
 RECOVERY_MKA_TARGET: recovery
 
+# we do not sign TWRP builds usually
+sign_build: False
+
 # fetch external/buildtools (required usually)
-fetch_external_buildtools: True
+fetch_external_buildtools: False
 external_buildtools_uri: "https://github.com/sfX-Android/android_buildtools"
 external_buildtools_path: "external/buildtools"
 external_buildtools_branch: main
