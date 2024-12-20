@@ -21,7 +21,7 @@ repo_bin: /home/androidsource/bin/repo.a9
 # all g4 builds are custom
 #extendrom_package_list: "DNS66 noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky_AXP-OS"
 # replace legacy microG with the current one
-extendrom_package_list: "DNS66 Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky_AXP-OS noEOSappstore noEOSGsfProxy noEOSGmsCore noEOSNominatimNlpBackend noEOSDroidGuard MicrogGmsCore_GH GsfProxy_GH"
+extendrom_package_list: "DNS66 Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky_AXP-OS noEOSappstore noEOSGsfProxy noEOSGmsCore noEOSNominatimNlpBackend noEOSDroidGuard MicrogGmsCore_GH_PRIV GsfProxy_GH_PRIV"
 extendrom_fdroid_repos: "microg.xml divest.xml izzysoft.xml nanolx.xml molly.xml threema.xml futo_org.xml"
 
 # notification vars
