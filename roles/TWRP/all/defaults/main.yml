@@ -23,7 +23,7 @@ RECOVERY_MKA_TARGET: recovery
 
 # fetch external/buildtools (required usually)
 fetch_external_buildtools: True
-external_buildtools_uri: "https://github.com/sfX-Android/external_buildtools"
+external_buildtools_uri: "https://github.com/sfX-Android/android_buildtools"
 external_buildtools_path: "external/buildtools"
 external_buildtools_branch: main
 
