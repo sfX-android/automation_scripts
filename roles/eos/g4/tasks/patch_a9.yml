@@ -15,12 +15,19 @@
     /usr/bin/python3 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 
     -Q '{{ item }}' 
     | grep --color=never https | col | dos2unix
-    | grep -iEv '338357|342095|324039|324040|324041|366137|Manifest change' 
+    | grep -iEv '338357|342095|324039|324040|324041|366137|377775|Manifest change' 
   no_log: true
   args:
     chdir: "{{ SRCPATH }}"
   register: picklist
   loop: "{{ sec_patch_topics_pie }}"
+# 338357: manifest change
+# 342095: manifest change
+# 324039: build conflict
+# 324040: build conflict
+# 324041: build conflict
+# 366137: build conflict
+# 377775: affects Trebuchet (which does not exist in eOS)
 
 # repopick seems to use find on out, which fails on clean builds
 - name: prep out
