@@ -11,7 +11,7 @@ extendrom_debug_path_size_crash_default: 200
 
 # extend extendrom_package_list
 #extendrom_package_list: "{{ extendrom_package_list_default }} opencamera_j5_latest"
-extendrom_package_list: "Phonesky_AXP-OS additional_repos.xml Magisk_v27.0 AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG NeoLauncher-latest"
+#extendrom_package_list: "Phonesky_AXP-OS additional_repos.xml Magisk_v27.0 AuroraStore MicrogGmsCore_GH GsfProxy_GH noeSpeakNG NeoLauncher-latest"
 
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/samsung/msm8974
