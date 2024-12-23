@@ -169,7 +169,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         zip -r ../{{ os_name }}-${VERSION}-{{ target_model }}-factory.zip {{ target_model }}-${FACTORYID}
         cd ..
         sha256sum {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip > {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip.sha256
-        mv {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip* {{ JKZIPDIR }}/ 
+        mv {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip* {{ JKZIPDIR }}/target_files/
         cd {{ SRCPATH }}
         {% endif %}
 
