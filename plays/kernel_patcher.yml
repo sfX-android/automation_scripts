@@ -19,8 +19,8 @@
       - import_role:
           name: common
 
-      - import_role:
-          name: axp/common
+      - include_vars: ../roles/axp/common/defaults/main.yml
+        no_log: true
 
       - import_role:
           name: cve
