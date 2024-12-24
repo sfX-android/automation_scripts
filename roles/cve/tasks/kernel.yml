@@ -5,8 +5,8 @@
     for i in $(ls -1 |sort -r | grep -v '.sh' | sed 's/^v//g');do
       echo "Starting $i"
       cd $i
-      left="${i/\.*}"
-      right="${i/*\.}"
+      left="${i/.*}"
+      right="${i/*.}"
       latest=$(git ls-remote --tags {{ git_kernel_org }} "refs/tags/$i" | cut -d '/' -f3 |grep -v '\{' | sort -Vr | head -n 1)
       echo "left: $left, right: $right, latest: $latest"
       java -jar {{ divest_cve_checker_jar }} linuxIncrDownload ${left}.x ${i}. $latest > download.sh
