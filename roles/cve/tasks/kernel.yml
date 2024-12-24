@@ -2,7 +2,7 @@
 
 - name: "Incremental Kernel Patches"
   ansible.builtin.shell: |
-    for i in $(ls -1 |sort -r | grep -v '.sh' | grep -vo '^v');do
+    for i in $(ls -1 |sort -r | grep -v '.sh' | sed 's/^v//g');do
       echo "Starting $i"
       cd $i
       left="${i/\.*}"
