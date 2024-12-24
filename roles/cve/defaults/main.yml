@@ -1,0 +1,4 @@
+---
+
+cve_kernel_patches_path: /home/androidsource/do-not-touch/CVE/kernel_patches
+cve_kernel_incrementals_path: "{{ cve_kernel_patches_path }}/0001-LinuxIncrementals"
