@@ -7,7 +7,8 @@
       cd $i
       left=$(echo "${i}" | cut -d '.' -f 1)
       right=$(echo "${i}" | cut -d '.' -f 2)
-      latest=$(git ls-remote --tags {{ git_kernel_org }} "refs/tags/v${i}.*" | cut -d '/' -f3 |grep -v '\{' | sort -Vr | head -n 1)
+      latest_full=$(git ls-remote --tags {{ git_kernel_org }} "refs/tags/v${i}.*" | cut -d '/' -f3 |grep -v '\{' | sort -Vr | head -n 1)
+      latest=$(echo "${latest_full}" | cut -d '.' -f 3)
       echo "left: $left, right: $right, latest: $latest"
       java -jar {{ divest_cve_checker_jar }} linuxIncrDownload ${left}.x ${i}. $latest > download.sh
       cd ..
