@@ -18,3 +18,16 @@
   loop:
     - main.c*d
     - daily.c*d
+
+- name: "Sign database"
+  debug:
+    msg: tbd
+
+- name: "Copy to raw"
+  ansible.builtin.shell: |
+    mv {{ hypatia_clam_tmp }}/*.fp* "$origDir/exclusions/"
+    mv {{ hypatia_clam_tmp }}/*.hsb "$origDir/raw/"
+    mv {{ hypatia_clam_tmp }}/*.hdb "$origDir/raw/"
+    mv {{ hypatia_clam_tmp }}/*.hdu "$origDir/raw/"
+    mv {{ hypatia_clam_tmp }}/*.hsu "$origDir/raw/"
+    
