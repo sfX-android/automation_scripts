@@ -2,6 +2,7 @@
 
 hypatia_base_path: /srv/packages_apps_hypatia
 hypatia_signatures_path: /srv/sigdb
+hypatia_clam_tmp: /tmp/mss
 
 # database sources
 hypatia_uri_avast: "https://github.com/avast/covid-19-ioc"
