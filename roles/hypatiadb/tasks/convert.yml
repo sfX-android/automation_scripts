@@ -1,0 +1,13 @@
+---
+
+- name: "Prep html"
+  ansible.builtin.template:
+    src: index.j2
+    dest: "{{ hypatia_index_html }}"
+    mode: 0400
+
+- name: "Convert databases"
+  ansible.builtin.shell: |
+    {{ hypatia_path_converter }} raw/
+  args:
+    chdir: "{{ hypatia_signatures_path }}"
