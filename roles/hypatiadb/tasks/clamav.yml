@@ -15,9 +15,12 @@
     cp {{ hypatia_path_clamav }}/main.c*d {{ hypatia_clam_tmp }}/
     cp {{ hypatia_path_clamav }}/daily.c*d {{ hypatia_clam_tmp }}/
 
-- name: "Sign database"
-  debug:
-    msg: tbd
+- name: "Sign databases"
+  ansible.builtin.shell: |
+    sigtool -u main.c*d
+    sigtool -u daily.c*d
+  args:
+    chdir: "{{ hypatia_signatures_path }}"
 
 - name: "Copy to raw"
   ansible.builtin.shell: |
