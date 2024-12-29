@@ -1,0 +1,14 @@
+---
+
+- name: "Get signatures"
+  ansible.builtin.git:
+    repo: "{{ hypatia_uri_avast }}"
+    dest: "{{ hypatia_signatures_path }}/avast"
+    force: true
+  timeout: 180
+
+- name: "Parse avast signatures"
+  ansible.builtin.shell: |
+    tail -n +2 */*.csv | sed 's/,/ , /' | awk '{ print $1 }' | sort -u  >> {{ hypatia_signatures_path }}/raw/avast-covid19.sha256
+  args:
+    chdir: "{{ hypatia_signatures_path }}/avast"
