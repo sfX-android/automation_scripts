@@ -1,6 +1,6 @@
 ---
 
-hypatia_base_path: /srv/packages_apps_hypatia
+#hypatia_base_path: /srv/packages_apps_hypatia
 hypatia_signatures_path: /srv/sigdb
 hypatia_clam_tmp: /tmp/mss
 hypatia_index_html: /var/www/html/index.html
