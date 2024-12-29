@@ -3,6 +3,6 @@
 - include_tasks: prep.yml
 - include_tasks: avast.yml
 - include_tasks: clamav.yml
-
+- include_tasks: cybercure.yml
 
 - include_tasks: convert.yml
