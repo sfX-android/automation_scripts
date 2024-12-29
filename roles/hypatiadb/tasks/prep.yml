@@ -11,6 +11,7 @@
     path: "{{ hypatia_signatures_path }}/{{ item }}"
     state: directory
     mode: 0700
+    owner: "{{ hypatia_www_user }}"
   loop:
     - raw
     - production
