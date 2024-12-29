@@ -20,7 +20,7 @@
     sigtool -u main.c*d
     sigtool -u daily.c*d
   args:
-    chdir: "{{ hypatia_signatures_path }}"
+    chdir: "{{ hypatia_clam_tmp }}"
 
 - name: "Copy to raw"
   ansible.builtin.shell: |
