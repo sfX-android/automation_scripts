@@ -11,13 +11,9 @@
     state: directory
 
 - name: "Copy clam db to tmp"
-  ansible.builtin.copy:
-    remote_src: true
-    src: "{{ hypatia_path_clamav }}/{{ item }}"
-    dest: "{{ hypatia_clam_tmp }}/"
-  loop:
-    - main.c*d
-    - daily.c*d
+  ansible.builtin.shell: |
+    cp {{ hypatia_path_clamav }}/main.c*d {{ hypatia_clam_tmp }}/
+    cp {{ hypatia_path_clamav }}/daily.c*d {{ hypatia_clam_tmp }}/
 
 - name: "Sign database"
   debug:
