@@ -16,3 +16,6 @@ hypatia_uri_malshare: "https://malshare.com/daily/$curr/malshare_fileList.$curr.
 hypatia_uri_sanesecurity: "rsync://rsync.sanesecurity.net/sanesecurity"
 hypatia_uri_stalkerware: "https://github.com/AssoEchap/stalkerware-indicators"
 hypatia_uri_targetedthreats: "https://github.com/botherder/targetedthreats"
+
+# converter to hypatia format, see https://github.com/AXP-OS/tools_hypatia_convertdb
+hypatia_path_converter: "/opt/HypatiaDatabaseConverter-1.0-SNAPSHOT-jar-with-dependencies.jar"
