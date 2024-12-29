@@ -16,8 +16,8 @@
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
     
-      - import_role:
-          name: common
+      #- import_role:
+      #    name: common
 
       - include_vars: ../roles/axp/common/defaults/main.yml
         no_log: true
