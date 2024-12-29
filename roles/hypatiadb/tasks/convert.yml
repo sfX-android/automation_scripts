@@ -5,6 +5,7 @@
     src: index.j2
     dest: "{{ hypatia_index_html }}"
     mode: 0400
+    owner: "{{ hypatia_www_user }}"
 
 - name: "Convert databases"
   ansible.builtin.shell: |
@@ -12,7 +13,7 @@
     sed -i "s/\[DATE\]/$(date -u)/" {{ hypatia_index_html }}
     java -jar {{ hypatia_path_converter }} raw/ >> {{ hypatia_index_html }}
     echo "</pre>" >> {{ hypatia_index_html }}
-    cat extended.html >> {{ hypatia_index_html }}
+    #cat extended.html >> {{ hypatia_index_html }}
     mv raw/hypatia-*-bloom.bin production/
     sed -s 'N;/md5: 0, sha1: 0, sha256: 0/!P;D' -i {{ hypatia_index_html }}
     sed -r '/Skipping/{/virustotal/!s~[^ -~]{64}+~<a href="https://www.virustotal.com/gui/file/&" target="_blank" rel="nofollow noopener noreferrer">&</a>~}' -i {{ hypatia_index_html }}
