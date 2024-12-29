@@ -25,9 +25,10 @@
 
 - name: "Copy to raw"
   ansible.builtin.shell: |
-    mv {{ hypatia_clam_tmp }}/*.fp* "$origDir/exclusions/"
-    mv {{ hypatia_clam_tmp }}/*.hsb "$origDir/raw/"
-    mv {{ hypatia_clam_tmp }}/*.hdb "$origDir/raw/"
-    mv {{ hypatia_clam_tmp }}/*.hdu "$origDir/raw/"
-    mv {{ hypatia_clam_tmp }}/*.hsu "$origDir/raw/"
-    
+    mv {{ hypatia_clam_tmp }}/*.fp* exclusions/
+    mv {{ hypatia_clam_tmp }}/*.hsb raw/
+    mv {{ hypatia_clam_tmp }}/*.hdb raw/
+    mv {{ hypatia_clam_tmp }}/*.hdu raw/
+    mv {{ hypatia_clam_tmp }}/*.hsu raw/
+  args:
+    chdir: "{{ hypatia_signatures_path }}"
