@@ -6,4 +6,6 @@
 - include_tasks: cybercure.yml
 - include_tasks: eset.yml
 
+- include_tasks: blocklists.yml
+
 - include_tasks: convert.yml
