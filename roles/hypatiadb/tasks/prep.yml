@@ -1,5 +1,10 @@
 ---
 
+- name: "Clean db raw path"
+  ansible.builtin.file:
+    path: "{{ hypatia_signatures_path }}/raw"
+    state: absent
+    
 - name: "Prep db path"
   ansible.builtin.file:
     path: "{{ hypatia_signatures_path }}"
