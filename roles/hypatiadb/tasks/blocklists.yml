@@ -1,1 +1,15 @@
+---
 
+- name: "Get blocklists"
+  ansible.builtin.git:
+    repo: "{{ hypatia_uri_blocklist_various }}"
+    dest: "{{ hypatia_signatures_path }}/blocklist-various"
+    force: true
+  timeout: 180
+
+- name: "Add blocklists"
+  ansible.builtin.shell: |
+     cp blocklist*txt {{ hypatia_signatures_path }}/raw/
+  args:
+    executable: /bin/bash
+    chdir: "{{ hypatia_signatures_path }}/blocklist-various"
