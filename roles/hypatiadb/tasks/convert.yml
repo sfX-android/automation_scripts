@@ -10,7 +10,7 @@
 - name: "Convert databases"
   ansible.builtin.shell: |
     echo "<pre>" >> {{ hypatia_index_html }}
-    sed -i "s/\[DATE\]/$(date -u)/" {{ hypatia_index_html }}
+    sed -i "s/%%DATE%%/$(date -u)/" {{ hypatia_index_html }}
     java -jar {{ hypatia_path_converter }} raw/ >> {{ hypatia_index_html }}
     echo "</pre>" >> {{ hypatia_index_html }}
     #cat extended.html >> {{ hypatia_index_html }}
