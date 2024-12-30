@@ -3,6 +3,25 @@
 - name: "Get signatures"
   ansible.builtin.synchronize:
     src: "{{ hypatia_uri_sanesecurity }}"
-    dest: "{{ hypatia_signatures_path }}/raw"
+    dest: "{{ hypatia_signatures_path }}/sanesecurity"
     mode: pull
   delegate_to: hypatiaserver
+
+- name: "Parse signatures"
+  ansible.builtin.shell: |
+     for f in *.hsb; do
+        echo "" >> "{{ hypatia_signatures_path }}/raw/sanesecurity-$f";
+        cat "$f" >> "{{ hypatia_signatures_path }}/raw/sanesecurity-$f";
+        sort -u -o "{{ hypatia_signatures_path }}/raw/sanesecurity-$f" "{{ hypatia_signatures_path }}/raw/sanesecurity-$f"
+    done
+
+    for f in *.hdb; do
+        echo "" >> "{{ hypatia_signatures_path }}/raw/sanesecurity-$f"
+        cat "$f" >> "{{ hypatia_signatures_path }}/raw/sanesecurity-$f"
+        sort -u -o "{{ hypatia_signatures_path }}/raw/sanesecurity-$f" "{{ hypatia_signatures_path }}/raw/sanesecurity-$f"
+    done
+
+    rm -v {{ hypatia_signatures_path }}/raw/sanesecurity-crdfam.clamav.hdb {{ hypatia_signatures_path }}/raw/sanesecurity-doppelstern.hdb {{ hypatia_signatures_path }}/raw/sanesecurity-malware.expert.hdb
+  args:
+    executable: /bin/bash
+    chdir: "{{ hypatia_signatures_path }}/sanesecurity"
