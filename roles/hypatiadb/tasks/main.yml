@@ -7,6 +7,7 @@
 - include_tasks: eset.yml
 - include_tasks: sanesecurity.yml
 - include_tasks: stalkerware.yml
+- include_tasks: threatfox.yml
 
 - include_tasks: blocklists.yml
 
