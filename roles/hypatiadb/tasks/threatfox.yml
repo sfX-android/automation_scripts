@@ -8,7 +8,7 @@
 
 - name: "Get signatures"
   ansible.builtin.shell: |
-    wget "{{ hypatia_uri_threatfox }}" -O archive.zip  
+    wget -q "{{ hypatia_uri_threatfox }}" -O archive.zip  
   args:
     chdir: "{{ hypatia_signatures_path }}/threatfox"
 
