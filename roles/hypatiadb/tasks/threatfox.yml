@@ -15,7 +15,8 @@
 - name: "Parse signatures"
   ansible.builtin.shell: |
     unzip archive.zip
-    tail -n +10 full_sha256.csv | grep -v entries: | awk '{ print $4 } ' | sed 's/^"//' | sed 's/",$//' > {{ hypatia_signatures_path }}/raw/threatfox.sha256
+    tail -n +10 full_sha256.csv | awk '{ print $4 } ' | sed 's/^"//' | sed 's/",$//' > {{ hypatia_signatures_path }}/threatfox/threatfox.sha256
+    grep -v entries: {{ hypatia_signatures_path }}/threatfox/threatfox.sha256 > {{ hypatia_signatures_path }}/raw/threatfox.sha256
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/threatfox"
