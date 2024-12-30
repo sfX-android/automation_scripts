@@ -5,6 +5,7 @@
 - include_tasks: clamav.yml
 - include_tasks: cybercure.yml
 - include_tasks: eset.yml
+- include_tasks: sanesecurity.yml
 
 - include_tasks: blocklists.yml
 
