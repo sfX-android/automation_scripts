@@ -2,7 +2,7 @@
 
 - name: "Get & parse signatures"
   ansible.builtin.shell: |
-    wget "{{ hypatia_uri_cybercure }}" -O - | sed 's/,/\n/g' >> {{ hypatia_signatures_path }}/raw/cybercure.md5
+    wget -q "{{ hypatia_uri_cybercure }}" -O - | sed 's/,/\n/g' >> {{ hypatia_signatures_path }}/raw/cybercure.md5
     sort -u -o {{ hypatia_signatures_path }}/raw/cybercure.md5 {{ hypatia_signatures_path }}/raw/cybercure.md5
   args:
     chdir: "{{ hypatia_signatures_path }}"
