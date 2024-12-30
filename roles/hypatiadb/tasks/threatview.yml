@@ -2,8 +2,8 @@
 
 - name: "Get & parse signatures"
   ansible.builtin.shell: |
-    wget "{{ hypatia_uri_threatview_md5 }}" -O - | sed 's/MD5 of //' >> {{ hypatia_signatures_path }}/raw/threatview.md5
-    wget "{{ hypatia_uri_threatview_md5 }}" -O - >> {{ hypatia_signatures_path }}/raw/threatview.sha1
+    wget -q "{{ hypatia_uri_threatview_md5 }}" -O - | sed 's/MD5 of //' >> {{ hypatia_signatures_path }}/raw/threatview.md5
+    wget -q "{{ hypatia_uri_threatview_md5 }}" -O - >> {{ hypatia_signatures_path }}/raw/threatview.sha1
     sort -u -o {{ hypatia_signatures_path }}/raw/threatview.md5 {{ hypatia_signatures_path }}/raw/threatview.md5
     sort -u -o {{ hypatia_signatures_path }}/raw/threatview.sha1 {{ hypatia_signatures_path }}/raw/threatview.sha1
   args:
