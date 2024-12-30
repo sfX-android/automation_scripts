@@ -4,5 +4,6 @@
 - include_tasks: avast.yml
 - include_tasks: clamav.yml
 - include_tasks: cybercure.yml
+- include_tasks: eset.yml
 
 - include_tasks: convert.yml
