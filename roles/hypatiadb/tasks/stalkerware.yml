@@ -1,0 +1,20 @@
+---
+
+- name: "Get signatures"
+  ansible.builtin.git:
+    repo: "{{ hypatia_uri_stalkerware }}"
+    dest: "{{ hypatia_signatures_path }}/stalkerware"
+    force: true
+  timeout: 180
+
+- name: "Parse signatures"
+  ansible.builtin.shell: |
+    while IFS=, read -r col1SHA col2Package col3Certificate col4Version col5Name; do
+        if [ -n "$col1SHA" ] && [ -n "$col5Name" ]; then
+          echo "$col1SHA:0:$col5Name" >> {{ hypatia_signatures_path }}/raw/stalkerware.hsb
+        fi
+    done < samples.csv
+    sed -i '1d' {{ hypatia_signatures_path }}/raw/stalkerware.hsb
+  args:
+    executable: /bin/bash
+    chdir: "{{ hypatia_signatures_path }}/stalkerware"
