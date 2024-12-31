@@ -1,0 +1,10 @@
+---
+
+- name: "Parse signatures"
+  ansible.builtin.shell: |
+    [ -f VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.txt ] && rm VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.txt
+    unzip VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.zip VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.txt
+    mv VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.txt {{ hypatia_signatures_path }}/raw/VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.md5
+  args:
+    executable: /bin/bash
+    chdir: "{{ hypatia_signatures_path }}/virusshare_mantaray"
