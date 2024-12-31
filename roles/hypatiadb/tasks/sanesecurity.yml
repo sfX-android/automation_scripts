@@ -5,6 +5,7 @@
     src: "{{ hypatia_uri_sanesecurity }}"
     dest: "{{ hypatia_signatures_path }}/sanesecurity"
     mode: pull
+    compress: False
   delegate_to: hypatiaserver
 
 - name: "Parse signatures"
