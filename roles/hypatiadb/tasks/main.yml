@@ -1,6 +1,8 @@
 ---
 
 - include_tasks: prep.yml
+
+# signature sources
 - include_tasks: avast.yml
 - include_tasks: clamav.yml
 - include_tasks: cybercure.yml
@@ -11,6 +13,8 @@
 - include_tasks: threatview.yml
 - include_tasks: targetedthreats.yml
 
+# blocklist sources
 - include_tasks: blocklists.yml
 
+# convert to common format
 - include_tasks: convert.yml
