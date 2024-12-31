@@ -14,7 +14,7 @@
 
 - name: test
   fail:
-    msg: "{{ item }}"
+    msg: "{{ item.stat.exists }}"
   loop: "{{ vs.results }}"
     
 - name: "Get signatures"
