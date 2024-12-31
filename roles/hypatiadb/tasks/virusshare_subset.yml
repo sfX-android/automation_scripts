@@ -20,7 +20,7 @@
     
 - name: "Get signatures"
   ansible.builtin.get_url:
-    url: "{{ hypatia_uri_virusshare_base }}{{ item}}"
+    url: "{{ hypatia_uri_virusshare_base }}{{ item}}.md5"
     dest: "{{ hypatia_signatures_path }}/virusshare_subset/virusshare_{{ item }}.md5"
     mode: 0400
   loop: "{{ range(465, 488) | list }}"
