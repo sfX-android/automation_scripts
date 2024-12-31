@@ -14,8 +14,9 @@
 
 - name: test
   fail:
-    msg: "{{ item.stat.exists }}"
+    msg: "{{ item }}"
   loop: "{{ vs.results }}"
+  when: "{{ item.stat.exists }}"
     
 - name: "Get signatures"
   ansible.builtin.get_url:
