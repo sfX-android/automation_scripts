@@ -14,7 +14,7 @@
 
 - name: test
   fail:
-    msg: "{{ item }}"
+    msg: "{{ item.item }}"
   loop: "{{ vs.results }}"
   when: "{{ item.stat.exists }}"
     
