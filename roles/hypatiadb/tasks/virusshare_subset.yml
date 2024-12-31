@@ -1,5 +1,11 @@
 ---
 
+- name: "Prep sig path"
+  ansible.builtin.file:
+    path: "{{ hypatia_signatures_path }}/virusshare_subset"
+    state: directory
+    mode: 0700
+
 - name: "Get signatures"
   ansible.builtin.get_url:
     url: "{{ hypatia_uri_virusshare_base }}{{ item}}"
