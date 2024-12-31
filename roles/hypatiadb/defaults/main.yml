@@ -6,6 +6,7 @@ hypatia_index_html: /var/www/html/index.html
 hypatia_www_user: www-data
 
 # sources
+hypatia_uri_amnestytech: "https://github.com/amnestytech/investigations"
 hypatia_uri_avast: "https://github.com/avast/covid-19-ioc"
 hypatia_path_clamav: "/var/lib/clamav"
 hypatia_uri_eset: "https://github.com/eset/malware-ioc"
