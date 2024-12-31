@@ -12,24 +12,16 @@
   register: vs
   loop: "{{ range(465, 488) | list }}"
 
-- name: test
-  fail:
-    msg: "{{ item.item }}"
-  loop: "{{ vs.results }}"
-  when: "{{ item.stat.exists }}"
+#- name: test
+#  debug:
+#    msg: "{{ item.item }}"
+#  loop: "{{ vs.results }}"
+#  when: "{{ item.stat.exists }}"
     
 - name: "Get signatures"
   ansible.builtin.get_url:
-    url: "{{ hypatia_uri_virusshare_base }}{{ item}}.md5"
-    dest: "{{ hypatia_signatures_path }}/virusshare_subset/virusshare_{{ item }}.md5"
+    url: "{{ hypatia_uri_virusshare_base }}{{ item.item }}.md5"
+    dest: "{{ hypatia_signatures_path }}/raw/virusshare_{{ item.item }}.md5"
     mode: 0400
-  loop: "{{ range(465, 488) | list }}"
-
-- name: "Parse signatures"
-  ansible.builtin.shell: |
-    echo
-  args:
-    executable: /bin/bash
-    chdir: "{{ hypatia_signatures_path }}/"
-
-  when: dosdir.stat.isdir is undefined
+  loop: "{{ vs.results }}"
+  when: not item.stat.exists
