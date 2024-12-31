@@ -14,7 +14,7 @@
 
 - name: test
   fail:
-    msg: {{vs}}
+    msg: "{{vs}}"
     
 - name: "Get signatures"
   ansible.builtin.get_url:
