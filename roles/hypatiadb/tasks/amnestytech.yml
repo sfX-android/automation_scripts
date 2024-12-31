@@ -13,6 +13,10 @@
        cat $sha >> {{ hypatia_signatures_path }}/raw/amnestytech.sha256
        echo >> {{ hypatia_signatures_path }}/raw/amnestytech.sha256
     done
+    for hsb in $(find . -type f -name sha256.csv);do
+       sed 's/,/:0:/g' $hsb >> {{ hypatia_signatures_path }}/raw/amnestytech.hsb
+       echo >> {{ hypatia_signatures_path }}/raw/amnestytech.hsb
+    done
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/amnestytech"
