@@ -9,6 +9,7 @@
 - include_tasks: stalkerware.yml
 - include_tasks: threatfox.yml
 - include_tasks: threatview.yml
+- include_tasks: targetedthreats.yml
 
 - include_tasks: blocklists.yml
 
