@@ -18,6 +18,8 @@ hypatia_uri_sanesecurity: "rsync://rsync.sanesecurity.net/sanesecurity"
 hypatia_uri_stalkerware: "https://github.com/AssoEchap/stalkerware-indicators"
 hypatia_uri_targetedthreats: "https://github.com/botherder/targetedthreats"
 hypatia_uri_blocklist_various: "https://github.com/scafroglia93/blocklists"
+hypatia_uri_umair9747: "https://github.com/umair9747/datasets"
+hypatia_uri_zimperium: "https://github.com/Zimperium/IOC"
 
 # converter to hypatia format, see https://github.com/AXP-OS/tools_hypatia_convertdb
 hypatia_path_converter: "/opt/HypatiaDatabaseConverter-1.0-SNAPSHOT-jar-with-dependencies.jar"
