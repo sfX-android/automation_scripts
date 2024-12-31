@@ -3,6 +3,7 @@
 - include_tasks: prep.yml
 
 # signature sources
+- include_tasks: amnestytech.yml
 - include_tasks: avast.yml
 - include_tasks: clamav.yml
 - include_tasks: cybercure.yml
@@ -13,6 +14,7 @@
 - include_tasks: threatview.yml
 - include_tasks: targetedthreats.yml
 - include_tasks: umair9747.yml
+#- include_tasks: zimperium.yml
 
 # blocklist sources
 - include_tasks: blocklists.yml
