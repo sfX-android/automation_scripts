@@ -16,6 +16,9 @@
 - include_tasks: umair9747.yml
 #- include_tasks: zimperium.yml
 
+# extended sources
+#- include_tasks: virusshare_mantaray.yml
+
 # blocklist sources
 - include_tasks: blocklists.yml
 
