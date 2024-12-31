@@ -1,0 +1,16 @@
+---
+
+- name: "Get signatures"
+  ansible.builtin.git:
+    repo: "{{ hypatia_uri_amnestytech }}"
+    dest: "{{ hypatia_signatures_path }}/amnestytech"
+    force: true
+  timeout: 180
+
+- name: "Parse signatures"
+  ansible.builtin.shell: |
+    find . -type f -name sha256.txt -exec cat {} \; >> {{ hypatia_signatures_path }}/raw/amnestytech.sha256
+    find . -type f -name domains.txt -exec cat {} \; >> {{ hypatia_signatures_path }}/raw/blocklists-amnestytech.txt
+  args:
+    executable: /bin/bash
+    chdir: "{{ hypatia_signatures_path }}/amnestytech"
