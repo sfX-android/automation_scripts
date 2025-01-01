@@ -2,6 +2,8 @@
 
 - include_tasks: prep.yml
 
+- include_tasks: malware_bazaar.yml
+
 # signature sources
 # misp feeds: https://www.misp-project.org/feeds/
 - include_tasks: amnestytech.yml
