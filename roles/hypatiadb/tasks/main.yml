@@ -2,9 +2,8 @@
 
 - include_tasks: prep.yml
 
-- include_tasks: virusshare_subset.yml
-
 # signature sources
+# misp feeds: https://www.misp-project.org/feeds/
 - include_tasks: amnestytech.yml
 - include_tasks: avast.yml
 - include_tasks: clamav.yml
@@ -16,7 +15,7 @@
 - include_tasks: threatview.yml
 - include_tasks: targetedthreats.yml
 - include_tasks: umair9747.yml
-
+- include_tasks: virusshare_subset.yml
 #- include_tasks: zimperium.yml
 
 # extended sources
