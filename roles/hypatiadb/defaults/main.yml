@@ -22,6 +22,7 @@ hypatia_uri_blocklist_various: "https://github.com/scafroglia93/blocklists"
 hypatia_uri_umair9747: "https://github.com/umair9747/datasets"
 hypatia_uri_virusshare_base: "https://virusshare.com/hashfiles/VirusShare_00"
 hypatia_uri_zimperium: "https://github.com/Zimperium/IOC"
+hypatia_uri_malware_bazaar: "https://bazaar.abuse.ch/export/txt/sha256/recent/"
 
 # extended signatures:
 # wget -O VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.zip "<dl-link>" taken from:
