@@ -23,9 +23,7 @@ hypatia_uri_umair9747: "https://github.com/umair9747/datasets"
 hypatia_uri_virusshare_base: "https://virusshare.com/hashfiles/VirusShare_00"
 hypatia_uri_zimperium: "https://github.com/Zimperium/IOC"
 hypatia_uri_malware_bazaar: "https://bazaar.abuse.ch/export/txt/sha256/recent/"
-hypatia_uri_malicious-hash_md5: "https://raw.githubusercontent.com/romainmarcoux/malicious-hash/main/full-hash-md5-aa.txt"
-hypatia_uri_malicious-hash_sha1: "https://raw.githubusercontent.com/romainmarcoux/malicious-hash/main/full-hash-sha1-aa.txt"
-hypatia_uri_malicious-hash_sha256: "https://raw.githubusercontent.com/romainmarcoux/malicious-hash/main/full-hash-sha256-aa.txt"
+hypatia_uri_malicioushash_base: "https://raw.githubusercontent.com/romainmarcoux/malicious-hash/main/full-hash-"
 
 # extended signatures:
 # wget -O VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.zip "<dl-link>" taken from:
