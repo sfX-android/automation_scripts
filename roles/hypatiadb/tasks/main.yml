@@ -2,7 +2,7 @@
 
 - include_tasks: prep.yml
 
-- include_tasks: malicious_hash.yml
+- include_tasks: malware_hunter.yml
 
 # signature sources
 # misp feeds: https://www.misp-project.org/feeds/
@@ -11,6 +11,7 @@
 - include_tasks: clamav.yml
 - include_tasks: cybercure.yml
 - include_tasks: eset.yml
+- include_tasks: malicious_hash.yml
 - include_tasks: malware_bazaar.yml
 - include_tasks: sanesecurity.yml
 - include_tasks: stalkerware.yml
