@@ -5,6 +5,7 @@
 # static sources
 # (rarely updated or not updated at all)
 - include_tasks: avast.yml
+- include_tasks: malware_hunter.yml
 - include_tasks: targetedthreats.yml
 - include_tasks: umair9747.yml
 
