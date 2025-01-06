@@ -4,9 +4,6 @@
   hosts: buildserver
   gather_facts: true
 
-  vars:
-    target_model_full: "{{ target_model }}"
-
   pre_tasks:
 
     - debug:
