@@ -8,9 +8,9 @@
 
 - name: "Run CIP update/fetch"
   ansible.builtin.shell: |
-    git checkout master
-    git fetch orig
-    git rebase orig/master
+    git checkout {{ git_kernel_org_branch }}
+    git fetch origin
+    git rebase origin/{{ git_kernel_org_branch }}
     git checkout -b $(date -uI)
     git am ../cip-personal-tweaks.patch
     ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}"
