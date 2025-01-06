@@ -1,7 +1,7 @@
 ---
 
 - name: "Sync kernel patcher"
-  ansible.builtin.shell:
+  ansible.builtin.shell: |
     git pull
     git checkout HEAD -f
     git pull
