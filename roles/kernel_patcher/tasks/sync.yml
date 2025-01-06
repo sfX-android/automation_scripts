@@ -1,6 +1,6 @@
 ---
 
-- name: "Sync kernel patcher"
+- name: "Sync kernel patcher repos"
   ansible.builtin.shell: |
     git pull
     git checkout HEAD -f
@@ -8,4 +8,7 @@
     git log -1
   args:
     executable: /bin/bash
-    chdir: "{{ cve_kernel_patches_path }}"
+    chdir: "{{ item }}"
+  loop:
+    - "{{ cve_kernel_cve_checker_path }}"
+    - "{{ cve_kernel_patches_path }}"
