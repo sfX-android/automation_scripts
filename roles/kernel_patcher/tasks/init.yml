@@ -9,9 +9,7 @@
   ansible.builtin.shell: |
     git init
     git remote add origin {{ git_kernel_patches }}
-    git pull
-    git checkout HEAD -f
-    git pull
+    git pull origin main
     git log -1
   args:
     executable: /bin/bash
