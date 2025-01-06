@@ -6,6 +6,6 @@
     git checkout HEAD -f
     git pull
     git log -1
-args:
-  executable: /bin/bash
-  chdir: "{{ cve_kernel_patches_path }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ cve_kernel_patches_path }}"
