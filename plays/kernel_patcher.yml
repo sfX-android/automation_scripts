@@ -30,7 +30,7 @@
           - telegram_notifications | bool
 
       - import_role:
-          name: cve
+          name: kernel_patcher
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
