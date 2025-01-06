@@ -1,3 +1,6 @@
 ---
 
+- include_tasks: reset.yml
+- include_tasks: sync.yml
+
 - include_tasks: incremental.yml
