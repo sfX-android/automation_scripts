@@ -5,7 +5,7 @@
     path: "{{ cve_kernel_cve_checker_path }}/.git"
   register: cvedir
 
-  - name: "Check kernel patches init state"
+- name: "Check kernel patches init state"
   ansible.builtin.stat:
     path: "{{ cve_kernel_patches_path }}/.git"
   register: patchesdir
