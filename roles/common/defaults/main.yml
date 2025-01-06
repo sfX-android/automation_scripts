@@ -23,6 +23,7 @@ android_version_int: "{{ android_shortversion | replace('a','') | replace('A',''
 # construct LOS version/git branch based on android version
 los_version: "{{ android_shortversion | replace('a15','22.0') | replace('a14','21.0') | replace('a13','20.0') | replace('a12','19.1') | replace('a11','18.1') | replace('a10','17.1') | replace('a9','16.0') }}"
 los_version_gitbranch: "lineage-{{ los_version }}"
+android_version_letter: "{{ android_shortversion | replace('a15','V') | replace('a14','U') | replace('a13','T') | replace('a12','S') | replace('a11','R') | replace('a10','Q') | replace('a9','P') }}"
 
 # normalize current date (used in several places later
 current_year: "{{ ansible_date_time.year }}"
@@ -191,12 +192,10 @@ incompat_cross_version_paths_DISABLED:
     - vendor/cm
     - vendor/nxp
 
-# manual security patch handling for PIE
-#topic:P_asb_2022-02 OR # merged officially!
-#topic:P_asb_2022-03 OR # merged officially!
-#topic:P_asb_2022-04 OR # merged officially!
-# e.g.: https://review.lineageos.org/q/topic:P_asb_2024-10
-SECPATCH_DATE_PIE: "2024-12"
+# !LEGACY! security patch handling (and for PIE only)
+# see next paragraph for the new method!
+# ref: https://review.lineageos.org/q/topic:P_asb_2024-10
+SECPATCH_DATE_PIE: "2024-12" # HAS TO be always the last available one!
 sec_patch_topics_pie:
       - topic:P_asb_2022-05
       - topic:P_asb_2022-06
@@ -230,3 +229,28 @@ sec_patch_topics_pie:
       - topic:P_asb_2024-10
       - topic:P_asb_2024-11
       - topic:P_asb_{{ SECPATCH_DATE_PIE }}
+
+##############################################################################################
+# new generic security patch handling based on LOS's gerrit topics
+# it will use the Lineage OS branch which has been configured during an Ansible/Semaphore run
+# and goes through the list of topics based on year and month.
+# it will also use the right topic letter based on the same LineageOS branch configured
+# so the only thing needed to be adjusted is the range of patches for your specific needs.
+
+# usually you should never need to change this! See above how it is generated:
+sec_patch_pick_branch: "{{ los_version_gitbranch }}"
+
+##############################################################################################
+# as start and end of security patches is something you might need to decide per custom OS 
+# and version you should copy the whole next part into your OS role and adjust as needed.
+# checking for available topics: 
+#    https://review.lineageos.org/q/topic:P_asb_2024-12
+sec_patch_date_last: 202412 # format: NOT as string and "YYYYMM"
+# ranges will not include the last match so must be 1 higher
+# (to include December it must end with "13" in order to match the 12th month as well)
+sec_patch_topics:
+      - "{{ range(202205, 202213) }}"
+      - "{{ range(202301, 202313) }}"
+      - "{{ range(202401, sec_patch_date_last) }}"
+
+##############################################################################################
