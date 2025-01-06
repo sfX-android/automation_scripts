@@ -1,0 +1,17 @@
+---
+
+- name: "Reset kernel patcher dir"
+  ansible.builtin.shell: |
+       echo "BEFORE reset:" >> {{ BUILD_LOG }}
+       git log -1 >> {{ BUILD_LOG }} 2>&1
+       git status >> {{ BUILD_LOG }} 2>&1
+       if [ $? -eq 128 ];then
+         echo "No local changes in kernel patcher repo found!"  >> {{ BUILD_LOG }}
+       else
+         git am --abort >> {{ BUILD_LOG }} 2>&1
+         git rebase --abort >> {{ BUILD_LOG }} 2>&1
+         git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
+       fi
+       git reset --hard >> {{ BUILD_LOG }} 2>&1
+  args:
+    chdir: "{{ cve_kernel_patches_path }}"
