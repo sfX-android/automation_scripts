@@ -1,5 +1,8 @@
 ---
 
+# git user for committing changes
+git_kernel_patcher_author: "sfX-bot <sfX-bot@binbash.local>"
+
 # base path for all required repos
 cve_kernel_base_path: "/home/androidsource/do-not-touch/CVE"
 
