@@ -1,8 +1,13 @@
 ---
 
+- name: "Set topics based on Android version"
+  ansible.builtin.set_fact:
+      sec_patch_topics: "{{ lookup('vars', 'sec_patch_topics_' + android_shortversion) }}"
+      sec_patch_date_last: "{{ lookup('vars', 'sec_patch_date_last_' + android_shortversion) }}"
+
 - block:
 
-    - fail: |
+    - ansible.builtin.fail: |
         msg: 
           Missing a required variable!!
           
@@ -17,26 +22,35 @@
           or sec_patch_topics is undefined
           or sec_patch_date_last is undefined
           or SRCPATH is undefined
+
+    # exclusion list:
+        # 338357: manifest change
+        # 342095: manifest change
+        # 324039: build conflict (eOS)
+        # 324040: build conflict (eOS)
+        # 324041: build conflict (eOS)
+        # 366137: affects Trebuchet (does not exist in eOS)
+        # 377775: affects Trebuchet (does not exist in eOS)
     
     # requires:
     #     <!-- cherrypicker patch tool -->
     #    <project path="external/cherrypicker" name="aol-aosip/android_vendor_unconv" remote="github" revision="master" />
     - name: "SECURITY PATCH MERGE: create repopick list (required to find path names)"
-      shell: >
+      ansible.builtin.shell: >
         /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics }}' 
         | grep --color=never https | col | dos2unix
         | sed 's/\*Manifest Change\*/.repo/'
-        | egrep -v '338357|342095|324039|324040|324041'
+        | grep -iEv '338357|342095|Manifest change'
       args:
         chdir: "{{ SRCPATH }}"
       register: picklist
       when: ROM_FLAVOR != "eos"
       
-    - name: "SECURITY PATCH MERGE (eos): create repopick list (required to find path names)"
-      shell: >
+    - name: "SECURITY PATCH MERGE (eOS): create repopick list (required to find path names)"
+      ansible.builtin.shell: >
         /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics }}' 
         | grep --color=never https | col | dos2unix
-        | egrep -v '338357|342095|324039|324040|324041|359416|352333'
+        | grep -iEv '338357|342095|324039|324040|324041|366137|377775|Manifest change'
       args:
         chdir: "{{ SRCPATH }}"
       register: picklist
@@ -44,17 +58,21 @@
       # 352333: https://code.binbash.rocks:8443/MVA-VoLTE/local_manifests/commit/f928672336a6bd97862b70f187f277381e80308b
 
     - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last }}-01"
-      shell: >
-        source build/envsetup.sh > /dev/null \
-          && echo 'applying SECURITY PATCH:' \
-          && {{ item }} -fv 2> /dev/null || {{ item }} -fv 1>&2
+      ansible.builtin.shell: |
+        source build/envsetup.sh > /dev/null
+        {% for ritem in item.stdout.splitlines() | map('from_yaml') | list %}
+        echo 'applying SECURITY PATCH: {{ ritem }}'
+        {{ ritem }} -fv >> {{ BUILD_LOG }} 2>&1 || {{ ritem }} -fv >> {{ BUILD_LOG }} || exit 123
+        {% endfor %}
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
-      loop: "{{ picklist.stdout.splitlines() | map('from_yaml') | list }}"
+      #register: sperr
+      #when: sperr.rc != 123
+      loop: "{{ picklist.results }}"
     
     - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last }}-01"
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "{{ SRCPATH }}/build/core/version_defaults.mk"
         regexp: "PLATFORM_SECURITY_PATCH := .*"
         line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last }}-01"
