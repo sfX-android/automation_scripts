@@ -12,3 +12,4 @@
   loop:
     - "{{ cve_kernel_cve_checker_path }}"
     - "{{ cve_kernel_patches_path }}"
+    - "{{ cve_kernel_cip_path }}"
