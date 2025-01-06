@@ -10,6 +10,22 @@
     path: "{{ cve_kernel_patches_path }}/.git"
   register: patchesdir
 
+- name: "Check kernel cip init state"
+  ansible.builtin.stat:
+    path: "{{ cve_kernel_cip_path }}/.git"
+  register: cipdir
+
+- name: "Init kernel CIP project: initial Sync!"
+  ansible.builtin.shell: |
+    git init
+    git remote add origin {{ git_cip_project }}
+    git pull origin {{ git_cip_project_branch }}
+    git log -1
+  args:
+    executable: /bin/bash
+    chdir: "{{ cve_kernel_cip_path }}"
+  when: cipdir.stat.isdir is undefined
+
 - name: "Init kernel cve checker: initial Sync!"
   ansible.builtin.shell: |
     git init
