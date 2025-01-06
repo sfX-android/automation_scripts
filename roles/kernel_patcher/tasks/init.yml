@@ -15,5 +15,5 @@
     git log -1
 args:
   executable: /bin/bash
-  chdir: "{{ DOSPATH }}"
+  chdir: "{{ cve_kernel_patches_path }}"
 when: kerneldir.stat.isdir is undefined
