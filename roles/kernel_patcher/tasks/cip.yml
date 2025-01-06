@@ -8,7 +8,21 @@
 
 - name: "Run CIP update/fetch"
   ansible.builtin.shell: |
-    {{ cve_kernel_patches_path }}/CIP_Update.sh
+    git checkout master
+    git fetch orig
+    git rebase orig/master
+    git checkout -b $(date -uI)
+    git am ../cip-personal-tweaks.patch
+    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}"
+    git add -A && git commit -a -m 'Import data from stable branches'
+    ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}"
+    git add -A && git commit -a -m 'Import data from Debian'
+    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}"
+    git add -A && git commit -a -m 'Import data from stable branches'
+    ./scripts/import_ubuntu.py --git-repo "{{ kernel_stable_path }}"
+    git add -A && git commit -a -m 'Import data from Ubuntu'
+    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}"
+    git add -A && git commit -a -m 'Import data from stable branches'
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_cip_path }}"
