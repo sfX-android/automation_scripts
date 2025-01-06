@@ -1,0 +1,9 @@
+---
+
+- name: "Run CIP tool"
+  ansible.builtin.shell: |
+      ./CIP.sh {{ cve_kernel_cip_path }} >> {{ BUILD_LOG }} 2>&1
+  register: buildresult
+  args:
+    executable: /bin/bash
+    chdir: "{{ cve_kernel_patches_path }}"
