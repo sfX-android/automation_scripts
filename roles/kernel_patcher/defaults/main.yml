@@ -1,6 +1,8 @@
 ---
 
-git_kernel_org: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-git_cip_project: https://gitlab.com/cip-project/cip-kernel/cip-kernel-sec
-cve_kernel_patches_path: /home/androidsource/do-not-touch/CVE/kernel_patches
+git_cve_checker: "ssh://git@code.binbash.rocks:22443/AXP.OS/cve_checker.git"
+git_kernel_patches: "ssh://git@code.binbash.rocks:22443/AXP.OS/kernel_patches.git"
+git_kernel_org: "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git"
+git_cip_project: "https://gitlab.com/cip-project/cip-kernel/cip-kernel-sec"
+cve_kernel_patches_path: "/home/androidsource/do-not-touch/CVE/kernel_patches"
 cve_kernel_incrementals_path: "{{ cve_kernel_patches_path }}/0001-LinuxIncrementals"
