@@ -1,6 +1,6 @@
 ---
 
-- name: "Reset kernel patcher dir"
+- name: "Reset kernel patcher dirs"
   ansible.builtin.shell: |
        echo "BEFORE reset:" >> {{ BUILD_LOG }}
        git log -1 >> {{ BUILD_LOG }} 2>&1
@@ -14,4 +14,7 @@
        fi
        git reset --hard >> {{ BUILD_LOG }} 2>&1
   args:
-    chdir: "{{ cve_kernel_patches_path }}"
+    chdir: "{{ item }}"
+  loop:
+    - "{{ cve_kernel_cve_checker_path }}"
+    - "{{ cve_kernel_patches_path }}"
