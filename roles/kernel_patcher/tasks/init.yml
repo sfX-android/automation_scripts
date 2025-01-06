@@ -1,0 +1,19 @@
+---
+
+- name: "Check init state"
+  ansible.builtin.stat:
+    path: "{{ cve_kernel_patches_path }}/.git"
+  register: kerneldir
+
+- name: "Init kernel patcher: initial Sync!"
+  ansible.builtin.shell: |
+    git init
+    git remote add origin {{ git_kernel_patches }}
+    git pull
+    git checkout HEAD -f
+    git pull
+    git log -1
+args:
+  executable: /bin/bash
+  chdir: "{{ DOSPATH }}"
+when: kerneldir.stat.isdir is undefined
