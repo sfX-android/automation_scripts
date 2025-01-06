@@ -274,3 +274,22 @@ SH_COMMON_BUILD_SNIPPET: |
         {% endif %}
 
         echo -e "\n\nSUCCESS: You should find your build here:\n{{ JKZIPDIR }}\n"
+
+##############################################################################################
+# ASB patches for: Android 10 / Q
+##############################################################################################
+sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
+# ranges will not include the last match so must be 1 higher
+# (to include December it must end with "13" in order to match the 12th month as well)
+# to identify a start for the ranges - see above!
+sec_patch_topics_a10:
+      - "{{ range(202501, sec_patch_date_last) }}"
+##############################################################################################
+# ASB patches for: Android 11 / R
+##############################################################################################
+sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
+# ranges will not include the last match so must be 1 higher
+# (to include December it must end with "13" in order to match the 12th month as well)
+# to identify a start for the ranges - see above!
+sec_patch_topics_a11:
+      - "{{ range(202501, sec_patch_date_last) }}"
