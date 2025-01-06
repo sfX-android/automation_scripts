@@ -1,6 +1,9 @@
 ---
 
-- name: "Check/Create required dir"
+- name: "Check/Create required dirs"
   file:
-    path: "{{ cve_kernel_patches_path }}"
+    path: "{{ item }}"
     state: directory
+  loop:
+    - "{{ cve_kernel_cve_checker_path }}"
+    - "{{ cve_kernel_patches_path }}"
