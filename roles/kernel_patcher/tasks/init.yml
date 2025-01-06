@@ -1,11 +1,27 @@
 ---
 
-- name: "Check init state"
+- name: "Check cve checker init state"
+  ansible.builtin.stat:
+    path: "{{ cve_kernel_cve_checker_path }}/.git"
+  register: cvedir
+
+  - name: "Check kernel patches init state"
   ansible.builtin.stat:
     path: "{{ cve_kernel_patches_path }}/.git"
-  register: kerneldir
+  register: patchesdir
 
-- name: "Init kernel patcher: initial Sync!"
+- name: "Init kernel cve checker: initial Sync!"
+  ansible.builtin.shell: |
+    git init
+    git remote add origin {{ git_cve_checker }}
+    git pull origin main
+    git log -1
+  args:
+    executable: /bin/bash
+    chdir: "{{ cve_kernel_cve_checker_path }}"
+  when: cvedir.stat.isdir is undefined
+
+- name: "Init kernel patches: initial Sync!"
   ansible.builtin.shell: |
     git init
     git remote add origin {{ git_kernel_patches }}
@@ -14,4 +30,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_patches_path }}"
-  when: kerneldir.stat.isdir is undefined
+  when: patchesdir.stat.isdir is undefined
