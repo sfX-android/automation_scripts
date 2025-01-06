@@ -17,19 +17,20 @@
     - block:
     
       - import_role:
+          public: yes
           name: common
 
       - include_vars: ../roles/axp/common/defaults/main.yml
         no_log: true
-
-      - import_role:
-          name: cve
 
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: 
           - vault_tg_group_id_failing is undefined
           - telegram_notifications | bool
+
+      - import_role:
+          name: cve
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
