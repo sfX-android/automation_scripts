@@ -4,6 +4,9 @@
   hosts: buildserver
   gather_facts: true
 
+  vars:
+    notify_min: True
+
   pre_tasks:
 
     - debug:
