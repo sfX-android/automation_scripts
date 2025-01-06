@@ -36,8 +36,9 @@
   - include_tasks: adjust_DOS_options.yml
 
   # apply ASB patches if needed
+  # currently LOS supports ASB patches up to and including: Android 12
   - include_tasks: ../../common/tasks/secpatch.yml
-    when: android_shortversion != "a13"
+    when: android_version_int | int < 12
 
   - name: "Early git push to AXP.OS org"
     include_tasks: git_push.yml
