@@ -17,6 +17,7 @@ cve_kernel_incrementals_path: "{{ cve_kernel_patches_path }}/0001-LinuxIncrement
 
 # CIP repo and path
 git_cip_project: "https://gitlab.com/cip-project/cip-kernel/cip-kernel-sec"
+git_cip_project_branch: master
 cve_kernel_cip_path: "{{ cve_kernel_base_path }}/cip_kernel"
 
 # Mainline upstream kernel
