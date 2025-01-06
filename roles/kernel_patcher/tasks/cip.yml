@@ -6,6 +6,13 @@
     dest: "{{ divest_cve_checker_jar }}"
     mode: 0640
 
+- name: "Run CIP update/fetch"
+  ansible.builtin.shell: |
+    {{ cve_kernel_patches_path }}/CIP_Update.sh
+  args:
+    executable: /bin/bash
+    chdir: "{{ cve_kernel_cip_path }}"
+
 - name: "Run CIP tool"
   ansible.builtin.shell: |
       ./CIP.sh {{ cve_kernel_cip_path }} >> {{ BUILD_LOG }} 2>&1
