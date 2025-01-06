@@ -5,7 +5,7 @@
       export LC_ALL=C
   
       # tag name
-      TAG=$(date +%F)"_kernel_patcher"
+      TAG=$(date +%F)"_ansible"
        
       CMT=0
       # add unstaged changes
@@ -24,4 +24,7 @@
       echo "[GIT] fully completed!" >> {{ BUILD_LOG }}
   args:
     executable: /bin/bash
-    chdir: "{{ cve_kernel_patches_path }}"
+    chdir: "{{ item }}"
+  loop:
+    - "{{ cve_kernel_cve_checker_path }}"
+    - "{{ cve_kernel_patches_path }}"
