@@ -1,0 +1,6 @@
+---
+
+- name: "Check/Create required dir"
+  file:
+    path: "{{ cve_kernel_patches_path }}"
+    state: directory
