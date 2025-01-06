@@ -34,5 +34,6 @@
 - name: "Download missing Kernel Patches (downloadall.sh)"
   ansible.builtin.shell: |
       bash downloadall.sh >> {{ BUILD_LOG }} 2>&1
+  register: buildresult
   args:
     chdir: "{{ cve_kernel_incrementals_path }}"
