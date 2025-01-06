@@ -32,8 +32,8 @@
         # 324039: build conflict (eOS)
         # 324040: build conflict (eOS)
         # 324041: build conflict (eOS)
-        # 366137: affects Trebuchet (does not exist in eOS)
-        # 377775: affects Trebuchet (does not exist in eOS)
+        # 366137: affects Trebuchet (eOS)
+        # 377775: affects Trebuchet (eOS)
 
     - name: "SECURITY PATCH MERGE: create repopick list (required to find path names)"
       ansible.builtin.shell: >
