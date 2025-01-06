@@ -26,6 +26,7 @@
       disable_web_page_preview: True
   when: 
     - notify_min | d(False)
+    - buildresult.rc is defined and buildresult.rc == 0
     - notify_on_success is undefined or (notify_on_success is defined and notify_on_success | bool)
 
 - name: "Telegram: Summary (failed)"
@@ -37,8 +38,7 @@
       parse_mode: "MarkdownV2"
       text: "{{ tg_failed }}"
       disable_web_page_preview: True
-  when: buildresult.rc != 0
-#  when: buildresult.rc is undefined or buildresult.rc != 0
+  when: buildresult.rc is undefined or buildresult.rc != 0
 
 - stat:
     path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
