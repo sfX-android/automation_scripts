@@ -1,9 +1,18 @@
 ---
 
+- name: "Grab DOS CVE Checker"
+  ansible.builtin.get_url:
+    url: "{{ divest_cve_checker_download }}"
+    dest: "{{ divest_cve_checker_jar }}"
+    mode: 0640
+
 - name: "Run CIP tool"
   ansible.builtin.shell: |
       ./CIP.sh {{ cve_kernel_cip_path }} >> {{ BUILD_LOG }} 2>&1
   register: buildresult
+  environment:
+    DOS_BINARY_PATCHER: "{{ divest_cve_checker_jar }}"
+    DOS_PATCHES_LINUX_CVES: "{{ cve_kernel_patches_path }}"
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_patches_path }}"
