@@ -37,9 +37,19 @@ tg_success: |
         
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
+tg_success_min: |
+        {{ ICON_GOOD }} ***New build has finished\!***
+
+        Flavor: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
+
+        Build ID: {{ build_id | replace(".","\.") }}
+        Build ident: _{{ BUILDIDENT | replace("-","\-") }}_
+        
+        This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
+
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last build failed\!
-        \- ROM: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
+        \- OS: {{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}
         \- Device: ***{{ BDEVICE | replace("-","\-") }}***
         \- Build ident: _{{ BUILDIDENT | replace("-","\-") }}_
         \- Build ID:  {{ build_id | regex_escape() }}
