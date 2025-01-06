@@ -240,17 +240,54 @@ sec_patch_topics_pie:
 # usually you should never need to change this! See above how it is generated:
 sec_patch_pick_branch: "{{ los_version_gitbranch }}"
 
-##############################################################################################
-# as start and end of security patches is something you might need to decide per custom OS 
-# and version you should copy the whole next part into your OS role and adjust as needed.
-# checking for available topics: 
-#    https://review.lineageos.org/q/topic:P_asb_2024-12
-sec_patch_date_last: 202412 # format: NOT as string and "YYYYMM"
+# to identify a start for the ranges check:
+#     https://github.com/LineageOS/android_build/blob/lineage-17.1/core/version_defaults.mk
+# (change it to your used Lineage OS branch!)
+# search for 'PLATFORM_SECURITY_PATCH :=' and use the next one
+
+# the last patch topic available
 # ranges will not include the last match so must be 1 higher
 # (to include December it must end with "13" in order to match the 12th month as well)
-sec_patch_topics:
+# overwrite this in the Semaphore environment or pass as extra var during the Ansible run
+# format: "YYYYMM" and NOT(!) as a string
+sec_patch_date_last: 202413
+
+# as start and end of security patches is something you MIGHT need to decide depending on the used
+# custom OS and/or version you should copy the whole next part into your OS role and adjust as needed.
+# checking for available topics: 
+#    https://review.lineageos.org/q/topic:P_asb_2024-12
+
+##############################################################################################
+# ASB patches for: Android 9 / P
+##############################################################################################
+sec_patch_date_last_a09: "{{ sec_patch_date_last }}"
+# ranges will not include the last match so must be 1 higher
+# (to include December it must end with "13" in order to match the 12th month as well)
+# to identify a start for the ranges - see above!
+sec_patch_topics_a09:
       - "{{ range(202205, 202213) }}"
       - "{{ range(202301, 202313) }}"
       - "{{ range(202401, sec_patch_date_last) }}"
-
+##############################################################################################
+# ASB patches for: Android 10 / Q
+##############################################################################################
+sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
+# ranges will not include the last match so must be 1 higher
+# (to include December it must end with "13" in order to match the 12th month as well)
+# to identify a start for the ranges - see above!
+sec_patch_topics_a10:
+      - "{{ range(202303, 202313) }}"
+      - "{{ range(202401, sec_patch_date_last) }}"
+##############################################################################################
+# ASB patches for: Android 11 / R
+##############################################################################################
+sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
+# ranges will not include the last match so must be 1 higher
+# (to include December it must end with "13" in order to match the 12th month as well)
+# to identify a start for the ranges - see above!
+sec_patch_topics_a11:
+      - "{{ range(202403, sec_patch_date_last) }}"
+##############################################################################################
+# ASB patches for: Android 12 / T 
+# and later: still supported by LOS
 ##############################################################################################
