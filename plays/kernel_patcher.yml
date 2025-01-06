@@ -16,7 +16,7 @@
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
     
-      - import_role:
+      - include_role:
           public: yes
           name: common
 
