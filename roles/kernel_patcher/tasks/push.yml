@@ -1,0 +1,27 @@
+---
+
+- name: "Push detected changes"
+  ansible.builtin.shell: |      
+      export LC_ALL=C
+  
+      # tag name
+      TAG=$(date +%F)"_kernel_patcher"
+       
+      CMT=0
+      # add unstaged changes
+      git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+      # check for uncommitted changes
+      CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+      # commit if any of the above require it
+      if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+          git commit --author="{{ git_kernel_patcher_author }}" -m "automated kernel patcher run"
+          echo "[GIT] committed changes" >> {{ BUILD_LOG }}
+      fi
+
+      # push any changes
+      git push --set-upstream origin && echo "[GIT] pushed changes!" >> {{ BUILD_LOG }}
+      
+      echo "[GIT] fully completed!" >> {{ BUILD_LOG }}
+  args:
+    executable: /bin/bash
+    chdir: "{{ cve_kernel_patches_path }}"
