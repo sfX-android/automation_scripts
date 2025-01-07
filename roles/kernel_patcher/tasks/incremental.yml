@@ -19,6 +19,7 @@
 
 - name: "Prepare incremental Kernel Patches (downloadall.sh)"
   ansible.builtin.shell: |
+      [ -f downloadall.sh ] && rm downloadall.sh
       for i in $(find . -mindepth 1 -maxdepth 2 -type d); do 
           dlsh="$i/download.sh"
           for d in $(grep wget "$dlsh" | sed -E "s#(.*)\s?>\s?(.*\.patch)#$i/\2#g");do
