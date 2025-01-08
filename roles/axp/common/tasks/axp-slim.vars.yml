@@ -6,7 +6,7 @@ os_name: "AXP.OS-slim"
 ZIPDIR: "/ssd/{{ axp_type }}/zips/{{ target_model }}"
 
 # ensure we use our common apps key used to signed our own apps (e.g. OpenEUICC)
-common_apps_keydir: "/home/androidsource/do-not-touch/KEYS/{{ axp_type }}"
+common_apps_keydir: "/home/androidsource/do-not-touch/KEYS/{{ os_name }}"
 
 # allow to (manually) set selinux permissive
 #axp_allow_permissive: True
