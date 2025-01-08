@@ -1,5 +1,9 @@
 ---
 
+- include_vars: axp-slim.vars.yml
+  no_log: true
+  when: axp_type == "axp-slim"
+
 - include_tasks: prep.yml
 - include_tasks: vars.yml
 - include_tasks: init.yml

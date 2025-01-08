@@ -1,0 +1,129 @@
+#!/bin/bash
+#####################################################################################################################
+# global vars for {{ os_name }}
+#
+# can be overwritten / extended by device specific definitions.
+# Device example:
+# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/templates/divested.vars.hotdog.j2
+#
+# additional / current list of possible options:
+# https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
+#####################################################################################################################
+
+########################################
+# DOS global defaults
+########################################
+
+# General
+export DOS_WORKSPACE_ROOT="{{ DOSPATH }}/"
+export DOS_SIGNING_KEYS="$DOS_WORKSPACE_ROOT/Signing_Keys/4096pro"
+export DOS_SIGNING_GPG="$DOS_WORKSPACE_ROOT/Signing_Keys/gnupg"
+export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
+export CCACHE_COMPRESSLEVEL=1
+export DOS_MALWARE_SCAN_ENABLED=false #Set true to perform a fast scan on patchWorkspace() and a through scan on buildAll()
+export DOS_REFRESH_PATCHES=true #Set true to refresh branch-specific patches on apply
+
+# Release Processing
+export DOS_MALWARE_SCAN_BEFORE_SIGN=false #Scan device files for malware before signing
+export DOS_GENERATE_DELTAS=false #Creates deltas from existing target_files in $DOS_BUILDS
+export DOS_AUTO_ARCHIVE_BUILDS=true #Copies files to $DOS_BUILDS after signing
+export DOS_REMOVE_AFTER=false #Removes device OUT directory after complete to reclaim space. Requires AUTO_ARCHIVE_BUILDS=true
+export DOS_REMOVE_AFTER_FULL=false #Removes the entire OUT directory
+export DOS_GPG_SIGNING=true
+export DOS_GPG_SIGNING_KEY="B8744D67F9F1E14E145DFD8E7F627E920F316994"
+
+# Branding
+export DOS_BRANDING_NAME="{{ os_name }}"
+export DOS_BRANDING_ZIP_PREFIX="{{ os_name }}"
+export DOS_BRANDING_BOOTANIMATION_FONT="Fira-Sans-Heavy" #Options: $ convert -list font
+export DOS_BRANDING_BOOTANIMATION_STYLE="gradient" #Options: gradient, plasma
+export DOS_BRANDING_BOOTANIMATION_COLOR="#000000-#808080" #plasma
+export DOS_BRANDING_LINK_ABOUT="https://axpos.org"
+export DOS_BRANDING_LINK_PRIVACY="https://axpos.org/privacy-policy"
+
+# Theme
+export DOS_THEME_50="FFCA28" #Amber 400
+export DOS_THEME_100="FFC107" #Amber 500
+export DOS_THEME_200="FFA726" #Orange 400
+export DOS_THEME_300="FF9800" #Orange 500
+export DOS_THEME_500="FF5722" #Deep Orange 500
+export DOS_THEME_700="E64A19" #Deep Orange 700
+
+# Servers
+export DOS_DEFAULT_DNS_PRESET="Quad9" #Sets default DNS. Options: See changeDefaultDNS() in Scripts/Common/Functions.sh
+export DOS_GPS_NTP_SERVER="2.android.pool.ntp.org" #Options: Any NTP pool
+export DOS_GPS_SUPL_HOST="supl.google.com" #Options: Any *valid* SUPL server
+
+# Deblobber
+export DOS_DEBLOBBER_REMOVE_ACCESSORIES=true #Set false to allow use of external accessories that depend on blobs
+export DOS_DEBLOBBER_REMOVE_ATFWD=true #Set true to remove basic ATFWD blobs
+export DOS_DEBLOBBER_REMOVE_AUDIOFX=true #Set true to remove AudioFX
+export DOS_DEBLOBBER_REMOVE_APTX=false #Set true to remove aptX Bluetooth codec
+export DOS_DEBLOBBER_REMOVE_CNE=true #Set true to remove all CNE blobs #XXX: Breaks Wi-Fi calling
+export DOS_DEBLOBBER_REMOVE_DPM=true #Set true to remove all DPM blobs #XXX: Maybe breaks multi-sim and carrier aggregation (LTE+)
+export DOS_DEBLOBBER_REMOVE_DPP=false #Set true to remove all Display Post Processing blobs #XXX: Breaks boot on select devices
+export DOS_DEBLOBBER_REMOVE_FP=false #Set true to remove all fingerprint reader blobs
+export DOS_DEBLOBBER_REMOVE_EUICC=true #Set true to remove all eUICC blobs
+export DOS_DEBLOBBER_REMOVE_IMS=false #Set true to remove all IMS blobs XXX: Carriers are phasing out 3G, making IMS mandatory for calls
+export DOS_DEBLOBBER_REMOVE_IPA=false #Set true to remove all IPA blobs
+export DOS_DEBLOBBER_REMOVE_IR=false #Set true to remove all IR blobs
+export DOS_DEBLOBBER_REMOVE_RCS=true #Set true to remove all RCS blobs
+
+# Features
+export DOS_HOSTS_BLOCKING=true #Set false to prevent inclusion of a HOSTS file
+export DOS_HOSTS_BLOCKING_LIST="https://divested.dev/hosts-wildcards" #Must be in the format "127.0.0.1 bad.domain.tld"
+export DOS_SENSORS_PERM=false #Set true to provide a per-app sensors permission for 14.1/15.1 #XXX: can break things like camera
+export DOS_USE_KSM=false #Set true to use KSM for increased memory efficiency at the cost of easier side-channel attacks and increased CPU usage #XXX: testing only
+
+# Kernel patching
+export DOS_BINARY_PATCHER="{{ divest_cve_checker_jar }}"
+
+########################################
+# AXP global defaults
+########################################
+
+# build
+export DOS_MAX_THREADS_REPO={{ max_processes_sync }}   # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 10)
+export DOS_MAX_THREADS_BUILD={{ max_processes }}   # Max amount of threads used for build, e.g. used by make (shouldn't exceed your CPU cores count)
+
+# release directory
+export DOS_BUILDS="{{ ZIPDIR }}"
+
+# misc
+export EXTENDROM_PATCHER_RESET=false  # never reset before applying custom patches (as this will break DOS changes)
+export EXTENDROM_SIGSPOOF_RESET=false  # never reset framework base before applying er signature spoof support
+export DOS_DEBLOBBER_REMOVE_WIDEVINE_DRM=true # remove widevine drm
+#export AXP_DEFCONFIG_GLOBALS="CONFIG_NET CONFIG_INET CONFIG_NET_UDP_TUNNEL CONFIG_CRYPTO_ALGAPI CONFIG_WIREGUARD" # add to kernel defconfig
+#export DOS_GRAPHENE_HMALLOC_TOGGLE=false # do not enable the hmalloc disable toogle (bc it is supported on specific Android releases only) - WIP
+export DOS_MICROG_SUPPORT=false #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
+#export DOS_DEBLOBBER_REMOVE_CNE=false # allow VoLTE/WiFi calling
+
+# OpenEUICC
+# Add the toggle for OpenEUICC but we use AXP's prebuilt apk
+export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC
+export DOS_DEBLOBBER_REMOVE_EUICC=true  # remove the Divest prebuilt
+export DOS_DEBLOBBER_REMOVE_EUICC_FULL=false # implement the toggle in settings
+
+# git stuff used for commiting changes within the sources
+export DOS_PATCHER_URI_KERNEL=https://gitlab.com/divested-mobile/kernel_patches/-/blob/master
+export DOS_PATCHER_URI_ANDROID=https://gitlab.com/divested-mobile/divestos-build/-/blob/master/Patches/LineageOS-{{ los_version }}
+export DOS_GIT_AUTHOR=DivestOS
+export DOS_GIT_MAIL=tavi@divested.dev
+export AXP_GIT_AUTHOR=AXP.OS
+export AXP_GIT_MAIL=sherlock@binbash.rocks
+
+# OTA
+export DOS_BRANDING_LINK_NEWS="https://github.com/AXP-OS/build/wiki/Changelog"
+export DOS_OTA_SERVER_PRIMARY="https://sfxota.binbash.rocks:8010"
+export DOS_OTA_SERVER_EXTENDED=true #Enable to provide multiple choices as set below
+export DOS_OTA_SERVER_SECONDARY_NAME="UNSTABLE"
+export DOS_OTA_SERVER_SECONDARY="https://sfxota-beta.binbash.rocks:8010"
+export DOS_OTA_SERVER_ONION_PRIMARY="$DOS_OTA_SERVER_PRIMARY"
+export DOS_OTA_SERVER_ONION_SECONDARY="$DOS_OTA_SERVER_SECONDARY"
+export DOS_OTA_SERVER_ONION_DOMAIN_PRIMARY="http://sfxota.binbash.rocks:8009"  # allow cleartext traffic
+export DOS_OTA_SERVER_ONION_DOMAIN_SECONDARY="http://sfxota-beta.binbash.rocks:8009" # allow cleartext traffic
+
+# git
+export AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC="device_generic_car|device_generic_goldfish|device_generic_goldfish-opengl|device_generic_trusty|device_generic_uml|device_generic_x86|device_generic_x86_64" # skipped by git push, not used for building AXP.OS
+export AXP_GIT_PUSH_DEVICE_EXCLUDE="${AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC}|device_google_|device_sony_|device_oneplus_|vendor_lge_|device_samsung_" # skipped by git push, use AXP_GIT_PUSH_DEVICE_INCLUDE to overwrite per device
+export AXP_GIT_PUSH_VENDOR_EXCLUDE="vendor_google|vendor_sony|vendor_oneplus|vendor_lge|vendor_samsung|vendor_axp" # skipped by git push, use AXP_GIT_PUSH_VENDOR_INCLUDE to overwrite per device
