@@ -1,8 +1,8 @@
 ---
 
 - include_vars: axp-slim.vars.yml
-  no_log: true
-  when: axp_type == "axp-slim"
+  #no_log: true
+  when: axp_type | d(ROM-FLAVOR) == "axp-slim"
 
 - include_tasks: prep.yml
 - include_tasks: vars.yml
