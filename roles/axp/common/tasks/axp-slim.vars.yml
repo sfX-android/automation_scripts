@@ -3,9 +3,10 @@
 
 # build vars
 os_name: "AXP.OS-slim"
+ZIPDIR: "/ssd/{{ axp_type }}/zips/{{ target_model }}"
 
 # ensure we use our common apps key used to signed our own apps (e.g. OpenEUICC)
-common_apps_keydir: "/home/androidsource/do-not-touch/KEYS/{{ os_name }}"
+common_apps_keydir: "/home/androidsource/do-not-touch/KEYS/{{ axp_type }}"
 
 # allow to (manually) set selinux permissive
 #axp_allow_permissive: True
@@ -20,7 +21,7 @@ KEYS_CN: "{{ os_name }}"
 #keysdir: "{{ DOSPATH }}/Signing_Keys/4096pro/{{ target_model }}/"
 
 device_cl: |-
-  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR }}-slim | regex_escape() }}***
+  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ axp_type }} | regex_escape() }}***
 
 dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ ROM_FLAVOR }}-slim/{{ target_model }})
+  ***Download:*** [{{ ROMFILE.stdout | regex_escape() }} ]({{ leech_server }}/{{ axp_type }}/{{ target_model }})
