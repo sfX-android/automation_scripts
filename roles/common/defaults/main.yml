@@ -186,7 +186,8 @@ sec_patch_pick_branch: "{{ los_version_gitbranch }}"
 # (to include December it must end with "13" in order to match the 12th month as well)
 # overwrite this in the Semaphore environment or pass as extra var during the Ansible run
 # format: "YYYYMM" and NOT(!) as a string
-sec_patch_date_last: 202413
+# or use "{{ current_year }}{{ current_month | int + 1 }}" to keep this dynamic!
+sec_patch_date_last: "{{ current_year }}{{ current_month | int + 1 }}"
 
 # as start and end of security patches is something you MIGHT need to decide depending on the used
 # custom OS and/or version you should copy the whole next part into your OS role and adjust as needed.
