@@ -2,7 +2,7 @@
 
 - name: "Set global vars"
   template:
-    src: "{{ axp_type | d(ROM_FLAVOR) }}.vars.j2"
+    src: "axp{{ axp_type | d('') }}.vars.j2"
     dest: "{{ BUILDHOME }}/.divested.vars"
 
 - name: "check if a device overwrite exists"
