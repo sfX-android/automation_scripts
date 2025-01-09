@@ -7,7 +7,7 @@
     msg: |
       #
       
-      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} - {{ git_repo_main_branch | d(android_shortversion) }} has been started, lean back and let the CPUs burn ...
+      Build {{ BDEVICE }} - {{ ROM_FLAVOR }} {{ axp_type | d('')}} - {{ git_repo_main_branch | d(android_shortversion) }} has been started, lean back and let the CPUs burn ...
       
       Variables in use:
 
@@ -25,11 +25,16 @@
       RELEASE_TYPE: {{ RELEASE_TYPE | d("N/A") }}
       android_shortversion: {{ android_shortversion }}
       normalized_target_version: {{ normalized_target_version }}
+      keysdir: {{ keysdir }}
+      
       sign_build: {{ sign_build | d(false) }}
       USE_CCACHE: {{ USE_CCACHE | d("N/A") }}
       CCACHE_DIR: {{ CCACHE_DIR | d("N/A") }}
+
       use_extendrom: {{ use_extendrom | d(false) }}
+      extendrom_package_list_default: {{ extendrom_package_list_default | d("N/A") }}
       extendrom_package_list: {{ extendrom_package_list | d("N/A") }}
+      
       rempath: {{ rempath | d("N/A") }}
       
       clean_basic: {{ clean_basic | d("N/A") }} | override_clean_basic: {{ override_clean_basic | d("N/A") }}
