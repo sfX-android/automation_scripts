@@ -63,7 +63,7 @@ CCACHE_EXEC: /usr/bin/ccache
 CCACHE_COMPRESS: 1
 CCACHE_DIR: "/ssd/ccache/jenkins/{{ android_shortversion }}"
 
-# base url where the user can download released ROMs etc
+# base url where the user can download released builds
 leech_server: "https://leech.binbash.rocks:8008"
 
 # notification icons
@@ -73,7 +73,7 @@ ICON_BAD: ☠️
 # disable telegram notifications by default
 telegram_notifications: false
 
-# default to false
+# using a custom release script after build succeeded
 custom_release_script: false
 
 # build vars
@@ -93,18 +93,20 @@ build_log_name_noid: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM
 BUILD_LOG: "{{ BUILDHOME }}/{{ build_log_name }}"
 build_log_name_latest: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_latest.log"
 BUILD_LOG_LATEST: "{{ BUILDHOME }}/{{ build_log_name_latest }}"
-keep_build_logs: True    # if you override this in your env with >False< ANY previous build log will be deleted in advance
+keep_build_logs: True    # if you override this in your env with >False< ANY previous build log will be deleted before building
 
 # build signing
 sign_build: true
-keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
+# main base path for all key files (i.e. without model or OS flavor)
+keys_base_path: /home/androidsource/do-not-touch/KEYS
+keysdir: '{{ keys_base_path }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
 SRC_KEYSDIR: user-keys
 KEYS_CN: "{{ ROM_FLAVOR }}"
 KEYS_USER: "sfX-bot"
 KEYS_SIZE: 4096
 KEYS_HASHTYPE: sha256
 
-# gen a ROM checksum
+# skip generating a ZIP checksum
 skip_gen_checksum: false
 
 # set override defaults
@@ -125,72 +127,6 @@ prob_repo_paths:
 incompat_cross_version_paths:
     - bootable/recovery
     - device
-
-# DEPRECATED by new git reset approach
-incompat_cross_version_paths_DISABLED:
-    - android
-    - build
-    - cts
-    - device/
-    - external/adt-infra
-    - external/dnsmasq
-    - external/freetype
-    - external/libaom
-    - external/libbrillo
-    - external/libhevc
-    - external/libtextclassifier
-    - external/perfetto
-    - external/chromium-libpac
-    - external/chromium-webview
-    - external/guice
-    - external/mesa3d
-    - external/okhttp
-    - external/ppp
-    - external/robolectric-shadows
-    - external/selinux
-    - external/sonivox
-    - external/v8
-    - frameworks/av
-    - frameworks/hardware/interfaces
-    - frameworks/ml
-    - frameworks/native
-    - frameworks/opt/net/voip
-    - frameworks/opt/net/wifi
-    - frameworks/opt/telephony
-    - frameworks/support
-    - hardware/libhardware_legacy
-    - hardware/marvell
-    - hardware/qcom/sm7150
-    - hardware/qcom/sm7250
-    - hardware/qcom/sm8150
-    - hardware/qcom/sm8150p
-    - hardware/qcom-caf
-    - hardware/qcom/wlan
-    - hardware/qcom/Android.mk    
-    - kernel/
-    - packages/apps/Bluetooth
-    - packages/apps/PermissionController
-    - packages/apps/PhoneCommon
-    - packages/apps/Trebuchet
-    - packages/apps/Updater
-    - packages/modules/NetworkStack
-    - packages/providers/MediaProvider
-    - platform_testing
-    - prebuilts/gcc/darwin-x86/x86/x86_64-linux-android-4.9
-    - prebuilts/gcc/linux-x86/x86/x86_64-linux-android-4.9
-    - prebuilts/r8
-    - .repo/repo
-    - system/connectivity/wificond
-    - system/core
-    - system/keymaster
-    - system/security
-    - system/sepolicy
-    - test/
-    - tools/
-    - vendor/lineage
-    - vendor/fdroid
-    - vendor/cm
-    - vendor/nxp
 
 # !LEGACY! security patch handling (and for PIE only)
 # see next paragraph for the new method!
