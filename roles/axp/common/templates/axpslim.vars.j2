@@ -85,6 +85,7 @@ export DOS_BINARY_PATCHER="{{ divest_cve_checker_jar }}"
 # build
 export DOS_MAX_THREADS_REPO={{ max_processes_sync }}   # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 10)
 export DOS_MAX_THREADS_BUILD={{ max_processes }}   # Max amount of threads used for build, e.g. used by make (shouldn't exceed your CPU cores count)
+export DOS_SIGNING_KEYS="{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}"
 
 # release directory
 export DOS_BUILDS="{{ ZIPDIR }}"
