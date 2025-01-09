@@ -50,7 +50,7 @@
           name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
 
       - import_role:
-          name: build_rom
+          name: build
 
       - import_role:
           name: release
