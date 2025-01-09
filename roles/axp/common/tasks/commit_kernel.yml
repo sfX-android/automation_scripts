@@ -1,0 +1,21 @@
+---
+
+# if not all changes are committed the kernel version will be suffixed with "<hash>-dirty"
+# so before build all changes must have been committed
+
+- name: "Git commit changes in kernel directory"
+  ansible.builtin.shell: |
+      echo "[GIT] checking kernel changes in {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
+      # add unstaged changes
+      CMT=0
+      git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+      # check for uncommitted changes
+      CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+      # commit if any of the above require it
+      if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+          git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
+          echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
+      fi
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}/{{ target_kernel_dir }}"
