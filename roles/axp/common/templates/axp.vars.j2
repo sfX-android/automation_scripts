@@ -38,8 +38,8 @@ export DOS_BRANDING_ZIP_PREFIX="{{ os_name }}"
 export DOS_BRANDING_BOOTANIMATION_FONT="Fira-Sans-Heavy" #Options: $ convert -list font
 export DOS_BRANDING_BOOTANIMATION_STYLE="gradient" #Options: gradient, plasma
 export DOS_BRANDING_BOOTANIMATION_COLOR="#000000-#808080" #plasma
-export DOS_BRANDING_LINK_ABOUT="https://axp.binbash.rocks"
-export DOS_BRANDING_LINK_PRIVACY="https://divestos.org/index.php?page=privacy_policy"
+export DOS_BRANDING_LINK_ABOUT="https://axpos.org"
+export DOS_BRANDING_LINK_PRIVACY="https://axpos.org/privacy-policy"
 
 # Theme
 export DOS_THEME_50="FFCA28" #Amber 400
@@ -51,7 +51,7 @@ export DOS_THEME_700="E64A19" #Deep Orange 700
 
 # Servers
 export DOS_DEFAULT_DNS_PRESET="Quad9" #Sets default DNS. Options: See changeDefaultDNS() in Scripts/Common/Functions.sh
-export DOS_GPS_NTP_SERVER="de.pool.ntp.org" #Options: Any NTP pool
+export DOS_GPS_NTP_SERVER="2.android.pool.ntp.org" #Options: Any NTP pool
 export DOS_GPS_SUPL_HOST="supl.google.com" #Options: Any *valid* SUPL server
 
 # Deblobber
@@ -59,45 +59,34 @@ export DOS_DEBLOBBER_REMOVE_ACCESSORIES=true #Set false to allow use of external
 export DOS_DEBLOBBER_REMOVE_ATFWD=true #Set true to remove basic ATFWD blobs
 export DOS_DEBLOBBER_REMOVE_AUDIOFX=true #Set true to remove AudioFX
 export DOS_DEBLOBBER_REMOVE_APTX=false #Set true to remove aptX Bluetooth codec
-export DOS_DEBLOBBER_REMOVE_CAMEXT=false #Set true to remove camera extensions
-#export DOS_DEBLOBBER_REMOVE_CNE=true #Set true to remove all CNE blobs #XXX: Breaks Wi-Fi calling
-export DOS_DEBLOBBER_REMOVE_DPM=false #Set true to remove all DPM blobs #XXX: Maybe breaks multi-sim and carrier aggregation (LTE+)
+export DOS_DEBLOBBER_REMOVE_CNE=true #Set true to remove all CNE blobs #XXX: Breaks Wi-Fi calling
+export DOS_DEBLOBBER_REMOVE_DPM=true #Set true to remove all DPM blobs #XXX: Maybe breaks multi-sim and carrier aggregation (LTE+)
 export DOS_DEBLOBBER_REMOVE_DPP=false #Set true to remove all Display Post Processing blobs #XXX: Breaks boot on select devices
 export DOS_DEBLOBBER_REMOVE_FP=false #Set true to remove all fingerprint reader blobs
-export DOS_DEBLOBBER_REMOVE_GRAPHICS=false #Set true to remove all graphics blobs and use SwiftShader CPU renderer #TODO: Needs work
 export DOS_DEBLOBBER_REMOVE_EUICC=true #Set true to remove all eUICC blobs
 export DOS_DEBLOBBER_REMOVE_IMS=false #Set true to remove all IMS blobs XXX: Carriers are phasing out 3G, making IMS mandatory for calls
 export DOS_DEBLOBBER_REMOVE_IPA=false #Set true to remove all IPA blobs
 export DOS_DEBLOBBER_REMOVE_IR=false #Set true to remove all IR blobs
 export DOS_DEBLOBBER_REMOVE_RCS=true #Set true to remove all RCS blobs
-export DOS_DEBLOBBER_REMOVE_RENDERSCRIPT=false #Set true to remove RenderScript blobs
-export DOS_DEBLOBBER_REPLACE_TIME=false #Set true to replace Qualcomm Time Services with the open source Sony TimeKeep reimplementation #TODO: Needs testing
 
 # Features
-export DOS_GPS_GLONASS_FORCED=false #Enables GLONASS on all devices
-export DOS_DEFCONFIG_DISABLER=true #Enables the disablement of various kernel options
-export DOS_GRAPHENE_BIONIC=true #Enables the bionic hardening patchset on 16.0+17.1+18.1+19.1+20.0
-export DOS_GRAPHENE_CONSTIFY=true #Enables 'Constify JNINativeMethod tables' patchset on 16.0+17.1+18.1+19.1+20.0
-export DOS_GRAPHENE_MALLOC=true #Enables use of GrapheneOS' hardened memory allocator on 64-bit platforms on 16.0+17.1+18.1+19.1+20.0
-export DOS_GRAPHENE_EXEC=true #Enables use of GrapheneOS' exec spawning feature on 16.0+17.1+18.1+19.1+20.0
-export DOS_HOSTS_BLOCKING=false #Set false to prevent inclusion of a HOSTS file
+export DOS_HOSTS_BLOCKING=true #Set false to prevent inclusion of a HOSTS file
 export DOS_HOSTS_BLOCKING_LIST="https://divested.dev/hosts-wildcards" #Must be in the format "127.0.0.1 bad.domain.tld"
 export DOS_SENSORS_PERM=false #Set true to provide a per-app sensors permission for 14.1/15.1 #XXX: can break things like camera
-#export DOS_STRONG_ENCRYPTION_ENABLED=false #Set true to enable AES 256-bit FDE encryption on 14.1+15.1 XXX: THIS WILL **DESTROY** EXISTING INSTALLS!
-export DOS_WEBVIEW_LFS=true #Whether to `git lfs pull` in the WebView repository
-#alias DOS_WEBVIEW_CHERRYPICK='git pull "https://github.com/LineageOS/android_external_chromium-webview" refs/changes/00/316600/2'
 export DOS_USE_KSM=false #Set true to use KSM for increased memory efficiency at the cost of easier side-channel attacks and increased CPU usage #XXX: testing only
 
 # Kernel patching
 export DOS_BINARY_PATCHER="{{ divest_cve_checker_jar }}"
 
 ########################################
-# AXP global defaults
+# AXP global defaults (overrides
 ########################################
 
 # build
 export DOS_MAX_THREADS_REPO={{ max_processes_sync }}   # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 10)
 export DOS_MAX_THREADS_BUILD={{ max_processes }}   # Max amount of threads used for build, e.g. used by make (shouldn't exceed your CPU cores count)
+export DOS_SIGNING_KEYS="{{ keys_base_path }}/{{ os_name }}"
+#export DOS_SIGNING_GPG=""
 
 # release directory
 export DOS_BUILDS="{{ ZIPDIR }}"
@@ -111,8 +100,9 @@ export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC by default
 #export DOS_GRAPHENE_HMALLOC_TOGGLE=false # do not enable the hmalloc disable toogle (bc it is supported on specific Android releases only) - WIP
 export DOS_MICROG_SUPPORT=false #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
 export DOS_DEBLOBBER_REMOVE_CNE=false # allow VoLTE/WiFi calling
+export DOS_DEBLOBBER_REMOVE_DPM=false # avoid breaking multi-sim and carrier aggregation (LTE+)
 
-# git stuff used for commiting changes within the sources
+# git info used for committing changes within the sources
 export DOS_PATCHER_URI_KERNEL=https://gitlab.com/divested-mobile/kernel_patches/-/blob/master
 export DOS_PATCHER_URI_ANDROID=https://gitlab.com/divested-mobile/divestos-build/-/blob/master/Patches/LineageOS-{{ los_version }}
 export DOS_GIT_AUTHOR=DivestOS
@@ -131,7 +121,7 @@ export DOS_OTA_SERVER_ONION_SECONDARY="$DOS_OTA_SERVER_SECONDARY"
 export DOS_OTA_SERVER_ONION_DOMAIN_PRIMARY="http://sfxota.binbash.rocks:8009"  # allow cleartext traffic
 export DOS_OTA_SERVER_ONION_DOMAIN_SECONDARY="http://sfxota-beta.binbash.rocks:8009" # allow cleartext traffic
 
-# git
+# git push targets (reproducible builds)
 export AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC="device_generic_car|device_generic_goldfish|device_generic_goldfish-opengl|device_generic_trusty|device_generic_uml|device_generic_x86|device_generic_x86_64" # skipped by git push, not used for building AXP.OS
 export AXP_GIT_PUSH_DEVICE_EXCLUDE="${AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC}|device_google_|device_sony_|device_oneplus_|vendor_lge_|device_samsung_" # skipped by git push, use AXP_GIT_PUSH_DEVICE_INCLUDE to overwrite per device
 export AXP_GIT_PUSH_VENDOR_EXCLUDE="vendor_google|vendor_sony|vendor_oneplus|vendor_lge|vendor_samsung|vendor_axp" # skipped by git push, use AXP_GIT_PUSH_VENDOR_INCLUDE to overwrite per device
