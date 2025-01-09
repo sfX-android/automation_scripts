@@ -173,6 +173,23 @@ sec_patch_topics_pie:
 # it will also use the right topic letter based on the same LineageOS branch configured
 # so the only thing needed to be adjusted is the range of patches for your specific needs.
 
+# manifest-requirement:
+#     <!-- cherrypicker patch tool -->
+#    <project path="external/cherrypicker" name="aol-aosip/android_vendor_unconv" remote="github" revision="master" />
+#
+# exclusion list:
+#   338357: manifest change
+#   342095: manifest change
+#   324039: build conflict (eOS)
+#   324040: build conflict (eOS)
+#   324041: build conflict (eOS)
+#   366137: affects Trebuchet (eOS)
+#   377775: affects Trebuchet (eOS)
+#   414554: manifest change
+secpatch_common_exclusions: 'Manifest change|Track our own fork'
+secpatch_los_exclusions: '338357|342095|414554'               # includes secpatch_common_exclusions
+secpatch_eos_exclusions: '324039|324040|324041|366137|377775' # includes secpatch_common_exclusions + secpatch_los_exclusions
+
 # usually you should never need to change this! See above how it is generated:
 sec_patch_pick_branch: "{{ los_version_gitbranch }}"
 
