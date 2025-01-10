@@ -8,7 +8,7 @@ ZIPDIR: "/ssd/{{ axp_type }}/zips/{{ target_model }}"
 #axp_allow_permissive: True
 
 # extendrom stuff
-extendrom_package_list_default: "additional_repos.xml AuroraStore"
+extendrom_package_list_default: "additional_repos.xml AuroraStore noeSpeakNG"
 extendrom_preroot_boot: "false"
 extendrom_allow_any_call_recording: 'false'
 
