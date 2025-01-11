@@ -5,6 +5,9 @@
 
 - name: "Git commit changes in kernel directory"
   ansible.builtin.shell: |
+      export LC_ALL=C
+      {{ DOS_INIT }}
+      
       echo "[GIT] checking kernel changes in {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
       # add unstaged changes
       CMT=0
