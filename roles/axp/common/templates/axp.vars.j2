@@ -32,15 +32,6 @@ export DOS_REMOVE_AFTER_FULL=false #Removes the entire OUT directory
 export DOS_GPG_SIGNING=true
 export DOS_GPG_SIGNING_KEY="B8744D67F9F1E14E145DFD8E7F627E920F316994"
 
-# Branding
-export DOS_BRANDING_NAME="{{ os_name }}"
-export DOS_BRANDING_ZIP_PREFIX="{{ os_name }}"
-export DOS_BRANDING_BOOTANIMATION_FONT="Fira-Sans-Heavy" #Options: $ convert -list font
-export DOS_BRANDING_BOOTANIMATION_STYLE="gradient" #Options: gradient, plasma
-export DOS_BRANDING_BOOTANIMATION_COLOR="#000000-#808080" #plasma
-export DOS_BRANDING_LINK_ABOUT="https://axpos.org"
-export DOS_BRANDING_LINK_PRIVACY="https://axpos.org/privacy-policy"
-
 # Theme
 export DOS_THEME_50="FFCA28" #Amber 400
 export DOS_THEME_100="FFC107" #Amber 500
@@ -79,8 +70,22 @@ export DOS_USE_KSM=false #Set true to use KSM for increased memory efficiency at
 export DOS_BINARY_PATCHER="{{ divest_cve_checker_jar }}"
 
 ########################################
-# AXP global defaults (overrides
+# AXP.OS global defaults (overrides
 ########################################
+
+# DOS branding
+export DOS_BRANDING_NAME="{{ os_name }}"                     # rebranding in several places (e.g. recovery, about phone etc)
+export DOS_BRANDING_NAME_WIZARD="{{ os_name }}"              # name shown in the first boot setup wizard
+export DOS_BRANDING_ZIP_PREFIX="{{ os_name }}"
+export DOS_BRANDING_BOOTANIMATION_FONT="Fira-Sans-Heavy"     # Options: $ convert -list font
+export DOS_BRANDING_BOOTANIMATION_STYLE="gradient"           # Options: gradient, plasma
+export DOS_BRANDING_BOOTANIMATION_COLOR="#000000-#808080"    # plasma
+export DOS_BRANDING_LINK_ABOUT="https://axpos.org"
+export DOS_BRANDING_LINK_PRIVACY="https://axpos.org/privacy-policy"
+
+# AOS branding
+# WARN: changing this will break the Updater on existing installs
+export AOS_BRANDING_BUILDTYPE="dos"                          # the LINEAGE_BUILDTYPE / channel name (AXP.OS-20.0-20241218-<AOS_BRANDING_BUILDTYPE>-bluejay.zip)
 
 # build
 export DOS_MAX_THREADS_REPO={{ max_processes_sync }}   # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 10)
