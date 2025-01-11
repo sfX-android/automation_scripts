@@ -5,7 +5,7 @@
 ZIPDIR: "/ssd/{{ axp_type }}/zips/{{ target_model }}"
 
 # allow to (manually) set selinux permissive
-#axp_allow_permissive: True
+axp_allow_permissive: False
 
 # extendrom stuff
 extendrom_package_list_default: "additional_repos.xml AuroraStore noeSpeakNG"
