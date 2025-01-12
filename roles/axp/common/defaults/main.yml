@@ -241,6 +241,7 @@ SH_COMMON_BUILD_SNIPPET: |
         echo "[GIT] checking kernel changes in {{ target_kernel_dir }}"
         # add unstaged changes
         CMT=0
+        cd {{ target_kernel_dir }}
         git add -A || CMT=1
         # check for uncommitted changes
         CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
@@ -249,6 +250,8 @@ SH_COMMON_BUILD_SNIPPET: |
            git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
            echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
         fi
+        git status
+        croot
       
         # build
         resetEnv
