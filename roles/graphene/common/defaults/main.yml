@@ -141,7 +141,7 @@ SH_GRAPHENE_BUILD: |
       echo "ro.build.id=$BUILD_ID" > vendor/sos/vendor.prop
       echo "ro.build.display.id=${BUILD_ID}-${ROM_TYPE}" >> vendor/sos/vendor.prop
 
-      export TARGET_RELEASE=ap1a
+      export TARGET_RELEASE=ap2a
       source script/envsetup.sh >> /dev/null 2>&1 || source build/envsetup.sh
       lunch {{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }} || lunch aosp_{{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }}
       
