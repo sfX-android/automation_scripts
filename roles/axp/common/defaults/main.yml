@@ -237,7 +237,19 @@ SH_COMMON_BUILD_SNIPPET: |
         export EXTENDROM_ALLOW_ANY_CALL_RECORDING={{ extendrom_allow_any_call_recording }}
         # execute extendrom
         $PWD/vendor/extendrom/er.sh
-        
+
+        echo "[GIT] checking kernel changes in {{ target_kernel_dir }}"
+        # add unstaged changes
+        CMT=0
+        git add -A || CMT=1
+        # check for uncommitted changes
+        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+        # commit if required
+        if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+           git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
+           echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
+        fi
+      
         # build
         resetEnv
         {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
