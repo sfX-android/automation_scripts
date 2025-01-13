@@ -2,11 +2,11 @@
 
 - name: "Generate hash for {{ ROMFILE.stdout }}"
   stat:
-    path: "{{ JKZIPDIR }}/{{ ROMFILE.stdout }}"
+    path: "{{ ZIPDIR }}/{{ ROMFILE.stdout }}"
     checksum_algorithm: sha256
   register: hash
 
 - name: "Write hash {{ ROMFILE.stdout }}.sha256sum"
   shell: "echo '{{ hash.stat.checksum }} {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha256sum"
   args:
-    chdir: "{{ JKZIPDIR }}"
+    chdir: "{{ ZIPDIR }}"

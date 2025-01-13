@@ -54,8 +54,8 @@ if [ "{{ target_model }}" == "g4" ];then
 fi
 
 # place recovery in a temp dir
-[ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-cp -v out/target/product/{{ target_model | regex_replace('_lockedbl','') }}/SHRP_v*.zip {{ JKZIPDIR }}/
+[ ! -d {{ ZIPDIR }} ] && mkdir -p {{ ZIPDIR }}
+cp -v out/target/product/{{ target_model | regex_replace('_lockedbl','') }}/SHRP_v*.zip {{ ZIPDIR }}/
 
 # remove compat bin links
 if [ -e ~/.local/bin/python ];then

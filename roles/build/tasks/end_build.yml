@@ -30,11 +30,11 @@
     - name: "Get current/latest build filename"
       shell: "find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' -printf '%T@ %p\\n' | sort -n | tail -1 | cut -d' ' -f2- | tr -d '\\n' | sed 's#^\\./##g'"
       args:
-        chdir: "{{ JKZIPDIR }}"
+        chdir: "{{ ZIPDIR }}"
       register: ROMFILE
 
     - name: "Copy build.prop for OTA"
-      shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ JKZIPDIR }}/{{ ROMFILE.stdout }}.prop"
+      shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ ZIPDIR }}/{{ ROMFILE.stdout }}.prop"
       when:
         - ROM_FLAVOR != "TWRP"
         - ROM_FLAVOR != "SHRP"

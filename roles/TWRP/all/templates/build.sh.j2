@@ -67,5 +67,5 @@ else
 fi
 
 cd $LOCPATH
-[ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-mv -v {{ RECOVERY_MKA_TARGET }}.img {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}_{{ target_model }}.img
+[ ! -d {{ ZIPDIR }} ] && mkdir -p {{ ZIPDIR }}
+mv -v {{ RECOVERY_MKA_TARGET }}.img {{ ZIPDIR }}/{{ ROM_FLAVOR }}-${TWRPRELEASE}-{{ PIPETWRPBUILDVER }}_{{ target_model }}.img

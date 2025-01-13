@@ -7,7 +7,7 @@ target_model_full: "LG G4"
 EOS_RELEASE_TYPE: "{{ RELEASE_TYPE }}"
 
 # set output dir to sub model (specific g4 use case - this overwrites roles/common)
-JKZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ sub_model }}"
+ZIPDIR: "/ssd/tmp/{{ ROM_FLAVOR }}/zips/{{ sub_model }}"
 
 # manifests
 git_repo_local_manifests: "git@github.com:LGgFour/local_manifests.git"

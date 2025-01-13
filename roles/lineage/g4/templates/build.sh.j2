@@ -40,5 +40,5 @@ case {{ sub_model }} in
     ;;
 esac
 
-[ ! -d {{ JKZIPDIR }} ] && mkdir -p {{ JKZIPDIR }}
-mv out/target/product/{{ sub_model }}/lineage_{{ sub_model }}*.zip {{ JKZIPDIR }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}-{{ BUILDIDENT }}-UNOFFICIAL-{{ sub_model }}.zip
+[ ! -d {{ ZIPDIR }} ] && mkdir -p {{ ZIPDIR }}
+mv out/target/product/{{ sub_model }}/lineage_{{ sub_model }}*.zip {{ ZIPDIR }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}-{{ BUILDIDENT }}-UNOFFICIAL-{{ sub_model }}.zip

@@ -6,9 +6,9 @@
     - name: "Release OS for {{ BDEVICE }}"
       shell: |-
         {% if unstable_build | d(False) | bool %}
-        scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
+        scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
         {% else %}
-        scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}
+        scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}
         {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
       loop:
@@ -44,7 +44,7 @@
     - axp_build_recovery_only is undefined or (axp_build_recovery_only is defined and not axp_build_recovery_only)
 
 - name: "Release RECOVERY for {{ BDEVICE }}"
-  shell: "scp {{ JKZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
+  shell: "scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}"
   delegate_to: "{{ groups.buildserver[0] }}"
   loop:
     - "{{ ROMFILE.stdout }}"

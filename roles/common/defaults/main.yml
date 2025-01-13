@@ -80,7 +80,6 @@ custom_release_script: false
 BUILDHOME: /home/jenkins
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 ZIPDIR: "/ssd/{{ ROM_FLAVOR }}/zips/{{ target_model }}"
-JKZIPDIR: "{{ ZIPDIR }}"
 SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 #SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"

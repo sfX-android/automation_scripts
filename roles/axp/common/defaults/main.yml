@@ -37,7 +37,7 @@ DOSPATH: "/ssd2/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 # but ensure you leave the directory structure intact then
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
 axp_finalzip_dir: "{{ ZIPDIR }}/LineageOS-{{ los_version }}/release_keys/"
-JKZIPDIR: "{{ axp_finalzip_dir }}"
+ZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 RELEASE_TYPE: "{{ axp_type | upper() | d('dos') }}"
@@ -167,7 +167,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         zip -r ../{{ os_name }}-${VERSION}-{{ target_model }}-factory.zip {{ target_model }}-${FACTORYID}
         cd ..
         sha256sum {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip > {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip.sha256
-        mv {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip* {{ JKZIPDIR }}/target_files/
+        mv {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip* {{ ZIPDIR }}/target_files/
         cd {{ SRCPATH }}
         {% endif %}
 
@@ -260,8 +260,8 @@ SH_COMMON_BUILD_SNIPPET: |
         {% endif %}
         {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
         mka recoveryimage
-        if [ ! -d {{ JKZIPDIR }} ]; then mkdir -p {{ JKZIPDIR }};fi
-        mv -v out/target/product/{{ target_model }}/recovery.img {{ JKZIPDIR }}/{{ axp_recovery_filename }}
+        if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
+        mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
         {% elif custom_build_command is defined %}
         {{ custom_build_command }}
         {% elif axp_build_eng | bool %}
@@ -286,7 +286,7 @@ SH_COMMON_BUILD_SNIPPET: |
                 out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img)
         {% endif %}
 
-        echo -e "\n\nSUCCESS: You should find your build here:\n{{ JKZIPDIR }}\n"
+        echo -e "\n\nSUCCESS: You should find your build here:\n{{ ZIPDIR }}\n"
 
 ##############################################################################################
 # ASB patches for: Android 10 / Q

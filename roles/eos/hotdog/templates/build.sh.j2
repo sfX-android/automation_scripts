@@ -5,8 +5,8 @@ set -e
 
 # set required vars
 export EOS_RELEASE_TYPE={{ EOS_RELEASE_TYPE }}
-export JKZIPDIR="{{ JKZIPDIR }}"
-export EOS_ZIP_DIR="{{ JKZIPDIR }}"
+export ZIPDIR="{{ ZIPDIR }}"
+export EOS_ZIP_DIR="{{ ZIPDIR }}"
 export EOS_ZIP_SUBDIR="{{ EOS_ZIP_SUBDIR | d('true') }}"
 export EOS_KEYS_DIR="{{ keysdir }}"
 export EOS_DEVICE="{{ target_model }}"
@@ -43,7 +43,7 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     
     # step 2/3:
     # sign all APKs who demands it
-    ./build/tools/releasetools/sign_target_files_apks -o -d user-keys $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip {{ JKZIPDIR }}/signed-target_files.zip
+    ./build/tools/releasetools/sign_target_files_apks -o -d user-keys $OUT/obj/PACKAGING/target_files_intermediates/*-target_files-*.zip {{ ZIPDIR }}/signed-target_files.zip
     
     # get the build ver
     VERSION_MAJOR=$(grep "PRODUCT_VERSION_MAJOR = " vendor/lineage/config/common.mk | cut -d "=" -f 2 | tr -d " ")
@@ -51,8 +51,8 @@ if [ "{{ EOS_RELEASE_TYPE }}" == "CUSTOM" ];then
     
     # step 3/3:
     # build & sign the OTA
-    ./build/tools/releasetools/ota_from_target_files -k user-keys/releasekey --block {{ JKZIPDIR }}/signed-target_files.zip {{ JKZIPDIR }}/{{ PREFIXFNAME }}${VERSION_MAJOR}.${VERSION_MINOR}-q-{{ BUILDIDENT }}-{{ EOS_RELEASE_TYPE }}-{{ BDEVICE }}-signed.zip && \
-    	rm -v {{ JKZIPDIR }}/signed-target_files.zip
+    ./build/tools/releasetools/ota_from_target_files -k user-keys/releasekey --block {{ ZIPDIR }}/signed-target_files.zip {{ ZIPDIR }}/{{ PREFIXFNAME }}${VERSION_MAJOR}.${VERSION_MINOR}-q-{{ BUILDIDENT }}-{{ EOS_RELEASE_TYPE }}-{{ BDEVICE }}-signed.zip && \
+    	rm -v {{ ZIPDIR }}/signed-target_files.zip
         
     # step 4 (OPTIONAL):
     # if you ever come into a situation where you cannot upgrade anymore due to a resize error
