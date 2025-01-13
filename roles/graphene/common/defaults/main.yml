@@ -147,7 +147,7 @@ SH_GRAPHENE_BUILD: |
       
       {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
       # fetch & extract blobs
-      yarn install --cwd vendor/adevtool/
+      yarn install --ignore-engines --cwd vendor/adevtool/
       m -j{{ max_processes }} aapt2
       sudo rm -rf vendor/adevtool/dl/*
       vendor/adevtool/bin/run generate-all -d {{ target_model }}
