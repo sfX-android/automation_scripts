@@ -202,8 +202,8 @@ sec_patch_pick_branch: "{{ los_version_gitbranch }}"
 # (to include December it must end with "13" in order to match the 12th month as well)
 # overwrite this in the Semaphore environment or pass as extra var during the Ansible run
 # format: "YYYYMM" and NOT(!) as a string
-# or use "{{ current_year }}{{ current_month | int + 1 | int }}" to keep this fully dynamic!
-sec_patch_date_last: "{{ current_year }}{{ current_month | int + 1 | int }}"
+# or use "{{ current_year }}{{ current_month | int + 1 }}" to keep this fully dynamic!
+sec_patch_date_last: "{{ current_year }}{{ current_month | int + 1 }}"
 
 # as start and end of security patches is something you MIGHT need to decide depending on the used
 # custom OS and/or version you should copy the whole next part into your OS role and adjust as needed.
@@ -220,7 +220,7 @@ sec_patch_date_last_a09: "{{ sec_patch_date_last }}"
 sec_patch_topics_a09:
       - "{{ range(202205, 202213) }}"
       - "{{ range(202301, 202313) }}"
-      - "{{ range(202401, sec_patch_date_last) }}"
+      - "{{ range(202401, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 10 / Q
@@ -231,7 +231,7 @@ sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
 # to identify a start for the ranges - see above!
 sec_patch_topics_a10:
       - "{{ range(202303, 202313) }}"
-      - "{{ range(202401, sec_patch_date_last) }}"
+      - "{{ range(202401, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 11 / R
@@ -241,7 +241,7 @@ sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
 # (to include December it must end with "13" in order to match the 12th month as well)
 # to identify a start for the ranges - see above!
 sec_patch_topics_a11:
-      - "{{ range(202403, sec_patch_date_last) }}"
+      - "{{ range(202403, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 12 / S 
