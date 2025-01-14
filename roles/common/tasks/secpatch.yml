@@ -3,7 +3,7 @@
 - name: "Set topics based on Android version"
   ansible.builtin.set_fact:
       sec_patch_topics: "{{ lookup('vars', 'sec_patch_topics_' + android_shortversion) }}"
-      sec_patch_date_last: "{{ lookup('vars', 'sec_patch_date_last_' + android_shortversion) | int }}"
+      sec_patch_date_last: "{{ lookup('vars', 'sec_patch_date_last_' + android_shortversion) }}"
       sec_patch_topicname: "topic:{{ android_version_letter }}_asb_"
 
 - block:
