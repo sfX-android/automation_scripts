@@ -311,7 +311,7 @@ sec_patch_topics_a11:
 sec_patch_unmerged: True
 
 sec_patch_topics_a12:
-      - "{{ range(202501, sec_patch_date_last) }}"
+      - "{{ range(202501, sec_patch_date_last | int) }}"
 
 sec_patch_topics_a13:
-      - "{{ range(202501, sec_patch_date_last) }}"
+      - "{{ range(202501, sec_patch_date_last | int) }}"
