@@ -221,6 +221,7 @@ sec_patch_topics_a09:
       - "{{ range(202205, 202213) }}"
       - "{{ range(202301, 202313) }}"
       - "{{ range(202401, sec_patch_date_last) }}"
+
 ##############################################################################################
 # ASB patches for: Android 10 / Q
 ##############################################################################################
@@ -231,6 +232,7 @@ sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
 sec_patch_topics_a10:
       - "{{ range(202303, 202313) }}"
       - "{{ range(202401, sec_patch_date_last) }}"
+
 ##############################################################################################
 # ASB patches for: Android 11 / R
 ##############################################################################################
@@ -240,7 +242,20 @@ sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
 # to identify a start for the ranges - see above!
 sec_patch_topics_a11:
       - "{{ range(202403, sec_patch_date_last) }}"
+
 ##############################################################################################
 # ASB patches for: Android 12 / S 
 # and later: still supported by LOS
 ##############################################################################################
+
+##############################################################################################
+# WARNING:
+# NOT-YET-RELEASED ASB patches for any Android version
+# sometimes merging patches upstream takes an unreasonable amount of time and so "hanging"
+# in gerrit even though they are MAYBE(!) working just fine.
+# By default we will ignore these "pending" patches for supported Android versions so you get
+# them when MERGED only.
+# This is the recommended behavior and should be changed only (e.g. in semaphore or vars)
+# when you are totally aware of the risks and potential breakage which can occur then.
+##############################################################################################
+sec_patch_unmerged: False     # set to True in semaphore to fetch even pending patches marked as ASB

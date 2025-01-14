@@ -306,3 +306,6 @@ sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
 # to identify a start for the ranges - see above!
 sec_patch_topics_a11:
       - "{{ range(202501, sec_patch_date_last) }}"
+
+# force merging PENDING patches for A12 and later!
+sec_patch_unmerged: True
