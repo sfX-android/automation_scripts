@@ -247,6 +247,10 @@ sec_patch_topics_a11:
 # ASB patches for: Android 12 / S 
 # and later: still supported by LOS
 ##############################################################################################
+sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
+sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
+sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
+sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
 
 ##############################################################################################
 # WARNING:
@@ -259,3 +263,7 @@ sec_patch_topics_a11:
 # when you are totally aware of the risks and potential breakage which can occur then.
 ##############################################################################################
 sec_patch_unmerged: False     # set to True in semaphore to fetch even pending patches marked as ASB
+# ATTENTION:
+# If you really want to follow this route you have to ensure the variable
+# "sec_patch_topics_aXX"
+# is set according to the expected dates and android version (see above for examples)
