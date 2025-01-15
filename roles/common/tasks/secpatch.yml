@@ -68,5 +68,5 @@
         regexp: "PLATFORM_SECURITY_PATCH := .*"
         line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last }}-01"
 
-  when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+  #when:
+  #  - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
