@@ -57,8 +57,8 @@
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
       register: spres
-      loop: "{{ picklist.results }}"
-      when: picklist is defined and picklist.results is defined
+      loop: "{{ picklist.stdout_lines }}"
+      when: picklist.changed
     
     - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last }}-01"
       ansible.builtin.lineinfile:
