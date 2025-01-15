@@ -44,7 +44,7 @@
         | grep -iEv '{{ secpatch_common_exclusions }}|{{ secpatch_los_exclusions }}|{{ secpatch_eos_exclusions }}'
       args:
         chdir: "{{ SRCPATH }}"
-      register: picklist
+      register: picklisteos
       when: ROM_FLAVOR == "eos"
       # 352333: https://code.binbash.rocks:8443/MVA-VoLTE/local_manifests/commit/f928672336a6bd97862b70f187f277381e80308b
 
@@ -60,7 +60,7 @@
         chdir: "{{ SRCPATH }}"
       #register: sperr
       #when: sperr.rc != 123
-      loop: "{{ picklist.results }}"
+      loop: "{{ picklist.results | d(picklisteos.results) }}"
     
     - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last }}-01"
       ansible.builtin.lineinfile:
