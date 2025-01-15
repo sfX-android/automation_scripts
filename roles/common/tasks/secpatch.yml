@@ -6,6 +6,10 @@
       sec_patch_date_last: "{{ lookup('vars', 'sec_patch_date_last_' + android_shortversion) }}"
       sec_patch_topicname: "topic:{{ android_version_letter }}_asb_"
 
+- name: "Set version as a date"
+  ansible.builtin.set_fact:
+      sec_patch_date_last_human: "{{ sec_patch_date_last | map('regex_replace', '(^.{4})(.{2})', '\1-\2') }}"
+
 - name: "Construct exclusions (LOS, AOS, ...)"
   ansible.builtin.set_fact:
     secpatch_exclusionlist_los: "{{ secpatch_common_exclusions }}|{{ secpatch_los_exclusions }}"
@@ -46,7 +50,7 @@
         chdir: "{{ SRCPATH }}"
       register: picklist
       
-    - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last }}-01"
+    - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last_human }}-01"
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
         echo 'patch cmd: {{ item }}'
@@ -58,11 +62,11 @@
       loop: "{{ picklist.stdout_lines }}"
       when: picklist.changed
     
-    - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last }}-01"
+    - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last_human }}-01"
       ansible.builtin.lineinfile:
         path: "{{ SRCPATH }}/build/core/version_defaults.mk"
         regexp: "PLATFORM_SECURITY_PATCH := .*"
-        line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last }}-01"
+        line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last_human }}-01"
       when: spres.changed
 
   #when:
