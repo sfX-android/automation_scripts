@@ -8,7 +8,7 @@
 
 - name: "Set version as a date"
   ansible.builtin.set_fact:
-      sec_patch_date_last_human: "{{ sec_patch_date_last | map('regex_replace', '(^.{4})(.{2})', '\1-\2') }}"
+      sec_patch_date_last_human: "{{ sec_patch_date_last | map('regex_replace', '(^.{4})(.{2})', '\\1-\\2') }}"
 
 - name: "Construct exclusions (LOS, AOS, ...)"
   ansible.builtin.set_fact:
