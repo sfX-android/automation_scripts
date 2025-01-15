@@ -49,10 +49,8 @@
     - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last }}-01"
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
-        {% for ritem in item.stdout.splitlines() | map('from_yaml') | list %}
-        echo 'applying SECURITY PATCH: {{ ritem }}'
-        {{ ritem }} -fv >> {{ BUILD_LOG }} 2>&1 || {{ ritem }} -fv >> {{ BUILD_LOG }} || exit 123
-        {% endfor %}
+        echo 'patch cmd: {{ item }}'
+        {{ item }} -fv >> {{ BUILD_LOG }} 2>&1 || {{ item }} -fv >> {{ BUILD_LOG }} || exit 123
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
