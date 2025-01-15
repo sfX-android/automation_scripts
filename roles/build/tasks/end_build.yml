@@ -29,7 +29,7 @@
     
     - name: "Get current/latest build filename"
       shell: |
-         find ./ -maxdepth 3 -regex '.*/{{ LOCFILE }}' -printf '%T@ %p\\n' | sort -n | tail -1 | cut -d' ' -f2- | tr -d '\\n' | sed 's#^\\./##g'
+         find ./ -maxdepth 3 -regex '.*/{{ LOCFILE }}' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2- | tr -d '\n' | sed 's#^\\./##g'
       args:
         chdir: "{{ ZIPDIR }}"
       register: ROMFILE
