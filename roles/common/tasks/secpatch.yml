@@ -28,7 +28,7 @@
 
     - name: "SECURITY PATCH MERGE: create repopick list (required to find path names)"
       ansible.builtin.shell: >
-        /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2') | join(' OR ') }}' 
+        /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2') | join(' OR ') }}' 
         | grep --color=never https | col | dos2unix
         | sed 's/\*Manifest Change\*/.repo/'
         | grep -iEv '{{ secpatch_common_exclusions }}|{{ secpatch_los_exclusions }}'
@@ -39,7 +39,7 @@
       
     - name: "SECURITY PATCH MERGE (eOS): create repopick list (required to find path names)"
       ansible.builtin.shell: >
-        /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2') | join(' OR ') }}' 
+        /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2') | join(' OR ') }}' 
         | grep --color=never https | col | dos2unix
         | grep -iEv '{{ secpatch_common_exclusions }}|{{ secpatch_los_exclusions }}|{{ secpatch_eos_exclusions }}'
       args:
