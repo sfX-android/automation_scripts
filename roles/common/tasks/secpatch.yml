@@ -57,7 +57,6 @@
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
       register: spres
-      #when: sperr.rc != 123
       loop: "{{ picklist.results }}"
       when: picklist is defined and picklist.results is defined
     
@@ -66,7 +65,7 @@
         path: "{{ SRCPATH }}/build/core/version_defaults.mk"
         regexp: "PLATFORM_SECURITY_PATCH := .*"
         line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last }}-01"
-      when: sperr.changed
+      when: spres.changed
 
   #when:
   #  - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
