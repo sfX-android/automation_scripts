@@ -1,9 +1,6 @@
 ---
 # must be explicitly included!
 
-# build vars
-ZIPDIR: "/ssd/{{ axp_type }}/zips/{{ target_model }}"
-
 # allow to (manually) set selinux permissive
 axp_allow_permissive: False
 
