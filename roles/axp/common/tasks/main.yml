@@ -28,12 +28,6 @@
   
 - include_tasks: clean.yml
 
-### TEMP !!!
-- include_tasks: ../../common/tasks/secpatch.yml
-  when: 
-    - (android_version_int | int < 12) or sec_patch_unmerged
-##############
-
 - block:
 
       - include_tasks: sync.yml    
