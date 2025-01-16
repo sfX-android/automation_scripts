@@ -26,6 +26,7 @@
       android_shortversion: {{ android_shortversion }}
       normalized_target_version: {{ normalized_target_version }}
       keysdir: {{ keysdir }}
+      ZIPDIR: {{ ZIPDIR }}
       
       sign_build: {{ sign_build | d(false) }}
       USE_CCACHE: {{ USE_CCACHE | d("N/A") }}
@@ -43,6 +44,10 @@
       release_build: {{ release_build | d("N/A") }} | override_release_build: {{ override_release_build | d("N/A") }}
       
       #
+
+- name: I want to fail
+  fail:
+    msg: Whoaaaaaaaa
 
 - name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
   shell: >
