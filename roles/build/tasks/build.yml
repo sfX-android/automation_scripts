@@ -45,10 +45,6 @@
       
       #
 
-- name: I want to fail
-  fail:
-    msg: Whoaaaaaaaa
-
 - name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
   shell: >
      source {{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh >> {{ BUILD_LOG }} 2>&1
