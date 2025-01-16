@@ -92,7 +92,7 @@ export DOS_MAX_THREADS_BUILD={{ max_processes }}   # Max amount of threads used 
 export DOS_SIGNING_KEYS="{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}"
 
 # release directory
-export DOS_BUILDS="{{ ZIPDIR }}"
+export DOS_BUILDS="{{ dos_release_dir }}"
 
 # misc
 export EXTENDROM_PATCHER_RESET=false  # never reset before applying custom patches (as this will break DOS changes)
