@@ -37,7 +37,6 @@ DOSPATH: "/ssd2/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 # but ensure you leave the directory structure intact then
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
 axp_finalzip_dir: "{{ zipdir_mntp }}/{{ axp_type | d('axp') }}/zips/{{ target_model }}/LineageOS-{{ los_version }}/release_keys/"
-
 ZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
