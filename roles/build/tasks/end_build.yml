@@ -29,10 +29,15 @@
     
     - name: "Get current/latest build filename"
       shell: |
-         find ./ -maxdepth 3 -regex '.*/{{ LOCFILE }}' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2- | tr -d '\n' | sed 's#^\\./##g'
+         find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2- | tr -d '\n' | sed 's#^\\./##g'
       args:
         chdir: "{{ ZIPDIR }}"
       register: ROMFILE
+
+    - name: "Check file var"
+      ansible.builtin.fail:
+          msg: "FATAL: cannot get current/latest build filename!"
+      when: ROMFILE.stdout is undefined or ROMFILE.stdout == ""
 
     - name: "Copy build.prop for OTA"
       shell: "cp -vf {{ SRCPATH }}/out/target/product/*/system/build.prop {{ ZIPDIR }}/{{ ROMFILE.stdout }}.prop"
