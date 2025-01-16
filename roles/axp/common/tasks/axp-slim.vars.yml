@@ -5,7 +5,7 @@
 axp_allow_permissive: False
 
 # extendrom stuff
-extendrom_package_list_default: "additional_repos.xml AuroraStore noeSpeakNG F-Droid Cromite_SystemWebView64"
+extendrom_package_list_default: "{{ extendrom_package_list_common }}"
 extendrom_preroot_boot: "false"
 extendrom_allow_any_call_recording: 'false'
 
