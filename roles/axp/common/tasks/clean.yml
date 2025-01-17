@@ -18,6 +18,7 @@
        git reset --hard >> {{ BUILD_LOG }} 2>&1
        git submodule status >> {{ BUILD_LOG }} 2>&1
        git submodule deinit -f .
+       git submodule sync
        git submodule update --init --recursive --checkout >> {{ BUILD_LOG }} 2>&1
        git submodule status >> {{ BUILD_LOG }} 2>&1
      args:
