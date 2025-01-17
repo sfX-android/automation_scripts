@@ -15,7 +15,8 @@
          git rebase --abort >> {{ BUILD_LOG }} 2>&1
          git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
        fi
-       git reset --hard origin/axp >> {{ BUILD_LOG }} 2>&1
+       git reset --hard origin/{{ axp_main_branch | d('axp') }} >> {{ BUILD_LOG }} 2>&1
+       git pull
        git submodule status >> {{ BUILD_LOG }} 2>&1
        git submodule deinit -f .
        git submodule sync
