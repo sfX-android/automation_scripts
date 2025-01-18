@@ -7,6 +7,12 @@
   pre_tasks:
     - debug:
         msg: "{{ semaphore_vars }}"
+
+    - name: ensure semaphore run dir
+      connection: local
+      file:
+        path: "{{ semaphore_lock_dir }}"
+        state: directory
           
     - set_fact:
         semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ build_id }}.ansible_running"
