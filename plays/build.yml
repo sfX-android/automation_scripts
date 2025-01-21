@@ -37,6 +37,9 @@
       - import_role:
           name: common
 
+      - name: DEBUG
+        var: axp_type
+
       - include_role:
           name: "{{ ROM_FLAVOR }}/common"
           public: yes
