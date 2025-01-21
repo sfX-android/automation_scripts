@@ -41,7 +41,8 @@ axp_finalzip_dir: "{{ dos_release_dir }}/LineageOS-{{ los_version }}/release_key
 ZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
-RELEASE_TYPE: "{{ axp_type | upper() | d('dos') }}"
+RELEASE_TYPE: >-
+    {%if axp_type is undefined %}dos{% else %}{{ axp_type | upper() }}{% endif %}
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
