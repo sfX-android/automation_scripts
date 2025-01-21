@@ -27,6 +27,10 @@
           target={{ target_model }}
           role="{{ ROM_FLAVOR }}/{{ target_model }}"
 
+    - name: DEBUG-pre
+      ansible.builtin.debug:
+        var: axp_type
+          
     - import_role:
         name: pre        
           
