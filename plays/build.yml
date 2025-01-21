@@ -38,7 +38,8 @@
           name: common
 
       - name: DEBUG
-        var: axp_type
+        ansible.builtin.debug:
+          var: axp_type
 
       - include_role:
           name: "{{ ROM_FLAVOR }}/common"
