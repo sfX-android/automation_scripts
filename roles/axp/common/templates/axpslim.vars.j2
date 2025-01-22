@@ -95,6 +95,7 @@ export DOS_SIGNING_KEYS="{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}"
 export DOS_BUILDS="{{ dos_release_dir }}"
 
 # misc
+export DOS_HOSTS_BLOCKING_LIST="https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro-onlydomains.txt" # https://github.com/hagezi/dns-blocklists
 export EXTENDROM_PATCHER_RESET=false  # never reset before applying custom patches (as this will break DOS changes)
 export EXTENDROM_SIGSPOOF_RESET=false  # never reset framework base before applying er signature spoof support
 export DOS_DEBLOBBER_REMOVE_WIDEVINE_DRM=true # remove widevine drm
