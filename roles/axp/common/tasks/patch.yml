@@ -65,17 +65,6 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
 
-- name: "Logo: overlay workaround"   
-  shell: |
-    cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml vendor/divested/overlay/common/packages/apps/SetupWizard/res/drawable/logo.xml
-    #cd vendor/divested
-    #TODO: commit, prob: not a real repo!
-    #git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "XXXXXXXX"
-  args:
-    chdir: "{{ SRCPATH }}"
-  # overlay sometimes work, sometimes not. lets do it always instead.
-  #when: android_shortversion == "a10" or android_shortversion == "a11"
-
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
   shell: |
