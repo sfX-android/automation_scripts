@@ -315,6 +315,10 @@ sec_patch_topics_a11:
 # (i.e. already merged patches will be skipped)
 sec_patch_unmerged: True
 
+sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
+sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
+#sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
+
 sec_patch_topics_a12:
       - "{{ range(202501, sec_patch_date_last | int) }}"
 
