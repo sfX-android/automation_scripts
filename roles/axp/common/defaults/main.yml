@@ -298,7 +298,7 @@ sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
 # (to include December it must end with "13" in order to match the 12th month as well)
 # to identify a start for the ranges - see above!
 sec_patch_topics_a10:
-      - "{{ range(202501, sec_patch_date_last) }}"
+      - "{{ range(202501, sec_patch_date_last | int) }}"
 ##############################################################################################
 # ASB patches for: Android 11 / R
 ##############################################################################################
@@ -307,9 +307,12 @@ sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
 # (to include December it must end with "13" in order to match the 12th month as well)
 # to identify a start for the ranges - see above!
 sec_patch_topics_a11:
-      - "{{ range(202501, sec_patch_date_last) }}"
-
+      - "{{ range(202501, sec_patch_date_last | int) }}"
+##############################################################################################
+# ASB patches for: Android 12 and later
+##############################################################################################
 # force merging PENDING patches for A12 and later!
+# (i.e. already merged patches will be skipped)
 sec_patch_unmerged: True
 
 sec_patch_topics_a12:
