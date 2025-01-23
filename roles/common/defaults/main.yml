@@ -247,14 +247,10 @@ sec_patch_topics_a11:
       - "{{ range(202403, sec_patch_date_last | int) }}"
 
 ##############################################################################################
-# ASB patches for: Android 12 / S 
-# and later: still supported by LOS
-##############################################################################################
-sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
-sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
-sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
-sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
-
+# ASB patches for: Android 12 / S and later
+# NOTE: 
+# A12 and later is (atm) still supported by LOS so when being patient you get them
+# automatically without doing anything.
 ##############################################################################################
 # WARNING:
 # NOT-YET-RELEASED ASB patches for any Android version
@@ -263,10 +259,20 @@ sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
 # By default we will ignore these "pending" patches for supported Android versions so you get
 # them when MERGED only.
 # This is the recommended behavior and should be changed only (e.g. in semaphore or vars)
-# when you are totally aware of the risks and potential breakage which can occur then.
+# when you are totally aware of the risks and potential BREAKAGE which can occur then.
 ##############################################################################################
-sec_patch_unmerged: False     # set to True in semaphore to fetch even pending patches marked as ASB
-# ATTENTION:
-# If you really want to follow this route you have to ensure the variable
-# "sec_patch_topics_aXX"
-# is set according to the expected dates and android version (see above for examples)
+sec_patch_unmerged: False    # set to True in semaphore to fetch unmerged/pending patch topics
+##############################################################################################
+#sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
+#sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
+#sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
+#sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
+
+#sec_patch_topics_a12:
+#      - "{{ range(202501, sec_patch_date_last | int) }}"
+#
+#sec_patch_topics_a13:
+#      - "{{ range(202501, sec_patch_date_last | int) }}"
+#
+#[...]
+##############################################################################################
