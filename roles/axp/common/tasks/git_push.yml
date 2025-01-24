@@ -6,8 +6,9 @@
     {{ DOS_INIT }}
     
     # tag name
-    export {% if sub_model is defined %}TAG=$(date +%F)"_{{ sub_model }}_{{ android_shortversion }}"{% else %}TAG=$(date +%F)"_${BDEVICE}_{{ android_shortversion }}"{% endif %}
-    {% if axp_type | d('') == "slim" %}TAG="${TAG}_slim"{% endif %}
+    export {% if sub_model is defined %}TAG="$(date +%F)_{{ sub_model }}_{{ android_shortversion }}"{% else %}TAG="$(date +%F)_${BDEVICE}_{{ android_shortversion }}"{% endif %}
+    # slim handling
+    export {% if axp_type | d('') == "slim" %}TAG="${TAG}_slim"{% endif %}
 
     # reproduce manifest
     REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
