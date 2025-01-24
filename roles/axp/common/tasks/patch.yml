@@ -65,6 +65,13 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
 
+# overlay does not work on A11, wt.. ?!
+- name: "Logo: overlay workaround"
+  shell: |
+    cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml packages/apps/SetupWizard/res/drawable/logo.xml
+  args:
+    chdir: "{{ SRCPATH }}"
+
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "apply AXP.OS adjustments"
   shell: |
