@@ -85,7 +85,6 @@ SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 #SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
 manifest_paths_file: "/tmp/manifest_paths.{{ ROM_FLAVOR }}"
-post_cleanup: 'false'    # will delete the output directory after a successful build if set to true
 
 # build logging
 build_log_name: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
@@ -100,7 +99,7 @@ sign_build: true
 # main base path for all key files (i.e. without model or OS flavor)
 keys_base_path: /home/androidsource/do-not-touch/KEYS
 keysdir: '{{ keys_base_path }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
-SRC_KEYSDIR: user-keys
+SRC_KEYSDIR: user-keys    # the directory name in the TOP dir of the android sources expected by the build system
 KEYS_CN: "{{ ROM_FLAVOR }}"
 KEYS_USER: "sfX-bot"
 KEYS_SIZE: 4096
@@ -109,6 +108,16 @@ KEYS_HASHTYPE: sha256
 # skip generating a ZIP checksum
 skip_gen_checksum: false
 
+# set build defaults
+clean_basic: 'true'      # will delete the ZIPDIR content
+clean_out: 'true'        # will delete the complete out/ directory, build props and images get deleted always! (see: roles/common/tasks/clean.yml)
+clean_incompat: 'false'  # deletes cross-version incompatible REPO paths defined in {{incompat_cross_version_paths}}
+reset_git: 'true'        # the whole android sources will be hard reset and re-synced
+release_build: 'true'    # releases will be pushed to a specified OTA server
+nolog_gitreset: 'true'   # disable the verbose logging for the git reset tasks
+commit_push: False       # will push all source changes to specified git server
+post_cleanup: 'false'    # will delete the output directory after a successful build if set to true
+
 # set override defaults
 override_clean_basic: 'undef'
 override_clean_out: 'undef'
@@ -116,7 +125,6 @@ override_reset_git: 'undef'
 override_release_build: 'undef'
 override_sync: 'undef'
 override_clean_incompat: 'undef'
-clean_incompat: 'false'
 
 # cross build: problematic repos paths
 prob_repo_paths:
