@@ -30,6 +30,10 @@
     - name: DEBUG-pre
       ansible.builtin.debug:
         var: axp_type
+
+    - name: DEBUG-pre2
+      ansible.builtin.debug:
+        var: just_git_push
           
     - import_role:
         name: pre        
