@@ -6,7 +6,11 @@
     - name: "Release OS for {{ BDEVICE }}"
       ansible.builtin.shell: |-
         {% if unstable_build | d(False) | bool %}
-        scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
+        {%   if axp_type | d('') == "slim" %}
+              scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/') }}
+        {%   else %}
+              scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
+        {%   endif %}
         {% else %}
         scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}
         {% endif %}
