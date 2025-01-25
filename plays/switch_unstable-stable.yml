@@ -15,14 +15,6 @@
     tg_failed: |
         {{ ICON_BAD }} ***ERROR***
         {{ target_model | regex_escape() }}: switching {{ os_zip_filename_no_ext | regex_escape() }} to STABLE failed\!
-
-  pre_tasks:
-  
-    - name: "Set/check Slim"
-      ansible.builtin.set_fact:
-         rempath_unstable: >-
-           {{ rempath | regex_replace('(/' + ROM_FLAVOR + '-slim)/.*', '\1-unstable/') }}
-      when: axp_type | d('') == "slim"
   
   tasks:
     - block:
@@ -36,6 +28,10 @@
           public: yes
         when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
 
+      - include_vars: roles/axp/tasks/axp-slim.vars.yml
+          public: yes
+        when: axp_type | d('') == "slim"
+      
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: 
