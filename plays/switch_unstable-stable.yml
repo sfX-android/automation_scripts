@@ -15,10 +15,18 @@
     tg_failed: |
         {{ ICON_BAD }} ***ERROR***
         {{ target_model | regex_escape() }}: switching {{ os_zip_filename_no_ext | regex_escape() }} to STABLE failed\!
-    
+
+  pre-tasks:
+  
+    - name: "Set/check Slim"
+      ansible.builtin.set_fact:
+         rempath_unstable: >-
+           {{ rempath | regex_replace('(/' + ROM_FLAVOR + '-slim)/.*', '\1-unstable/') }}
+      when: axp_type | d('') == "slim"
+  
   tasks:
     - block:
-    
+
       - import_role:
           name: common
 
