@@ -34,5 +34,6 @@
 
 - name: "Set remote path (recovery only)"
   set_fact:
-    rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/recovery"
+    rempath: >-
+      {% if axp_type | d('') == "slim" %}/home/nightlies/roms/{{ ROM_FLAVOR }}-slim/{{ target_model }}/recovery{% else %}/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/recovery{% endif %}
   when: axp_build_recovery_only is defined and axp_build_recovery_only
