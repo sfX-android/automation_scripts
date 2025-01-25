@@ -15,7 +15,7 @@ keysdir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/{{ target_model }}"
 common_apps_keydir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/common"
 
 # path overrides
-rempath: "{{ rempath | regex_replace('/axp/', '/axp-slim/') }}"
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}-{{ axp_type }}/{{ target_model }}/"
 
 device_cl: |-
   ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() }}\-{{ axp_type }}***
