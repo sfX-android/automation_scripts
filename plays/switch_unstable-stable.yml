@@ -16,7 +16,7 @@
         {{ ICON_BAD }} ***ERROR***
         {{ target_model | regex_escape() }}: switching {{ os_zip_filename_no_ext | regex_escape() }} to STABLE failed\!
 
- pre-tasks:
+  pre_tasks:
   
     - name: "Set/check Slim"
       ansible.builtin.set_fact:
