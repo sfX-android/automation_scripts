@@ -28,7 +28,9 @@
           public: yes
         when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
 
-      - include_vars: roles/axp/tasks/axp-slim.vars.yml
+      - include_role:
+          name: "{{ ROM_FLAVOR }}/common"
+          tasks_from: axp-slim.vars.yml
           public: yes
         when: axp_type | d('') == "slim"
       
