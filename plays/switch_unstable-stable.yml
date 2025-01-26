@@ -7,8 +7,6 @@
 
   vars:
     os_zip_filename_no_ext: "{{ os_zip_filename | regex_replace('.zip','') }}"
-    rempath_unstable: >-
-        {{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
     tg_success: |
         {{ ICON_GOOD }} ***Stable build released\!***
         {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE
