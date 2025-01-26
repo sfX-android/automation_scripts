@@ -16,7 +16,7 @@ common_apps_keydir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/common"
 
 # path overrides
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}-{{ axp_type }}/{{ target_model }}/"
-rempath_unstable: "/home/nightlies/roms/{{ ROM_FLAVOR }}-unstable/{{ target_model }}/"
+rempath_unstable: "/home/nightlies/roms/{{ ROM_FLAVOR }}-unstable/"
 
 device_cl: |-
   ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() }}\-{{ axp_type }}***
