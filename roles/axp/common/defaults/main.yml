@@ -201,6 +201,10 @@ SH_COMMON_BUILD_SNIPPET: |
         esac
 
         ########################### BUILD #########################
+
+        {% if (android_version_int | int > 13) %}
+        export TARGET_RELEASE=ap2a
+        {% endif %}
         
         # setup build env including stupid DOS workarounds
         {{ DOS_INIT }}
