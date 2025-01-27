@@ -10,50 +10,13 @@
     - "git apply external/patches/frameworks_base_shadercache.patch"                    # always use shader cache
     - "cd art && git fetch https://android.googlesource.com/platform/art refs/changes/78/2226578/2 && git cherry-pick FETCH_HEAD" # fix mmap build error when build server kernel >= 5.18
 
-- name: "Create repopick list (required to find path names)"
-  shell: >
-    /usr/bin/python3 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 
-    -Q '{{ item }}' 
-    | grep --color=never https | col | dos2unix
-    | grep -iEv '338357|342095|324039|324040|324041|366137|377775|Manifest change' 
-  no_log: true
-  args:
-    chdir: "{{ SRCPATH }}"
-  register: picklist
-  loop: "{{ sec_patch_topics_pie }}"
-# 338357: manifest change
-# 342095: manifest change
-# 324039: build conflict
-# 324040: build conflict
-# 324041: build conflict
-# 366137: build conflict
-# 377775: affects Trebuchet (which does not exist in eOS)
+- include_role:
+    name: common
+    tasks_from: secpatch.yml
 
-# repopick seems to use find on out, which fails on clean builds
-- name: prep out
-  file:
-    path: "{{ SRCPATH }}/out/target/product"
-    state: directory
-
-- name: "PIE: applying security patches up to: {{ SECPATCH_DATE_PIE }}-01"
-  shell: |
-    source build/envsetup.sh > /dev/null
-    {% for ritem in item.stdout.splitlines() | map('from_yaml') | list %}
-    echo 'applying SECURITY PATCH: {{ ritem }}'
-    {{ ritem }} -fv >> {{ BUILD_LOG }} 2>&1 || {{ ritem }} -fv >> {{ BUILD_LOG }} || exit 123
-    {% endfor %}
-  args:
-    executable: /bin/bash
-    chdir: "{{ SRCPATH }}"
-  #register: sperr
-  #when: sperr.rc != 123
-  loop: "{{ picklist.results }}"
-
-- name: "PIE: bump security patch version string to: {{ SECPATCH_DATE_PIE }}-01"
-  lineinfile:
-    path: "{{ SRCPATH }}/build/core/version_defaults.mk"
-    regexp: "PLATFORM_SECURITY_PATCH := .*"
-    line: "PLATFORM_SECURITY_PATCH := {{ SECPATCH_DATE_PIE }}-01"
+- name: FAIL
+  fail:
+    msg: i wanna fail here
 
 - name: "Post-applying misc patches"
   shell: "source build/envsetup.sh > /dev/null && echo 'applying misc patch:' && {{ item }}"
