@@ -202,16 +202,19 @@ SH_COMMON_BUILD_SNIPPET: |
 
         ########################### BUILD #########################
 
-        {% if (android_version_int | int > 13) %}
-        export TARGET_RELEASE=ap2a
-        {% endif %}
-        
         # setup build env including stupid DOS workarounds
         {{ DOS_INIT }}
+
+        # support A14 and later
+        {% if (android_version_int | int > 13) %}
+        brf_suffix="-ap2a"
+        export TARGET_RELEASE=ap2a
+        {% endif %}
+                
         {% if axp_build_eng | bool %}
-        breakfast lineage_{{ target_model }}-eng
+        breakfast lineage_{{ target_model }}${brf_suffix}-eng
         {% else %}
-        breakfast lineage_{{ target_model }}-user
+        breakfast lineage_{{ target_model }}${brf_suffix}-user
         {% endif %}
         
         # CCACHE
