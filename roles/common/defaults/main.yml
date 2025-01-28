@@ -228,11 +228,11 @@ sec_patch_date_last: "{{ current_year }}{{ sec_month }}"
 ##############################################################################################
 # ASB patches for: Android 9 / P
 ##############################################################################################
-sec_patch_date_last_a09: "{{ sec_patch_date_last }}"
+sec_patch_date_last_a9: "{{ sec_patch_date_last }}"
 # ranges will not include the last match so must be 1 higher
 # (to include December it must end with "13" in order to match the 12th month as well)
 # to identify a start for the ranges - see above!
-sec_patch_topics_a09:
+sec_patch_topics_a9:
       - "{{ range(202205, 202213) }}"
       - "{{ range(202301, 202313) }}"
       - "{{ range(202401, 202413) }}"
