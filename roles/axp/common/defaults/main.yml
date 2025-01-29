@@ -40,7 +40,7 @@ dos_release_dir: "{{ zipdir_mntp }}/{{ axp_type | d('axp') }}/zips/{{ target_mod
 axp_finalzip_dir: "{{ dos_release_dir }}/LineageOS-{{ los_version }}/release_keys/"
 ZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
-rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ sub_model | d(target_model) }}/"
 RELEASE_TYPE: >-
     {%if axp_type is undefined %}dos{% else %}{{ axp_type | upper() }}{% endif %}
 ROM_VERSION: "{{ build_id }}"
