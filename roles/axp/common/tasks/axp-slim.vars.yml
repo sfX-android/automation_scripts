@@ -10,12 +10,12 @@ extendrom_preroot_boot: "false"
 extendrom_allow_any_call_recording: 'false'
 
 # keys
-keysdir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/{{ target_model }}"
+keysdir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/{{ sub_model | d(target_model) }}"
 # ensure we use our common apps key used to signed our own apps (e.g. OpenEUICC)
 common_apps_keydir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/common"
 
 # path overrides
-rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}-{{ axp_type }}/{{ target_model }}/"
+rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}-{{ axp_type }}/{{ sub_model | d(target_model) }}/"
 rempath_unstable: "/home/nightlies/roms/{{ ROM_FLAVOR }}-unstable/"
 
 device_cl: |-
