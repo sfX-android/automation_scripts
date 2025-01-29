@@ -8,6 +8,7 @@ axp_allow_permissive: False
 extendrom_package_list_default: "{{ extendrom_package_list_common }}"
 extendrom_preroot_boot: "false"
 extendrom_allow_any_call_recording: 'false'
+extendrom_fdroid_repos: "{{ extendrom_fdroid_repos + 'microg.xml' }}"
 
 # keys
 keysdir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/{{ sub_model | d(target_model) }}"
