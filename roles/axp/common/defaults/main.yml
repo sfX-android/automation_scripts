@@ -92,7 +92,7 @@ extendrom_allow_any_call_recording: 'false'
 KEYS_CN: "{{ os_name }}"
 KEYS_SIZE: 8192
 KEYS_HASHTYPE: sha512
-keysdir: "{{ keys_base_path }}/{{ os_name }}/{{ target_model }}"
+keysdir: "{{ keys_base_path }}/{{ os_name }}/{{ sub_model | d(target_model) }}"
 # ensure we use our common apps key used to signed our own apps (e.g. Phonesky)
 common_apps_keydir: "{{ keys_base_path }}/{{ os_name }}/common"
 
