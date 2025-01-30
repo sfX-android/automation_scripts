@@ -18,12 +18,6 @@ rempath: "/home/nightlies/roms/e-os/{{ android_shortversion }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
 repo_bin: /home/androidsource/bin/repo.a9
 
-# all g4 builds are custom
-#extendrom_package_list: "DNS66 noEOSappstore Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky_AXP-OS"
-# replace legacy microG with the current one
-extendrom_package_list: "DNS66 Lawnchair-latest F-Droid F-DroidPrivilegedExtension additional_repos.xml AuroraStore Phonesky_AXP-OS noEOSappstore noEOSGsfProxy noEOSGmsCore noEOSNominatimNlpBackend noEOSDroidGuard MicrogGmsCore_GH_PRIV GsfProxy_GH_PRIV AOSmium_webview64"
-extendrom_fdroid_repos: "microg.xml izzysoft.xml molly.xml threema.xml futo_org.xml cromite.xml"
-
 # notification vars
 device_cl: |-
   ***{{ target_model_full }}*** ***\({{ sub_model | replace("-","\-") | replace("_","\_") }}\)*** \- ***{{ ROM_FLAVOR | replace("-","\-") }} {{ android_shortversion | replace("-","\-") | replace(".","\.") }}***
