@@ -43,7 +43,8 @@
 
 - name: "Define Query"
   ansible.builtin.set_fact:
-    pick_query: "{{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2') | join(' OR ') }}"
+    pick_query: >-
+      {{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2') | join(' OR ') }}
 
 - block:
        
