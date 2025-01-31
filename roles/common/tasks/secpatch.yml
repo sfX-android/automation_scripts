@@ -22,30 +22,35 @@
     secpatch_exclusionlist_eos: "{{ secpatch_common_exclusions }}|{{ secpatch_los_exclusions }}|{{ secpatch_eos_exclusions }}"
   when: ROM_FLAVOR == "eos"
 
+- name: "Check required variables"
+  ansible.builtin.fail: |
+    msg: 
+      Missing a required variable!!
+      
+      Current definitions:
+      {{ sec_patch_pick_branch | d('MISSING!!') }}
+      {{ sec_patch_topics | d('MISSING!!') }}
+      {{ sec_patch_date_last | d('MISSING!!') }}
+      {{ SRCPATH | d('MISSING!!') }}
+      {{ sec_patch_topicname | d('MISSING!!') }}
+      
+  when:
+    - sec_patch_pick_branch is undefined
+      or sec_patch_topics is undefined
+      or sec_patch_date_last is undefined
+      or SRCPATH is undefined
+      or sec_patch_topicname is undefined
+
+- name: "Define Query"
+  ansible.builtin.set_fact:
+    pick_query: "{{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2') | join(' OR ') }}"
+
 - block:
-
-    - ansible.builtin.fail: |
-        msg: 
-          Missing a required variable!!
-          
-          Current definitions:
-          {{ sec_patch_pick_branch | d('MISSING!!') }}
-          {{ sec_patch_topics | d('MISSING!!') }}
-          {{ sec_patch_date_last | d('MISSING!!') }}
-          {{ SRCPATH | d('MISSING!!') }}
-          {{ sec_patch_topicname | d('MISSING!!') }}
-          
-      when:
-        - sec_patch_pick_branch is undefined
-          or sec_patch_topics is undefined
-          or sec_patch_date_last is undefined
-          or SRCPATH is undefined
-          or sec_patch_topicname is undefined
-
+       
     - name: "SECURITY PATCH MERGE: create repopick list (required to find path names)"
       # "yes y" is required to continue when the changes are > 200
       ansible.builtin.shell: >
-        yes y | /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2') | join(' OR ') }}' 
+        yes y | /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ pick_query }}' 
         | grep --color=never https | col | dos2unix
         | sed 's/\*Manifest Change\*/.repo/'
         | grep -iEv '{{ secpatch_exclusionlist_eos | d(secpatch_exclusionlist_los) }}'
@@ -74,3 +79,4 @@
 
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - pick_query | length > 3
