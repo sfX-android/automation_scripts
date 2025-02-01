@@ -63,7 +63,7 @@
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
         echo 'patch cmd: {{ item }}'
-        {{ item }} -fv >> {{ BUILD_LOG }} 2>&1 || {{ item }} -fv >> {{ BUILD_LOG }} || exit 123
+        {{ item }} -v >> {{ BUILD_LOG }} 2>&1 || {{ item }} -fv >> {{ BUILD_LOG }} || exit 123
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
