@@ -154,16 +154,10 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         {% endif %}
         {% if generate_pixel_factory_image | bool %}
         
-        FZIPBASE="{{ os_name }}-${VERSION}"
-        if [ "{{ RELEASE_TYPE }}" == "slim" ];then
-            FZIP="{{ os_name }}-${VERSION}-SLIM-{{ target_model }}"
-        else
-            FZIP="{{ os_name }}-${VERSION}-REGULAR-{{ target_model }}"
-        fi
-        
         # this will create a fastboot flashable factory image
         # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
-        VERSION="{{ los_version }}-{{ BUILDIDENT }}-dos"
+        VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
+        FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
         source vendor/firmware/{{ target_model }}/0SOURCE
         if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
         if [ -f "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" ];then
@@ -178,7 +172,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
         unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
         cd factory/{{ target_model }}-${FACTORYID}
-        cp ../../{{ os_name }}-${VERSION}*{{ target_model }}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip     
+        cp ../../${FZIP}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip     
         cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
         for f in flash-base.sh flash-all.sh;do
             awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
@@ -189,6 +183,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         cd ..
         sha256sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha256
         mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
+        FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
         cd {{ SRCPATH }}
         {% endif %}
 
@@ -308,7 +303,8 @@ SH_COMMON_BUILD_SNIPPET: |
                 out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img)
         {% endif %}
 
-        echo -e "\n\nSUCCESS: You should find your build here:\n{{ ZIPDIR }}\n"
+        echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}"
+        
 
 ##############################################################################################
 # ASB patches for: Android 10 / Q
