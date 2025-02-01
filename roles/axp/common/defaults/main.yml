@@ -159,9 +159,11 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         VERSION="{{ los_version }}-{{ BUILDIDENT }}-dos"
         source vendor/firmware/{{ target_model }}/0SOURCE
         if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
-        if [ -f "{{ persistent_dir }}/{{ target_model }}-factory.zip" ];then
+        if [ -f "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" ];then
+            echo "Using previously downloaded factory image: {{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip"
             cp "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" out/{{ target_model }}-factory.zip 
         else
+            echo "{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip not found in: {{ persistent_dir }}, downloading.."
             wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip || (wget https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
         fi
         cd out/target/product/{{ target_model }}
