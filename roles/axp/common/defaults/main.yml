@@ -154,6 +154,13 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         {% endif %}
         {% if generate_pixel_factory_image | bool %}
         
+        FZIPBASE="{{ os_name }}-${VERSION}"
+        if [ "{{ RELEASE_TYPE }}" == "slim" ];then
+            FZIP="{{ os_name }}-${VERSION}-SLIM-{{ target_model }}"
+        else
+            FZIP="{{ os_name }}-${VERSION}-REGULAR-{{ target_model }}"
+        fi
+        
         # this will create a fastboot flashable factory image
         # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
         VERSION="{{ los_version }}-{{ BUILDIDENT }}-dos"
@@ -171,17 +178,17 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
         unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
         cd factory/{{ target_model }}-${FACTORYID}
-        cp ../../{{ os_name }}-$VERSION-{{ target_model }}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip
+        cp ../../{{ os_name }}-${VERSION}*{{ target_model }}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip     
         cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
         for f in flash-base.sh flash-all.sh;do
             awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
         done
         awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat
         cd ..
-        zip -r ../{{ os_name }}-${VERSION}-{{ target_model }}-factory.zip {{ target_model }}-${FACTORYID}
+        zip -r ../${FZIP}-factory.zip {{ target_model }}-${FACTORYID}
         cd ..
-        sha256sum {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip > {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip.sha256
-        mv {{ os_name }}-${VERSION}-{{ target_model }}-factory.zip* {{ ZIPDIR }}/target_files/
+        sha256sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha256
+        mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
         cd {{ SRCPATH }}
         {% endif %}
 
