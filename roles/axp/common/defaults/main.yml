@@ -160,7 +160,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         source vendor/firmware/{{ target_model }}/0SOURCE
         if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
         if [ -f "{{ persistent_dir }}/{{ target_model }}-factory.zip" ];then
-            cp "{{ persistent_dir }}/{{ target_model }}-factory.zip out/
+            cp "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" out/{{ target_model }}-factory.zip 
         else
             wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip || (wget https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
         fi
