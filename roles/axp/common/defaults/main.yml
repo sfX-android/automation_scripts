@@ -339,4 +339,4 @@ sec_patch_topics_a12:
       - "{{ range(202501, sec_patch_date_last | int) }}"
 
 sec_patch_topics_a13:
-      - "{{ range(202502, sec_patch_date_last | int) }}"
+      - "{{ range(202501, sec_patch_date_last | int) }}"
