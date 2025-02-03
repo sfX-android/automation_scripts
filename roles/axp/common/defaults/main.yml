@@ -147,7 +147,7 @@ axp_release_recovery: False
 #generate_pixel_factory_image: True (in semaphore)
 SH_COMMON_PIXEL_CREATE_FACTORY: |
         {% if axp_build_eng | bool %}
-        mka sepolicy
+        #mka sepolicy
         buildDeviceDebug {{ target_model }}
         {% else %}
         buildDevice {{ target_model }}
@@ -282,7 +282,7 @@ SH_COMMON_BUILD_SNIPPET: |
         {% elif custom_build_command is defined %}
         {{ custom_build_command }}
         {% elif axp_build_eng | bool %}
-        mka sepolicy
+        #mka sepolicy
         buildDeviceDebug {{ target_model }}
         {% else %}
         buildDevice {{ target_model }}
