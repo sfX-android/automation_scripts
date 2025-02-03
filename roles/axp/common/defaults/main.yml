@@ -69,7 +69,7 @@ axp_clean_paths:
 axp_allow_permissive: True
 
 # kernel patching
-divest_cve_checker_download: "https://gitlab.com/divested-mobile/cve_checker/-/jobs/8055632069/artifacts/raw/build/libs/cve_checker-0.7.0.jar?inline=false"
+divest_cve_checker_download: "https://codeberg.org/AXP-OS_releases/cve_checker/releases/download/latest/cve_checker.jar"
 divest_cve_checker_jar: "{{ BUILDHOME }}/cve_checker.jar"
 divest_unsupported_device: false    # should be overwritten in a device's vars/main.yml if needed
 unsupported_device_kernel_patch: true    # enable kernel patching by default, overwrite in semaphore if needed
