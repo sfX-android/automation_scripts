@@ -12,10 +12,10 @@
       sec_patch_date_last_human: >-
          {% if (sec_patch_date_last | int) > (current_pdate | int) %}
          {{ current_year }}-{{ current_month }}
-         {% elif (sec_patch_date_last | int | -1) | regex_replace('(^.{4})(.{2})','\2') == "00" %}
-         {{ sec_patch_date_last | regex_replace('(^.{4})(.{2})','\1-01') }}
+         {% elif (sec_patch_date_last | regex_replace('(^.{4})(.{2})','\2') == "01" %}
+         {{ current_year }}-01
          {% else %}
-         {{ sec_patch_date_last | int | -1 | regex_replace('(^.{4})(.{2})','\1-\2') }}
+         {{ sec_patch_date_last | int | - 1 | regex_replace('(^.{4})(.{2})','\1-\2') }}
          {% endif %}
 
 - name: "Construct exclusions (LOS, AOS, ...)"
