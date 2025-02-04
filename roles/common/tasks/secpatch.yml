@@ -5,11 +5,17 @@
       sec_patch_topics: "{{ lookup('vars', 'sec_patch_topics_' + android_shortversion) }}"
       sec_patch_date_last: "{{ lookup('vars', 'sec_patch_date_last_' + android_shortversion) }}"
       sec_patch_topicname: "topic:{{ android_version_letter }}_asb_"
-      current_pdate: "{{ current_year }}{{ current_month }}"
 
-- name: "Set version as a date"  # also ensure we do not set a later ASB month than the current one
+- name: "Normalize patch date"  # also ensure we do not set a later ASB month than the current one
   ansible.builtin.set_fact:
-      sec_patch_date_last_human: "{{ sec_patch_date_last | int - 1 }}"
+      sec_patch_date_last_real: "{{ sec_patch_date_last | int - 1 }}"
+
+- name: "Set version as YYYY-MM"
+  ansible.builtin.set_fact:
+      sec_patch_date_last_human: >-
+          {{ sec_patch_date_real | regex_replace('(^.{4})(.{2})','\1-\2') }}
+
+#{ sec_patch_date_last | int - 1 }}"
 
 #         {% if (sec_patch_date_last | int) > (current_pdate | int) %}
 #         {{ current_year }}-{{ current_month }}
