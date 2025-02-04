@@ -9,7 +9,7 @@
 
 - name: "Set version as a date"  # also ensure we do not set a later ASB month than the current one
   ansible.builtin.set_fact:
-      sec_patch_date_last_human: "{{ (sec_patch_date_last | int) - 1) }}"
+      sec_patch_date_last_human: "{{ sec_patch_date_last | int - 1 }}"
 
 #         {% if (sec_patch_date_last | int) > (current_pdate | int) %}
 #         {{ current_year }}-{{ current_month }}
