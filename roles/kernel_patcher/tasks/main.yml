@@ -5,7 +5,7 @@
 - include_tasks: reset.yml
 - include_tasks: sync.yml
 
-#- include_tasks: cip.yml
+- include_tasks: cip.yml
 - include_tasks: incremental.yml
 
 - include_tasks: push.yml
