@@ -29,7 +29,11 @@
 
 - name: "Run CIP tool"
   ansible.builtin.shell: |
+      # create CIP.txt
       ./CIP.sh {{ cve_kernel_cip_path }} >> {{ BUILD_LOG }} 2>&1
+
+      # remove unwanted (i.e. non LTS) patches
+      ./rm-nonlts.sh
 
       # next:
       # merge CIP.txt with Kernel_CVE_Patch_List.txt
