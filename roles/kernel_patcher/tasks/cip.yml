@@ -12,7 +12,12 @@
     git fetch origin
     git rebase origin/{{ git_kernel_org_branch }}
     git checkout -b $(date -uI) || true
-    #git am ../cip-personal-tweaks.patch
+    if [ -f ../cip-personal-tweaks.patch ] && git am ../cip-personal-tweaks.patch;fi
+
+    # prepare remotes
+    ./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}"
+
+    # import
     ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}"
     git add -A && git commit -a -m 'Import data from stable branches'
     ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}"
