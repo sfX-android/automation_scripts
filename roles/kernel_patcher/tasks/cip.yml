@@ -12,7 +12,7 @@
     git fetch origin
     git rebase origin/{{ git_kernel_org_branch }}
     git checkout -b $(date -uI) || true
-    if [ -f ../cip-personal-tweaks.patch ] && git am ../cip-personal-tweaks.patch;fi
+    if [ -f ../cip-personal-tweaks.patch ];then git am ../cip-personal-tweaks.patch;fi
 
     # prepare remotes
     ./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}"
