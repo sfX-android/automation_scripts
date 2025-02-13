@@ -1,6 +1,6 @@
 ---
 
-- name: "Get signatures"
+- name: "Get signatures: amnestytech"
   ansible.builtin.git:
     repo: "{{ hypatia_uri_amnestytech }}"
     dest: "{{ hypatia_signatures_path }}/amnestytech"
