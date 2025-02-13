@@ -25,5 +25,5 @@
 - name: "Download latest DB converter"
   ansible.builtin.get_url:
     url: "{{ hypatia_uri_converter }}"
-    dest: "{{ hypatia_uri_converter }}"
+    dest: "{{ hypatia_path_converter }}"
     mode: 0750
