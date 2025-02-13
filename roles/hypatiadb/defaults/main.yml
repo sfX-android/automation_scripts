@@ -33,5 +33,5 @@ hypatia_path_malwarehunter: /srv/sigdb/malware-hunter
 # https://downloads.sourceforge.net/project/mantarayforensics/VirusShare_Hash_Sets/RAW/VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.zip
 
 # converter to hypatia format
-hypatia_path_converter: "/opt/HypatiaDatabaseConverter-1.0-SNAPSHOT-jar-with-dependencies.jar"
+hypatia_path_converter: "/opt/dbconverter.jar"
 hypatia_uri_converter: "https://codeberg.org/AXP-OS_releases/tools_lovelaceav_convertdb/releases/download/latest/dbconverter.jar"
