@@ -14,7 +14,7 @@
     git checkout -b $(date -uI) || true
     if [ -f ../cip-personal-tweaks.patch ];then git am ../cip-personal-tweaks.patch;fi
 
-    # prepare remotes
+    # prepare & sync remotes
     ./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
 
     # import
