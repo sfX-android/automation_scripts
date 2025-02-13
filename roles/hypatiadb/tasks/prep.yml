@@ -21,3 +21,9 @@
     - raw
     - production
     - exclusions
+
+- name: "Download latest DB converter"
+   ansible.builtin.get_url:
+    url: "{{ hypatia_uri_converter }}"
+    dest: "{{ hypatia_uri_path }}"
+    mode: 0750
