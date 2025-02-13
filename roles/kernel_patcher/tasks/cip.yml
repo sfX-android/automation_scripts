@@ -15,19 +15,19 @@
     if [ -f ../cip-personal-tweaks.patch ];then git am ../cip-personal-tweaks.patch;fi
 
     # prepare remotes
-    ./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}"
+    ./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
 
     # import
-    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}"
-    git add -A && git commit -a -m 'Import data from stable branches'
-    ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}"
-    git add -A && git commit -a -m 'Import data from Debian'
-    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}"
-    git add -A && git commit -a -m 'Import data from stable branches'
-    ./scripts/import_ubuntu.py --git-repo "{{ kernel_stable_path }}"
-    git add -A && git commit -a -m 'Import data from Ubuntu'
-    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}"
-    git add -A && git commit -a -m 'Import data from stable branches'
+    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
+    ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    git add -A && git commit -a -m 'Import data from Debian' >> {{ BUILD_LOG }} 2>&1
+    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
+    ./scripts/import_ubuntu.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    git add -A && git commit -a -m 'Import data from Ubuntu' >> {{ BUILD_LOG }} 2>&1
+    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_cip_path }}"
