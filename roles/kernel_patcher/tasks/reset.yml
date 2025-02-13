@@ -8,9 +8,9 @@
        if [ $? -eq 128 ];then
          echo "No local changes in kernel patcher repo found!"  >> {{ BUILD_LOG }}
        else
-         git am --abort >> {{ BUILD_LOG }} 2>&1
-         git rebase --abort >> {{ BUILD_LOG }} 2>&1
-         git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
+         git am --abort >> {{ BUILD_LOG }} 2>&1 || true
+         git rebase --abort >> {{ BUILD_LOG }} 2>&1 || true
+         git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1 || true
        fi
        git reset --hard >> {{ BUILD_LOG }} 2>&1
   args:
