@@ -1,17 +1,17 @@
 ---
 
-- name: "Clean db raw path"
+- name: "Prep: clean db raw path"
   ansible.builtin.file:
     path: "{{ hypatia_signatures_path }}/raw"
     state: absent
     
-- name: "Prep db path"
+- name: "Prep: db path"
   ansible.builtin.file:
     path: "{{ hypatia_signatures_path }}"
     state: directory
     mode: 0700
 
-- name: "Prep work paths"
+- name: "Prep: work paths"
   ansible.builtin.file:
     path: "{{ hypatia_signatures_path }}/{{ item }}"
     state: directory
@@ -22,7 +22,7 @@
     - production
     - exclusions
 
-- name: "Download latest DB converter"
+- name: "Prep: download latest DB converter"
   ansible.builtin.get_url:
     url: "{{ hypatia_uri_converter }}"
     dest: "{{ hypatia_path_converter }}"

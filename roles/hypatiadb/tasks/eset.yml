@@ -1,13 +1,13 @@
 ---
 
-- name: "Get signatures"
+- name: "Eset: Get signatures"
   ansible.builtin.git:
     repo: "{{ hypatia_uri_eset }}"
     dest: "{{ hypatia_signatures_path }}/eset"
     force: true
   timeout: 180
 
-- name: "Parse signatures"
+- name: "Eset: Parse signatures"
   ansible.builtin.shell: |
     processHashes() {
         local name=$(basename $1)

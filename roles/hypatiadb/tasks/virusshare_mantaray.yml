@@ -1,6 +1,6 @@
 ---
 
-- name: "Parse signatures"
+- name: "VirusShare-Mantaray: Parse signatures"
   ansible.builtin.shell: |
     [ -f VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.txt ] && rm VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.txt
     unzip VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.zip VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.txt

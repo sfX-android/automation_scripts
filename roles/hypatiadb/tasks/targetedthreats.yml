@@ -1,13 +1,13 @@
 ---
 
-- name: "Get signatures"
+- name: "Targetedthreats: Get signatures"
   ansible.builtin.git:
     repo: "{{ hypatia_uri_targetedthreats }}"
     dest: "{{ hypatia_signatures_path }}/targetedthreats"
     force: true
   timeout: 180
 
-- name: "Parse signatures"
+- name: "Targetedthreats: Parse signatures"
   ansible.builtin.shell: |
     while IFS=, read -r col1MD5 col2SHA256 col3Family col4Actor col5Country col6Report; do
         col4Actor=$(sed -e 's/^"//' -e 's/"$//' <<< "$col4Actor")

@@ -1,12 +1,12 @@
 ---
 
-- name: "Prep sig path"
+- name: "Malicious-hash: Prep sig path"
   ansible.builtin.file:
     path: "{{ hypatia_signatures_path }}/malicious-hash"
     state: directory
     mode: 0700
 
-- name: "Get signatures"
+- name: "Malicious-hash: Get signatures"
   ansible.builtin.get_url:
     url: "{{ hypatia_uri_malicioushash_base }}{{ item }}-aa.txt"
     dest: "{{ hypatia_signatures_path }}/raw/malicious-hash.{{ item }}"

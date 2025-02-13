@@ -1,18 +1,18 @@
 ---
 
-- name: "Prep sig path"
+- name: "Threatfox: Prep sig path"
   ansible.builtin.file:
     path: "{{ hypatia_signatures_path }}/threatfox"
     state: directory
     mode: 0700
 
-- name: "Get signatures"
+- name: "Threatfox: Get signatures"
   ansible.builtin.shell: |
     wget -q "{{ hypatia_uri_threatfox }}" -O archive.zip  2>> /dev/null
   args:
     chdir: "{{ hypatia_signatures_path }}/threatfox"
 
-- name: "Parse signatures"
+- name: "Threatfox: Parse signatures"
   ansible.builtin.shell: |
     unzip -o archive.zip
     tail -n +10 full_sha256.csv | grep -v entries: | awk '{ print $4 } ' | sed 's/^"//' | sed 's/",$//' > {{ hypatia_signatures_path }}/raw/threatfox.sha256

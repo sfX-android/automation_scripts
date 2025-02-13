@@ -1,13 +1,13 @@
 ---
 
-- name: "Get signatures"
+- name: "Zimperium: Get signatures"
   ansible.builtin.git:
     repo: "{{ hypatia_uri_zimperium }}"
     dest: "{{ hypatia_signatures_path }}/zimperium"
     force: true
   timeout: 180
 
-- name: "Parse signatures"
+- name: "Zimperium: Parse signatures"
   ansible.builtin.shell: |
     find . -type f -name 
   args:

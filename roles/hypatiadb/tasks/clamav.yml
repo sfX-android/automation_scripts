@@ -1,28 +1,28 @@
 ---
 
-- name: "Delete any old tmp"
+- name: "ClamAV: Delete any old tmp"
   ansible.builtin.file:
     path: "{{ hypatia_clam_tmp }}"
     state: absent
 
-- name: "Create tmp"
+- name: "ClamAV: Create tmp"
   ansible.builtin.file:
     path: "{{ hypatia_clam_tmp }}"
     state: directory
 
-- name: "Copy clam db to tmp"
+- name: "ClamAV: Copy clam db to tmp"
   ansible.builtin.shell: |
     cp {{ hypatia_path_clamav }}/main.c*d {{ hypatia_clam_tmp }}/
     cp {{ hypatia_path_clamav }}/daily.c*d {{ hypatia_clam_tmp }}/
 
-- name: "Sign databases"
+- name: "ClamAV: Sign databases"
   ansible.builtin.shell: |
     sigtool -u main.c*d
     sigtool -u daily.c*d
   args:
     chdir: "{{ hypatia_clam_tmp }}"
 
-- name: "Copy to raw"
+- name: "ClamAV: Copy to raw"
   ansible.builtin.shell: |
     mv {{ hypatia_clam_tmp }}/*.fp* exclusions/
     mv {{ hypatia_clam_tmp }}/*.hsb raw/

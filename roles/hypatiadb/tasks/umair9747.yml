@@ -1,13 +1,13 @@
 ---
 
-- name: "Get signatures"
+- name: "Umair9747: Get signatures"
   ansible.builtin.git:
     repo: "{{ hypatia_uri_umair9747 }}"
     dest: "{{ hypatia_signatures_path }}/umair9747"
     force: true
   timeout: 180
 
-- name: "Parse signatures"
+- name: "Umair9747: Parse signatures"
   ansible.builtin.shell: |
     cp mass-scanning-android-malware-samples/md5.txt {{ hypatia_signatures_path }}/raw/umair9747.md5
   args:

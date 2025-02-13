@@ -1,13 +1,13 @@
 ---
 
-- name: "Get signatures: amnestytech"
+- name: "Amnestytech: Get signatures"
   ansible.builtin.git:
     repo: "{{ hypatia_uri_amnestytech }}"
     dest: "{{ hypatia_signatures_path }}/amnestytech"
     force: true
   timeout: 180
 
-- name: "Parse signatures"
+- name: "Amnestytech: Parse signatures"
   ansible.builtin.shell: |
     for sha in $(find . -type f -name sha256.txt);do
        cat $sha >> {{ hypatia_signatures_path }}/raw/amnestytech.sha256

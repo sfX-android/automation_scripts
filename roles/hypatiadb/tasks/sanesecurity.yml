@@ -1,6 +1,6 @@
 ---
 
-- name: "Get signatures"
+- name: "Sanesecurity: Get signatures"
   ansible.builtin.synchronize:
     src: "{{ hypatia_uri_sanesecurity }}"
     dest: "{{ hypatia_signatures_path }}/sanesecurity"
@@ -8,7 +8,7 @@
     compress: False
   delegate_to: hypatiaserver
 
-- name: "Parse signatures"
+- name: "Sanesecurity: Parse signatures"
   ansible.builtin.shell: |
      for f in *.hsb; do
         echo "" >> "{{ hypatia_signatures_path }}/raw/sanesecurity-$f";
