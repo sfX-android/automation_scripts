@@ -12,6 +12,7 @@
     git checkout {{ git_kernel_org_branch }}
     git fetch origin
     git rebase origin/{{ git_kernel_org_branch }}
+    git branch -D $(date -uI) || true
     git checkout -b $(date -uI) || true
     if [ -f ../cip-personal-tweaks.patch ];then git am ../cip-personal-tweaks.patch;fi
 
