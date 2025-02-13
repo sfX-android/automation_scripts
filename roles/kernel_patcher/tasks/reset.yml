@@ -12,7 +12,7 @@
          git rebase --abort >> {{ BUILD_LOG }} 2>&1 || true
          git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1 || true
        fi
-       git reset --hard >> {{ BUILD_LOG }} 2>&1
+       git reset --hard origin/HEAD >> {{ BUILD_LOG }} 2>&1
   args:
     chdir: "{{ item }}"
   loop:
