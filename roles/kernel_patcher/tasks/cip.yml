@@ -36,13 +36,6 @@
   ansible.builtin.shell: |
       # create CIP.txt
       ./CIP.sh {{ cve_kernel_cip_path }} >> {{ BUILD_LOG }} 2>&1
-
-      # remove unwanted (i.e. non LTS) patches
-      ./rm-nonlts.sh
-
-      # next:
-      # merge CIP.txt with Kernel_CVE_Patch_List.txt
-      # java -jar $DOS_BINARY_PATCHER download $DOS_PATCHES_LINUX_CVES/Kernel_CVE_Patch_List.txt
   register: buildresult
   environment:
     DOS_BINARY_PATCHER: "{{ divest_cve_checker_jar }}"
@@ -50,3 +43,19 @@
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_patches_path }}"
+
+- name: "Clean-up"
+  ansible.builtin.shell: |
+      # remove unwanted (i.e. non LTS) patches
+      ./rm-nonlts.sh  >> {{ BUILD_LOG }} 2>&1
+  register: buildresult
+  environment:
+    DOS_BINARY_PATCHER: "{{ divest_cve_checker_jar }}"
+    DOS_PATCHES_LINUX_CVES: "{{ cve_kernel_patches_path }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ cve_kernel_patches_path }}"
+
+# next:
+# merge CIP.txt with Kernel_CVE_Patch_List.txt
+# java -jar $DOS_BINARY_PATCHER download $DOS_PATCHES_LINUX_CVES/Kernel_CVE_Patch_List.txt
