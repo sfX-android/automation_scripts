@@ -104,7 +104,7 @@ device_cl: |-
 
 rom_cl: |-
   ***Changes:***
-  \- AXP\.OS: [Changelog](https://github.com/AXP-OS/build/wiki/Changelog)
+  \- AXP\.OS: [Changelog](https://axpos.org/Changelog)
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | regex_escape() }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})
