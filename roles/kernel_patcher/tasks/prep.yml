@@ -11,9 +11,10 @@
     - "{{ kernel_stable_path }}"
 
 - name: "Configure remotes"
-  ansible.builtin.template:
+  ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "{{ item.dst }}"
   loop:
-    - { "src": "remotes.j2", "dst": "~/.config/kernel-sec/remotes.yml" }
-    - { "src": "branches.j2", "dst": "~/.config/kernel-sec/branches.yml" }
+    - { "src": "tweak.patch", "dst": "~/.config/kernel-sec/tweak.patch" }
+    - { "src": "remotes.yml", "dst": "~/.config/kernel-sec/remotes.yml" }
+    - { "src": "branches.yml", "dst": "~/.config/kernel-sec/branches.yml" }
