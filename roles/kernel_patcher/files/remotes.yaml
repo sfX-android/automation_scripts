@@ -1,0 +1,9 @@
+debian:
+   commit_url_prefix: https://salsa.debian.org/kernel-team/kernel-sec/-/commit/
+   git_repo_url: https://salsa.debian.org/kernel-team/kernel-sec.git
+aosp:
+  commit_url_prefix: https://android.googlesource.com/kernel/common/+/
+  git_repo_url: https://android.googlesource.com/kernel/common.git
+openela:
+  commit_url_prefix: https://github.com/openela/kernel-lts/commit/
+  git_repo_url: https://github.com/openela/kernel-lts.git
