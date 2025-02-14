@@ -1,0 +1,77 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Tad <tad@spotco.us>
+Date: Thu, 19 Nov 2020 15:31:14 -0500
+Subject: [PATCH] dnm: tweaks
+
+---
+ conf/branches.yml        | 20 --------------------
+ conf/remotes.yml         | 16 ----------------
+ scripts/import_debian.py |  3 +++
+ 3 files changed, 3 insertions(+), 36 deletions(-)
+
+diff --git a/conf/branches.yml b/conf/branches.yml
+index 729620f7..47cee7a2 100644
+--- a/conf/branches.yml
++++ b/conf/branches.yml
+@@ -31,23 +31,3 @@
+   base_ver: "4.19"
+   patch_queue: debian
+   debian_branch_point: 4.19.37-5
+-- short_name: ubuntu/xenial
+-  base_ver: "4.4"
+-  git_remote: ubuntu/xenial
+-  git_name: master-next
+-  tag_regexp: '^Ubuntu-4\.4\.'
+-- short_name: ubuntu/bionic
+-  base_ver: "4.15"
+-  git_remote: ubuntu/bionic
+-  git_name: master-next
+-  tag_regexp: '^Ubuntu-4\.15\.'
+-- short_name: ubuntu/focal
+-  base_ver: "5.4"
+-  git_remote: ubuntu/focal
+-  git_name: master-next
+-  tag_regexp: '^Ubuntu-5\.4\.'
+-- short_name: ubuntu/groovy
+-  base_ver: "5.8"
+-  git_remote: ubuntu/groovy
+-  git_name: master-next
+-  tag_regexp: '^Ubuntu-5\.8\.'
+diff --git a/conf/remotes.yml b/conf/remotes.yml
+index 80ea3aad..cfaa35ff 100644
+--- a/conf/remotes.yml
++++ b/conf/remotes.yml
+@@ -7,19 +7,3 @@ stable:
+ cip:
+   commit_url_prefix: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git/commit?id=
+   git_repo_url: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git
+-ubuntu/xenial:
+-  commit_url_prefix: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/xenial/commit/?id=
+-  tag_url_prefix: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/xenial/tag/?h=
+-  git_repo_url: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/xenial
+-ubuntu/bionic:
+-  commit_url_prefix: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/bionic/commit/?id=
+-  tag_url_prefix: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/bionic/tag/?h=
+-  git_repo_url: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/bionic
+-ubuntu/focal:
+-  commit_url_prefix: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/focal/commit/?id=
+-  tag_url_prefix: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/focal/tag/?h=
+-  git_repo_url: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/focal
+-ubuntu/groovy:
+-  commit_url_prefix: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/groovy/commit/?id=
+-  tag_url_prefix: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/groovy/tag/?h=
+-  git_repo_url: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux/+git/groovy
+diff --git a/scripts/import_debian.py b/scripts/import_debian.py
+index 813c606b..df0bb7df 100755
+--- a/scripts/import_debian.py
++++ b/scripts/import_debian.py
+@@ -254,6 +254,9 @@ def main():
+     their_issues = dict((os.path.basename(name), name) for name in
+                         glob.glob(IMPORT_DIR + '/active/CVE-*'))
+ 
++    their_issues = dict((os.path.basename(name), name) for name in
++                        glob.glob(IMPORT_DIR + '/retired/CVE-*'))
++
+     # Also look at retired issues that we already track, but not the
+     # huge number of historical ones
+     for cve_id in our_issues:
