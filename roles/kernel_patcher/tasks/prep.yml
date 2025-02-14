@@ -9,3 +9,11 @@
     - "{{ cve_kernel_patches_path }}"
     - "{{ cve_kernel_cip_path }}"
     - "{{ kernel_stable_path }}"
+
+- name: "Configure remotes"
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dst }}"
+  loop:
+    - { "src": "remotes.j2", "dst": "~/.config/kernel-sec/remotes.yml" }
+    - { "src": "branches.j2", "dst": "~/.config/kernel-sec/branches.yml" }
