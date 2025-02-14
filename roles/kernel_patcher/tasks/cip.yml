@@ -18,18 +18,22 @@
 
     # prepare & sync remotes
     # only needed once as further syncs are handled by: roles/kernel_patcher/tasks/sync.yml
-    #./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    ./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
 
     # import
-    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable1 remote"
     git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
-    ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    
+    ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported debian remote"
     git add -A && git commit -a -m 'Import data from Debian' >> {{ BUILD_LOG }} 2>&1
-    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    
+    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable2 remote"
     git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
-    ./scripts/import_ubuntu.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+    
+    ./scripts/import_ubuntu.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported ubuntu remote"
     git add -A && git commit -a -m 'Import data from Ubuntu' >> {{ BUILD_LOG }} 2>&1
-    ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
+
+    /scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable3 remote"
     git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
