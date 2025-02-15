@@ -201,7 +201,7 @@ sec_patch_topics_pie:
 #   366137: affects Trebuchet (eOS)
 #   377775: affects Trebuchet (eOS)
 #   414554: manifest change
-secpatch_common_exclusions: 'Manifest change|Track our own fork|Bump Security String'
+secpatch_common_exclusions: '-"Manifest change" -"Track our own fork" -"Bump Security String"'
 secpatch_los_exclusions: '338357|342095|414554'               # includes secpatch_common_exclusions
 secpatch_eos_exclusions: '324039|324040|324041|366137|377775' # includes secpatch_common_exclusions + secpatch_los_exclusions
 
