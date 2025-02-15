@@ -27,12 +27,12 @@
 
 - name: "Construct exclusions (LOS, AOS, ...)"
   ansible.builtin.set_fact:
-    secpatch_exclusionlist_los: "{{ secpatch_common_exclusions }}|{{ secpatch_los_exclusions }}"
+    secpatch_exclusionlist_los: "{{ secpatch_los_exclusions }}"
   when: ROM_FLAVOR != "eos"
 
 - name: "Construct exclusions (eOS)"
   ansible.builtin.set_fact:
-    secpatch_exclusionlist_eos: "{{ secpatch_common_exclusions }}|{{ secpatch_los_exclusions }}|{{ secpatch_eos_exclusions }}"
+    secpatch_exclusionlist_eos: "{{ secpatch_los_exclusions }}|{{ secpatch_eos_exclusions }}"
   when: ROM_FLAVOR == "eos"
 
 - name: "Check required variables"
@@ -57,7 +57,7 @@
 - name: "Define Query"
   ansible.builtin.set_fact:
     pick_query: >-
-      {{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2') | join(' OR ') }}
+      {{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2' + secpatch_common_exclusions) | join(' OR ') }}
 
 - block:
        
