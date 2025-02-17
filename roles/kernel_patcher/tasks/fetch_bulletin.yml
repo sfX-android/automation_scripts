@@ -9,6 +9,7 @@
 
 - name: "Fetch ASB Kernel patches"
   ansible.builtin.shell: |
+    go get github.com/dukebarman/android-bulletins-harvester
     go build .
     ./android-bulletins-harvester -kernel | grep -v bulletin >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt
   args:
