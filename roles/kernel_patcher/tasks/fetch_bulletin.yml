@@ -23,7 +23,7 @@
         cve_list: "{{ asbk.stdout_lines | map('from_json') | list }}"
 
     - name: "Check if patch exists already"
-      ansible.builtin.shell: "grep -q '^{{ item.link }}$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
+      ansible.builtin.shell: "grep -q '{{ item.link }}' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
       register: patch_exists
       ignore_errors: yes
       changed_when: false
