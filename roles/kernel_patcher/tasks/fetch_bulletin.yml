@@ -30,6 +30,8 @@
       ignore_errors: yes
       changed_when: false
       loop: "{{ cve_list }}"
+      loop_control:
+        loop_var: item
 
     - name: "Append CVE entry if required"
       ansible.builtin.lineinfile:
