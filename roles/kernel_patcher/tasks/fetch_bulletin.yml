@@ -35,7 +35,7 @@
 
     - name: test
       debug:
-        var: patch_exists
+        var: patch_exists.results
         
     - name: "Check if the CVE exists already"
       ansible.builtin.shell: "grep -q '^{{ item.id }}-aosp$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
@@ -45,7 +45,7 @@
       loop: "{{ cve_list }}"
       loop_control:
         loop_var: item
-      when: patch_exists is defined and patch_exists.results | map(attribute='item.link') | list | length > 0
+      when: patch_exists is defined and patch_exists.results | map(attribute='item.rc') != 0
 
     - name: "Append link if CVE exists"
       ansible.builtin.lineinfile:
