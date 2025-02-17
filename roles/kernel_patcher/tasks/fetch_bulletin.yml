@@ -40,7 +40,7 @@
         insertafter: EOF
       loop: "{{ cve_list }}"
       when:
-        - patch_exists is defined and patch_exists.results is not empty
+        - patch_exists is defined and patch_exists.results is not ""
     
     - name: "Append link if required"
       ansible.builtin.lineinfile:
@@ -49,6 +49,6 @@
         insertafter: "^{{ item.id }}-aosp$"
       loop: "{{ cve_list }}"
       when:
-        - patch_exists is defined and patch_exists.results is not empty
+        - patch_exists is defined and patch_exists.results is not ""
     
   when: asbk.stdout != ""
