@@ -33,46 +33,22 @@
       loop_control:
         loop_var: item
 
-    - name: test
-      debug:
-        var: patch_exists.results
-        
-    - name: "Check if the CVE exists already"
-      ansible.builtin.shell: "grep -q '^{{ item.id }}-aosp$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
-      register: id_exists
-      ignore_errors: yes
-      changed_when: false
-      loop: "{{ cve_list }}"
-      loop_control:
-        loop_var: item
-      when: patch_exists is defined and patch_exists.results | map(attribute='item.rc') != 0
-
-    - name: "Append link if CVE exists"
+    - name: "Append CVE entry if required"
       ansible.builtin.lineinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
-        line: "        Link - {{ item.1.link }}"
-        insertafter: "^{{ item.1.id }}-aosp$"
-        create: yes
-      loop: "{{ id_exists.results | zip(cve_list) | list }}"
-      loop_control:
-        loop_var: item
+        line: "^{{ item.id }}-aosp$"
+        insertafter: EOF
+      loop: "{{ cve_list }}"
       when:
-        - item.0.rc == 0
-        - patch_exists is defined and patch_exists.results | map(attribute='item.rc') != 0
-
-    - name: "Add both CVE and link if both do not exist"
-      ansible.builtin.blockinfile:
+        - patch_exists is defined and patch_exists.results is not empty
+    
+    - name: "Append link if required"
+      ansible.builtin.lineinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
-        block: |
-          {{ item.1.id }}-aosp
-                  Link - {{ item.1.link }}
-        create: yes
-        marker: "# {mark} ANSIBLE MANAGED BLOCK for {{ item.1.id }}"
-      loop: "{{ id_exists.results | zip(cve_list) | list }}"
-      loop_control:
-        loop_var: item
+        line: "        Link - {{ item.link }}"
+        insertafter: "^{{ item.id }}-aosp$"
+      loop: "{{ cve_list }}"
       when:
-        - item.0.rc != 0
-        - patch_exists is defined and patch_exists.results | map(attribute='item.rc') != 0
-
+        - patch_exists is defined and patch_exists.results is not empty
+    
   when: asbk.stdout != ""
