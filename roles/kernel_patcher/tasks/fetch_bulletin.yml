@@ -51,7 +51,7 @@
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
       loop_control:
         loop_var: item
-      when: patch_exists is defined and patch_exists.results | any(attribute='item.link' in item)
+      when: patch_exists is defined and patch_exists.results | map(attribute='item.link') | list | length > 0
 
     - name: "Add both CVE and link if CVE does not exist"
       ansible.builtin.blockinfile:
@@ -65,6 +65,6 @@
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
       loop_control:
         loop_var: item
-      when: patch_exists is defined and patch_exists.results | any(attribute='item.link' in item)
+      when: patch_exists is defined and patch_exists.results | map(attribute='item.link') | list | length > 0
 
   when: asbk.stdout != ""
