@@ -1,0 +1,6 @@
+---
+
+#TEMP override
+sec_patch_topics_a13:
+      - "{{ range(202410, 202413 }}"
+      - "{{ range(202501, sec_patch_date_last | int) }}"
