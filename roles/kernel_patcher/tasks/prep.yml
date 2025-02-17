@@ -18,3 +18,7 @@
     - { "src": "tweak.patch", "dst": "~/.config/kernel-sec/tweak.patch" }
     - { "src": "remotes.yml", "dst": "~/.config/kernel-sec/remotes.yml" }
     - { "src": "branches.yml", "dst": "~/.config/kernel-sec/branches.yml" }
+
+- name: "Set topics based on Android version"
+  ansible.builtin.set_fact:
+      sec_patch_topics: "{{ lookup('vars', 'sec_patch_topics_' + android_shortversion) }}"
