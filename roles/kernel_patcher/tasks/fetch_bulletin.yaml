@@ -1,0 +1,12 @@
+---
+
+ansible.builtin.git:
+    repo: "{{ git_asb_harvester }}"
+    dest: "{{ asb_harvester_path }}"
+    force: true
+  timeout: 180
+
+- name: "Fetch ASB Kernel patches"
+  ansible.builtin.shell: |
+    go build .
+    ./android-bulletins-harvester -kernel | grep -v bulletin >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt
