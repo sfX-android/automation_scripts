@@ -4,6 +4,7 @@
 - include_tasks: init.yml
 - include_tasks: reset.yml
 - include_tasks: sync.yml
+- include_tasks: prep_list.yml
 
 - include_tasks: fetch_bulletin.yml
 - include_tasks: cip.yml
