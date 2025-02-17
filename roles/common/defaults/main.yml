@@ -143,6 +143,10 @@ incompat_cross_version_paths:
     - bootable/recovery
     - device
 
+# kernel patcher
+divest_cve_checker_download: "https://codeberg.org/AXP-OS/cve_checker/releases/download/latest/cve_checker.jar"
+divest_cve_checker_jar: "{{ BUILDHOME }}/cve_checker.jar"
+
 # !LEGACY! security patch handling (and for PIE only)
 # see next paragraph for the new method!
 # ref: https://review.lineageos.org/q/topic:P_asb_2024-10
