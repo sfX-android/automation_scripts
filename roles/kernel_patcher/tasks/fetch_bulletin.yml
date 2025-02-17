@@ -9,8 +9,50 @@
 
 - name: "Fetch ASB Kernel patches"
   ansible.builtin.shell: |
-    go get github.com/dukebarman/android-bulletins-harvester
-    go build .
-    ./android-bulletins-harvester -kernel | grep -v bulletin >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt
+    go get github.com/dukebarman/android-bulletins-harvester >> {{ BUILD_LOG }} 2>&1
+    go build . >> {{ BUILD_LOG }} 2>&1
+    ./android-bulletins-harvester -kernel -quiet -jsonk 2>> {{ BUILD_LOG }}
   args:
     chdir: "{{ asb_harvester_path }}"
+  register: asbk
+
+- block:
+
+    - name: "Parse the output and store it in a list"
+      ansible.builtin.set_fact:
+        cve_list: "{{ asbk.stdout_lines | map('from_json') | list }}"
+
+    - name: "Check if the CVE exists already"
+      shell: "grep -q '^{{ item.id }}$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
+      register: id_exists
+      ignore_errors: yes
+      changed_when: false
+      loop: "{{ cve_list }}"
+      loop_control:
+        loop_var: item
+
+    - name: "Append link if CVE exists"
+      lineinfile:
+        path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
+        line: "        Link - 6.x - {{ item.1.link }}"
+        insertafter: "^{{ item.1.id }}$"
+        create: yes
+      when: item.0.rc == 0
+      loop: "{{ id_exists.results | zip(cve_list) | list }}"
+      loop_control:
+        loop_var: item
+
+    - name: "Add both CVE and link if CVE does not exist"
+      blockinfile:
+        path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
+        block: |
+          {{ item.1.id }}
+                  Link - 6.x - {{ item.1.link }}
+        create: yes
+        marker: "# {mark} ANSIBLE MANAGED BLOCK for {{ item.1.id }}"
+      when: item.0.rc != 0
+      loop: "{{ id_exists.results | zip(cve_list) | list }}"
+      loop_control:
+        loop_var: item
+
+  when: asbk.stdout != ""
