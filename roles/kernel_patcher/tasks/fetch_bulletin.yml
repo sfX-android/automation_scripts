@@ -32,7 +32,7 @@
         loop_var: item
       
     - name: "Check if the CVE exists already"
-      ansible.builtin.shell: "grep -q '^{{ item.id }}$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
+      ansible.builtin.shell: "grep -q '^{{ item.id }}-aosp$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
       register: id_exists
       ignore_errors: yes
       changed_when: false
@@ -45,7 +45,7 @@
       ansible.builtin.lineinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
         line: "        Link - 6.x - {{ item.1.link }}"
-        insertafter: "^{{ item.1.id }}$"
+        insertafter: "^{{ item.1.id }}-aosp$"
         create: yes
       when: item.0.rc == 0
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
@@ -57,7 +57,7 @@
       ansible.builtin.blockinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
         block: |
-          {{ item.1.id }}
+          {{ item.1.id }}-aosp
                   Link - 6.x - {{ item.1.link }}
         create: yes
         marker: "# {mark} ANSIBLE MANAGED BLOCK for {{ item.1.id }}"
