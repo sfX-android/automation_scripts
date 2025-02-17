@@ -11,3 +11,5 @@
   ansible.builtin.shell: |
     go build .
     ./android-bulletins-harvester -kernel | grep -v bulletin >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt
+  args:
+    chdir: "{{ asb_harvester_path }}"
