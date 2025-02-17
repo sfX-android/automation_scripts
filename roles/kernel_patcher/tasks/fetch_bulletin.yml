@@ -34,7 +34,7 @@
             echo "{{ item.id }}-aosp" >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt
             echo "        Link - {{ item.link }}" >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt && PATCHED=$((PATCHED +1))
           else
-            awk '{sub(/{{ item.id }}-aosp/,"&         Link - {{ item.link }}"); print}' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt >> {{ BUILD_LOG }} 2>&1 && PATCHED=$((PATCHED +1))
+            awk '{if ($0 ~ /{{ item.id }}-aosp/) { sub(/$/,"         Link - {{ item.link }}"); } print}' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt >> {{ BUILD_LOG }} 2>&1 && PATCHED=$((PATCHED +1))
           fi
         fi
         echo $PATCHED
