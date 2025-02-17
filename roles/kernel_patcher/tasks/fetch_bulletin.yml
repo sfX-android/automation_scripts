@@ -11,7 +11,7 @@
   ansible.builtin.shell: |
     go get github.com/dukebarman/android-bulletins-harvester >> {{ BUILD_LOG }} 2>&1
     go build . >> {{ BUILD_LOG }} 2>&1
-    {% for t in bull_range %}
+    {% for t in bull_range | split(' ') %}
         ./android-bulletins-harvester -kernel -quiet -jsonk -url https://source.android.com/docs/security/bulletin/{{ t }} #2>> {{ BUILD_LOG }}
     {% endfor %}
   args:
