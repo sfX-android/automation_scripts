@@ -22,17 +22,27 @@
       ansible.builtin.set_fact:
         cve_list: "{{ asbk.stdout_lines | map('from_json') | list }}"
 
+    - name: "Check if patch exists already"
+      ansible.builtin.shell: "grep -q '^{{ item.link }}$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
+      register: patch_exists
+      ignore_errors: yes
+      changed_when: false
+      loop: "{{ cve_list }}"
+      loop_control:
+        loop_var: item
+      
     - name: "Check if the CVE exists already"
-      shell: "grep -q '^{{ item.id }}$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
+      ansible.builtin.shell: "grep -q '^{{ item.id }}$' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
       register: id_exists
       ignore_errors: yes
       changed_when: false
       loop: "{{ cve_list }}"
       loop_control:
         loop_var: item
+      when: patch_exists is defined and patch_exists.results | any(attribute='item.link' in item)
 
     - name: "Append link if CVE exists"
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
         line: "        Link - 6.x - {{ item.1.link }}"
         insertafter: "^{{ item.1.id }}$"
@@ -41,9 +51,10 @@
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
       loop_control:
         loop_var: item
+      when: patch_exists is defined and patch_exists.results | any(attribute='item.link' in item)
 
     - name: "Add both CVE and link if CVE does not exist"
-      blockinfile:
+      ansible.builtin.blockinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
         block: |
           {{ item.1.id }}
@@ -54,5 +65,6 @@
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
       loop_control:
         loop_var: item
+      when: patch_exists is defined and patch_exists.results | any(attribute='item.link' in item)
 
   when: asbk.stdout != ""
