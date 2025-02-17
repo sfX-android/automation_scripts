@@ -35,5 +35,5 @@ asb_harvester_path:  "{{ cve_kernel_base_path }}/bulletin_harvester"
 
 # TEST / TEMP
 sec_patch_topics_a13:
-  - "{{ range(202410, 202413 }}"
+  - "{{ range(202410, 202413) }}"
   - "{{ range(202501, sec_patch_date_last | int) }}"
