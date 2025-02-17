@@ -3,7 +3,7 @@
 - name: "Sync kernel patcher repos"
   ansible.builtin.shell: |
     git pull
-    git checkout HEAD -f
+    git checkout origin/HEAD -f
     git pull
     git log -1
   args:
