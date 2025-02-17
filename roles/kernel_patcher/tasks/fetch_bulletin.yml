@@ -50,10 +50,9 @@
     - name: "Append link if CVE exists"
       ansible.builtin.lineinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
-        line: "        Link - 6.x - {{ item.1.link }}"
+        line: "        Link - {{ item.1.link }}"
         insertafter: "^{{ item.1.id }}-aosp$"
         create: yes
-      when: item.0.rc == 0
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
       loop_control:
         loop_var: item
@@ -66,7 +65,7 @@
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
         block: |
           {{ item.1.id }}-aosp
-                  Link - 6.x - {{ item.1.link }}
+                  Link - {{ item.1.link }}
         create: yes
         marker: "# {mark} ANSIBLE MANAGED BLOCK for {{ item.1.id }}"
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
