@@ -7,10 +7,6 @@
 - include_tasks: prep_list.yml
 
 - include_tasks: fetch_bulletin.yml
-- fail:
-    msg: fooo
-
-    
 - include_tasks: cip.yml
 - include_tasks: incremental.yml
 
