@@ -39,7 +39,7 @@
       loop: "{{ cve_list }}"
       loop_control:
         loop_var: item
-      when: patch_exists is defined and patch_exists.results | map(attribute='item.link') | list | length > 0
+      when: patch_exists is defined and not patch_exists.results | map(attribute='item.link') | list | length > 0
 
     - name: "Append link if CVE exists"
       ansible.builtin.lineinfile:
@@ -51,9 +51,9 @@
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
       loop_control:
         loop_var: item
-      when: patch_exists is defined and patch_exists.results | map(attribute='item.link') | list | length > 0
+      when: patch_exists is defined and not patch_exists.results | map(attribute='item.link') | list | length > 0
 
-    - name: "Add both CVE and link if CVE does not exist"
+    - name: "Add both CVE and link if both do not exist"
       ansible.builtin.blockinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
         block: |
@@ -65,6 +65,6 @@
       loop: "{{ id_exists.results | zip(cve_list) | list }}"
       loop_control:
         loop_var: item
-      when: patch_exists is defined and patch_exists.results | map(attribute='item.link') | list | length > 0
+      when: patch_exists is defined and not patch_exists.results | map(attribute='item.link') | list | length > 0
 
   when: asbk.stdout != ""
