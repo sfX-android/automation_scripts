@@ -11,7 +11,7 @@
   ansible.builtin.shell: |
     go get github.com/dukebarman/android-bulletins-harvester >> {{ BUILD_LOG }} 2>&1
     go build . >> {{ BUILD_LOG }} 2>&1
-    {% for t in sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2-01') | join(' ') %}
+    {% for t in sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', '\1-\2-01') | join(' ') %}
         ./android-bulletins-harvester -kernel -quiet -jsonk -url https://source.android.com/docs/security/bulletin/{{ t }} #2>> {{ BUILD_LOG }}
     {% endfor %}
   args:
