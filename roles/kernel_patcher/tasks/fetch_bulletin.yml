@@ -30,7 +30,7 @@
         haslink=$(grep -c '{{ item.link }}' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt)
         if [ $haslink -eq 0 ];then
           hasid=$(grep -c '{{ item.id }}-aosp' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt)
-          if [ $haslink -eq 0 ];then
+          if [ $hasid -eq 0 ];then
             echo "{{ item.id }}-aosp" >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt
             echo "        Link - {{ item.link }}" >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt && PATCHED=$((PATCHED +1))
           else
