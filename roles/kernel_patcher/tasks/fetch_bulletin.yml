@@ -36,7 +36,7 @@
     - name: "Append CVE entry if required"
       ansible.builtin.lineinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
-        line: "^{{ item.id }}-aosp$"
+        line: "^{{ item.id }}-aosp"
         insertafter: EOF
       loop: "{{ cve_list }}"
       when:
@@ -46,7 +46,7 @@
       ansible.builtin.lineinfile:
         path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
         line: "        Link - {{ item.link }}"
-        insertafter: "^{{ item.id }}-aosp$"
+        insertafter: "^{{ item.id }}-aosp"
       loop: "{{ cve_list }}"
       when:
         - patch_exists is defined and patch_exists.results != ""
