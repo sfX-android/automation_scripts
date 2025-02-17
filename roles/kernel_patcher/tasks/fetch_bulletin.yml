@@ -57,7 +57,7 @@
       loop_control:
         loop_var: item
       when:
-        - item.0.rc != 0
+        - item.0.rc == 0
         - patch_exists is defined and patch_exists.results | map(attribute='item.rc') != 0
 
     - name: "Add both CVE and link if both do not exist"
