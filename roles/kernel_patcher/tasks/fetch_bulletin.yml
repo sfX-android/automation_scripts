@@ -39,7 +39,7 @@
       loop: "{{ cve_list }}"
       loop_control:
         loop_var: item
-      when: patch_exists is defined and patch_exists.results | any(attribute='item.link' in item)
+      when: patch_exists is defined and patch_exists.results | select('item.link in item')
 
     - name: "Append link if CVE exists"
       ansible.builtin.lineinfile:
