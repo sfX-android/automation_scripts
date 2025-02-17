@@ -4,3 +4,9 @@ aosp:
 openela:
   commit_url_prefix: https://github.com/openela/kernel-lts/commit/
   git_repo_url: https://github.com/openela/kernel-lts.git
+stable:
+  commit_url_prefix: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git/commit?id=
+  git_repo_url: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+cip:
+  commit_url_prefix: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git/commit?id=
+  git_repo_url: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git
