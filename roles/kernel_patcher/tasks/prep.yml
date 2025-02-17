@@ -22,3 +22,8 @@
 - name: "Set topics based on Android version"
   ansible.builtin.set_fact:
       sec_patch_topics: "{{ lookup('vars', 'sec_patch_topics_' + android_shortversion) }}"
+
+- name: "Define bulletin range"
+  ansible.builtin.set_fact:
+    bull_range: >-
+      {{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', '\1-\2-01') | join(' ') }}
