@@ -1,6 +1,6 @@
 ---
 
-- name: "Get Harvester"
+- name: "Get ASB harvester"
   ansible.builtin.git:
     repo: "{{ git_asb_harvester }}"
     dest: "{{ asb_harvester_path }}"
