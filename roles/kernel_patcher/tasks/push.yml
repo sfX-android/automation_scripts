@@ -6,8 +6,6 @@
       CMT=0
       echo "processing: {{ item }}" >> {{ BUILD_LOG }}
 
-      git pull --rebase >> {{ BUILD_LOG }} 2>&1
-
       # add unstaged changes
       git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
       # check for uncommitted changes
@@ -17,6 +15,7 @@
       if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
           git commit --author="{{ git_kernel_patcher_author }}" -m "automated kernel patcher run" >> {{ BUILD_LOG }} 2>&1 \
             && echo "committed changes $(git log -1 --format=oneline)" >> {{ BUILD_LOG }} \
+            && git pull --rebase >> {{ BUILD_LOG }} 2>&1 \
             && git push --set-upstream origin >> {{ BUILD_LOG }} 2>&1 && echo "pushed changes!" >> {{ BUILD_LOG }}
       fi
   args:
