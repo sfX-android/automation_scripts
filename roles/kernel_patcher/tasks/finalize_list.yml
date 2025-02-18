@@ -3,6 +3,6 @@
 - name: "Set EOF on Kernel_CVE_Patch_List.txt"
   ansible.builtin.lineinfile:
     path: "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
-    regexp: '^CVE-0000-0000'
+    line: 'CVE-0000-0000'
     insertafter: EOF
     state: present
