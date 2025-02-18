@@ -17,8 +17,8 @@
   args:
     chdir: "{{ item.path }}"
   loop:
-    - path: cve_kernel_cve_checker_path
-      branch: git_cve_checker_branch
+    - path: "{{ cve_kernel_cve_checker_path }}"
+      branch: "{{ git_cve_checker_branch }}"
 
     
     #- { "path": cve_kernel_cve_checker_path, "branch": git_cve_checker_branch }
