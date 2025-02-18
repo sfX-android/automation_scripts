@@ -14,6 +14,7 @@
        fi
        dbr=$(git symbolic-ref refs/remotes/origin/HEAD --short)
        git reset --hard $dbr >> {{ BUILD_LOG }} 2>&1
+       git checkout $dbr
   args:
     chdir: "{{ item }}"
   loop:
