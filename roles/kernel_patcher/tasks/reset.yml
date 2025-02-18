@@ -12,13 +12,12 @@
          git rebase --abort >> {{ BUILD_LOG }} 2>&1 || true
          git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1 || true
        fi
-       dbr=$(git symbolic-ref refs/remotes/origin/HEAD --short)
-       git reset --hard $dbr >> {{ BUILD_LOG }} 2>&1
-       git checkout $dbr
+       git reset --hard origin/{{ item.branch | d("main") }} >> {{ BUILD_LOG }} 2>&1
+       git checkout {{ item.branch | d("main") }}
   args:
-    chdir: "{{ item }}"
+    chdir: "{{ item.path }}"
   loop:
-    - "{{ cve_kernel_cve_checker_path }}"
-    - "{{ cve_kernel_patches_path }}"
-    - "{{ cve_kernel_cip_path }}"
-    - "{{ kernel_stable_path }}"
+    - { "path": cve_kernel_cve_checker_path, "branch": git_cve_checker_branch }
+    - { "path": cve_kernel_patches_path, "branch": git_kernel_patches_branch }
+    - { "path": cve_kernel_cip_path, "branch": git_cip_project_branch }
+    - { "path": kernel_stable_path, "branch": git_kernel_org_branch }
