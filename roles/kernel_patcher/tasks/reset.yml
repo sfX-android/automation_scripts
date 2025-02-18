@@ -19,9 +19,9 @@
   loop:
     - path: "{{ cve_kernel_cve_checker_path }}"
       branch: "{{ git_cve_checker_branch }}"
-
-    
-    #- { "path": cve_kernel_cve_checker_path, "branch": git_cve_checker_branch }
-    #- { "path": cve_kernel_patches_path, "branch": git_kernel_patches_branch }
-    #- { "path": cve_kernel_cip_path, "branch": git_cip_project_branch }
-    #- { "path": kernel_stable_path, "branch": git_kernel_org_branch }
+    - path: "{{ cve_kernel_patches_path }}"
+      branch: "{{ git_kernel_patches_branch }}"
+    - path: "{{ cve_kernel_cip_path }}"
+      branch: "{{ git_cip_project_branch }}"
+    - path: "{{ kernel_stable_path }}"
+      branch: "{{ git_kernel_org_branch }}"
