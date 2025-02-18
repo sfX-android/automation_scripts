@@ -2,9 +2,10 @@
 
 - name: "Sync kernel patcher repos"
   ansible.builtin.shell: |
-    git pull
-    git checkout origin/HEAD -f
-    git pull
+    git fetch --all
+    dbr=$(git symbolic-ref refs/remotes/origin/HEAD --short)
+    git checkout $dbr -f
+    git pull --rebase
     git log -1
   args:
     executable: /bin/bash
