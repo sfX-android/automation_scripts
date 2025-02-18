@@ -12,6 +12,7 @@ cve_kernel_base_path: "/home/androidsource/do-not-touch/CVE"
 
 # CVE checker & downloader
 git_cve_checker: "ssh://git@code.binbash.rocks:22443/AXP.OS/cve_checker.git"
+git_cve_checker_branch: main
 cve_kernel_cve_checker_path: "{{ cve_kernel_base_path }}/cve_checker"
 
 # Kernel patch repo and path
