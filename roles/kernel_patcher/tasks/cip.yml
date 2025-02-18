@@ -57,7 +57,6 @@
       # remove unwanted (i.e. non LTS) patches
       source ./rm-nonlts.sh
       rmVersions >> {{ BUILD_LOG }} 2>&1
-  register: buildresult
   environment:
     DOS_BINARY_PATCHER: "{{ divest_cve_checker_jar }}"
     DOS_PATCHES_LINUX_CVES: "{{ cve_kernel_patches_path }}"
