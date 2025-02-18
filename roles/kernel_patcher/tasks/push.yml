@@ -9,9 +9,6 @@
       # add unstaged changes
       git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
 
-      dbr=$(git symbolic-ref refs/remotes/origin/HEAD --short)
-      git checkout $dbr
-       
       # check for uncommitted changes
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
 
