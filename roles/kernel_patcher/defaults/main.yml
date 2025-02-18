@@ -29,7 +29,7 @@ git_kernel_org: "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi
 git_kernel_org_branch: master
 kernel_stable_path: "{{ cve_kernel_base_path }}/stable_kernel"
 
-# Android Security Bulleting Harvester
+# Android Security Bulletin Harvester
 git_asb_harvester: "ssh://git@code.binbash.rocks:22443/AXP.OS/tools_android_bulletin_harvester.git"
 asb_harvester_path:  "{{ cve_kernel_base_path }}/bulletin_harvester"
 
