@@ -14,7 +14,7 @@
     git rebase origin/{{ git_kernel_org_branch }}
     git branch -D $(date -uI) || true
     git checkout -b $(date -uI) || true
-    #git am ~/.config/kernel-sec/tweak.patch
+    git am ~/.config/kernel-sec/tweak.patch
     rm conf/remotes.y*ml  # to ease up handling our remotes config should be only in ~/.config/kernel-sec
 
     # prepare & sync remotes
