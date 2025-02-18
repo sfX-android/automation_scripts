@@ -1,6 +1,6 @@
 ---
 
-- name: "disable GPG verify if dirty build"
+- name: "Disable GPG verify if dirty build"
   ansible.builtin.lineinfile:
     path: "{{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/Functions.sh"
     line: '#verifyAllPlatformTag'
@@ -8,14 +8,14 @@
   when:
     - clean_out != "true" or (override_clean_out != "true") or (skip_gpg_verify | bool)
 
-- name: "disable wireguard handling by vendor/axp"
-  file:
+- name: "Disable wireguard handling by vendor/axp"
+  ansible.builtin.file:
     path: "{{ SRCPATH }}/{{ target_kernel_dir }}/.wg.patched"
     state: touch
   when: skip_wireguard is defined and skip_wireguard | bool
 
-- name: "setup DOS kernel patchers (unsupported DOS devices)"
-  shell: |
+- name: "Setup CVE kernel patcher"
+  ansible.builtin.shell: |
     {{ DOS_INIT }}
     CROOT="{{ SRCPATH }}"
     set +e
@@ -27,13 +27,15 @@
     bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
-  when:
-    - divest_unsupported_device
-    - unsupported_device_kernel_patch | bool
+#  when:
+#    - divest_unsupported_device
+#    - unsupported_device_kernel_patch | bool
 
 - name: "Prepare kernel patchers"
   include_tasks: prep_kernel_patchers.yml
 
+# part of patchWorkspace():
+#
 #- name: "apply DOS kernel patches (unsupported DOS devices)"
 #  shell: |
 #    {{ DOS_INIT }}
@@ -44,22 +46,19 @@
 #    - divest_unsupported_device
 #    - unsupported_device_kernel_patch | bool
 
-- name: "apply DOS patches"
-  shell: |
+- name: "Apply DOS patches"
+  ansible.builtin.shell: |
     # tensor need additional fixups
     if [ -f "{{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch" ];then
       cd {{ SRCPATH }}/.repo/manifests && git am {{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch; cd {{ SRCPATH }}
       PIXELDIRS=$(grep -o "name=.*" .repo/manifests/snippets/pixel.xml |cut -d '"' -f2 | tr '\n' ' ')
       {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} $PIXELDIRS
     fi
-    # start divest patcher
+    # start CVE patcher
     {{ DOS_INIT }}
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
-
-    #cd vendor/divested
-    #TODO: commit, prob: not a real repo!
   register: patchout
   args:
     executable: /bin/bash
@@ -67,14 +66,14 @@
 
 # overlay does not work on A11, wt.. ?!
 - name: "Logo: overlay workaround"
-  shell: |
+  ansible.builtin.shell: |
     cp vendor/axp/overlays/packages/apps/SetupWizard/res/drawable/logo.xml packages/apps/SetupWizard/res/drawable/logo.xml
   args:
     chdir: "{{ SRCPATH }}"
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
-- name: "apply AXP.OS adjustments"
-  shell: |
+- name: "Apply AXP.OS adjustments"
+  ansible.builtin.shell: |
     {{ DOS_INIT }}
     
     {% if sub_model is defined %}
@@ -87,8 +86,8 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
 
-- name: "apply AXP.OS patches (common)"
-  shell: |
+- name: "Apply AXP.OS patches (common)"
+  ansible.builtin.shell: |
       {{ DOS_INIT }}
       resetEnv
       # apply
