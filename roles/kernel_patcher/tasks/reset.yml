@@ -13,7 +13,7 @@
          git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1 || true
        fi
        git reset --hard origin/{{ item.branch | d("main") }} >> {{ BUILD_LOG }} 2>&1
-       git checkout --track {{ item.branch | d("main") }}
+       git checkout --track origin/{{ item.branch | d("main") }}
   args:
     chdir: "{{ item.path }}"
   loop:
