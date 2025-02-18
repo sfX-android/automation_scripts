@@ -10,3 +10,6 @@ stable:
 cip:
   commit_url_prefix: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git/commit?id=
   git_repo_url: https://git.kernel.org/pub/scm/linux/kernel/git/cip/linux-cip.git
+torvalds:
+  commit_url_prefix: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=
+  git_repo_url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
