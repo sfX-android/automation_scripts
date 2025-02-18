@@ -7,7 +7,7 @@
 - include_tasks: prep_list.yml
 
 - include_tasks: asb.yml
-#- include_tasks: cip.yml
+- include_tasks: cip.yml
 
 - include_tasks: finalize_list.yml
 - include_tasks: patch_download.yml
