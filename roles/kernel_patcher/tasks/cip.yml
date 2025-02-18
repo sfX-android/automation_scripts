@@ -23,19 +23,19 @@
 
     # import
     ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable1 remote"
-    git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
+    git add -A >> {{ BUILD_LOG }} 2>&1 && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
     
     ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported debian remote"
-    git add -A && git commit -a -m 'Import data from Debian' >> {{ BUILD_LOG }} 2>&1
+    git add -A >> {{ BUILD_LOG }} 2>&1 && git commit -a -m 'Import data from Debian' >> {{ BUILD_LOG }} 2>&1
     
     ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable2 remote"
-    git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
+    git add -A >> {{ BUILD_LOG }} 2>&1 && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
     
     ./scripts/import_ubuntu.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported ubuntu remote"
-    git add -A && git commit -a -m 'Import data from Ubuntu' >> {{ BUILD_LOG }} 2>&1
+    git add -A >> {{ BUILD_LOG }} 2>&1 && git commit -a -m 'Import data from Ubuntu' >> {{ BUILD_LOG }} 2>&1
 
     ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable3 remote"
-    (git add -A && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1) || true
+    (git add -A >> {{ BUILD_LOG }} 2>&1 && git commit -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1) || true
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_cip_path }}"
