@@ -11,3 +11,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_patches_path }}"
+  register: buildresult
