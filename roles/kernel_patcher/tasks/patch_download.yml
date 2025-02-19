@@ -2,13 +2,18 @@
 
 - name: "Download patches"
   ansible.builtin.shell: |
-      java -jar $DOS_BINARY_PATCHER sort $DOS_PATCHES_LINUX_CVES/Kernel_CVE_Patch_List.txt > $DOS_PATCHES_LINUX_CVES/Kernel_CVE_Patch_List.txt.sorted \
-        && mv $DOS_PATCHES_LINUX_CVES/Kernel_CVE_Patch_List.txt.sorted $DOS_PATCHES_LINUX_CVES/Kernel_CVE_Patch_List.txt
-      java -jar $DOS_BINARY_PATCHER download $DOS_PATCHES_LINUX_CVES/Kernel_CVE_Patch_List.txt >> {{ BUILD_LOG }} 2>&1
+      java -jar $DOS_BINARY_PATCHER sort {{ item }} > {{ item }}.sorted \
+        && mv {{ item }}.sorted {{ item }}
+      java -jar $DOS_BINARY_PATCHER download {{ item }} >> {{ BUILD_LOG }} 2>&1
   environment:
     DOS_BINARY_PATCHER: "{{ divest_cve_checker_jar }}"
     DOS_PATCHES_LINUX_CVES: "{{ cve_kernel_patches_path }}"
+    CVE_PATCHER_NOT_OLDER_THAN_DATE: "{{ cve_max_oldest_commit_date }}"
+    DOS_PATCHER_INCLUSIVE_KERNEL: "{{ kernel_stable_path }}"
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_patches_path }}"
   register: buildresult
+  loop:
+    - "{{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt"
+    - "{{ cve_kernel_patches_path }}/CIP.txt"
