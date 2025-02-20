@@ -10,13 +10,8 @@
     P="patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 <"
 
     # massage kernel patchers
-    if [ "$DOS_PATCHER_GIT_AM" == "true" ];then
-      sed -i -E 's#(^git am )(\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#git am \2\3 || \(git am --abort; '"$P"' \2\3 \&\& git add -A \&\& git commit --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "\3\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\3"\)#g' \
+    sed -i -E 's#(^echo.*)git (am|apply) (\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#\1git am \3\4 || \(git am --abort; '"$P"' \3\4 \&\& git add -A \&\& git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "\4\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\4"\)#g' \
       {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/*.sh
-    else
-      sed -i -E 's#(^git apply )(\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#git am \2\3 || \(git am --abort; '"$P"' \2\3 \&\& git add -A \&\& git commit --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "\3\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\3"\)#g' \
-      {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/*.sh
-    fi
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
