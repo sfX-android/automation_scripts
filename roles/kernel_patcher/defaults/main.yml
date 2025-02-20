@@ -18,7 +18,7 @@ cve_kernel_cve_checker_path: "{{ cve_kernel_base_path }}/cve_checker"
 # Kernel patch repo and path
 git_kernel_patches: "ssh://git@code.binbash.rocks:22443/AXP.OS/kernel_patches.git"
 cve_kernel_patches_path: "{{ cve_kernel_base_path }}/kernel_patches"
-git_kernel_patches_branch: wip #main
+git_kernel_patches_branch: main
 cve_kernel_incrementals_path: "{{ cve_kernel_patches_path }}/0001-LinuxIncrementals"
 
 # CIP repo and path
