@@ -5,7 +5,7 @@
 #divest_cve_checker_jar: "/home/jenkins/cve_checker_static.jar"
 
 # git user for committing changes
-git_kernel_patcher_author: "sfX-bot <sfX-bot@binbash.local>"
+git_kernel_patcher_author: "sfX-bot <sfx-bot@binbash.rocks>"
 
 # base path for all required repos
 cve_kernel_base_path: "/home/androidsource/do-not-touch/CVE"
