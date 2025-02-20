@@ -62,6 +62,3 @@
   args:
     executable: /bin/bash
     chdir: "{{ cve_kernel_patches_path }}"
-
-# next:
-# merge CIP.txt with Kernel_CVE_Patch_List.txt
