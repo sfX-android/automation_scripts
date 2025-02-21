@@ -1,6 +1,6 @@
 #!/bin/bash
 #####################################################################################################################
-# global vars for {{ os_name }}
+# global vars for AXP.OS and the defaults for the PRO flavor
 #
 # can be overwritten / extended by device specific definitions.
 # Device example:
@@ -9,10 +9,6 @@
 # additional / current list of possible options:
 # https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
 #####################################################################################################################
-
-########################################
-# DOS global defaults
-########################################
 
 # General
 export DOS_WORKSPACE_ROOT="{{ DOSPATH }}/"
@@ -73,8 +69,31 @@ export DOS_PATCHER_GIT_AM=true                  # use git am instead of apply
 export DOS_PATCHES_LINUX_CVES="{{ SRCPATH }}/external/cve_kernel_patches"
 export DOS_BINARY_PATCHER="{{ divest_cve_checker_jar }}"
 
+# globals imported from init.sh which couldn't be overwritten
+export DOS_TMP_DIR="/tmp/dos_tmp"
+export DOS_HOSTS_FILE="$DOS_TMP_DIR/hosts"
+export DOS_TMP_GNUPG="$DOS_TMP_DIR/gnupg-$RANDOM"
+export GNUPGHOME="$DOS_TMP_GNUPG"
+export DOS_VERIFICATION_KEYRING="$DOS_WORKSPACE_ROOT/Misc/pubring.kbx"
+export DOS_PREBUILT_APPS="$DOS_WORKSPACE_ROOT/PrebuiltApps/"
+export DOS_PATCHES_COMMON="$DOS_WORKSPACE_ROOT/Patches/Common/"
+export DOS_PATCHES="$DOS_WORKSPACE_ROOT/Patches/$BUILD_WORKING_DIR/"
+export DOS_WALLPAPERS="$DOS_WORKSPACE_ROOT/Patches/Wallpapers/"
+export DOS_SCRIPTS_COMMON="$DOS_WORKSPACE_ROOT/Scripts/Common/"
+export DOS_SCRIPTS="$DOS_WORKSPACE_ROOT/Scripts/$BUILD_WORKING_DIR/"
+export DOS_SCRIPTS_CVES="$DOS_SCRIPTS/CVE_Patchers/"
+export KBUILD_BUILD_USER="emy"
+export KBUILD_BUILD_HOST="aosbm"
+export BUILD_USERNAME="emy"
+export BUILD_HOSTNAME="aosbm"
+export ANDROID_JACK_VM_ARGS="-Xmx8192m -Xms512m -Dfile.encoding=UTF-8 -XX:+TieredCompilation"
+export JACK_SERVER_VM_ARGUMENTS="${ANDROID_JACK_VM_ARGS}"
+export EXPERIMENTAL_USE_JAVA8=true
+export GRADLE_OPTS="-Xmx2048m"
+export TZ=:/etc/localtime
+
 ########################################
-# AXP.OS global defaults (overrides
+# AXP.OS global overrides
 ########################################
 
 # DOS branding
