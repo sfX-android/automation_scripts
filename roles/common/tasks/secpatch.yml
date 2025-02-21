@@ -13,7 +13,7 @@
 - name: "Set version as YYYY-MM"
   ansible.builtin.set_fact:
       sec_patch_date_last_human: >-
-          {{ sec_patch_date_real | regex_replace('(^.{4})(.{2})','\1-\2') }}
+          {{ sec_patch_date_real | regex_replace('(^.{4})(.{2})','\1-\2') }}-{{ sec_patch_level }}
 
 #{ sec_patch_date_last | int - 1 }}"
 
@@ -72,7 +72,7 @@
         chdir: "{{ SRCPATH }}"
       register: picklist
       
-    - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last_human }}-01"
+    - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last_human }}"
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
         echo "patch cmd: {{ item | regex_replace('-f ',' ') }}"
@@ -84,11 +84,11 @@
       loop: "{{ picklist.stdout_lines }}"
       when: picklist.changed
     
-    - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last_human }}-01"
+    - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last_human }}"
       ansible.builtin.lineinfile:
         path: "{{ SRCPATH }}/build/core/version_defaults.mk"
         regexp: "PLATFORM_SECURITY_PATCH := .*"
-        line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last_human }}-01"
+        line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last_human }}"
       when: spres.changed
 
   when:
