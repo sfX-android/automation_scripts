@@ -10,6 +10,9 @@
     git submodule status
     echo "DOS_BINARY_PATCHER: $DOS_BINARY_PATCHER"
     echo "DOS_PATCHES_LINUX_CVES: $DOS_PATCHES_LINUX_CVES"
+    echo "DOS_PATCHER_LOOSE_VERSIONS: $DOS_PATCHER_LOOSE_VERSIONS"
+    echo "DOS_PATCHER_LOOSE_VERSIONS_EXTREME: $DOS_PATCHER_LOOSE_VERSIONS_EXTREME"
+    echo "DOS_PATCHER_GIT_AM: $DOS_PATCHER_GIT_AM"
     exit 123
     
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard" >> {{ BUILD_LOG }} 2>&1
