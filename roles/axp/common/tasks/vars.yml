@@ -1,9 +1,25 @@
 ---
 
-- name: "Set global vars"
+- name: "Add global vars"
   template:
-    src: "axp{{ axp_type | d('') }}.vars.j2"
+    src: "axp.vars.j2"
     dest: "{{ BUILDHOME }}/.divested.vars"
+
+- block:
+    - name: "Add global override vars (slim)"
+      ansible.builtin.template:
+        src: "axpslim.vars.j2"
+        dest: "{{ BUILDHOME }}/.divested.vars.slim"
+
+    - name: "Include slim vars overrides"
+      ansible.builtin.lineinfile:
+        path: "{{ BUILDHOME }}/.divested.vars"
+        line: "source {{ BUILDHOME }}/.divested.vars.slim"
+        insertafter: EOF
+        state: present
+
+  when:
+    - axp_type | d('') == "slim"
 
 - name: "check if a device overwrite exists"
   connection: local
