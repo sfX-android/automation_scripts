@@ -23,11 +23,6 @@ export CCACHE_COMPRESSLEVEL=1
 export DOS_MALWARE_SCAN_ENABLED=false #Set true to perform a fast scan on patchWorkspace() and a through scan on buildAll()
 export DOS_REFRESH_PATCHES=true #Set true to refresh branch-specific patches on apply
 
-# CVE Kernel patcher
-export DOS_PATCHER_LOOSE_VERSIONS=true  # enable loose patching
-export DOS_PATCHER_LOOSE_VERSIONS_EXTREME=true  # try as hard as possible to find matching patches
-export DOS_PATCHER_GIT_AM=true  # use git am instead of apply
-
 # Release Processing
 export DOS_MALWARE_SCAN_BEFORE_SIGN=false #Scan device files for malware before signing
 export DOS_GENERATE_DELTAS=false #Creates deltas from existing target_files in $DOS_BUILDS
@@ -71,7 +66,11 @@ export DOS_HOSTS_BLOCKING_LIST="https://divested.dev/hosts-wildcards" #Must be i
 export DOS_SENSORS_PERM=false #Set true to provide a per-app sensors permission for 14.1/15.1 #XXX: can break things like camera
 export DOS_USE_KSM=false #Set true to use KSM for increased memory efficiency at the cost of easier side-channel attacks and increased CPU usage #XXX: testing only
 
-# Kernel patching
+# CVE Kernel patcher
+export DOS_PATCHER_LOOSE_VERSIONS=true          # enable loose patching
+export DOS_PATCHER_LOOSE_VERSIONS_EXTREME=true  # try as hard as possible to find matching patches
+export DOS_PATCHER_GIT_AM=true                  # use git am instead of apply
+export DOS_PATCHES_LINUX_CVES="{{ SRCPATH }}/external/cve_kernel_patches"
 export DOS_BINARY_PATCHER="{{ divest_cve_checker_jar }}"
 
 ########################################
