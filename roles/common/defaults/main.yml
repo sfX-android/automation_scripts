@@ -229,6 +229,10 @@ sec_patch_pick_branch: "{{ los_version_gitbranch }}"
 #sec_patch_date_last: "{{ current_year }}{{ sec_month }}"
 sec_patch_date_last: 202503
 
+# either 01 or 05 according to if you patch the KERNEL as well (e.g. by roles/kernel_patcher)
+# see https://source.android.com/docs/security/bulletin/2025-01-01#Common-questions-and-answers
+sec_patch_level: '01'
+
 # as start and end of security patches is something you MIGHT need to decide depending on the used
 # custom OS and/or version you should copy the whole next part into your OS role and adjust as needed.
 # checking for available topics: 
