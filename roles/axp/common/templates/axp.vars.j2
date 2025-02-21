@@ -69,6 +69,7 @@ export DOS_PATCHES_LINUX_CVES="{{ SRCPATH }}/external/cve_kernel_patches"
 export DOS_BINARY_PATCHER="{{ divest_cve_checker_jar }}"
 
 # globals imported from init.sh which couldn't be overwritten
+export BUILD_WORKING_DIR="LineageOS-{{ los_version }}"
 export DOS_TMP_DIR="/tmp/dos_tmp"
 export DOS_HOSTS_FILE="$DOS_TMP_DIR/hosts"
 export DOS_TMP_GNUPG="$DOS_TMP_DIR/gnupg-$RANDOM"
