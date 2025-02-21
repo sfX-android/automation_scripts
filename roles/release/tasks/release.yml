@@ -77,7 +77,7 @@
           
     - name: "Release AXP.OS RECOVERY for {{ BDEVICE }}"
       ansible.builtin.shell: |
-          ZIPF=$(zipinfo -1 {{ {{ axp_finalzip_dir }}/axp_fastboot_zip }})
+          ZIPF=$(zipinfo -1 {{ axp_finalzip_dir }}/axp_fastboot_zip }})
           has_recovery=$(echo "$ZIPF"| grep -c recovery)
           has_vendorboot=$(echo "$ZIPF"| grep -c vendor_boot)
           
