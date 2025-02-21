@@ -7,36 +7,31 @@
     set +e
     cd $CROOT
 
-    git submodule status
     echo "DOS_BINARY_PATCHER: $DOS_BINARY_PATCHER"
     echo "DOS_PATCHES_LINUX_CVES: $DOS_PATCHES_LINUX_CVES"
     echo "DOS_PATCHER_LOOSE_VERSIONS: $DOS_PATCHER_LOOSE_VERSIONS"
     echo "DOS_PATCHER_LOOSE_VERSIONS_EXTREME: $DOS_PATCHER_LOOSE_VERSIONS_EXTREME"
-    echo "DOS_PATCHER_GIT_AM: $DOS_PATCHER_GIT_AM"
-    exit 123
     
-    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard" >> {{ BUILD_LOG }} 2>&1
     startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
-    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard" >> {{ BUILD_LOG }} 2>&1
-    
-    # comment out buggy ones
-    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers
-    bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
+    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1
+    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
+      && bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
 
-- name: "Ensure kernel patches will be committed properly"
-  shell: |
-    export LC_ALL=C
-    {{ DOS_INIT }}
-
-    # ensure we make proper commits
-    # i.e.: git am instead of apply, fallback to "patch" + commit msg = patch name and a valid author
-    P="patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 <"
-
-    # massage kernel patchers
-    sed -i -E 's#(^echo.*)git (am|apply) (\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#\1git am \3\4 || \(git am --abort; '"$P"' \3\4 \&\& git add -A \&\& git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "\4\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\4"\) || exit 44#g' \
-      {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/*.sh
-  args:
-    executable: /bin/bash
-    chdir: "{{ SRCPATH }}"
+# following is handled by cve checker v0.8.3 and later properly
+#- name: "Ensure kernel patches will be committed properly"
+#  shell: |
+#    export LC_ALL=C
+#    {{ DOS_INIT }}
+#
+#    # ensure we make proper commits
+#    # i.e.: git am instead of apply, fallback to "patch" + commit msg = patch name and a valid author
+#    P="patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 <"
+#
+#    # massage kernel patchers
+#    sed -i -E 's#(^echo.*)git (am|apply) (\$DOS_PATCHES_LINUX_CVES/)(.*\.patch$)#\1git am \3\4 || \(git am --abort; '"$P"' \3\4 \&\& git add -A \&\& git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "\4\n\nsource: ${DOS_PATCHER_URI_KERNEL}/\4"\) || exit 44#g' \
+#      {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/*.sh
+#  args:
+#    executable: /bin/bash
+#    chdir: "{{ SRCPATH }}"
