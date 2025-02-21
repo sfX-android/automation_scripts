@@ -7,6 +7,11 @@
     set +e
     cd $CROOT
 
+    git submodule status
+    echo "DOS_BINARY_PATCHER: $DOS_BINARY_PATCHER"
+    echo "DOS_PATCHES_LINUX_CVES: $DOS_PATCHES_LINUX_CVES"
+    exit 123
+    
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard" >> {{ BUILD_LOG }} 2>&1
     startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard" >> {{ BUILD_LOG }} 2>&1
