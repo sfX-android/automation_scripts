@@ -9,7 +9,7 @@
 - name: "Apply vendor_axp patches"
   ansible.builtin.shell: |
       {{ DOS_INIT }}
-      cd {{ item.path }} && patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ item.patch }}
+      cd {{ item.path }} && patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ item.patch }} >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
