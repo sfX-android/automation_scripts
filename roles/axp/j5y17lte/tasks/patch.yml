@@ -9,9 +9,10 @@
 - name: "Apply vendor_axp patches"
   ansible.builtin.shell: |
       {{ DOS_INIT }}
-      patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ item }}
+      patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ item.patch }}
   args:
     executable: /bin/bash
-    chdir: "{{ SRCPATH }}"
+    chdir: "{{ SRCPATH }}/{{ item.path }}"
   loop:
-    - "vendor_axp/patches/common/a10/0002_packages_apps_Settings_src_com_android_settings_accounts_AccountTypePreferenceLoader_java.patch"
+    - path: packages/apps/Settings
+      patch: vendor_axp/patches/common/a10/0002_packages_apps_Settings_src_com_android_settings_accounts_AccountTypePreferenceLoader_java.patch
