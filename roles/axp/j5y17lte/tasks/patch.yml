@@ -15,4 +15,4 @@
     chdir: "{{ SRCPATH }}/{{ item.path }}"
   loop:
     - path: packages/apps/Settings
-      patch: vendor_axp/patches/common/a10/0002_packages_apps_Settings_src_com_android_settings_accounts_AccountTypePreferenceLoader_java.patch
+      patch: "{{ SRCPATH }}/vendor/axp/patches/common/a10/0002_packages_apps_Settings_src_com_android_settings_accounts_AccountTypePreferenceLoader_java.patch"
