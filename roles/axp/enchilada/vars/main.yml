@@ -14,3 +14,6 @@ target_kernel_dir: kernel/oneplus/sdm845
 
 # upload the recovery image
 axp_release_recovery: True
+
+# disable Wireguard patching (already part of the upstream kernel)
+skip_wireguard: True
