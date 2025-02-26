@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 ##################################################################################################################################################
-# Copyright(c) by steadfasterX <steadfasterX #AT# binbash |dot| rocks>
+# Copyright(c) 2025 by steadfasterX <steadfasterX #AT# binbash |dot| rocks>
 ##################################################################################################################################################
 # Requirements:
 # - python pykeepass
