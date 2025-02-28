@@ -116,9 +116,3 @@
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
     - pick_queries | length > 3
-
-
-- name: fail
-  fail:
-    msg: boo
-    
