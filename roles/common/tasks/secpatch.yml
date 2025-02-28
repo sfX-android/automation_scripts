@@ -61,13 +61,12 @@
 - name: "Define Queries by Year"
   ansible.builtin.set_fact:
     pick_queries: >-
-      {{
-        dict(
-          sec_patch_years | zip(
-            sec_patch_years | map('extract', flattened_sec_patch_topics | select('search', '^' + item) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2 ' + secpatch_common_exclusions) | join(' OR '))
-          )
-        )
-      }}
+     {% set queries = {} %}
+      {% for year in sec_patch_years %}
+        {% set topics = flattened_sec_patch_topics | select('search', '^' + year) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2 ' + secpatch_common_exclusions) | join(' OR ') %}
+        {% set queries = queries | combine({year: topics}) %}
+      {% endfor %}
+      {{ queries }}
 
 - name: fail
   fail:
