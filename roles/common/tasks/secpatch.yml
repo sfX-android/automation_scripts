@@ -61,7 +61,7 @@
 - name: "Define Queries by Year"
   ansible.builtin.set_fact:
     pick_queries: >-
-      {{ pick_queries | combine({item: (flattened_sec_patch_topics | select('match', item) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR '))}) }}
+      {{ pick_queries | d({}) | combine({item: (flattened_sec_patch_topics | select('match', item) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR '))}) }}
   loop: "{{ sec_patch_years }}"
   
  # ansible.builtin.set_fact:
