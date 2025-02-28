@@ -71,11 +71,6 @@
  #      {{ pick_queries | d(year) }} + {{ flattened_sec_patch_topics | select('match', year) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR ') }}
  #     {% endfor %}
 
-- name: fail
-  fail:
-    msg: boo
-    
-
 - block:
 
     - name: "SECURITY PATCH MERGE: create repopick lists by year (required to find path names)"
@@ -116,3 +111,9 @@
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
     - pick_queries | length > 3
+
+
+- name: fail
+  fail:
+    msg: boo
+    
