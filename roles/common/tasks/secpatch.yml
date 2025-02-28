@@ -58,7 +58,7 @@
   ansible.builtin.set_fact:
     pick_queries: >-
       {{
-        sec_patch_years | map('extract', sec_patch_topics | select('search', '^' + '_') | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2 ' + secpatch_common_exclusions) | join(' OR ')) | zip(sec_patch_years) | list | items2dict
+        sec_patch_years | int | map('extract', sec_patch_topics | select('search', '^' + '_') | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2 ' + secpatch_common_exclusions) | join(' OR ')) | zip(sec_patch_years) | list | items2dict
       }}
 
 - name: fail
