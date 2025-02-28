@@ -63,7 +63,7 @@
     pick_queries: >-
      {% set queries = {} %}
       {% for year in sec_patch_years %}
-        {% set topics = flattened_sec_patch_topics | select('search', '^' + '2023') | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2 ' + secpatch_common_exclusions) | join(' OR ') %}
+        {% set topics = flattened_sec_patch_topics | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2 ' + secpatch_common_exclusions) | join(' OR ') %}
         {% set queries = queries | combine({year: topics}) %}
       {% endfor %}
       {{ queries }}
