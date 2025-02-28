@@ -49,10 +49,14 @@
 #    pick_query: >-
 #      {{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR ') }}
 
+- name: "Flatten sec_patch_topics"
+  ansible.builtin.set_fact:
+    flattened_sec_patch_topics: "{{ sec_patch_topics | flatten }}"
+    
 - name: "Extract years from sec_patch_topics"
   ansible.builtin.set_fact:
     sec_patch_years: >-
-      {{ sec_patch_topics | flatten | map('regex_search', '(^.{4})') | list | unique }}
+      {{ flattened_sec_patch_topics | map('regex_search', '(^.{4})') | list | unique }}
 
 - name: "Define Queries by Year"
   ansible.builtin.set_fact:
@@ -60,7 +64,7 @@
       {{
         dict(
           sec_patch_years | zip(
-            sec_patch_years | map('extract', sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2 ' + secpatch_common_exclusions) | join(' OR '))
+            sec_patch_years | map('extract', flattened_sec_patch_topics | select('search', '^' + item) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\\1-\\2 ' + secpatch_common_exclusions) | join(' OR '))
           )
         )
       }}
