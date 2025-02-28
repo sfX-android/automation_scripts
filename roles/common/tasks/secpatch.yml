@@ -52,7 +52,7 @@
 - name: "Extract years from sec_patch_topics"
   ansible.builtin.set_fact:
     sec_patch_years: >-
-      {{ sec_patch_topics | map('regex_search', '(^.{4})') | select('string') | list | unique }}
+      {{ sec_patch_topics | map('regex_search', '(^\\d{4})') | select('string') | map('first') | list | unique }}
 
 - name: "Define Queries by Year"
   ansible.builtin.set_fact:
