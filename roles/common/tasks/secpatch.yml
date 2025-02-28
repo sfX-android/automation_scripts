@@ -15,16 +15,6 @@
       sec_patch_date_last_human: >-
           {{ sec_patch_date_real | regex_replace('(^.{4})(.{2})','\1-\2') }}-{{ sec_patch_level }}
 
-#{ sec_patch_date_last | int - 1 }}"
-
-#         {% if (sec_patch_date_last | int) > (current_pdate | int) %}
-#         {{ current_year }}-{{ current_month }}
- #        {% elif (sec_patch_date_last | regex_replace('(^.{4})(.{2})','\2') == "01" %}
- #        {{ current_year }}-01
- #        {% else %}
- #        {{ sec_patch_date_last | int | - 1 | regex_replace('(^.{4})(.{2})','\1-\2') }}
- #        {% endif %}
-
 - name: "Construct exclusions (LOS, AOS, ...)"
   ansible.builtin.set_fact:
     secpatch_exclusionlist_los: "{{ secpatch_los_exclusions }}"
@@ -54,24 +44,45 @@
       or SRCPATH is undefined
       or sec_patch_topicname is undefined
 
-- name: "Define Query"
+#- name: "Define Query"
+#  ansible.builtin.set_fact:
+#    pick_query: >-
+#      {{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR ') }}
+
+- name: "Extract years from sec_patch_topics"
   ansible.builtin.set_fact:
-    pick_query: >-
-      {{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR ') }}
+    sec_patch_years: "{{ sec_patch_topics | map('regex_search', '(\\d{4})') | list | unique }}"
+
+# Creating a dictionary with years as keys and corresponding topics as values
+- name: "Define Queries by Year"
+  ansible.builtin.set_fact:
+    pick_queries: >-
+      {{
+        dict(
+          sec_patch_years | zip(
+            sec_patch_years | map('extract', sec_patch_topics | select('search', '^' + item) | flatten)
+          )
+        )
+      }}
 
 - block:
-       
-    - name: "SECURITY PATCH MERGE: create repopick list (required to find path names)"
+
+    - name: "SECURITY PATCH MERGE: create repopick lists by year (required to find path names)"
       # "yes y" is required to continue when the changes are > 200
       ansible.builtin.shell: >
-        yes y | /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ pick_query }}' 
+        yes y | /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ item.value | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR ') }}'
         | grep --color=never https | col | dos2unix
         | sed 's/\*Manifest Change\*/.repo/'
         | grep -iEv '{{ secpatch_exclusionlist_eos | d(secpatch_exclusionlist_los) }}'
       args:
         chdir: "{{ SRCPATH }}"
       register: picklist
-      
+      loop: "{{ pick_queries | dict2items }}"
+      loop_control:
+        label: "{{ item.key }}"  # Using year as the label for the loop
+      changed_when: picklist.changed
+      until: picklist.changed
+
     - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last_human }}"
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
@@ -81,7 +92,7 @@
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
       register: spres
-      loop: "{{ picklist.stdout_lines }}"
+      loop: "{{ picklist.results | selectattr('changed', 'eq', True) | map(attribute='stdout_lines') | flatten }}"  # Looping through picklist results
       when: picklist.changed
     
     - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last_human }}"
@@ -93,4 +104,4 @@
 
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
-    - pick_query | length > 3
+    - pick_queries | length > 3
