@@ -83,7 +83,7 @@
       args:
         chdir: "{{ SRCPATH }}"
       register: picklist
-      loop: "{{ pick_queries | dict2items }}"
+      loop: "{{ pick_queries | from_json | dict2items }}"
       loop_control:
         label: "{{ item.key }}"  # Using year as the label for the loop
       changed_when: picklist.changed
