@@ -17,6 +17,7 @@ maid_size: light
 # default build vars
 debug_build: 'false'
 skip_clean_build: 'false'
+maid_build_mirrorserver: "https://mirror.netcologne.de/manjaro"        # used for the initial setup only
 
 commit_uri_id: >
         {% if RELEASE_TYPE == "nightly" %}branch/nightly{% else %}tag/v{{ MAID_VERSION }}{% endif %}
