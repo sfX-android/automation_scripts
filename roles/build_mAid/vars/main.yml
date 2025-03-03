@@ -9,7 +9,7 @@ SRCPATH: "{{ maid_home_path }}"
 maid_build_path: "/var/tmp"
 
 # default mAid kernel if not specified in Semaphore
-maid_kernel: linux515
+maid_kernel: linux66
 
 # default build size if not specified in Semaphore
 maid_size: light
