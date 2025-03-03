@@ -141,6 +141,53 @@ generate_pixel_factory_image: False
 axp_release_recovery: False
 
 # enable the following in a device's vars file with:
+# custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
+# and set "generate_fairphone_factory_image: True" to actually generate it (in semaphore)
+SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
+        {% if axp_build_eng | bool %}
+        #mka sepolicy
+        buildDeviceDebug {{ target_model }}
+        {% else %}
+        buildDevice {{ target_model }}
+        {% endif %}
+        {% if generate_fairphone_factory_image | bool %}
+        
+        # this will create a fastboot flashable factory image
+        # containing the official Fairphone images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
+        VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
+        FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
+        source vendor/firmware/{{ target_model }}/0SOURCE
+        if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
+        if [ -f "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" ];then
+            echo "Using previously downloaded factory image: {{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip"
+            cp "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" out/{{ target_model }}-factory.zip 
+        else
+            echo "{{ target_model }}-${FACTORYID}-gms-${FACTORYIDHASH}.zip not found in: {{ persistent_dir }}, downloading.."
+            wget -q https://fairphone-android-builds.ams3.digitaloceanspaces.com/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage.zip -O out/{{ target_model }}-factory.zip || (wget https://fairphone-android-builds.ams3.digitaloceanspaces.com/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage.zip -O out/{{ target_model }}-factory.zip ; exit 9)
+        fi
+        cd out/target/product/{{ target_model }}
+        if [ -d factory ];then rm -rf factory;fi
+        if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
+        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d factory
+        cd factory/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage
+        # unzip ??? -> 
+        echo "FAIL HERE"
+        exit 3
+        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
+        #for f in flash-base.sh flash-all.sh;do
+        #    awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
+        #done
+        #awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat
+        cd ..
+        zip -r ../${FZIP}-factory.zip ${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage
+        cd ..
+        sha256sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha256
+        mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
+        FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
+        cd {{ SRCPATH }}
+        {% endif %}
+
+# enable the following in a device's vars file with:
 #custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 #generate_pixel_factory_image: True (in semaphore)
 SH_COMMON_PIXEL_CREATE_FACTORY: |
