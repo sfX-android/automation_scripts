@@ -194,8 +194,8 @@ sec_patch_topics_pie:
 # so the only thing needed to be adjusted is the range of patches for your specific needs.
 
 # manifest-requirement:
-#     <!-- cherrypicker patch tool -->
-#    <project path="external/cherrypicker" name="aol-aosip/android_vendor_unconv" remote="github" revision="master" />
+#     <!-- build tools -->
+#     <project path="external/buildtools" name="sfX-Android/android_buildtools" remote="github" revision="main" />
 #
 # exclusion list:
 #   338357: manifest change
