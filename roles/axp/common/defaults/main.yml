@@ -171,16 +171,21 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         if [ -d factory ];then rm -rf factory;fi
         if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
         unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d factory
-        cd factory/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage
-        # unzip ??? -> 
-        echo "FAIL HERE"
-        exit 3
-        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
-        #for f in flash-base.sh flash-all.sh;do
-        #    awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
-        #done
-        #awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat
+        cd factory/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage/images
+        unzip ../../../${FZIP}-fastboot.zip *.img
+        mv system.img super_system.img
+        mv vendor.img super_vendor.img
+        avb_file="{{ target_model }}_AXP.OS_avb_pkmd.bin";fi
+        if [ "{{ axp_type }}" == "slim" ];then avb_file="{{ target_model }}_AXP.OS-slim_avb_pkmd.bin";fi
+        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin $avb_file
         cd ..
+        
+        # add flashing the AXP.OS avb key
+        f=$(echo flash_fp*.command)
+        awk '{print} /^flash_device$/ && !n {print "sleep 5\n'"\${FASTBOOT_BIN}"' erase avb_custom_key\n'"\${FASTBOOT_BIN}"' flash avb_custom_key '\${IMAGES_DIR}'/'"$avb_file"'\n'"\${FASTBOOT_BIN}"' reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
+        cd ..
+
+        # re-package it
         zip -r ../${FZIP}-factory.zip ${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage
         cd ..
         sha256sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha256
