@@ -52,6 +52,7 @@ axp_build_eng: false
 vbmeta_verify: True
 # directories to be cleaned on a clean build
 axp_clean_paths:
+    - "{{ SRCPATH }}/kernel"
     - "{{ SRCPATH }}/DOS_PATCHED_FLAG"
     - "{{ SRCPATH }}/packages/apps/Fennec_DOS-Shim"
     - "{{ SRCPATH }}/vendor/divested"
@@ -64,8 +65,6 @@ axp_clean_paths:
     - "{{ SRCPATH }}/external/firebase-messaging"
     - "{{ SRCPATH }}/device"
     - "{{ SRCPATH }}/vendor/axp"
-
-#    - "{{ SRCPATH }}/kernel" # seems this sometimes breaks clean builds but. why?!
 
 # allow to (manually) set selinux permissive
 axp_allow_permissive: True
