@@ -11,7 +11,7 @@
 
 - name: "Create repopick list (required to find path names)"
   shell: >
-    /usr/bin/python3 external/cherrypicker/scripts/cherrypicker.py -R los -B lineage-16.0 
+    /usr/bin/python3 external/buildtools/cherrypicker.py -R los -B lineage-16.0 
     -Q '{{ sec_patch_topics_pie }}' 
     | grep --color=never https | col | dos2unix
     | egrep -v '338357|342095|324039|324040|324041'
