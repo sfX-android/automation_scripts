@@ -55,12 +55,14 @@
   loop:
     - "{{ SRCPATH }}/out/target/product/{{ target_model }}/rec_tmp"
 
+# DO NOT use ansible.builtin.file here!
+# e.g. kernel paths will break this. it seems it causes a high load on Semaphore site when there are too many kernels to be deleted.
+# in particular within MySQL which (I guess here) likely cannot handle the massive amount of entries -> even when using no_log:true which still
+# causes several lines in the log output (no log enabled bla)
 - name: "Specific paths -full- cleanup"
-  file:
-    path: "{{ item }}"
-    state: absent
-  loop: "{{ axp_clean_paths }}"
-  no_log: true
+  ansible.builtin.shell: |
+     echo "cleaning: {{ axp_clean_paths }}" >> {{ BUILD_LOG }}
+     rm -rf "{{ axp_clean_paths }}" >> {{ BUILD_LOG }} 2>&1 || true
   when: 
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
