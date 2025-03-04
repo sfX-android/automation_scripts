@@ -174,7 +174,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         unzip -o ../../../${FZIP}-fastboot.zip '*.img'
         mv system.img super_system.img
         mv vendor.img super_vendor.img
-        avb_file="{{ target_model }}_AXP.OS_avb_pkmd.bin";fi
+        avb_file="{{ target_model }}_AXP.OS_avb_pkmd.bin"
         if [ "{{ axp_type }}" == "slim" ];then avb_file="{{ target_model }}_AXP.OS-slim_avb_pkmd.bin";fi
         cp {{ SRCPATH }}/user-keys/avb_pkmd.bin $avb_file
         cd ..
