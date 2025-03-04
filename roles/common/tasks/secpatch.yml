@@ -81,7 +81,7 @@
     - name: "SECURITY PATCH MERGE: create repopick lists by year (required to find path names)"
       # "yes y" is required to continue when the changes are > 200
       ansible.builtin.shell: >
-        yes y | /usr/bin/env python3 external/cherrypicker/scripts/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ item.value }}'
+        yes y | /usr/bin/env python3 external/buildtools/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ item.value }}'
         | grep --color=never https | col | dos2unix
         | sed 's/\*Manifest Change\*/.repo/'
         | grep -iEv '{{ secpatch_exclusionlist_eos | d(secpatch_exclusionlist_los) }}'
