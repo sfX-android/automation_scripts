@@ -170,9 +170,9 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         cd out/target/product/{{ target_model }}
         if [ -d factory ];then rm -rf factory;fi
         if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
-        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d factory
+        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d factory -x '*/super_system.img' '*/super_vendor.img'
         cd factory/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage/images
-        unzip ../../../${FZIP}-fastboot.zip *.img
+        unzip -o ../../../${FZIP}-fastboot.zip '*.img'
         mv system.img super_system.img
         mv vendor.img super_vendor.img
         avb_file="{{ target_model }}_AXP.OS_avb_pkmd.bin";fi
