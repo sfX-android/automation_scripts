@@ -51,6 +51,7 @@
   file:
     path: "{{ item }}"
     state: absent
+  no_log: true
   loop:
     - "{{ SRCPATH }}/out/target/product/{{ target_model }}/rec_tmp"
 
@@ -59,6 +60,7 @@
     path: "{{ item }}"
     state: absent
   loop: "{{ axp_clean_paths }}"
+  no_log: true
   when: 
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
