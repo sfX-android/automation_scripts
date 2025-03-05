@@ -61,8 +61,8 @@
 # causes several lines in the log output (no log enabled bla)
 - name: "Specific paths -full- cleanup"
   ansible.builtin.shell: |
-     echo "cleaning: {{ axp_clean_paths }}" >> {{ BUILD_LOG }}
-     rm -rf "{{ axp_clean_paths }}" >> {{ BUILD_LOG }} 2>&1 || true
+     echo "cleaning: {{ axp_clean_paths | join(' ') }}" >> {{ BUILD_LOG }}
+     rm -rf "{{ axp_clean_paths | join(' ') }}" >> {{ BUILD_LOG }} 2>&1 || true
   when: 
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
