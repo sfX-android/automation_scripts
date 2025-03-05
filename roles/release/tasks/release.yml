@@ -3,6 +3,19 @@
 - name: "Release OS"
   block:
 
+    - name: "Prep folders"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        owner: "{{ release_path_owner }}"
+        group: "{{ release_path_group }}"
+        mode: 0755
+        state: directory
+      loop:
+        - "{{ rempath }}/factory"
+        - "{{ rempath }}/recovery"
+        - "{{ rempath }}/tests"
+      delegate_to: "{{ groups.downloadserver[0] }}"
+      
     - name: "Release OS for {{ BDEVICE }}"
       ansible.builtin.shell: |-
         {% if unstable_build | d(False) | bool %}
