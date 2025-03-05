@@ -31,7 +31,7 @@
       # kernel match
       kpcheck=$(echo "$reponame" | grep kernel_ || true)
       if [ ! -z "$kpcheck" ];then
-          kcheck=$(echo "$reponame" | grep -Eo "{{ target_kernel_dir | regex_replace('/','_') }}" || true)
+          kcheck=$(echo "$reponame" | grep -Eo "{{ target_kernel_dir | regex_replace('/private/gs-google','') | regex_replace('/','_') }}" || true)
           if [ -z "$kcheck" ];then
               echo "[GIT] skipped $reponame as its not our kernel" >> {{ BUILD_LOG }}
               continue
