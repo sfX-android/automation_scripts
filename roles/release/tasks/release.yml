@@ -8,7 +8,7 @@
         path: "{{ item }}"
         owner: "{{ release_path_owner }}"
         group: "{{ release_path_group }}"
-        mode: 0755
+        mode: "{{ release_path_perms }}"
         state: directory
       loop:
         - "{{ rempath }}/factory"
