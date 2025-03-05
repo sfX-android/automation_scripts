@@ -5,6 +5,8 @@
     url: "{{ divest_cve_checker_download }}"
     dest: "{{ divest_cve_checker_jar }}"
     mode: 0640
+  retries: 3
+  delay: 10
   when: not skip_dl_cve_checker | d(False)
 
 - name: "Run CIP update/fetch"
