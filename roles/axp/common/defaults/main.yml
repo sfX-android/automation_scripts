@@ -141,10 +141,65 @@ generate_pixel_factory_image: False
 # get & upload a recovery image
 axp_release_recovery: False
 
+# default base domain  n, for fairphone factory zips
+fairphone_factoryzip_domain: "https://fairphone-android-builds.ams3.digitaloceanspaces.com"
+
+# 1. unzip -j ~/Downloads/FP3-6.A.031.7-gms-f31c7748-user-fastbootimage.zip */partition.txt
+# 2. grep _a, partition.txt | grep -Ev "system|boot.img|vbmeta|dtbo|vendor|product" | sed -E 's/_a,/,/g;s#(.*),(.*)#\t- src: \2\n\t   dest: \1.img#g'
+fairphone_partition_map:
+	- src: NON-HLOS.bin
+	  dest: modem.img
+	- src: sbl1.mbn
+	  dest: sbl1.img
+	- src: rpm.mbn
+	  dest: rpm.img
+	- src: tz.mbn
+	  dest: tz.img
+	- src: devcfg.mbn
+	  dest: devcfg.img
+	- src: adspso.bin
+	  dest: dsp.img
+	- src: emmc_appsboot.mbn
+	  dest: aboot.img
+	- src: mdtp.img
+	  dest: mdtp.img
+	- src: lksecapp.mbn
+	  dest: lksecapp.img
+	- src: cmnlib_30.mbn
+	  dest: cmnlib.img
+	- src: cmnlib64_30.mbn
+	  dest: cmnlib64.img
+	- src: km4.mbn
+	  dest: keymaster.img
+
+# 1. unzip -j ~/Downloads/FP4-factory.zip */rawprogram4.xml
+# 2. 
+
+
 # enable the following in a device's vars file with:
 # custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
 # and set "generate_fairphone_factory_image: True" to actually generate it (in semaphore)
 SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
+        # get factory image
+        # containing the official Fairphone images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
+        VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
+        FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
+        source vendor/firmware/{{ target_model }}/0SOURCE
+        if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
+        if [ -f "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" ];then
+            echo "Using previously downloaded factory image: ${FACTORYFULLNAME}.zip"
+            cp "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" out/{{ target_model }}-factory.zip 
+        else
+            echo "${FACTORYFULLNAME}.zip not found in: {{ persistent_dir }}, downloading.."
+            wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
+        fi
+        
+        cd vendor/firmware/{{ target_model }}
+        unzip -jo {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory -x '*/super_system.img' '*/super_vendor.img'
+        {% for item in fairphone_partition_map %}
+            cp -v {{ SRCPATH }}/out/{{ target_model }}-factory/{{ item.src }} vendor/firmware/{{ target_model }}/{{ item.dest }}
+        {% endfor %}
+        
         {% if axp_build_eng | bool %}
         #mka sepolicy
         buildDeviceDebug {{ target_model }}
@@ -153,27 +208,19 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         {% endif %}
         {% if generate_fairphone_factory_image | bool %}
         
-        # this will create a fastboot flashable factory image
-        # containing the official Fairphone images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
-        VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
-        FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
-        source vendor/firmware/{{ target_model }}/0SOURCE
-        if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
-        if [ -f "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" ];then
-            echo "Using previously downloaded factory image: {{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip"
-            cp "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" out/{{ target_model }}-factory.zip 
-        else
-            echo "{{ target_model }}-${FACTORYID}-gms-${FACTORYIDHASH}.zip not found in: {{ persistent_dir }}, downloading.."
-            wget -q https://fairphone-android-builds.ams3.digitaloceanspaces.com/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage.zip -O out/{{ target_model }}-factory.zip || (wget https://fairphone-android-builds.ams3.digitaloceanspaces.com/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage.zip -O out/{{ target_model }}-factory.zip ; exit 9)
-        fi
         cd out/target/product/{{ target_model }}
         if [ -d factory ];then rm -rf factory;fi
+        mkdir factory
         if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
-        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d factory -x '*/super_system.img' '*/super_vendor.img'
-        cd factory/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage/images
-        unzip -o ../../../${FZIP}-fastboot.zip '*.img'
-        mv system.img super_system.img
-        mv vendor.img super_vendor.img
+        
+        #unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d factory -x '*/super_system.img' '*/super_vendor.img'
+        #cd factory/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage/images
+
+        # extract all image files from the AXP.OS build and replace the origin ones with ours
+        unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory/images '*.img'
+        mv -v {{ SRCPATH }}/out/{{ target_model }}-factory/images/system.img {{ SRCPATH }}/out/{{ target_model }}-factory/images/super_system.img
+        mv -v {{ SRCPATH }}/out/{{ target_model }}-factory/images/vendor.img {{ SRCPATH }}/out/{{ target_model }}-factory/images/super_vendor.img
+        
         avb_file="{{ target_model }}_AXP.OS_avb_pkmd.bin"
         if [ "{{ axp_type }}" == "slim" ];then avb_file="{{ target_model }}_AXP.OS-slim_avb_pkmd.bin";fi
         cp {{ SRCPATH }}/user-keys/avb_pkmd.bin $avb_file
@@ -203,7 +250,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         {% else %}
         buildDevice {{ target_model }}
         {% endif %}
-        {% if generate_pixel_factory_image | bool %}
+         {% if generate_pixel_factory_image | bool %}
         
         # this will create a fastboot flashable factory image
         # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
