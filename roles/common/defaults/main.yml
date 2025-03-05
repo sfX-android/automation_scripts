@@ -65,6 +65,8 @@ CCACHE_DIR: "/ssd/ccache/jenkins/{{ android_shortversion }}"
 
 # base url where the user can download released builds
 leech_server: "https://leech.binbash.rocks:8008"
+release_path_owner: www-data # username which should be set on the remote download server path
+release_path_group: www-data # group name which should be set on the remote download server path
 
 # notification icons
 ICON_GOOD: 🎉
