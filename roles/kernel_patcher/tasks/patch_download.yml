@@ -9,7 +9,7 @@
         && mv Kernel_CVE_Patch_List.txt.sorted Kernel_CVE_Patch_List.txt \
         && echo -e "SORT - KCPL ended successfully!\nStarting: DOWNLOAD - KCPL (3/3)" | tee -a {{ BUILD_LOG }} \
         && java -jar $DOS_BINARY_PATCHER download Kernel_CVE_Patch_List.txt >> {{ BUILD_LOG }} 2>&1 \
-        && echo "DOWNLOAD - KCPL ended successfully! | tee -a {{ BUILD_LOG }}
+        && echo "DOWNLOAD - KCPL ended successfully!" | tee -a {{ BUILD_LOG }}
   environment:
     DOS_BINARY_PATCHER: "{{ divest_cve_checker_jar }}"
     DOS_PATCHES_LINUX_CVES: "{{ cve_kernel_patches_path }}"
