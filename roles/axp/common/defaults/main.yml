@@ -146,35 +146,6 @@ fairphone_factoryzip_domain: "https://fairphone-android-builds.ams3.digitalocean
 
 # 1. unzip -j ~/Downloads/FP3-6.A.031.7-gms-f31c7748-user-fastbootimage.zip */partition.txt
 # 2. grep _a, partition.txt | grep -Ev "system|boot.img|vbmeta|dtbo|vendor|product" | sed -E 's/_a,/,/g;s#(.*),(.*)#\t- src: \2\n\t   dest: \1.img#g'
-fairphone_partition_map:
-	- src: NON-HLOS.bin
-	  dest: modem.img
-	- src: sbl1.mbn
-	  dest: sbl1.img
-	- src: rpm.mbn
-	  dest: rpm.img
-	- src: tz.mbn
-	  dest: tz.img
-	- src: devcfg.mbn
-	  dest: devcfg.img
-	- src: adspso.bin
-	  dest: dsp.img
-	- src: emmc_appsboot.mbn
-	  dest: aboot.img
-	- src: mdtp.img
-	  dest: mdtp.img
-	- src: lksecapp.mbn
-	  dest: lksecapp.img
-	- src: cmnlib_30.mbn
-	  dest: cmnlib.img
-	- src: cmnlib64_30.mbn
-	  dest: cmnlib64.img
-	- src: km4.mbn
-	  dest: keymaster.img
-
-# 1. unzip -j ~/Downloads/FP4-factory.zip */rawprogram4.xml
-# 2. 
-
 
 # enable the following in a device's vars file with:
 # custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
