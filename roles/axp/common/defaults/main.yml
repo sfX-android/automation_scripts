@@ -144,9 +144,6 @@ axp_release_recovery: False
 # default base domain  n, for fairphone factory zips
 fairphone_factoryzip_domain: "https://fairphone-android-builds.ams3.digitaloceanspaces.com"
 
-# 1. unzip -j ~/Downloads/FP3-6.A.031.7-gms-f31c7748-user-fastbootimage.zip */partition.txt
-# 2. grep _a, partition.txt | grep -Ev "system|boot.img|vbmeta|dtbo|vendor|product" | sed -E 's/_a,/,/g;s#(.*),(.*)#\t- src: \2\n\t   dest: \1.img#g'
-
 # enable the following in a device's vars file with:
 # custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
 # and set "generate_fairphone_factory_image: True" to actually generate it (in semaphore)
@@ -166,10 +163,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         fi
         
         cd vendor/firmware/{{ target_model }}
-        unzip -jo {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory -x '*/super_system.img' '*/super_vendor.img'
-        {% for item in fairphone_partition_map %}
-            cp -v {{ SRCPATH }}/out/{{ target_model }}-factory/{{ item.src }} vendor/firmware/{{ target_model }}/{{ item.dest }}
-        {% endfor %}
+        FACZIP=${FACTORYFULLNAME}.zip ./rename.sh
         
         {% if axp_build_eng | bool %}
         #mka sepolicy
