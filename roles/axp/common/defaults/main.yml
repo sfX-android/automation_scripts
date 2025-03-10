@@ -162,7 +162,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
             wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
         fi
         
-        export FACZIP="$PWD/out/{{ target_model }}-factory.zip "
+        export FACZIP="$PWD/out/{{ target_model }}-factory.zip"
         cd vendor/firmware/{{ target_model }}
         ./rename.sh
         croot
@@ -174,31 +174,39 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         buildDevice {{ target_model }}
         {% endif %}
         {% if generate_fairphone_factory_image | bool %}
-        
-        cd out/target/product/{{ target_model }}
-        if [ -d factory ];then rm -rf factory;fi
-        mkdir factory
-        if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
 
-        # extract all image files from the AXP.OS build and replace the origin ones with ours
-        unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory/images '*.img'
-        mv -v {{ SRCPATH }}/out/{{ target_model }}-factory/images/system.img {{ SRCPATH }}/out/{{ target_model }}-factory/images/super_system.img
-        mv -v {{ SRCPATH }}/out/{{ target_model }}-factory/images/vendor.img {{ SRCPATH }}/out/{{ target_model }}-factory/images/super_vendor.img
+        # extract the origin factory zip
+        if [ -d {{ SRCPATH }}/out/{{ target_model }}-factory/ ];then rm -rf {{ SRCPATH }}/out/{{ target_model }}-factory/;fi
+        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory
+        if [ -f {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip ];then rm {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip;fi
+
+        # extract AXP.OS factory zip and override Fairphone images by AOS ones
+        unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory/images/ '*.img'
+
+        # ... and replace some non-standard ones with AOS ones
+        if [ -f "{{ SRCPATH }}/out/{{ target_model }}-factory/images/super_system.img" ];then
+            mv -v {{ SRCPATH }}/out/{{ target_model }}-factory/images/system.img {{ SRCPATH }}/out/{{ target_model }}-factory/images/super_system.img
+        fi
+        if [ -f "{{ SRCPATH }}/out/{{ target_model }}-factory/images/super_vendor.img" ];then
+            mv -v {{ SRCPATH }}/out/{{ target_model }}-factory/images/vendor.img {{ SRCPATH }}/out/{{ target_model }}-factory/images/super_vendor.img
+        fi
         
         avb_file="{{ target_model }}_AXP.OS_avb_pkmd.bin"
         if [ "{{ axp_type }}" == "slim" ];then avb_file="{{ target_model }}_AXP.OS-slim_avb_pkmd.bin";fi
-        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin $avb_file
-        cd ..
+        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin {{ SRCPATH }}/out/{{ target_model }}-factory/images/$avb_file
+        croot
         
-        # add flashing the AXP.OS avb key
+        # add flashing-cmd for the AXP.OS avb key
+        cd {{ SRCPATH }}/out/{{ target_model }}-factory/
         f=$(echo flash_fp*.command)
         awk '{print} /^flash_device$/ && !n {print "sleep 5\n'"\${FASTBOOT_BIN}"' erase avb_custom_key\n'"\${FASTBOOT_BIN}"' flash avb_custom_key '\${IMAGES_DIR}'/'"$avb_file"'\n'"\${FASTBOOT_BIN}"' reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
-        cd ..
+        croot
 
         # re-package it
-        zip -r ../${FZIP}-factory.zip ${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage
+        cd {{ SRCPATH }}/out/{{ target_model }}-factory/
+        zip -r ../${FZIP}-factory.zip .
         cd ..
-        sha256sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha256
+        sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512
         mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
         FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
         cd {{ SRCPATH }}
@@ -243,7 +251,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         cd ..
         zip -r ../${FZIP}-factory.zip {{ target_model }}-${FACTORYID}
         cd ..
-        sha256sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha256
+        sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512
         mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
         FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
         cd {{ SRCPATH }}
