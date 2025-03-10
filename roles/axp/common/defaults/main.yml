@@ -162,8 +162,10 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
             wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
         fi
         
+        export FACZIP="$PWD/out/{{ target_model }}-factory.zip "
         cd vendor/firmware/{{ target_model }}
-        FACZIP="{{ persistent_dir }}/${FACTORYFULLNAME}.zip" ./rename.sh
+        ./rename.sh
+        croot
         
         {% if axp_build_eng | bool %}
         #mka sepolicy
@@ -177,9 +179,6 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         if [ -d factory ];then rm -rf factory;fi
         mkdir factory
         if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
-        
-        #unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d factory -x '*/super_system.img' '*/super_vendor.img'
-        #cd factory/${FACTORYID}-gms-${FACTORYIDHASH}-user-fastbootimage/images
 
         # extract all image files from the AXP.OS build and replace the origin ones with ours
         unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory/images '*.img'
