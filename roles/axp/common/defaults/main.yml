@@ -175,13 +175,15 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         {% endif %}
         {% if generate_fairphone_factory_image | bool %}
 
-        # extract the origin factory zip
+        # cleanup
+        if [ -f {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip ];then rm -vf {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip;fi
+        if [ -f {{ SRCPATH }}/out/${FZIP}-factory.zip ]; then rm -vf {{ SRCPATH }}/out/${FZIP}-factory.zip;fi
         if [ -d {{ SRCPATH }}/out/{{ target_model }}-factory/ ];then rm -rf {{ SRCPATH }}/out/{{ target_model }}-factory/;fi
+        
+        # extract the origin factory zip
         unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory
         export FPIMGPATH=$(dirname {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/)/images
-
-        if [ -f {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip ];then rm {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip;fi
-
+       
         # extract AXP.OS factory zip and override Fairphone images by AOS ones
         unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d ${FPIMGPATH} '*.img'
 
@@ -201,7 +203,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         # add flashing-cmd for the AXP.OS avb key
         cd ${FPIMGPATH} && cd ..
         f=$(echo flash_fp*.command)
-        awk '{print} /^flash_device$/ && !n {print "sleep 5\n'"\${FASTBOOT_BIN}"' erase avb_custom_key\n'"\${FASTBOOT_BIN}"' flash avb_custom_key '\${IMAGES_DIR}'/'"$avb_file"'\n'"\${FASTBOOT_BIN}"' reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
+        awk '{print} /^flash_device$/ && !n {print "sleep 5\n'"\${FASTBOOT_BIN}"' erase avb_custom_key\n'"\${FASTBOOT_BIN}"' flash avb_custom_key '\${IMAGES_DIR}'/'"$avb_file"'\n'"\${FASTBOOT_BIN}"' reboot-bootloader"; n++}' ${f} > ${f}.tmp && mv -v ${f}.tmp ${f} && chmod +x ${f}
         croot
 
         # re-package it
@@ -209,7 +211,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         zip -r ../${FZIP}-factory.zip .
         cd ..
         sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512
-        mv -v "${FZIP}-factory.zip*" {{ ZIPDIR }}/target_files/
+        mv -v ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
         FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
         cd {{ SRCPATH }}
         {% endif %}
