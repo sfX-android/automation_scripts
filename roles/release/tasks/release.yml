@@ -4,6 +4,7 @@
   block:
 
     - name: "Prep folders"
+      become: yes
       ansible.builtin.file:
         path: "{{ item }}"
         owner: "{{ release_path_owner }}"
