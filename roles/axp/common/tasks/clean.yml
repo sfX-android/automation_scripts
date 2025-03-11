@@ -62,7 +62,9 @@
 - name: "Specific paths -full- cleanup"
   ansible.builtin.shell: |
      echo "cleaning: {{ axp_clean_paths | join(' ') }}" >> {{ BUILD_LOG }}
-     rm -rf "{{ axp_clean_paths | join(' ') }}" >> {{ BUILD_LOG }} 2>&1 || true
+     for WHAT in {{ axp_clean_paths | join(' ') }};do
+        rm -rf $WHAT ".repo/projects/${WHAT}.git" ".repo/projects/${WHAT}.git" .repo/project-objects/platform/$WHAT  >> {{ BUILD_LOG }} 2>&1 || true
+     done
   when: 
      - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
