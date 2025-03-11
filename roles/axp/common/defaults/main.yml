@@ -178,26 +178,28 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         # extract the origin factory zip
         if [ -d {{ SRCPATH }}/out/{{ target_model }}-factory/ ];then rm -rf {{ SRCPATH }}/out/{{ target_model }}-factory/;fi
         unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory
+        export FPIMGPATH=$(dirname {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/)
+
         if [ -f {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip ];then rm {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip;fi
 
         # extract AXP.OS factory zip and override Fairphone images by AOS ones
-        unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/ '*.img'
+        unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d ${FPIMGPATH} '*.img'
 
         # ... and replace some non-standard ones with AOS ones
-        if [ -f "{{ SRCPATH }}/out/{{ target_model }}-factory/*/images/super_system.img" ];then
-            mv -v {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/system.img {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/super_system.img
+        if [ -f "${FPIMGPATH}/super_system.img" ];then
+            mv -v ${FPIMGPATH}/system.img ${FPIMGPATH}/super_system.img
         fi
-        if [ -f "{{ SRCPATH }}/out/{{ target_model }}-factory/*/images/super_vendor.img" ];then
-            mv -v {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/vendor.img {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/super_vendor.img
+        if [ -f "${FPIMGPATH}/super_vendor.img" ];then
+            mv -v ${FPIMGPATH}/vendor.img ${FPIMGPATH}/super_vendor.img
         fi
         
         avb_file="{{ target_model }}_AXP.OS_avb_pkmd.bin"
         if [ "{{ axp_type }}" == "slim" ];then avb_file="{{ target_model }}_AXP.OS-slim_avb_pkmd.bin";fi
-        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/$avb_file
+        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin ${FPIMGPATH}/$avb_file
         croot
         
         # add flashing-cmd for the AXP.OS avb key
-        cd {{ SRCPATH }}/out/{{ target_model }}-factory/*/
+        cd ${FPIMGPATH} && cd ..
         f=$(echo flash_fp*.command)
         awk '{print} /^flash_device$/ && !n {print "sleep 5\n'"\${FASTBOOT_BIN}"' erase avb_custom_key\n'"\${FASTBOOT_BIN}"' flash avb_custom_key '\${IMAGES_DIR}'/'"$avb_file"'\n'"\${FASTBOOT_BIN}"' reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
         croot
