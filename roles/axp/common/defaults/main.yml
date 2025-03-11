@@ -409,10 +409,13 @@ sec_patch_unmerged: True
 
 sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
 sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
-#sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
+sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
 
 sec_patch_topics_a12:
-      - "{{ range(202501, sec_patch_date_last | int) }}"
+      - "{{ range(202504, sec_patch_date_last | int) }}"
 
 sec_patch_topics_a13:
-      - "{{ range(202501, sec_patch_date_last | int) }}"
+      - "{{ range(202504, sec_patch_date_last | int) }}"
+
+sec_patch_topics_a14:
+      - "{{ range(202504, sec_patch_date_last | int) }}"
