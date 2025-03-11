@@ -18,11 +18,5 @@ extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 # allow creating factory image
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 
-#dtree_cl: |-
-#  \- device tree: [commits](https://github.com/AXP-OS/android_device_google_lynx/commits/{{ build_tag }})
-
-#cdtree_cl: |-
-#  \- common tree: [commits](https://github.com/AXP-OS/android_device_google_gs201/commits/{{ build_tag }})
-
-#kernel_cl: |-
-#  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_google_gs201/commits/{{ build_tag }})
+# disable Wireguard patching (already part of the upstream kernel)
+skip_wireguard: True
