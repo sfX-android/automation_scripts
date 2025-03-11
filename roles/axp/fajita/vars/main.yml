@@ -17,12 +17,3 @@ skip_wireguard: True
 
 # upload the recovery image
 #axp_release_recovery: True
-
-#dtree_cl: |-
-#  \- device tree: [commits](https://github.com/AXP-OS/android_device_oneplus_fajita/commits/{{ build_tag }})
-
-#cdtree_cl: |-
-#  \- common tree: [commits](https://github.com/AXP-OS/android_device_oneplus_sdm845-common/commits/{{ build_tag }})
-
-#kernel_cl: |-
-#  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_oneplus_sdm845/commits/{{ build_tag }})
