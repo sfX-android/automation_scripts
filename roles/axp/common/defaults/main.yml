@@ -75,7 +75,7 @@ unsupported_device_kernel_patch: true    # enable kernel patching by default, ov
 
 # extendrom stuff
 use_extendrom: "true"
-extendrom_package_list_common: "AOSmium_webview64 additional_repos.xml AuroraStore F-Droid noeSpeakNG noDefaultBrowserWebView Etar FossifyGallery" #AOSmium64
+extendrom_package_list_common: "AOSmium_webview64 additional_repos.xml AuroraStore F-Droid noeSpeakNG noDefaultBrowserWebView Etar_ER FossifyGallery" #AOSmium64
 extendrom_package_list_default: "{{ extendrom_package_list_common }} GsfProxy_GH Magisk MicrogGmsCore_GH NeoLauncher-latest Phonesky_AXP-OS"
 extendrom_fdroid_repos: "molly.xml nailyk.xml threema.xml futo_org.xml cromite.xml izzysoft.xml"
 extendrom_preroot_boot: "true"
