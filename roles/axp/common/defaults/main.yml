@@ -209,7 +209,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         zip -r ../${FZIP}-factory.zip .
         cd ..
         sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512
-        mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
+        mv -v "${FZIP}-factory.zip*" {{ ZIPDIR }}/target_files/
         FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
         cd {{ SRCPATH }}
         {% endif %}
