@@ -324,7 +324,11 @@ SH_COMMON_BUILD_SNIPPET: |
                     export subject=$(git log --format=fuller -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
                     echo "searching applied CVE for.. >${subject}<"
                     if [ ! -z "$subject" ];then
-                        grep "${subject}" {{ BUILD_LOG }} -B1 | cut -d '/' -f2-20 
+                        if [ -z "$TCVE" ];then
+                            TCVE=$(grep "${subject}" {{ BUILD_LOG }} -B1 | cut -d '/' -f2-20 | tr -d ' ')
+                        else
+                            TCVE="${TCVE} $(grep "${subject}" {{ BUILD_LOG }} -B1 | cut -d '/' -f2-20 | tr -d ' ')"
+                        fi
                     else
                         echo "ERROR: no subject found"; exit 2
                     fi
@@ -334,6 +338,11 @@ SH_COMMON_BUILD_SNIPPET: |
                     fi
                 done
                 echo "parsing all troublemaker CVEs finished, failing nevertheless so we can fix them!"
+                if [ -z "$TCVE" ];then
+                    echo "Woot?! no CVE(s) found??"
+                else
+                    for cv in $TCVE;do echo -n "\"$cv\" " ;done
+                fi
                 exit 5
             else
                 echo "OK: kernel was build successfully!"
