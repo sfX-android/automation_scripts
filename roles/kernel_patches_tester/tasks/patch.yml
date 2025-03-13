@@ -2,6 +2,7 @@
 
 - include_role:
     name: "{{ ROM_FLAVOR }}/{{ target_model }}"
+    public: true
 
 - name: "Apply CVE kernel patches"
   ansible.builtin.shell: |
