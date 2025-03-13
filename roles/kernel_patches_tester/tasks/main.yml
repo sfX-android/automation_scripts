@@ -1,1 +1,8 @@
 ---
+
+- name: dl_patcher.yml
+
+- include_tasks: patch.yml
+  vars:
+    target_model: "{{ item }}"
+  loop: "{{ target_models }}"

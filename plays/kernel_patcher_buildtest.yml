@@ -6,6 +6,7 @@
 
   vars:
     notify_min: True
+    build_bootimage_only: true
 
   pre_tasks:
 
@@ -23,8 +24,8 @@
           public: yes
           name: common
 
-      #- include_vars: ../roles/axp/common/defaults/main.yml
-      #  no_log: true
+      - include_vars: ../roles/axp/common/defaults/main.yml
+        no_log: true
 
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"

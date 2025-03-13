@@ -1,0 +1,26 @@
+---
+
+- include_role:
+    name: "../../{{ ROM_FLAVOR }}/{{ target_model }}"
+
+- name: "Apply CVE kernel patches"
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    CROOT="{{ SRCPATH }}"
+    set +e
+    cd $CROOT
+
+    echo "DOS_BINARY_PATCHER: $DOS_BINARY_PATCHER"
+    echo "DOS_PATCHES_LINUX_CVES: $DOS_PATCHES_LINUX_CVES"
+    echo "DOS_PATCHER_LOOSE_VERSIONS: $DOS_PATCHER_LOOSE_VERSIONS"
+    echo "DOS_PATCHER_LOOSE_VERSIONS_EXTREME: $DOS_PATCHER_LOOSE_VERSIONS_EXTREME"
+
+    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1
+
+    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
+  args:
+    executable: /bin/bash
+  
+- include_role:
+    name: ../../../build
+  ignore_errors: true
