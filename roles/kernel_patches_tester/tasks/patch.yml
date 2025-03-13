@@ -1,7 +1,7 @@
 ---
 
 - include_role:
-    name: "../../{{ ROM_FLAVOR }}/{{ target_model }}"
+    name: "{{ ROM_FLAVOR }}/{{ target_model }}"
 
 - name: "Apply CVE kernel patches"
   ansible.builtin.shell: |
@@ -22,5 +22,5 @@
     executable: /bin/bash
   
 - include_role:
-    name: ../../../build
+    name: build
   ignore_errors: true
