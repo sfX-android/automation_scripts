@@ -311,6 +311,7 @@ SH_COMMON_BUILD_SNIPPET: |
 
         # just build bootimage (e.g. for kernel patch tests)
         {% if build_bootimage_only is defined and build_bootimage_only %}
+            set +e
             mka bootimage
             echo "building bootimage ended with: $?"
 
