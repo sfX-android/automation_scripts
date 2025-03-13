@@ -312,6 +312,7 @@ SH_COMMON_BUILD_SNIPPET: |
         {% if build_bootimage_only is defined and build_bootimage_only %}
             # just build bootimage (e.g. for kernel patch tests)
             set +e
+            resetEnv
             mka bootimage
             if [ $? -ne 0 ];then
                 cd {{ target_kernel_dir }}
