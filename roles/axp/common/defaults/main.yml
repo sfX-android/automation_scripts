@@ -309,8 +309,8 @@ SH_COMMON_BUILD_SNIPPET: |
             {{ CCACHE_EXEC }} --max-size=10G
         fi
 
-        # just build bootimage (e.g. for kernel patch tests)
         {% if build_bootimage_only is defined and build_bootimage_only %}
+            # just build bootimage (e.g. for kernel patch tests)
             set +e
             mka bootimage
             if [ $? -ne 0 ];then
@@ -338,6 +338,8 @@ SH_COMMON_BUILD_SNIPPET: |
                 echo "OK: kernel was build successfully!"
             fi
         {% else %}
+            # regular build process
+
             # extendrom flags
             export ENABLE_EXTENDROM={{ use_extendrom }}
             export EXTENDROM_PACKAGES="{{ extendrom_package_list | d(extendrom_package_list_default) }}"
