@@ -1,6 +1,10 @@
 ---
 # human readable model name
 target_model_full: "OnePlus 6T"
+# codename
+target_model: fajita
+# android version
+android_shortversion: a13
 
 # boot debugger path & config
 extendrom_debug_path_default: /mnt/vendor/persist
