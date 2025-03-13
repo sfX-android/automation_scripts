@@ -1,6 +1,6 @@
 ---
 
-- name: dl_patcher.yml
+- include_tasks: dl_patcher.yml
 
 - include_tasks: patch.yml
   vars:
