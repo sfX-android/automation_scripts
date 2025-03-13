@@ -1,0 +1,70 @@
+---
+
+- name: "CVE Kernel patches tests"
+  hosts: buildserver
+  gather_facts: true
+
+  vars:
+    notify_min: True
+
+  pre_tasks:
+
+    - debug:
+        msg: "{{ semaphore_vars }}"
+
+    - import_role:
+        name: pre        
+          
+  tasks:
+    # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
+    - block:
+    
+      - include_role:
+          public: yes
+          name: common
+
+      #- include_vars: ../roles/axp/common/defaults/main.yml
+      #  no_log: true
+
+      - fail:
+          msg: "boo.. vault_tg_group_id_failing is undefined"
+        when: 
+          - vault_tg_group_id_failing is undefined
+          - telegram_notifications | bool
+
+      - import_role:
+          name: kernel_patches_tester
+
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_automation }}"
+        when:
+          - debug_build is not defined or (debug_build is defined and debug_build == "false")
+          - telegram_notifications | bool
+
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_failing }}"
+        when:
+          - debug_build is defined and debug_build == "true"
+          - telegram_notifications | bool
+
+      - include_role:
+          name: notify
+
+      # when any of the above fails notify always 
+      rescue:
+
+        - set_fact:
+            tg_group_id: "{{ vault_tg_group_id_failing }}"
+          when:
+            - telegram_notifications | bool
+
+        - include_role:
+            name: notify
+            
+        - fail:
+            msg: |
+              ERROR OCCURED:
+              
+              {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
+              
+              See above for details.
