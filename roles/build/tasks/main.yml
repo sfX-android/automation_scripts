@@ -2,6 +2,11 @@
 
 # build process 
 - include_tasks: build.yml
+
+- name: "End due to build_bootimage_only"
+  meta: end_play
+  when: build_bootimage_only is defined and build_bootimage_only
+
 - include_tasks: grab_log.yml
 # failure checking of build
 - include_tasks: end_build.yml
