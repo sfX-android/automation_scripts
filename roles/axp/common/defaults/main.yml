@@ -313,27 +313,30 @@ SH_COMMON_BUILD_SNIPPET: |
         {% if build_bootimage_only is defined and build_bootimage_only %}
             set +e
             mka bootimage
-            echo "building bootimage ended with: $?"
-
-            cd {{ target_kernel_dir }}
-            for blame in $(grep error: {{ BUILD_LOG }} | grep -E ':[0-9]+:[0-9]+:'| cut -d / -f19-200 | cut -d : -f1-2 | grep : | sort -u | grep -vE '^$' | tr '\n' " " | sed 's#private/gs-google/##g');do
-                echo "bp=${blame/:*} ln=${blame/*:}"
-                export bp="${blame/:*}" ln="${blame/*:}"
-                export commit=$(git blame $bp |grep "${ln}" | cut -d " " -f1)
-                echo "commit: >$commit<"
-                export subject=$(git log -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
-                echo "searching applied CVE for.. >${subject}<"
-                if [ ! -z "$subject" ];then
-                    grep "${subject}" {{ BUILD_LOG }} -B1 | cut -d '/' -f2-20 
-                else
-                    echo "ERROR: no subject found"; exit 2
-                fi
-                if [ $? -ne 0 ];then
-                    echo "Cannot find subject in LOG! not a CVE??!"
-                    exit 3
-                fi
-            done
-            echo "parsing {{ BUILD_LOG }} for troublemaker CVEs finished"
+            if [ $? -ne 0 ];then
+                cd {{ target_kernel_dir }}
+                for blame in $(grep error: {{ BUILD_LOG }} | grep -E ':[0-9]+:[0-9]+:'| cut -d / -f19-200 | cut -d : -f1-2 | grep : | sort -u | grep -vE '^$' | tr '\n' " " | sed 's#private/gs-google/##g');do
+                    echo "bp=${blame/:*} ln=${blame/*:}"
+                    export bp="${blame/:*}" ln="${blame/*:}"
+                    export commit=$(git blame $bp |grep "${ln}" | cut -d " " -f1)
+                    echo "commit: >$commit<"
+                    export subject=$(git log -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
+                    echo "searching applied CVE for.. >${subject}<"
+                    if [ ! -z "$subject" ];then
+                        grep "${subject}" {{ BUILD_LOG }} -B1 | cut -d '/' -f2-20 
+                    else
+                        echo "ERROR: no subject found"; exit 2
+                    fi
+                    if [ $? -ne 0 ];then
+                        echo "Cannot find subject in LOG! not a CVE??!"
+                        exit 3
+                    fi
+                done
+                echo "parsing all troublemaker CVEs finished, failing nevertheless so we can fix them!"
+                exit 5
+            else
+                echo "OK: kernel was build successfully!"
+            fi
         {% else %}
             # extendrom flags
             export ENABLE_EXTENDROM={{ use_extendrom }}
