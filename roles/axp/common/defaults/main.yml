@@ -321,7 +321,7 @@ SH_COMMON_BUILD_SNIPPET: |
                     export bp="${blame/:*}" ln="${blame/*:}"
                     export commit=$(git blame $bp |grep " ${ln})" | cut -d " " -f1)
                     echo "commit: >$commit<"
-                    export subject=$(git log -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
+                    export subject=$(git log --format=fuller -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
                     echo "searching applied CVE for.. >${subject}<"
                     if [ ! -z "$subject" ];then
                         grep "${subject}" {{ BUILD_LOG }} -B1 | cut -d '/' -f2-20 
