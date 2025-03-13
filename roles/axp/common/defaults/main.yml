@@ -319,7 +319,7 @@ SH_COMMON_BUILD_SNIPPET: |
                 for blame in $(grep error: {{ BUILD_LOG }} | grep -E ':[0-9]+:[0-9]+:'| cut -d / -f19-200 | cut -d : -f1-2 | grep : | sort -u | grep -vE '^$' | tr '\n' " " | sed 's#private/gs-google/##g');do
                     echo "bp=${blame/:*} ln=${blame/*:}"
                     export bp="${blame/:*}" ln="${blame/*:}"
-                    export commit=$(git blame $bp |grep "${ln}" | cut -d " " -f1)
+                    export commit=$(git blame $bp |grep " ${ln})" | cut -d " " -f1)
                     echo "commit: >$commit<"
                     export subject=$(git log -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
                     echo "searching applied CVE for.. >${subject}<"
