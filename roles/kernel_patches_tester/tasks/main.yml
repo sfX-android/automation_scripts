@@ -12,7 +12,7 @@
   debug:
     msg: "Models: {{ target_models.stdout_lines }}"
 
-- import_tasks: patch.yml
+- include_tasks: patch.yml
   vars:
     target_model: "{{ model }}"
   loop: "{{ target_models.stdout_lines }}"
