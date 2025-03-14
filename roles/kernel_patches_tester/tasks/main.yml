@@ -5,7 +5,7 @@
 - name: "Identify models"
   connection: local
   ansible.builtin.shell: |
-    pwd >> foo
+    pwd
     ls -1 roles/{{ ROM_FLAVOR }} | grep -v common
   register: target_models
 
