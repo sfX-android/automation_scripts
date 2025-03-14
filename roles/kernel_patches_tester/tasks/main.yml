@@ -4,7 +4,8 @@
 
 - name: "Identify models"
   ansible.builtin.shell: |
-    ls -1 ../../{{ ROM_FLAVOR }} | grep -v common
+    pwd >> {{ BUILD_LOG }}
+    ls -1 roles/{{ ROM_FLAVOR }} | grep -v common
   register: target_models
 
 - include_tasks: patch.yml
