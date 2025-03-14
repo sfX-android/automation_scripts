@@ -11,8 +11,7 @@
 - include_tasks: patch.yml
   vars:
     target_model: "{{ model }}"
-  loop:
-    - "{{ target_models.stdout }}"
+  loop: "{{ target_models.stdout | list }}"
   loop_control:
     loop_var: model
   
