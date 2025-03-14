@@ -11,5 +11,5 @@
   vars:
     target_model: "{{ model }}"
   loop: "{{ target_models.items }}"
-  loop_var: model
+    loop_var: model
   
