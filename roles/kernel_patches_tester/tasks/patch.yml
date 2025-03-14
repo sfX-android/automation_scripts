@@ -9,7 +9,7 @@
     {{ DOS_INIT }}
     CROOT="{{ SRCPATH }}"
 
-    rm -rf {{ target_kernel_dir }}
+    rm -rf {{ target_kernel_dir }} || true
     {{ repo_bin }} -j{{ max_processes }} sync {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
 
 - name: "Apply CVE kernel patches"
