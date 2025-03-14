@@ -8,14 +8,14 @@
     ls -1 ../roles/{{ ROM_FLAVOR }} | grep -v common
   register: target_models
 
-- name: "test"
-  debug: 
-    var: target_models
+- name: "List identified models"
+  debug:
+    msg: "Models: {{ target_models }}"
 
 - include_tasks: patch.yml
   vars:
     target_model: "{{ model }}"
-  loop: "{{ target_models.stdout | list }}"
+  loop: "{{ target_models }}"
   loop_control:
     loop_var: model
   
