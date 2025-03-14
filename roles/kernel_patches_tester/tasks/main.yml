@@ -2,7 +2,14 @@
 
 - include_tasks: dl_patcher.yml
 
+- name: "Identify models"
+  ansible.builtin.shell: |
+    ls -1 ../../{{ ROM_FLAVOR }} | grep -v common
+  register: target_models
+
 - include_tasks: patch.yml
   vars:
-    target_model: "{{ item }}"
-  loop: "{{ target_models }}"
+    target_model: "{{ model }}"
+  loop: "{{ target_models.items }}"
+  loop_var: model
+  
