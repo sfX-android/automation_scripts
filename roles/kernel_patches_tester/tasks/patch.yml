@@ -4,6 +4,14 @@
     name: "{{ ROM_FLAVOR }}/{{ target_model }}"
     public: true
 
+- name: "Reset + Sync"
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    CROOT="{{ SRCPATH }}"
+
+    rm -rf {{ target_kernel_dir }}
+    {{ repo_bin }} -j{{ max_processes }} sync {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
+
 - name: "Apply CVE kernel patches"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
@@ -16,7 +24,6 @@
     echo "DOS_PATCHER_LOOSE_VERSIONS: $DOS_PATCHER_LOOSE_VERSIONS"
     echo "DOS_PATCHER_LOOSE_VERSIONS_EXTREME: $DOS_PATCHER_LOOSE_VERSIONS_EXTREME"
 
-    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1
     startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1
     cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
