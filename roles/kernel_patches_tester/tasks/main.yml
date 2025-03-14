@@ -10,12 +10,12 @@
 
 - name: "List identified models"
   debug:
-    msg: "Models: {{ target_models }}"
+    msg: "Models: {{ target_models.stdout_lines }}"
 
 - include_tasks: patch.yml
   vars:
     target_model: "{{ model }}"
-  loop: "{{ target_models }}"
+  loop: "{{ target_models.stdout_lines }}"
   loop_control:
     loop_var: model
   
