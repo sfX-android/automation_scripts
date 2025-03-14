@@ -12,7 +12,7 @@
   vars:
     target_model: "{{ model }}"
   loop:
-    - "{{ target_models.stdout_lines }}"
+    - "{{ target_models.stdout }}"
   loop_control:
     loop_var: model
   
