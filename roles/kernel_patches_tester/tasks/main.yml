@@ -3,6 +3,7 @@
 - include_tasks: dl_patcher.yml
 
 - name: "Identify models"
+  connection: local
   ansible.builtin.shell: |
     pwd >> foo
     ls -1 roles/{{ ROM_FLAVOR }} | grep -v common
