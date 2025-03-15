@@ -1,6 +1,7 @@
 ---
 # human readable model name
 target_model_full: "LG G4"
+sub_model: h815
 
 # android version
 android_shortversion: a11
