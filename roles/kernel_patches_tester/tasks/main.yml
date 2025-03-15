@@ -2,17 +2,15 @@
 
 - include_tasks: dl_patcher.yml
 
-- include_tasks: sync.yml
-
 - name: "Identify models"
   connection: local
   ansible.builtin.shell: |
     ls -1 ../roles/{{ ROM_FLAVOR }} | grep -vE "{{ model_exclusions }}"
   register: target_models
 
-- name: "List identified models"
-  debug:
-    msg: "Models: {{ target_models.stdout_lines }}"
+#- name: "List identified models"
+#  debug:
+#    msg: "Models: {{ target_models.stdout_lines }}"
 
 - include_tasks: patch.yml
   vars:
