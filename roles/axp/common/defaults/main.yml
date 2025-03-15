@@ -324,10 +324,14 @@ SH_COMMON_BUILD_SNIPPET: |
                     export subject=$(git log --format=fuller -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
                     echo "searching applied CVE for.. >${subject}<"
                     if [ ! -z "$subject" ];then
+                        FCVE=$(grep "${subject}" {{ BUILD_LOG }} -B1 | grep "^processing:" | cut -d '/' -f2-20 | tr -d ' ')
                         if [ -z "$TCVE" ];then
-                            TCVE=$(grep "${subject}" {{ BUILD_LOG }} -B1 | grep "^processing:" | cut -d '/' -f2-20 | tr -d ' ')
+                            TCVE="$FCVE"
                         else
-                            TCVE="${TCVE} $(grep "${subject}" {{ BUILD_LOG }} -B1 | grep "^processing:" | cut -d '/' -f2-20 | tr -d ' ')"
+                            dup=$(echo "$FCVE" | grep -c "$TCVE" || true)
+                            if [ $dup -eq 0 ];then
+                                TCVE="${TCVE} $FCVE"
+                            fi
                         fi
                     else
                         echo "ERROR: no subject found"; exit 2
