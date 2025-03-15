@@ -4,15 +4,15 @@
     name: "{{ ROM_FLAVOR }}/{{ target_model }}"
     public: true
 
-- name: "Reset + Sync"
+- include_tasks: sync.yml
+
+- name: "Reset + sync kernel"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     CROOT="{{ SRCPATH }}"
 
     rm -rf {{ target_kernel_dir }} || true
-    #{{ repo_bin }} sync -j{{ max_processes }} {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
-
-- include_tasks: sync.yml
+    {{ repo_bin }} sync -j{{ max_processes }} {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
 
 - name: "Apply CVE kernel patches"
   ansible.builtin.shell: |
