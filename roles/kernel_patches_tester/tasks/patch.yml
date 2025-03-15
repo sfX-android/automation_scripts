@@ -10,7 +10,9 @@
     CROOT="{{ SRCPATH }}"
 
     rm -rf {{ target_kernel_dir }} || true
-    {{ repo_bin }} sync -j{{ max_processes }} {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
+    #{{ repo_bin }} sync -j{{ max_processes }} {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
+
+- include_tasks: sync.yml
 
 - name: "Apply CVE kernel patches"
   ansible.builtin.shell: |
