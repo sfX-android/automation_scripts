@@ -345,7 +345,9 @@ SH_COMMON_BUILD_SNIPPET: |
                 if [ -z "$TCVE" ];then
                     echo "Woot?! no CVE(s) found??"
                 else
+                    echo -en "\nRPOBLEMATIC_CVES: "
                     for cv in $TCVE;do echo -n "\"$cv\" " ;done
+                    echo -e "\n\n"
                 fi
                 exit 5
             else
