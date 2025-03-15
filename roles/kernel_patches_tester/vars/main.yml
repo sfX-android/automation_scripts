@@ -2,3 +2,4 @@
 
 model_exclusions: "common|a52q|xz2c"
 build_id: kernel_patches_tester
+target_model: "{{ build_id }}"
