@@ -2,6 +2,8 @@
 
 - include_tasks: dl_patcher.yml
 
+- include_tasks: sync.yml
+
 - name: "Identify models"
   connection: local
   ansible.builtin.shell: |
