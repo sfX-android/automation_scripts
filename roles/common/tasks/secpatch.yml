@@ -115,11 +115,10 @@
 
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
-    - pick_queries is defined and (pick_queries | length > 3)
+    - pick_queries is defined and (pick_queries | length > 0)
 
-- name: I wanna fail
-  fail:
-    msg: |
-      queries: {{ pick_queries }}
-      length:  {{ pick_queries | length }}
-      length2: {{ pick_queries | dict2items | length }}
+#- name: I wanna fail
+#  fail:
+#    msg: |
+#      queries: {{ pick_queries }}
+#      length:  {{ pick_queries | length }}
