@@ -98,7 +98,7 @@
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
         echo "patch cmd: {{ item | regex_replace('-f ',' ') }}"
-        {{ item | regex_replace('-f ',' ') }} -v >> {{ BUILD_LOG }} 2>&1 || {{ item }} -fv >> {{ BUILD_LOG }} || exit 123
+        {{ item | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }} -v >> {{ BUILD_LOG }} 2>&1 || {{ item }} -fv >> {{ BUILD_LOG }} || exit 123
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
