@@ -6,13 +6,13 @@
   args:
     chdir: "{{ SRCPATH }}"
 
-- name: "Apply vendor_axp patches"
-  ansible.builtin.shell: |
-      {{ DOS_INIT }}
-      cd {{ item.path }} && patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ item.patch }} >> {{ BUILD_LOG }} 2>&1
-  args:
-    executable: /bin/bash
-    chdir: "{{ SRCPATH }}"
-  loop:
-    - path: packages/apps/Settings
-      patch: "{{ SRCPATH }}/vendor/axp/patches/common/a10/0002_packages_apps_Settings_src_com_android_settings_accounts_AccountTypePreferenceLoader_java.patch"
+#- name: "Apply vendor_axp patches"
+#  ansible.builtin.shell: |
+#      {{ DOS_INIT }}
+#      cd {{ item.path }} && patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ item.patch }} >> {{ BUILD_LOG }} 2>&1
+#  args:
+#    executable: /bin/bash
+#    chdir: "{{ SRCPATH }}"
+#  loop:
+#    - path: packages/apps/Settings
+#      patch: "{{ SRCPATH }}/vendor/axp/patches/common/a10/0002_packages_apps_Settings_src_com_android_settings_accounts_AccountTypePreferenceLoader_java.patch"
