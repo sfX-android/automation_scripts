@@ -60,7 +60,7 @@
 
       - name: "Set HASH"
         ansible.builtin.shell: >-
-            cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha256sum"
+            cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha256sum" | cut -d ' ' -f1
         register: hashfile
 
 
