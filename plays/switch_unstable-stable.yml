@@ -28,6 +28,8 @@
 
       - include_vars: "../roles/{{ ROM_FLAVOR }}/common/tasks/axp-slim.vars.yml"
         when: axp_type | d('') == "slim"
+
+      - include_vars: "../roles/{{ ROM_FLAVOR }}/{{ target_model }}/vars/main.yml"
       
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
@@ -39,7 +41,50 @@
           tg_group_id: "{{ vault_tg_group_id_automation }}"
         when:
           - telegram_notifications | bool
+
+
+
+      - name: "Parse OS prop"
+        ansible.builtin.shell: |
+          #for prop in devbrand,ro.product.system.brand= devdevice,ro.product.system.device= devmodel,ro.lineage.device= buildversion,ro.lineage.version= buildtype,ro.lineage.releasetype= versionandroid,ro.build.version.release= versionasb,ro.build.version.security_patch=; do
+          #  k=${prop%,*} v=${prop#*,}
+          #  #eval ${k}=$(grep "${v}" {{ rempath }}/{{ os_zip_filename }}.prop | cut -d "=" -f 2)
+          #  eval ${k}=$(grep "${v}" {{ rempath_unstable }}/{{ os_zip_filename }}.prop | cut -d "=" -f 2)
+          #done
+          #echo "$devbrand,$devdevice,$devmodel,$buildversion,${buildtype/dos/PRO},$versionandroid,$versionasb"
           
+          for prop in buildversion,ro.lineage.version= versionasb,ro.build.version.security_patch=; do
+            k=${prop%,*} v=${prop#*,}
+            #eval ${k}=$(grep "${v}" {{ rempath }}/{{ os_zip_filename }}.prop | cut -d "=" -f 2)
+            eval ${k}=$(grep "${v}" {{ rempath_unstable }}/{{ os_zip_filename }}.prop | cut -d "=" -f 2)
+          done
+          echo "$buildversion,$versionasb"
+        register: pprop
+
+      - name: "Split parsed properties"
+        ansible.builtin.set_fact:
+          parsed_props: "{{ pprop.stdout.split(',') }}"
+    
+      - name: "Setup ASB level var"
+          ansible.builtin.set_fact:
+            sec_level_date: "{{ parsed_props[1] }}"
+
+      - name: "Set ROMFILE"
+        ansible.builtin.shell: >-
+            echo "{{ os_name }}-{{ parsed_props[0] }}.zip"
+        register: ROMFILE
+
+      - include_role:
+          name: notify
+        vars:
+          tg_group_id: "{{ vault_tg_group_id_failing }}"
+          
+      - name: FAIL HERE
+        fail:
+          msg: hi
+
+
+
       - name: "Switch to stable"
         ansible.builtin.copy:
           remote_src: yes
