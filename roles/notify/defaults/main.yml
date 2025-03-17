@@ -33,7 +33,7 @@ tg_success: |
         {% endif %}
         
         ***SHA256:***
-        {{ hash.stat.checksum | hashfile.stdout | d("no hash found") }}
+        {{ hash.stat.checksum | d(hashfile.stdout) | d("no hash found") }}
         
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
