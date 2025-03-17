@@ -79,9 +79,8 @@
         vars:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
           
-      - name: FAIL HERE
-        fail:
-          msg: hi
+      - name: STOP HERE
+        meta: end_play
 
 
 
