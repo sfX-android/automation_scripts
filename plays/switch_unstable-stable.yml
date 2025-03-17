@@ -7,9 +7,9 @@
 
   vars:
     os_zip_filename_no_ext: "{{ os_zip_filename | regex_replace('.zip','') }}"
-    tg_success: |
-        {{ ICON_GOOD }} ***New build released\!***
-        {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE channel
+    #tg_success: |
+    #    {{ ICON_GOOD }} ***New build released\!***
+    #    {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE channel
     tg_failed: |
         {{ ICON_BAD }} ***ERROR***
         {{ target_model | regex_escape() }}: switching {{ os_zip_filename_no_ext | regex_escape() }} to STABLE failed\!
