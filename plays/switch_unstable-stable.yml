@@ -42,8 +42,6 @@
         when:
           - telegram_notifications | bool
 
-
-
       - name: "Parse OS prop"
         ansible.builtin.shell: >-
           grep ro.build.version.security_patch= {{ rempath_unstable }}/{{ os_zip_filename }}.prop | cut -d "=" -f 2
@@ -62,24 +60,6 @@
         ansible.builtin.shell: >-
             cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha256sum" | cut -d ' ' -f1
         register: hashfile
-
-
-
-
-      - name: "Set result (compat fix for release role)"
-        ansible.builtin.shell: 'true'
-        register: buildresult
-
-      - include_role:
-          name: notify
-        vars:
-          tg_group_id: "{{ vault_tg_group_id_failing }}"
-          
-      - name: STOP HERE
-        meta: end_play
-
-
-
 
       - name: "Switch to stable"
         ansible.builtin.copy:
