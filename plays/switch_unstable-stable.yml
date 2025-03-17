@@ -58,6 +58,11 @@
             echo "{{ os_zip_filename }}"
         register: ROMFILE
 
+      - name: "Set HASH"
+        ansible.builtin.shell: >-
+            cat "{{ os_zip_filename }}.sha256sum"
+        register: hashfile
+
 
 
 
