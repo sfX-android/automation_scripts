@@ -99,7 +99,7 @@ common_apps_keydir: "{{ keys_base_path }}/{{ os_name }}/common"
 build_tag: "{{ ansible_date_time.year }}-{{ ansible_date_time.month }}-{{ ansible_date_time.day }}_{{ target_model }}_{{ android_shortversion }}"
 
 device_cl: |-
-  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() }}***
+  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() | upper }}***
 
 rom_cl: |-
   ***Changes:***
