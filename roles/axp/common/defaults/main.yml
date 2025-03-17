@@ -137,6 +137,7 @@ DOS_INIT: |
 
 # we do not want to generate a fastboot factory image by default (override in semaphore if needed)
 generate_pixel_factory_image: False
+generate_fairphone_factory_image: False
 
 # get & upload a recovery image
 axp_release_recovery: False
