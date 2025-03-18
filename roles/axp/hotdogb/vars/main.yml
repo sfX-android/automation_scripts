@@ -1,6 +1,8 @@
 ---
 # human readable model name
-target_model_full: "OnePlus 7T"
+target_model_vendor: "OnePlus"
+target_model_name: '7T'
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
 # android version
 android_shortversion: a13

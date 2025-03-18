@@ -1,6 +1,8 @@
 ---
 # human readable model name
-target_model_full: "Fairphone 4"
+target_model_vendor: "Fairphone"
+target_model_name: '4'
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
 # android version
 android_shortversion: a13

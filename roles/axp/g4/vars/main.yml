@@ -1,6 +1,9 @@
 ---
 # human readable model name
-target_model_full: "LG G4"
+target_model_vendor: "LGE"
+target_model_name: 'G4'
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
+#FIXME: must be set via h815/vars
 sub_model: h815
 
 # android version

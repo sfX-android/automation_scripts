@@ -1,6 +1,8 @@
 ---
 # human readable model name
-target_model_full: "Samsung Galaxy A52 4G"
+target_model_vendor: "Samsung"
+target_model_name: "Galaxy A52 4G"
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
 # android version
 android_shortversion: a13
