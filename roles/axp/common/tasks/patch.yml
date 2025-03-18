@@ -64,6 +64,9 @@
     {% else %}
     lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
     {% endif %}
+
+    export AXP_DEVICE="{{ target_model }}"
+    export AXP_DEVICEVENDOR="{{ target_model_vendor | lower }}"
     vendor/axp/axp.sh
   args:
     executable: /bin/bash
