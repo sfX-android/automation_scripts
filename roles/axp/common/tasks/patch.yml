@@ -67,7 +67,7 @@
 
     export AXP_DEVICE="{{ target_model }}"
     export AXP_DEVICEVENDOR="{{ target_model_vendor | lower }}"
-    export AXP_TYPE="{{ axp_type | d('pro') }}"
+    export AXP_LOW_STORAGE="{{ target_low_storage | d('no') }}"
     
     vendor/axp/axp.sh
   args:
