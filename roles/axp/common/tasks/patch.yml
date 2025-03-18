@@ -67,6 +67,8 @@
 
     export AXP_DEVICE="{{ target_model }}"
     export AXP_DEVICEVENDOR="{{ target_model_vendor | lower }}"
+    export AXP_TYPE="{{ axp_type | d('pro') }}"
+    
     vendor/axp/axp.sh
   args:
     executable: /bin/bash
