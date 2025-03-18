@@ -4,6 +4,9 @@ target_model_vendor: "Fairphone"
 target_model_name: '4'
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
+# remove disk space reservation (e.g. on product partition)
+remove_space_reservation: 'yes'
+
 # android version
 android_shortversion: a13
 
