@@ -37,6 +37,7 @@ vbmeta_verify: false
 divest_unsupported_device: true
 unsupported_device_kernel_patch: true
 
+extendrom_intercept_installsrc: 'true'
 extendrom_allow_any_call_recording: 'true'
 
 dl_links: |-
