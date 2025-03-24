@@ -182,7 +182,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         if [ -d {{ SRCPATH }}/out/{{ target_model }}-factory/ ];then rm -rf {{ SRCPATH }}/out/{{ target_model }}-factory/;fi
         
         # extract the origin factory zip
-        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory
+        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory > /dev/null
         IMAGES_PATH=images
         export FPIMGPATH=$(dirname {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/)/$IMAGES_PATH
        
