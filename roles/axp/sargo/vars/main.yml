@@ -18,7 +18,7 @@ extendrom_debug_path_size_crash_default: 200
 target_kernel_dir: kernel/google/msm-4.9
 
 # add OpenEUICC and use 32bit WebView
-extendrom_package_list: "{{ extendrom_package_list_default | regex_replace('AOSmium_webview64','AOSmium_webview32') }} OpenEUICC_AXP-OS"
+extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
 # allow creating factory image
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
