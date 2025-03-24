@@ -228,6 +228,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         sha256sum --check SHA256SUMS
         
         # test vbmeta
+        croot
         out/host/linux-x86/bin/avbtool info_image --image ${FPIMGPATH}/vbmeta.img
         out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image ${FPIMGPATH}/vbmeta.img
         croot
