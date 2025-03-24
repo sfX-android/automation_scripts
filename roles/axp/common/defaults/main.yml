@@ -187,8 +187,8 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         export FPIMGPATH=$(dirname {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/)/$IMAGES_PATH
        
         # extract AXP.OS factory zip and override Fairphone images by AOS ones
-        REPLHASH=$(zipinfo -1 {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d ${FPIMGPATH} '*.img')
-        unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d ${FPIMGPATH} '*.img'
+        REPLHASH=$(zipinfo -1 {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip '*.img')
+        unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d ${FPIMGPATH} '*.img' > /dev/null
 
         # ... and replace some non-standard ones with AOS ones
         # FIXME!
@@ -210,19 +210,26 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         cd ${FPIMGPATH} && cd ..
         f=$(echo flash_fp*.command)
         awk '{print} /^flash_device$/ && !n {print "sleep 5\n'"\${FASTBOOT_BIN}"' erase avb_custom_key\n'"\${FASTBOOT_BIN}"' flash avb_custom_key '\${IMAGES_DIR}'/'"$avb_file"'\n'"\${FASTBOOT_BIN}"' reboot-bootloader"; n++}' ${f} > ${f}.tmp && mv -v ${f}.tmp ${f} && chmod +x ${f}
+        
         # do not auto-lock by default
         sed -i 's/^RELOCK_BOOTLOADER=.*/RELOCK_BOOTLOADER="false"/g' $f
+        
         # update checksums
         for hfile in $REPLHASH;do
+            echo "generating hash for: $hfile"
             newhash=$(sha256sum $IMAGES_PATH/$hfile | cut -d ' ' -f 1)
-            sed -E "s#(.*)(\s+$IMAGES_PATH/$hfile)#$newhash \2#g" -i SHA256SUMS
+            sed -E "s#^(.*){64,}(\s)(.*$IMAGES_PATH/$hfile)#$newhash\2\3#g" -i SHA256SUMS
         done
+        # add command file
+        CMDHASH=$(sha256sum $f | cut -d ' ' -f1)
+        sed -E "s#^(.*){64,}(\s)(.*$f)#$CMDHASH\2\3#g" -i SHA256SUMS
+        
         # test checksums
-        sha256sum --status --check SHA256SUMS
+        sha256sum --check SHA256SUMS
+        
         # test vbmeta
-        cd $IMAGES_PATH
-        out/host/linux-x86/bin/avbtool info_image --image vbmeta.img || true
-        out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image vbmeta.img
+        out/host/linux-x86/bin/avbtool info_image --image ${FPIMGPATH}/vbmeta.img
+        out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image ${FPIMGPATH}/vbmeta.img
         croot
 
         # re-package it
