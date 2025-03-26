@@ -65,7 +65,7 @@
     lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
     {% endif %}
 
-    export AXP_DEVICE="{{ target_model }}"
+    export AXP_DEVICE="{{ target_device_common_path | d(target_model) }}"
     export AXP_DEVICEVENDOR="{{ target_model_vendor | lower }}"
     export AXP_LOW_STORAGE="{{ remove_space_reservation | d('no') }}"
     
