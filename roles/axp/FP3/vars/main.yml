@@ -25,4 +25,4 @@ target_kernel_dir: kernel/fairphone/sdm632
 axp_release_recovery: True
 
 # allow creating factory image
-custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
+#custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
