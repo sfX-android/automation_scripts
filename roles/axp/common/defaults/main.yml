@@ -145,29 +145,31 @@ axp_release_recovery: False
 # default base domain  n, for fairphone factory zips
 fairphone_factoryzip_domain: "https://fairphone-android-builds.ams3.digitaloceanspaces.com"
 
+# download & upload latest firmware
+SH_COMMON_FAIRPHONE_DL_FIRMWARE: |
+    # get factory image
+    # containing the official Fairphone images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
+    VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
+    FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
+    source vendor/firmware/{{ target_model }}/0SOURCE
+    if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
+    if [ -f "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" ];then
+        echo "Using previously downloaded factory image: ${FACTORYFULLNAME}.zip"
+        cp "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" out/{{ target_model }}-factory.zip 
+    else
+        echo "${FACTORYFULLNAME}.zip not found in: {{ persistent_dir }}, downloading.."
+        wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
+    fi
+    
+    export FACZIP="$PWD/out/{{ target_model }}-factory.zip"
+    cd vendor/firmware/{{ target_model }}
+    ./rename.sh
+    croot
+
 # enable the following in a device's vars file with:
 # custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
 # and set "generate_fairphone_factory_image: True" to actually generate it (in semaphore)
 SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
-        # get factory image
-        # containing the official Fairphone images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
-        VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
-        FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
-        source vendor/firmware/{{ target_model }}/0SOURCE
-        if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
-        if [ -f "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" ];then
-            echo "Using previously downloaded factory image: ${FACTORYFULLNAME}.zip"
-            cp "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" out/{{ target_model }}-factory.zip 
-        else
-            echo "${FACTORYFULLNAME}.zip not found in: {{ persistent_dir }}, downloading.."
-            wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
-        fi
-        
-        export FACZIP="$PWD/out/{{ target_model }}-factory.zip"
-        cd vendor/firmware/{{ target_model }}
-        ./rename.sh
-        croot
-        
         {% if axp_build_eng | bool %}
         #mka sepolicy
         buildDeviceDebug {{ target_model }}
@@ -246,214 +248,216 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
 #custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 #generate_pixel_factory_image: True (in semaphore)
 SH_COMMON_PIXEL_CREATE_FACTORY: |
-        {% if axp_build_eng | bool %}
+    {% if axp_build_eng | bool %}
+    #mka sepolicy
+    buildDeviceDebug {{ target_model }}
+    {% else %}
+    buildDevice {{ target_model }}
+    {% endif %}
+     {% if generate_pixel_factory_image | bool %}
+    
+    # this will create a fastboot flashable factory image
+    # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
+    VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
+    FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
+    source vendor/firmware/{{ target_model }}/0SOURCE
+    if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
+    if [ -f "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" ];then
+        echo "Using previously downloaded factory image: {{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip"
+        cp "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" out/{{ target_model }}-factory.zip 
+    else
+        echo "{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip not found in: {{ persistent_dir }}, downloading.."
+        wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip || (wget https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
+    fi
+    cd out/target/product/{{ target_model }}
+    if [ -d factory ];then rm -rf factory;fi
+    if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
+    unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
+    cd factory/{{ target_model }}-${FACTORYID}
+    cp ../../${FZIP}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip     
+    cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
+    for f in flash-base.sh flash-all.sh;do
+        awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
+    done
+    awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat
+    cd ..
+    zip -r ../${FZIP}-factory.zip {{ target_model }}-${FACTORYID}
+    cd ..
+    sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512
+    mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
+    FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
+    cd {{ SRCPATH }}
+    {% endif %}
+
+# the build script which will be executed after all the resets, syncs and patching have been done
+SH_COMMON_BUILD_SNIPPET: |
+    #!/bin/bash
+    ####################################################################################################################   
+    # be strict on failures
+    set -e
+
+    # fix build errors
+    export LC_ALL=C
+    
+    # unset any extendrom var
+    er_vars="ENABLE_EXTENDROM EXTENDROM_SIGNING_PATCHES EXTENDROM_SIGNING_FORCE_PDIR EXTENDROM_PACKAGES EXTENDROM_PACKAGES_SKIP_DL EXTENDROM_BOOT_DEBUG EXTENDROM_DEBUG_PATH EXTENDROM_DEBUG_PATH_SIZE_FULL EXTENDROM_DEBUG_PATH_SIZE_CRASH EXTENDROM_DEBUG_PATH_SIZE_KERNEL EXTENDROM_DEBUG_PATH_SIZE_SELINUX EXTENDROM_PREROOT_BOOT EXTENDROM_FDROID_REPOS EXTENDROM_SIGNATURE_SPOOFING EXTENDROM_ALLOW_ANY_CALL_RECORDING EXTENDROM_INTERCEPT_INSTALLSRC EXTENDROM_PATCHER_RESET EXTENDROM_SIGSPOOF_FORCE_PDIR"
+    for v in $er_vars;do unset $v;done
+
+    ########################### PREPARE #########################
+
+    # set legacy python2 env - if needed
+    # 1. sudo apt-get install python2 virtualenv python2-pip-whl python2-setuptools-whl
+    # 2. mkdir -p ~/.venv/python2
+    # 3. virtualenv --python=$(which python2) ~/.venv/python2
+    case {{ android_shortversion }} in
+        a9|a10) source ~/.venv/python2/bin/activate ;;
+    esac
+
+    ########################### BUILD #########################
+
+    # setup build env including stupid DOS workarounds
+    {{ DOS_INIT }}
+            
+    {% if axp_build_eng | bool %}
+    breakfast lineage_{{ target_model }}${brf_suffix}-eng
+    {% else %}
+    breakfast lineage_{{ target_model }}${brf_suffix}-user
+    {% endif %}
+    
+    # CCACHE
+    export USE_CCACHE={{ USE_CCACHE }}
+    if [ "{{ USE_CCACHE }}" -eq 1 ];then
+        export CCACHE_EXEC=/usr/bin/ccache
+        export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
+        mkdir -p {{ CCACHE_DIR }}
+        export CCACHE_DIR="{{ CCACHE_DIR }}"
+        {{ CCACHE_EXEC }} --max-size=10G
+    fi
+
+    {% if build_bootimage_only is defined and build_bootimage_only %}
+        # just build bootimage (e.g. for kernel patch tests)
+        set +e
+        resetEnv
+        mka bootimage
+        if [ $? -ne 0 ];then
+            cd {{ target_kernel_dir }}
+            for blame in $(grep error: {{ BUILD_LOG }} | grep -E ':[0-9]+:[0-9]+:'| cut -d / -f19-200 | cut -d : -f1-2 | grep : | sort -u | grep -vE '^$' | tr '\n' " " | sed 's#private/gs-google/##g');do
+                echo "bp=${blame/:*} ln=${blame/*:}"
+                export bp="${blame/:*}" ln="${blame/*:}"
+                export commit=$(git blame $bp |grep " ${ln})" | cut -d " " -f1)
+                echo "commit: >$commit<"
+                export subject=$(git log --format=fuller -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
+                echo "searching applied CVE for.. >${subject}<"
+                if [ ! -z "$subject" ];then
+                    FCVE=$(grep "${subject}" {{ BUILD_LOG }} -B1 | grep "^processing:" | cut -d '/' -f2-20 | tr -d ' ')
+                    if [ -z "$TCVE" ];then
+                        TCVE="$FCVE"
+                    else
+                        dup=$(echo "$FCVE" | grep -c "$TCVE" || true)
+                        if [ $dup -eq 0 ];then
+                            TCVE="${TCVE} $FCVE"
+                        fi
+                    fi
+                else
+                    echo "ERROR: no subject found"; exit 2
+                fi
+                if [ $? -ne 0 ];then
+                    echo "Cannot find subject in LOG! not a CVE??!"
+                    exit 3
+                fi
+            done
+            echo "parsing all troublemaker CVEs finished, failing nevertheless so we can fix them!"
+            if [ -z "$TCVE" ];then
+                echo "Woot?! no CVE(s) found??"
+            else
+                echo -en "\nRPOBLEMATIC_CVES: "
+                for cv in $TCVE;do echo -n "\"$cv\" " ;done
+                echo -e "\n\n"
+            fi
+            exit 5
+        else
+            echo "OK: kernel was build successfully!"
+        fi
+    {% else %}
+        # regular build process
+
+        # extendrom flags
+        export ENABLE_EXTENDROM={{ use_extendrom }}
+        export EXTENDROM_PACKAGES="{{ extendrom_package_list | d(extendrom_package_list_default) }}"
+        export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
+        {% if extendrom_packages_skip_dl is defined %}export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}{% endif %}
+        export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
+        #export MAGISK_TARGET_ARCH=
+        export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
+        export EXTENDROM_DEBUG_PATH={{ extendrom_debug_path |d (extendrom_debug_path_default) }}
+        export EXTENDROM_DEBUG_PATH_SIZE_FULL={{ extendrom_debug_path_size_full | d(extendrom_debug_path_size_full_default) }}
+        export EXTENDROM_DEBUG_PATH_SIZE_KERNEL={{ extendrom_debug_path_size_kernel | d(extendrom_debug_path_size_kernel_default) }}
+        export EXTENDROM_DEBUG_PATH_SIZE_SELINUX={{ extendrom_debug_path_size_selinux | d(extendrom_debug_path_size_selinux_default) }}
+        export EXTENDROM_DEBUG_PATH_SIZE_CRASH={{ extendrom_debug_path_size_crash | d(extendrom_debug_path_size_crash_default) }}
+        export EXTENDROM_SIGNATURE_SPOOFING={{ extendrom_signature_spoofing }}
+        export EXTENDROM_PATCHER_RESET={{ extendrom_patcher_reset }}
+        export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
+        export EXTENDROM_ALLOW_ANY_CALL_RECORDING={{ extendrom_allow_any_call_recording }}
+        export EXTENDROM_INTERCEPT_INSTALLSRC={{ extendrom_intercept_installsrc | d('false') }}
+        # execute extendrom
+        $PWD/vendor/extendrom/er.sh
+
+        echo "[GIT] checking kernel changes in {{ target_kernel_dir }}"
+        # add unstaged changes
+        CMT=0
+        cd {{ target_kernel_dir }}
+        git add -A || CMT=1
+        # check for uncommitted changes
+        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+        # commit if required
+        if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+           git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
+           echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
+        fi
+        git status
+        croot
+
+        # when fairphone
+        {% if target_model_vendor == "Fairphone" and download_fairphone_firmware | d(False) %}
+        {{ SH_COMMON_FAIRPHONE_DL_FIRMWARE }}
+        {% endif %}
+        
+        # build
+        resetEnv
+        {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
+        mka generate_verity_key
+        {% endif %}
+        {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
+        mka recoveryimage
+        if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
+        mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
+        {% elif custom_build_command is defined %}
+        {{ custom_build_command }}
+        {% elif axp_build_eng | bool %}
         #mka sepolicy
         buildDeviceDebug {{ target_model }}
         {% else %}
         buildDevice {{ target_model }}
         {% endif %}
-         {% if generate_pixel_factory_image | bool %}
-        
-        # this will create a fastboot flashable factory image
-        # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
-        VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
-        FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
-        source vendor/firmware/{{ target_model }}/0SOURCE
-        if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
-        if [ -f "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" ];then
-            echo "Using previously downloaded factory image: {{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip"
-            cp "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" out/{{ target_model }}-factory.zip 
-        else
-            echo "{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip not found in: {{ persistent_dir }}, downloading.."
-            wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip || (wget https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
-        fi
-        cd out/target/product/{{ target_model }}
-        if [ -d factory ];then rm -rf factory;fi
-        if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
-        unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
-        cd factory/{{ target_model }}-${FACTORYID}
-        cp ../../${FZIP}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip     
-        cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
-        for f in flash-base.sh flash-all.sh;do
-            awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
-        done
-        awk '{print} /fastboot reboot-bootloader/ && !n {print "ping -n 5 127.0.0.1 >nul\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' flash-all.bat > bat.tmp && mv bat.tmp flash-all.bat && chmod +x flash-all.bat
-        cd ..
-        zip -r ../${FZIP}-factory.zip {{ target_model }}-${FACTORYID}
-        cd ..
-        sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512
-        mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
-        FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
-        cd {{ SRCPATH }}
+        {% if vbmeta_verify %}
+        # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
+        FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
+        echo -e "\nBOOTLOADER minimal ID"
+        echo -e "\t${FPID:0:8}\n"
+        echo -e "BOOTLOADER full ID:"
+        echo -e "\t${FPID:0:16}"
+        echo -e "\t${FPID:16:16}"
+        echo -e "\t${FPID:32:16}"
+        echo -e "\t${FPID:48:16}\n"
+        out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null || true
+        out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null \
+            || (out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img;\
+                out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img)
         {% endif %}
 
-# the build script which will be executed after all the resets, syncs and patching have been done
-SH_COMMON_BUILD_SNIPPET: |
-        #!/bin/bash
-        ####################################################################################################################
+        echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}"
         
-        # be strict on failures
-        set -e
-
-        # fix build errors
-        export LC_ALL=C
-        
-        # unset any extendrom var
-        unset EXTENDROM_DEBUG_PATH EXTENDROM_BOOT_DEBUG EXTENDROM_PREROOT_BOOT ENABLE_EXTENDROM EXTENDROM_PACKAGES PREROOT_BOOT
-        unset EXTENDROM_DEBUG_PATH_SIZE_FULL EXTENDROM_DEBUG_PATH_SIZE_KERNEL EXTENDROM_DEBUG_PATH_SIZE_SELINUX 
-        unset EXTENDROM_DEBUG_PATH_SIZE_CRASH EXTENDROM_SIGNATURE_SPOOFING EXTENDROM_SIGSPOOF_FORCE_PDIR EXTENDROM_PATCHER_RESET
-        unset EXTENDROM_SIGNING_PATCHES EXTENDROM_PACKAGES_SKIP_DL
-
-        ########################### PREPARE #########################
-
-        # set legacy python2 env - if needed
-        # 1. sudo apt-get install python2 virtualenv python2-pip-whl python2-setuptools-whl
-        # 2. mkdir -p ~/.venv/python2
-        # 3. virtualenv --python=$(which python2) ~/.venv/python2
-        case {{ android_shortversion }} in
-            a9|a10) source ~/.venv/python2/bin/activate ;;
-        esac
-
-        ########################### BUILD #########################
-
-        # setup build env including stupid DOS workarounds
-        {{ DOS_INIT }}
-                
-        {% if axp_build_eng | bool %}
-        breakfast lineage_{{ target_model }}${brf_suffix}-eng
-        {% else %}
-        breakfast lineage_{{ target_model }}${brf_suffix}-user
-        {% endif %}
-        
-        # CCACHE
-        export USE_CCACHE={{ USE_CCACHE }}
-        if [ "{{ USE_CCACHE }}" -eq 1 ];then
-            export CCACHE_EXEC=/usr/bin/ccache
-            export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
-            mkdir -p {{ CCACHE_DIR }}
-            export CCACHE_DIR="{{ CCACHE_DIR }}"
-            {{ CCACHE_EXEC }} --max-size=10G
-        fi
-
-        {% if build_bootimage_only is defined and build_bootimage_only %}
-            # just build bootimage (e.g. for kernel patch tests)
-            set +e
-            resetEnv
-            mka bootimage
-            if [ $? -ne 0 ];then
-                cd {{ target_kernel_dir }}
-                for blame in $(grep error: {{ BUILD_LOG }} | grep -E ':[0-9]+:[0-9]+:'| cut -d / -f19-200 | cut -d : -f1-2 | grep : | sort -u | grep -vE '^$' | tr '\n' " " | sed 's#private/gs-google/##g');do
-                    echo "bp=${blame/:*} ln=${blame/*:}"
-                    export bp="${blame/:*}" ln="${blame/*:}"
-                    export commit=$(git blame $bp |grep " ${ln})" | cut -d " " -f1)
-                    echo "commit: >$commit<"
-                    export subject=$(git log --format=fuller -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
-                    echo "searching applied CVE for.. >${subject}<"
-                    if [ ! -z "$subject" ];then
-                        FCVE=$(grep "${subject}" {{ BUILD_LOG }} -B1 | grep "^processing:" | cut -d '/' -f2-20 | tr -d ' ')
-                        if [ -z "$TCVE" ];then
-                            TCVE="$FCVE"
-                        else
-                            dup=$(echo "$FCVE" | grep -c "$TCVE" || true)
-                            if [ $dup -eq 0 ];then
-                                TCVE="${TCVE} $FCVE"
-                            fi
-                        fi
-                    else
-                        echo "ERROR: no subject found"; exit 2
-                    fi
-                    if [ $? -ne 0 ];then
-                        echo "Cannot find subject in LOG! not a CVE??!"
-                        exit 3
-                    fi
-                done
-                echo "parsing all troublemaker CVEs finished, failing nevertheless so we can fix them!"
-                if [ -z "$TCVE" ];then
-                    echo "Woot?! no CVE(s) found??"
-                else
-                    echo -en "\nRPOBLEMATIC_CVES: "
-                    for cv in $TCVE;do echo -n "\"$cv\" " ;done
-                    echo -e "\n\n"
-                fi
-                exit 5
-            else
-                echo "OK: kernel was build successfully!"
-            fi
-        {% else %}
-            # regular build process
-
-            # extendrom flags
-            export ENABLE_EXTENDROM={{ use_extendrom }}
-            export EXTENDROM_PACKAGES="{{ extendrom_package_list | d(extendrom_package_list_default) }}"
-            export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
-            {% if extendrom_packages_skip_dl is defined %}export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}{% endif %}
-            export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
-            #export MAGISK_TARGET_ARCH=
-            export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
-            export EXTENDROM_DEBUG_PATH={{ extendrom_debug_path |d (extendrom_debug_path_default) }}
-            export EXTENDROM_DEBUG_PATH_SIZE_FULL={{ extendrom_debug_path_size_full | d(extendrom_debug_path_size_full_default) }}
-            export EXTENDROM_DEBUG_PATH_SIZE_KERNEL={{ extendrom_debug_path_size_kernel | d(extendrom_debug_path_size_kernel_default) }}
-            export EXTENDROM_DEBUG_PATH_SIZE_SELINUX={{ extendrom_debug_path_size_selinux | d(extendrom_debug_path_size_selinux_default) }}
-            export EXTENDROM_DEBUG_PATH_SIZE_CRASH={{ extendrom_debug_path_size_crash | d(extendrom_debug_path_size_crash_default) }}
-            export EXTENDROM_SIGNATURE_SPOOFING={{ extendrom_signature_spoofing }}
-            export EXTENDROM_PATCHER_RESET={{ extendrom_patcher_reset }}
-            export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
-            export EXTENDROM_ALLOW_ANY_CALL_RECORDING={{ extendrom_allow_any_call_recording }}
-            export EXTENDROM_INTERCEPT_INSTALLSRC={{ extendrom_intercept_installsrc | d('false') }}
-            # execute extendrom
-            $PWD/vendor/extendrom/er.sh
-    
-            echo "[GIT] checking kernel changes in {{ target_kernel_dir }}"
-            # add unstaged changes
-            CMT=0
-            cd {{ target_kernel_dir }}
-            git add -A || CMT=1
-            # check for uncommitted changes
-            CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-            # commit if required
-            if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
-               git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
-               echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
-            fi
-            git status
-            croot
-          
-            # build
-            resetEnv
-            {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
-            mka generate_verity_key
-            {% endif %}
-            {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
-            mka recoveryimage
-            if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
-            mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
-            {% elif custom_build_command is defined %}
-            {{ custom_build_command }}
-            {% elif axp_build_eng | bool %}
-            #mka sepolicy
-            buildDeviceDebug {{ target_model }}
-            {% else %}
-            buildDevice {{ target_model }}
-            {% endif %}
-            {% if vbmeta_verify %}
-            # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
-            FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
-            echo -e "\nBOOTLOADER minimal ID"
-            echo -e "\t${FPID:0:8}\n"
-            echo -e "BOOTLOADER full ID:"
-            echo -e "\t${FPID:0:16}"
-            echo -e "\t${FPID:16:16}"
-            echo -e "\t${FPID:32:16}"
-            echo -e "\t${FPID:48:16}\n"
-            out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null || true
-            out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null \
-                || (out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img;\
-                    out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files-eng.emy/IMAGES/vbmeta.img)
-            {% endif %}
-    
-            echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}"
-            
-        {% endif %}
+    {% endif %}
 
 # we patch the kernel!
 sec_patch_level: '05'
