@@ -17,7 +17,7 @@ extendrom_debug_path_size_crash_default: 200
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/google/msm-4.9
 
-# common device name (e.g used in vendor/axp)
+# common device name (used in vendor/axp)
 common_target_model: bonito
 
 # add OpenEUICC and use 32bit WebView
