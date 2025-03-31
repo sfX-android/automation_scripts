@@ -26,3 +26,7 @@ axp_release_recovery: True
 
 # allow creating factory image
 #custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
+
+# decrease key size
+KEYS_SIZE: 2048
+KEYS_HASHTYPE: sha256
