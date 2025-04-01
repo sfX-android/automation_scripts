@@ -197,6 +197,7 @@ SH_GRAPHENE_BUILD: |
       m -j{{ max_processes }} {{ graphene_build_targets }}
 
       # packaging & signing
+      m -j{{ max_processes }} otatools-package
       time script/finalize.sh
       time script/generate-release.sh {{ target_model }} $BUILD_NUMBER
 
