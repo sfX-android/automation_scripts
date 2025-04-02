@@ -155,11 +155,11 @@ SH_COMMON_FAIRPHONE_DL_FIRMWARE: |
     if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
     if [ -f "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" ];then
         echo "Using previously downloaded factory image: ${FACTORYFULLNAME}.zip"
-        cp "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" out/{{ target_model }}-factory.zip 
     else
         echo "${FACTORYFULLNAME}.zip not found in: {{ persistent_dir }}, downloading.."
-        wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
+        wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O {{ persistent_dir }}/${FACTORYFULLNAME}.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O {{ persistent_dir }}/${FACTORYFULLNAME}.zip; exit 9)
     fi
+    cp "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" out/{{ target_model }}-factory.zip 
     
     export FACZIP="$PWD/out/{{ target_model }}-factory.zip"
     cd vendor/firmware/{{ target_model }}
