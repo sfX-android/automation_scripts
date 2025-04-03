@@ -21,6 +21,11 @@ extendrom_package_list: "noGOSpdfviewer noGOSvanadium noGOSauditor noGOScontacts
 extendrom_signing_patches: 'false' # we patch graphene's source directly atm
 extendrom_patcher_reset: "false"  # as this resets divest patches (e.g. boot animation)
 extendrom_signing_force_dir: /home/androidsource/do-not-touch/graphene/vendor/extendrom/config/signing/aosp/A14
+CCACHE_DIR: "/ssd/ccache/jenkins/{{ git_repo_local_manifests_branch }}"
+RELEASE_TYPE: OFFICIAL
+release_build: "false"
+custom_release_server_path: "/srv/releases"
+lunch_buildtype: user
 
 # notification vars
 ota_hint: |-
@@ -198,10 +203,11 @@ SH_GRAPHENE_BUILD: |
       cd {{ SRCPATH }}
       # choosecombo release {{ target_model }} {{ lunch_buildtype }}
       #lunch {{ target_model }}-ap1a-{{ lunch_buildtype }}
-      m -j{{ max_processes }} {{ graphene_build_targets }}
+      #m -j{{ max_processes }} {{ graphene_build_targets }}
+      m {{ graphene_build_targets }} otatools-package
 
       # packaging & signing
-      m -j{{ max_processes }} otatools-package
+      #m -j{{ max_processes }} otatools-package
       time script/finalize.sh
       time script/generate-release.sh {{ target_model }} $BUILD_NUMBER
 

@@ -1,0 +1,27 @@
+---
+
+# human readable model name
+target_model_vendor: "Google"
+target_model_name: 'Pixel 9 Pro XL'
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
+
+# android version
+android_shortversion: a15
+
+git_kernel_branch: "15"
+
+git_repo_local_manifests_branch: "android-15"
+
+# extendrom stuff
+use_extendrom: "true"
+
+# do not gen a ROM checksum
+skip_gen_checksum: true
+
+# GOS_KERNEL_BRANCH:
+# ROM_NAME:
+# ROM_BL_TYPE:
+# lunch_buildtype:
+
+# see https://grapheneos.org/build#building
+graphene_build_targets: "vendorbootimage vendorkernelbootimage target-files-package"
