@@ -8,8 +8,6 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 # android version
 android_shortversion: a15
 
-git_kernel_branch: "15"
-
 git_repo_local_manifests_branch: "android-15"
 
 # extendrom stuff
