@@ -7,7 +7,7 @@
     regexp: '^({{ item.s }})'
     backrefs: true
   loop:
-      - f: {{ SRCPATH }}/device/fairphone/FP3/BoardConfig.mk
+      - f: "{{ SRCPATH }}/device/fairphone/FP3/BoardConfig.mk"
         s: 'BOARD_AVB_SYSTEM_KEY_PATH.*'
-      - f: {{ SRCPATH }}/device/fairphone/FP3/BoardConfig.mk
+      - f: "{{ SRCPATH }}/device/fairphone/FP3/BoardConfig.mk"
         s: 'BOARD_AVB_SYSTEM_ALGORITHM.*'
