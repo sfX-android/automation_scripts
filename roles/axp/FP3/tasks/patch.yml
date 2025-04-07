@@ -3,7 +3,7 @@
 - name: "Fix verity"
   ansible.builtin.lineinfile:
     path: "{{ item.f }}"
-    line: '\\1'
+    line: '#\1'
     regexp: '^({{ item.s }})'
     backrefs: true
   loop:
