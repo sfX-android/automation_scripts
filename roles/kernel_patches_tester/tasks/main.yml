@@ -1,7 +1,10 @@
 ---
 
-- include_tasks: dl_patcher.yml
-
+#- include_tasks: dl_patcher.yml
+- include_role:
+    name: axp/common
+    tasks_from: prep.yml
+    
 - name: "Identify models"
   connection: local
   ansible.builtin.shell: |
@@ -11,8 +14,6 @@
 #- name: "List identified models"
 #  debug:
 #    msg: "Models: {{ target_models.stdout_lines }}"
-
-- include_tasks: prep.yml
 
 - include_tasks: patch.yml
   vars:
