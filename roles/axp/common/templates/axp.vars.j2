@@ -142,16 +142,23 @@ export CVE_GIT_AUTHOR="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>"  # fallback when real au
 
 # OTA
 export DOS_BRANDING_LINK_NEWS="https://axpos.org/Changelog"
+export DOS_OTA_SERVER_PRIMARY_NAME="Stable"
 export DOS_OTA_SERVER_PRIMARY="https://sfxota.binbash.rocks:8010"
-export DOS_OTA_SERVER_EXTENDED=true #Enable to provide multiple choices as set below
+export DOS_OTA_SERVER_EXTENDED=true # Enable to provide multiple choices as set below
+
+# OTA server choices
 export DOS_OTA_SERVER_SECONDARY_NAME="UNSTABLE"
 export DOS_OTA_SERVER_SECONDARY="https://sfxota-beta.binbash.rocks:8010"
-export DOS_OTA_SERVER_ONION_PRIMARY="$DOS_OTA_SERVER_PRIMARY"
-export DOS_OTA_SERVER_ONION_SECONDARY="$DOS_OTA_SERVER_SECONDARY"
-export DOS_OTA_SERVER_ONION_DOMAIN_PRIMARY="http://sfxota.binbash.rocks:8009"  # allow cleartext traffic
-export DOS_OTA_SERVER_ONION_DOMAIN_SECONDARY="http://sfxota-beta.binbash.rocks:8009" # allow cleartext traffic
+export DOS_OTA_SERVER_ONION_PRIMARY_NAME="Tor:Stable"
+export DOS_OTA_SERVER_ONION_PRIMARY="http://qwmrjjs7mnbys35c6vgs6f47kemobjwynilp6cokjz5gxctfgdjfo7id.onion"
+export DOS_OTA_SERVER_ONION_SECONDARY_NAME="Tor:UNSTABLE"
+export DOS_OTA_SERVER_ONION_SECONDARY="http://qwmrjjs7mnbys35c6vgs6f47kemobjwynilp6cokjz5gxctfgdjfo7id.onion:8080"
+
+# OTA allow cleartext traffic via network_security_config.xml
+export DOS_OTA_SERVER_ONION_DOMAIN_PRIMARY="qwmrjjs7mnbys35c6vgs6f47kemobjwynilp6cokjz5gxctfgdjfo7id.onion"
+export DOS_OTA_SERVER_ONION_DOMAIN_SECONDARY="sfxota.binbash.rocks"
 
 # git push targets (reproducible builds)
 export AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC="device_generic_car|device_generic_goldfish|device_generic_goldfish-opengl|device_generic_trusty|device_generic_uml|device_generic_x86|device_generic_x86_64" # skipped by git push, not used for building AXP.OS
 export AXP_GIT_PUSH_DEVICE_EXCLUDE="${AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC}|device_google_|device_sony_|device_oneplus_|vendor_lge_|device_samsung_|device_fairphone_" # skipped by git push, use AXP_GIT_PUSH_DEVICE_INCLUDE to overwrite per device
-export AXP_GIT_PUSH_VENDOR_EXCLUDE="vendor_google|vendor_sony|vendor_oneplus|vendor_lge|vendor_samsung|vendor_axp|vendor_fairphone" # skipped by git push, use AXP_GIT_PUSH_VENDOR_INCLUDE to overwrite per device
+export AXP_GIT_PUSH_VENDOR_EXCLUDE="vendor_google|vendor_sony|vendor_oneplus|vendor_lge|vendor_samsung|vendor_fairphone|vendor_xiaomi" # skipped by git push, use AXP_GIT_PUSH_VENDOR_INCLUDE to overwrite per device
