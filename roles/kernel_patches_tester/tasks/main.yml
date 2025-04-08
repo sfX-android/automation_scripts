@@ -12,6 +12,8 @@
 #  debug:
 #    msg: "Models: {{ target_models.stdout_lines }}"
 
+- include_tasks: prep.yml
+
 - include_tasks: patch.yml
   vars:
     target_model: "{{ model }}"
