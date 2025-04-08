@@ -3,6 +3,3 @@
 model_exclusions: "common|a52q|xz2c"
 build_id: "kernel_cve_patch_testing"
 target_model: "{{ build_id }}"
-
-# overwrite source path so we do not tamper around on our regular builds
-DOSPATH: "/home/androidsource/do-not-touch/CVE/{{ build_id }}"
