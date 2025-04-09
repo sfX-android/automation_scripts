@@ -28,10 +28,13 @@
         - axp_build_recovery_only is defined and axp_build_recovery_only
     
     - name: "Get current/latest build filename"
-      shell: |
-         find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' -printf '%T@ %f\n' | sort -n | tail -1 | cut -d' ' -f2- | tr -d '\n' | sed 's#^\\./##g'
-      args:
-        chdir: "{{ ZIPDIR }}"
+      ansible.builtin.shell: |
+          {% if axp_build_eng | bool %}
+          cd {{ SRCPATH }}/out/target/product/{{ sub_model | d(target_model) }}
+          {% else %}
+          cd {{ ZIPDIR }}
+          {% endif %}
+          find ./ -maxdepth 1 -regex '.*/{{ LOCFILE }}' -printf '%T@ %f\n' | sort -n | tail -1 | cut -d' ' -f2- | tr -d '\n' | sed 's#^\\./##g'
       register: ROMFILE
 
     - name: "Check file var"
