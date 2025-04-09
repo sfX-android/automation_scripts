@@ -19,14 +19,20 @@
       
     - name: "Release OS for {{ BDEVICE }}"
       ansible.builtin.shell: |-
+        {% if axp_build_eng | bool %}
+          LOCP="{{ SRCPATH }}/out/target/product/{{ sub_model | d(target_model) }}"
+        {% else%}
+          LOCP="{{ ZIPDIR }}"
+        {% endif %}
+
         {% if unstable_build | d(False) | bool %}
-        {%   if axp_type | d('') == "slim" %}
-              scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/') }}
-        {%   else %}
-              scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
-        {%   endif %}
+        {%     if axp_type | d('') == "slim" %}
+                  scp $LOCP/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/') }}
+        {%     else %}
+                  scp $LOCP/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
+        {%     endif %}
         {% else %}
-        scp {{ ZIPDIR }}/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}
+                scp $LOCP/{{ item }} {{ groups.downloadserver[0] }}:{{ rempath }}
         {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
       loop:
