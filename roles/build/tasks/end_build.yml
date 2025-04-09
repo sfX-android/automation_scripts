@@ -48,5 +48,6 @@
         - ROM_FLAVOR != "TWRP"
         - ROM_FLAVOR != "SHRP"
         - axp_build_recovery_only is undefined or (axp_build_recovery_only is defined and not axp_build_recovery_only)
+        - not axp_build_eng | bool
 
   when: custom_release_script is undefined or (custom_release_script is defined and not custom_release_script)
