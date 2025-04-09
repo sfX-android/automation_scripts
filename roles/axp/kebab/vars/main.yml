@@ -8,7 +8,7 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 android_shortversion: a13
 
 # boot debugger path & config
-extendrom_debug_path_default: /mnt/vendor/persist
+extendrom_debug_path_default: /metadata
 extendrom_debug_path_size_full_default: 500 
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
