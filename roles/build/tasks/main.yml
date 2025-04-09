@@ -10,7 +10,9 @@
     - include_tasks: end_build.yml
     # generate sha hash
     - include_tasks: gen_checksum.yml
-      when: not skip_gen_checksum
+      when:
+        - not skip_gen_checksum
+        - not axp_build_eng | bool
     # post clean up if requested
     - include_tasks: post_cleanup.yml
       when: post_cleanup | bool
@@ -22,6 +24,7 @@
         - commit_push | d(False)
         - not early_push | d(False)
         - not axp_build_recovery_only | d(False)
+        - not axp_build_eng | bool
         - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
     
   when: not build_bootimage_only | d(False)
