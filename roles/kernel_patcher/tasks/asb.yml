@@ -34,7 +34,7 @@
             echo "{{ item.id }}-aosp" >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt
             echo "        Link - {{ item.link }}" >> {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt && PATCHED=$((PATCHED +1))
           else
-            sed -i 's|{{ item.id }}-aosp|{{ item.id }}-aosp\n        Link - {{ item.link }}|' Kernel_CVE_Patch_List.txt {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt >> {{ BUILD_LOG }} 2>&1 && PATCHED=$((PATCHED +1))
+            sed -i 's|{{ item.id }}-aosp|{{ item.id }}-aosp\n        Link - {{ item.link }}|g' {{ cve_kernel_patches_path }}/Kernel_CVE_Patch_List.txt >> {{ BUILD_LOG }} 2>&1 && PATCHED=$((PATCHED +1))
           fi
         fi
         echo $PATCHED
