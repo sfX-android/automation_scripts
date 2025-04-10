@@ -336,40 +336,10 @@ SH_COMMON_BUILD_SNIPPET: |
     fi
 
     f_detect_kerr(){
-        cd {{ target_kernel_dir }}
-        for blame in $(grep error: {{ BUILD_LOG }} | grep -E ':[0-9]+:[0-9]+:'| cut -d / -f19-200 | cut -d : -f1-2 | grep : | sort -u | grep -vE '^$' | tr '\n' " " | sed 's#private/gs-google/##g');do
-            echo "bp=${blame/:*} ln=${blame/*:}"
-            export bp="${blame/:*}" ln="${blame/*:}"
-            export commit=$(git blame $bp |grep " ${ln})" | cut -d " " -f1)
-            echo "commit: >$commit<"
-            export subject=$(git log --format=fuller -1 "$commit" | head -n7 | tail -n1 | sed -E 's/^\s+//g')
-            echo "searching applied CVE for.. >${subject}<"
-            if [ ! -z "$subject" ];then
-                FCVE=$(grep "${subject}" {{ BUILD_LOG }} -B1 | grep "^processing:" | cut -d '/' -f2-20 | tr -d ' ')
-                if [ -z "$TCVE" ];then
-                    TCVE="$FCVE"
-                else
-                    dup=$(echo "$FCVE" | grep -c "$TCVE" || true)
-                    if [ $dup -eq 0 ];then
-                        TCVE="${TCVE} $FCVE"
-                    fi
-                fi
-            else
-                echo "ERROR: no subject found"; exit 2
-            fi
-            if [ $? -ne 0 ];then
-                echo "Cannot find subject in LOG! not a CVE??!"
-                exit 3
-            fi
-        done
-        echo "parsing all troublemaker CVEs finished, failing nevertheless so we can fix them!"
-        if [ -z "$TCVE" ];then
-            echo "Woot?! no CVE(s) found??"
-        else
-            echo -en "\nRPOBLEMATIC_CVES: "
-            for cv in $TCVE;do echo -n "\"$cv\" " ;done
-            echo -e "\n\n"
-        fi
+        set +e
+        resetEnv
+        vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L {{ BUILD_LOG }}
+        exit 5
     }
 
     {% if build_bootimage_only is defined and build_bootimage_only %}
@@ -379,7 +349,6 @@ SH_COMMON_BUILD_SNIPPET: |
         mka bootimage
         if [ $? -ne 0 ];then
             f_detect_kerr
-            exit 5
         else
             echo "OK: kernel was build successfully!"
         fi
@@ -442,14 +411,8 @@ SH_COMMON_BUILD_SNIPPET: |
         #mka sepolicy
         buildDeviceDebug {{ target_model }}
         {% else %}
-        buildDevice {{ target_model }}
+        buildDevice {{ target_model }} || f_detect_kerr
         {% endif %}
-        if [ $? -ne 0 ];then
-            f_detect_kerr
-            exit 5
-        else
-            echo "OK: kernel was build successfully!"
-        fi
         {% if vbmeta_verify %}
         # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
         FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
@@ -470,7 +433,7 @@ SH_COMMON_BUILD_SNIPPET: |
         
     {% endif %}
 
-# we patch the kernel!
+# AXP.OS patches the kernel!
 sec_patch_level: '05'
 
 ##############################################################################################
