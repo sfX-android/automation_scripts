@@ -2,7 +2,7 @@
 
 - name: "Sync kernel patcher repos"
   ansible.builtin.shell: |
-    git fetch --all --tags --prune >> {{ BUILD_LOG }} 2>&1
+    git fetch --all --tags --prune --force >> {{ BUILD_LOG }} 2>&1
     git reset --hard origin/{{ item.branch | d("main") }} >> {{ BUILD_LOG }} 2>&1
     git checkout {{ item.branch | d("main") }} >> {{ BUILD_LOG }} 2>&1
     git pull --rebase >> {{ BUILD_LOG }} 2>&1
