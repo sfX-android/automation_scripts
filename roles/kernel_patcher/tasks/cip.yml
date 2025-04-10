@@ -19,6 +19,9 @@
     git am ~/.config/kernel-sec/tweak.patch
     rm conf/remotes.y*ml  # to ease up handling our remotes config should be only in ~/.config/kernel-sec
 
+    # revert slow-down commit
+    git revert -n 105a7541545edefd3f4f4bf800d72fc5220043a0
+
     # prepare & sync remotes
     # only needed once as further syncs are handled by: roles/kernel_patcher/tasks/sync.yml
     #./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
