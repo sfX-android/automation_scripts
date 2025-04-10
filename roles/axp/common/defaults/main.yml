@@ -402,14 +402,14 @@ SH_COMMON_BUILD_SNIPPET: |
         mka generate_verity_key
         {% endif %}
         {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
-        mka recoveryimage
+        mka recoveryimage || f_detect_kerr
         if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
         mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
         {% elif custom_build_command is defined %}
-        {{ custom_build_command }}
+        {{ custom_build_command }} || f_detect_kerr
         {% elif axp_build_eng | bool %}
         #mka sepolicy
-        buildDeviceDebug {{ target_model }}
+        buildDeviceDebug {{ target_model }} || f_detect_kerr
         {% else %}
         buildDevice {{ target_model }} || f_detect_kerr
         {% endif %}
