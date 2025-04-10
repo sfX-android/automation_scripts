@@ -21,7 +21,7 @@
 
     # revert slow-down commit
     # see: https://gitlab.com/cip-project/cip-kernel/cip-kernel-sec/-/commit/105a7541545edefd3f4f4bf800d72fc5220043a0#note_2444138025
-    git revert -n 105a7541545edefd3f4f4bf800d72fc5220043a0
+    #git revert -n 105a7541545edefd3f4f4bf800d72fc5220043a0
 
     # prepare & sync remotes
     # only needed once as further syncs are handled by: roles/kernel_patcher/tasks/sync.yml
