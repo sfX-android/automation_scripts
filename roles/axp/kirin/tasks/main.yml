@@ -1,0 +1,8 @@
+---
+
+- include_tasks: ../../common/tasks/setvars.yml
+- include_tasks: copy.yml
+
+#- include_tasks: patch.yml
+#  when:
+#    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
