@@ -1,0 +1,11 @@
+---
+
+- name: "Fix verity"
+  ansible.builtin.lineinfile:
+    path: "{{ item.f }}"
+    line: '#\1'
+    regexp: '^({{ item.s }})'
+    backrefs: true
+  loop:
+      - f: "{{ SRCPATH }}device/sony/nile-common/nile.mk"
+        s: '\$\(call inherit-product, build/target/product/verity.mk\)'  # this stops using system hashtree
