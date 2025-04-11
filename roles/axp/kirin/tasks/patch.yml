@@ -7,5 +7,5 @@
     regexp: '^({{ item.s }})'
     backrefs: true
   loop:
-      - f: "{{ SRCPATH }}device/sony/nile-common/nile.mk"
+      - f: "{{ SRCPATH }}/device/sony/nile-common/nile.mk"
         s: '\$\(call inherit-product, build/target/product/verity.mk\)'  # this stops using system hashtree
