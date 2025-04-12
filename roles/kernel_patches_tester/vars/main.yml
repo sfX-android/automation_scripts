@@ -1,5 +1,6 @@
 ---
 
-model_exclusions: "common|a52q|xz2c"
 build_id: "kernel_cve_patch_testing"
 target_model: "{{ build_id }}"
+
+generate_fairphone_factory_image: false
