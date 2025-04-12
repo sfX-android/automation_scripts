@@ -1,7 +1,7 @@
 ---
 
 - include_tasks: sync.yml
-  when: ktest_sync_dos | bool | d(False)
+  when: ktest_sync_dos | d(False) | bool
 
 - include_role:
     name: axp/common
