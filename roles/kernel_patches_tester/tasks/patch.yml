@@ -14,7 +14,9 @@
     name: axp/common
     tasks_from: prep.yml
 
-- include_tasks: sync.yml
+- include_role:
+    name: axp/common
+    tasks_from: sync.yml
   when: ktest_sync_dos | d(False) | bool
 
 - name: "Reset + sync kernel"
