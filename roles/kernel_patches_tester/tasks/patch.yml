@@ -21,13 +21,13 @@
             name: axp/common
             tasks_from: clean.yml
           vars:
-              ROM_FLAVOR: axp
+              git_repo_local_manifests_branch: "axp-{{ android_shortversion }}"
         
         - include_role:
             name: axp/common
             tasks_from: sync.yml
           vars:
-              ROM_FLAVOR: axp
+              git_repo_local_manifests_branch: "axp-{{ android_shortversion }}"
             
   when: ktest_sync_dos | d(False) | bool
 
