@@ -93,6 +93,7 @@ rempath_unstable: >-
 # will never delete anything within the following dir
 # used e.g. for downloaded google's factory images
 persistent_dir: "{{ zipdir_mntp }}/{{ ROM_FLAVOR }}/persistent/{{ target_model }}"
+android_shortversion: NA
 
 # build logging
 build_log_name: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
