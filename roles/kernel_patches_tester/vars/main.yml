@@ -5,5 +5,3 @@ target_model: "{{ build_id }}"
 kpath_roles_subdir: axp  # roles/xxx to parse
 generate_fairphone_factory_image: false
 
-DOSPATH: "/home/aosp/axp"
-SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
