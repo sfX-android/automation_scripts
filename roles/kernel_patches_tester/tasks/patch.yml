@@ -1,7 +1,7 @@
 ---
 
 - include_role:
-    name: "{{ ROM_FLAVOR }}/{{ target_model }}"
+    name: "{{ kpath_roles_subdir }}/{{ target_model }}"
     public: true
 
 - include_tasks: sync.yml
