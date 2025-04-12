@@ -1,7 +1,7 @@
 ---
 
-- name: "DEBUG INFO"
-  ansible.builtin.fail:
+- name: "Main: DEBUG INFO"
+  ansible.builtin.debug:
     msg: |
       DOSPATH: {{ DOSPATH }}
       SRCPATH: {{ SRCPATH }}
