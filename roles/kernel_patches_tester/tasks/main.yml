@@ -1,5 +1,11 @@
 ---
 
+- name: "DEBUG INFO"
+  ansible.builtin.fail:
+    msg: |
+      DOSPATH: {{ DOSPATH }}
+      SRCPATH: {{ SRCPATH }}
+
 - include_tasks: sync.yml
   when: ktest_sync_dos | d(False) | bool
 
