@@ -1,19 +1,23 @@
 ---
 
-- name: "Ensure the defined sources paths exist"
-  file:
-    path: "{{ item }}"
-    state: directory
-  loop:
-    - "{{ SRCPATH }}"
-    - "{{ DOSPATH }}"
-    - "{{ persistent_dir }}"
+- block:
 
-- name: Copy DOS renamer
-  copy:
-    src: rename
-    dest: "{{ SRCPATH }}/"
-    mode: 0755
+    - name: "Ensure the defined sources paths exist"
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - "{{ SRCPATH }}"
+        - "{{ DOSPATH }}"
+        - "{{ persistent_dir }}"
+    
+    - name: Copy DOS renamer
+      copy:
+        src: rename
+        dest: "{{ SRCPATH }}/"
+        mode: 0755
+
+  when: ROM_FLAVOR != "kernel_patches_tester"
 
 - name: "grab DOS CVE Checker"
   ansible.builtin.get_url:
