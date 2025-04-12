@@ -15,6 +15,7 @@
     tasks_from: prep.yml
 
 - block:
+  run_once: true
 
         - include_role:
             name: axp/common
@@ -36,7 +37,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  when: not ktest_sync_dos | d(False) | bool
+  #when: not ktest_sync_dos | d(False) | bool
 
 - name: "Apply CVE kernel patches"
   ansible.builtin.shell: |
