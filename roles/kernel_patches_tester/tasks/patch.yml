@@ -24,6 +24,9 @@
 
     rm -rf {{ target_kernel_dir }} || true
     {{ repo_bin }} sync -j{{ max_processes }} {{ target_kernel_dir }} >> {{ BUILD_LOG }} 2>&1
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
 
 - name: "Apply CVE kernel patches"
   ansible.builtin.shell: |
@@ -44,6 +47,7 @@
       && cd $CROOT && bash $DOS_SCRIPTS_CVES/android_{{ target_kernel_dir | regex_replace('/','_') }}.sh >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
   
 - include_role:
     name: build
