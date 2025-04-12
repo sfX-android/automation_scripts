@@ -20,10 +20,14 @@
         - include_role:
             name: axp/common
             tasks_from: clean.yml
+          vars:
+              ROM_FLAVOR: axp
         
         - include_role:
             name: axp/common
             tasks_from: sync.yml
+          vars:
+              ROM_FLAVOR: axp
             
   when: ktest_sync_dos | d(False) | bool
 
