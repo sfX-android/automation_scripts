@@ -5,7 +5,7 @@
     public: true
 
 - name: "Patch: DEBUG INFO"
-  ansible.builtin.fail:
+  ansible.builtin.debug:
     msg: |
       DOSPATH: {{ DOSPATH }}
       SRCPATH: {{ SRCPATH }}
