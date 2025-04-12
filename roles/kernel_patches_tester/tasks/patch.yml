@@ -16,7 +16,6 @@
 
 - name: "Clean+Sync"
   block:
-  run_once: true
 
         - include_role:
             name: axp/common
