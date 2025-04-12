@@ -2,7 +2,7 @@
 
 # build vars
 PREFIXFNAME: "SHRP"
-SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}"
+SRCPATH: "/home/aosp/{{ PREFIXFNAME }}"
 SEPARATE_OUT_DIR: "/ssd/{{ PREFIXFNAME }}/{{ BDEVICE }}/out"
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 
