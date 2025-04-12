@@ -14,7 +14,8 @@
     name: axp/common
     tasks_from: prep.yml
 
-- block:
+- name: "Clean+Sync"
+  block:
   run_once: true
 
         - include_role:
