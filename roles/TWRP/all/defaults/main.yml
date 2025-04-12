@@ -7,7 +7,7 @@ rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ target_model }}/"
 RELEASE_TYPE: "SFX"
 
 #SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}"
-SRCPATH: "/home/androidsource/do-not-touch/{{ PREFIXFNAME }}-aosp"
+SRCPATH: "/home/aosp/{{ PREFIXFNAME }}-aosp"
 
 # main TWRP manifest
 #git_repo_main_manifests: "https://github.com/minimal-manifest-twrp/platform_manifest_twrp_omni.git"
