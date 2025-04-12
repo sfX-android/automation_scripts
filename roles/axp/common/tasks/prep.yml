@@ -22,4 +22,4 @@
     mode: 0640
   retries: 4
   delay: 30
-  when: not skip_dl_cve_checker | bool | d(False)
+  when: not skip_dl_cve_checker | bool | d(True)
