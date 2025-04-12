@@ -8,7 +8,7 @@
 git_kernel_patcher_author: "sfX-bot <sfx-bot@binbash.rocks>"
 
 # base path for all required repos
-cve_kernel_base_path: "/home/androidsource/do-not-touch/CVE"
+cve_kernel_base_path: "/home/aosp/CVE"
 
 # CVE checker & downloader
 git_cve_checker: "ssh://git@code.binbash.rocks:22443/AXP.OS/cve_checker.git"
