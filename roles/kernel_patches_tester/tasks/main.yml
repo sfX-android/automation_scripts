@@ -8,7 +8,7 @@
 - name: "Identify models"
   connection: local
   ansible.builtin.shell: |
-    ls -1 ../roles/{{ ROM_FLAVOR }} | grep -vE "{{ model_exclusions }}"
+    ls -1 ../roles/{{ kpath_roles_subdir }} | grep -vE "{{ model_exclusions }}"
   register: target_models
 
 #- name: "List identified models"
