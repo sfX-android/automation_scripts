@@ -84,7 +84,7 @@ BUILDHOME: /home/jenkins
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 zipdir_mntp: "/home/androidsource/ZIPs"
 ZIPDIR: "{{ zipdir_mntp }}/{{ ROM_FLAVOR }}/zips/{{ target_model }}"
-SRCPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
+SRCPATH: "/home/aosp/{{ ROM_FLAVOR }}"
 post_cleanup_product_dir: "{{ SRCPATH }}/out/target/product/{{ target_model }}"
 #SEPARATE_OUT_DIR: "/ssd/{{ target_model }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}/out"
 manifest_paths_file: "/tmp/manifest_paths.{{ ROM_FLAVOR }}"
@@ -105,7 +105,7 @@ keep_build_logs: True    # if you override this in your env with >False< ANY pre
 # build signing
 sign_build: true
 # main base path for all key files (i.e. without model or OS flavor)
-keys_base_path: /home/androidsource/do-not-touch/KEYS
+keys_base_path: /home/aosp/KEYS
 keysdir: '{{ keys_base_path }}/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}'
 SRC_KEYSDIR: user-keys    # the directory name in the TOP dir of the android sources expected by the build system
 KEYS_CN: "{{ ROM_FLAVOR }}"
