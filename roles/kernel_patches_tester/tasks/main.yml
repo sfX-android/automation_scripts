@@ -1,6 +1,8 @@
 ---
 
-#- include_tasks: dl_patcher.yml
+- include_tasks: sync.yml
+  when: ktest_sync_dos | d(False) | bool
+
 - include_role:
     name: axp/common
     tasks_from: prep.yml
