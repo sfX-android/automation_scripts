@@ -4,7 +4,18 @@
     name: "{{ kpath_roles_subdir }}/{{ target_model }}"
     public: true
 
+- name: "Patch: DEBUG INFO"
+  ansible.builtin.fail:
+    msg: |
+      DOSPATH: {{ DOSPATH }}
+      SRCPATH: {{ SRCPATH }}
+
+- include_role:
+    name: axp/common
+    tasks_from: prep.yml
+
 - include_tasks: sync.yml
+  when: ktest_sync_dos | d(False) | bool
 
 - name: "Reset + sync kernel"
   ansible.builtin.shell: |
