@@ -14,9 +14,16 @@
     name: axp/common
     tasks_from: prep.yml
 
-- include_role:
-    name: axp/common
-    tasks_from: sync.yml
+- block:
+
+        - include_role:
+            name: axp/common
+            tasks_from: clean.yml
+        
+        - include_role:
+            name: axp/common
+            tasks_from: sync.yml
+            
   when: ktest_sync_dos | d(False) | bool
 
 - name: "Reset + sync kernel"
@@ -29,6 +36,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
+  when: not ktest_sync_dos | d(False) | bool
 
 - name: "Apply CVE kernel patches"
   ansible.builtin.shell: |
