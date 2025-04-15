@@ -22,3 +22,6 @@ axp_release_recovery: True
 
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
+
+# disable vbmeta verify_image after build
+vbmeta_verify: false
