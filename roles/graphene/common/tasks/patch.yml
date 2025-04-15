@@ -19,3 +19,9 @@
     regexp: BUILD_ID=.*
     line: "BUILD_ID={{ ROM_NAME }}-v{{ ROM_VERSION }}"
     state: present
+
+# this overwrites everything otherwise
+- name: "Wipe Pixel board config"
+  ansible.builtin.shell: echo > build/make/target/board/BoardConfigPixelCommon.mk
+  args:
+    chdir: "{{ SRCPATH }}"
