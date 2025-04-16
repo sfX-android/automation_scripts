@@ -37,8 +37,13 @@ vbmeta_verify: false
 divest_unsupported_device: true
 unsupported_device_kernel_patch: true
 
-extendrom_intercept_installsrc: 'true'
-extendrom_allow_any_call_recording: 'true'
+# this is a low-end device (optimize for performance)
+axp_lowend_device: True
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/axp/{{ sub_model }})
+
+
+# special testing area
+extendrom_intercept_installsrc: 'true'
+extendrom_allow_any_call_recording: 'true'
