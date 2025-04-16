@@ -1,0 +1,17 @@
+#!/bin/bash
+################################################################################################################
+# device specific vars for AXP.OS 
+#
+# overwrites/extends the global vars in: 
+# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/templates/divested.vars.j2
+#
+# additional / current list of possible options:
+# https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
+################################################################################################################
+
+# git push
+export AXP_GIT_PUSH_DEVICE_INCLUDE="device_sony_kirin|device_sony_nile-common"
+export AXP_GIT_PUSH_VENDOR_INCLUDE="vendor_sony_kirin|vendor_sony_nile-common"
+
+# TESTING
+export DOS_GRAPHENE_MALLOC=false
