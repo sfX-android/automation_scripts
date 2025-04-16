@@ -20,7 +20,7 @@
     - name: "Release OS for {{ BDEVICE }}"
       ansible.builtin.shell: |-
         {% if axp_build_eng | bool %}
-          if [ "{{ item }}" == "{{ ROMFILE.stdout }}.prop" ];then exit;fi
+          if [ '{{ item }}' == '{{ ROMFILE.stdout }}.prop' ];then exit;fi
           LOCP="{{ SRCPATH }}/out/target/product/{{ sub_model | d(target_model) }}"
         {% else%}
           LOCP="{{ ZIPDIR }}"
