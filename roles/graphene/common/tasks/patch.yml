@@ -29,6 +29,12 @@
 - name: "Set Emergency Call threshold"
   ansible.builtin.lineinfile:
     path: "{{ SRCPATH }}/frameworks/base/services/core/java/com/android/server/GestureLauncherService.java"
-    regexp: "EMERGENCY_GESTURE_POWER_TAP_COUNT_THRESHOLD\s+=\s+.*;"
+    regexp: "EMERGENCY_GESTURE_POWER_TAP_COUNT_THRESHOLD\\s+=\\s+.*;"
     line: "EMERGENCY_GESTURE_POWER_TAP_COUNT_THRESHOLD = {{ emergency_gesture_power_tap_count_threshold }};"
   when: emergency_gesture_power_tap_count_threshold is defined
+
+- name: "Set keys workaround for PRODUCT_DEFAULT_DEV_CERTIFICATE"
+  ansible.builtin.shell: >
+    for i in $(find keys/{{ target_model }} -type f -name '*.pem' -or -name '*.pk8');do ln -s {{ target_model }}/${i##*/} keys/;done
+  args:
+    chdir: "{{ SRCPATH }}"
