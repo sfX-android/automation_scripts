@@ -35,6 +35,10 @@ kernel_stable_path: "{{ cve_kernel_base_path }}/stable_kernel"
 git_asb_harvester: "ssh://git@code.binbash.rocks:22443/AXP.OS/tools_android_bulletin_harvester.git"
 asb_harvester_path:  "{{ cve_kernel_base_path }}/bulletin_harvester"
 
+# set dynamic sec_patch_date_last:
+sec_month: "{{ '%02d' | format((current_month | int) + 1) }}"
+sec_patch_date_last: "{{ current_year }}{{ sec_month }}"
+
 # set start and end ranges.
 # we start at 2024-12 as that was the last update by DivestOS so we assume that
 # all patches up to then are set properly already
