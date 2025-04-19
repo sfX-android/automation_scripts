@@ -17,6 +17,7 @@
     git fetch --tags
     git checkout {{ sec_patch_date_last | int - 1 | regex_replace('(^.{4})(.{2})','\1-\2-05') }} || true
     git status
+    cd $CROOT
     
     startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1
