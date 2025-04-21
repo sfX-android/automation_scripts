@@ -38,3 +38,12 @@
     for i in $(find keys/{{ target_model }} -type f -name '*.pem' -or -name '*.pk8');do ln -s {{ target_model }}/${i##*/} keys/;done
   args:
     chdir: "{{ SRCPATH }}"
+
+# if PRODUCT_DEFAULT_DEV_CERTIFICATE is set it will be used also for signing the OTA
+# but if you want to use different certs for app signing and the OTA the following is required
+- name: "Set releasekey workaround for OTA signing when PRODUCT_DEFAULT_DEV_CERTIFICATE is set"
+  ansible.builtin.lineinfile:
+    path: "{{ SRCPATH }}/build/make/tools/releasetools/ota_utils.py"
+    regexp: 'package_key=OPTIONS.package_key'
+    line: 'package_key="keys/releasekey"'
+  state: present
