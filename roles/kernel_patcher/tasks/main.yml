@@ -16,4 +16,4 @@
 
 - include_tasks: push.yml
   when:
-    - commit_push | bool | d(False)
+    - commit_push | bool | d(True)
