@@ -86,7 +86,10 @@ extendrom_signature_spoofing: "true"
 extendrom_patcher_reset: "false"  # as this resets divest patches (e.g. boot animation)
 extendrom_boot_debug: "true"
 extendrom_signing_patches: 'true'
-extendrom_allow_any_call_recording: 'false'
+# enable installation source interception
+extendrom_intercept_installsrc: 'true'
+# disable call restrictions
+extendrom_allow_any_call_recording: 'true'
 
 # keys
 KEYS_CN: "{{ os_name }}"
