@@ -5,6 +5,7 @@
       export LC_ALL=C
       CMT=0
       echo "processing: {{ item }}" >> {{ BUILD_LOG }}
+      TAG="$(date +%F)"
       
       # add unstaged changes
       git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
@@ -18,6 +19,16 @@
             && echo "committed changes $(git log -1 --format=oneline)" >> {{ BUILD_LOG }} \
             && git pull --rebase origin main >> {{ BUILD_LOG }} 2>&1 \
             && git push --set-upstream origin >> {{ BUILD_LOG }} 2>&1 && echo "pushed changes!" >> {{ BUILD_LOG }}
+
+          git tag -a "$TAG" -m "tagging state on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1
+          if [ $TE -eq 1 ];then
+              (git tag -d "$TAG" >> {{ BUILD_LOG }} 2>&1; git push origin --delete "$TAG" >> {{ BUILD_LOG }} 2>&1 || true; git tag -a "$TAG" -m "tagging state on $TAG" >> {{ BUILD_LOG }} 2>&1)
+              git push --set-upstream origin $TAG >> {{ BUILD_LOG }} 2>&1
+              echo "[GIT] updated existing tag: $TAG" >> {{ BUILD_LOG }}
+          else
+              git push --set-upstream origin $TAG >> {{ BUILD_LOG }} 2>&1
+              echo "[GIT] pushed new tag: $TAG" >> {{ BUILD_LOG }}
+          fi
       fi
   args:
     executable: /bin/bash
