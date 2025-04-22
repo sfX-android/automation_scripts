@@ -17,8 +17,9 @@
        fi
        git reset --hard origin/{{ axp_main_branch | d('axp') }} >> {{ BUILD_LOG }} 2>&1
        git pull
-       git submodule status >> {{ BUILD_LOG }} 2>&1
+       git submodule status >> {{ BUILD_LOG }} 2>&1 
        git submodule deinit -f .
+       if [ -d Patches/Linux/ ];then rm -rf Patches/Linux/;fi
        git submodule sync
        git submodule update --init --recursive --checkout >> {{ BUILD_LOG }} 2>&1
        git submodule status >> {{ BUILD_LOG }} 2>&1
