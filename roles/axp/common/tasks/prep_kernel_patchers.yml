@@ -19,9 +19,9 @@
 
     # checkout sec patch date - if avail
     cd $DOS_PATCHES_LINUX_CVES
-    git fetch --tags
-    git checkout {{ cve_tag | regex_replace('(^.{4})(.{2})','\1-\2-AOS') }} || true
-    git status
+    git fetch --tags >> {{ BUILD_LOG }} 2>&1
+    git checkout {{ cve_tag | regex_replace('(^.{4})(.{2})','\1-\2-AOS') }} >> {{ BUILD_LOG }} 2>&1 || true 
+    git status >> {{ BUILD_LOG }} 2>&1
     cd $CROOT
     
     startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
