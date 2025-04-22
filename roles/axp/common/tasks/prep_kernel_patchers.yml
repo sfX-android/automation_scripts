@@ -15,7 +15,7 @@
     # checkout sec patch date - if avail
     cd $DOS_PATCHES_LINUX_CVES
     git fetch --tags
-    git checkout {{ sec_patch_date_last | int - 1 | regex_replace('(^.{4})(.{2})','\1-\2-AOS') }} || true
+    git checkout {{ sec_patch_date_last | int - 1 | string | regex_replace('(^.{4})(.{2})','\1-\2-AOS') }} || true
     git status
     cd $CROOT
     
