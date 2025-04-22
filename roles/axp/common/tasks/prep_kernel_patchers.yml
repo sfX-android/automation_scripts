@@ -28,6 +28,7 @@
     {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1
     cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
       && bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
+    echo "Setup CVE kernel patcher FINISHED" >> {{ BUILD_LOG }}
   args:
     executable: /bin/bash
 
