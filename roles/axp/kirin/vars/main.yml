@@ -25,3 +25,6 @@ skip_wireguard: True
 
 # disable vbmeta verify_image after build
 vbmeta_verify: false
+
+# disable AVB + verity
+axp_enable_avb: 'false'
