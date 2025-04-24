@@ -27,5 +27,8 @@ unsupported_device_kernel_patch: true
 # disable verified boot
 vbmeta_verify: false
 
+# disable AVB + verity
+axp_enable_avb: 'false'
+
 # this is a low-end device (optimize for performance)
 axp_lowend_device: True
