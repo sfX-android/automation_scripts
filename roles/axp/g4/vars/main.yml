@@ -30,6 +30,7 @@ rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
 # disable verified boot
 vbmeta_verify: false
+axp_enable_avb: 'false'
 
 # enable kernel patching
 # this kernel is special bc it (still) exists in Fix_CVE_Patchers.sh (they supported it a while ago)
