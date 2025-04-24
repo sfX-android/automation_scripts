@@ -32,5 +32,8 @@ skip_wireguard: True
 # no verified boot:
 vbmeta_verify: false
 
+# this is a low-end device (optimize for performance)
+axp_lowend_device: True
+
 extendrom_intercept_installsrc: 'true'
 extendrom_allow_any_call_recording: 'true'
