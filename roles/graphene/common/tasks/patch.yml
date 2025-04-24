@@ -46,4 +46,4 @@
     path: "{{ SRCPATH }}/build/make/tools/releasetools/ota_utils.py"
     regexp: 'package_key=OPTIONS.package_key'
     line: 'package_key="keys/releasekey"'
-  state: present
+    state: present
