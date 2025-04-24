@@ -26,3 +26,6 @@ unsupported_device_kernel_patch: true
 
 # disable verified boot
 vbmeta_verify: false
+
+# this is a low-end device (optimize for performance)
+axp_lowend_device: True
