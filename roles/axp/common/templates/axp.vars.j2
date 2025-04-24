@@ -115,6 +115,7 @@ export DOS_MAX_THREADS_REPO={{ max_processes_sync }}   # Max amount of threads u
 export DOS_MAX_THREADS_BUILD={{ max_processes }}   # Max amount of threads used for build, e.g. used by make (shouldn't exceed your CPU cores count)
 export DOS_SIGNING_KEYS="{{ keys_base_path }}/{{ os_name }}"
 #export DOS_SIGNING_GPG=""
+export AXP_ENABLE_AVB={{ axp_enable_avb | d('true') }}
 
 # release directory
 export DOS_BUILDS="{{ dos_release_dir }}"
