@@ -32,4 +32,5 @@ skip_wireguard: True
 # no verified boot:
 vbmeta_verify: false
 
+extendrom_intercept_installsrc: 'true'
 extendrom_allow_any_call_recording: 'true'
