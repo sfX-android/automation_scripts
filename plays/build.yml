@@ -74,6 +74,7 @@
           name: release
         when:
           - (override_release_build == "undef" and release_build == "true") or (override_release_build == "true")
+          - not build_bootimage_only | d(False)
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
