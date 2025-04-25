@@ -38,5 +38,5 @@ axp_enable_avb: 'false'
 # this is a low-end device (optimize for performance)
 axp_lowend_device: True
 
+# special testing area
 extendrom_intercept_installsrc: 'true'
-extendrom_allow_any_call_recording: 'true'
