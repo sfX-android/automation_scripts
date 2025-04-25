@@ -47,4 +47,3 @@ dl_links: |-
 
 # special testing area
 extendrom_intercept_installsrc: 'true'
-extendrom_allow_any_call_recording: 'true'
