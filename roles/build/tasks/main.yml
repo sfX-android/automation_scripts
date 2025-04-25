@@ -25,6 +25,6 @@
         - not early_push | d(False)
         - not axp_build_recovery_only | d(False)
         - not axp_build_eng | bool
-        - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+        - (override_release_build == "undef" and release_build == "true") or (override_release_build == "true")
     
   when: not build_bootimage_only | d(False)
