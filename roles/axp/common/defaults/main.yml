@@ -176,9 +176,9 @@ SH_COMMON_FAIRPHONE_DL_FIRMWARE: |
 SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         {% if axp_build_eng | bool %}
         #mka sepolicy
-        buildDeviceDebug {{ target_model }}
+        buildDeviceDebug {{ target_model }} || f_detect_kerr
         {% else %}
-        buildDevice {{ target_model }}
+        buildDevice {{ target_model }} || f_detect_kerr
         {% endif %}
         {% if generate_fairphone_factory_image | bool %}
 
@@ -254,9 +254,9 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
 SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% if axp_build_eng | bool %}
     #mka sepolicy
-    buildDeviceDebug {{ target_model }}
+    buildDeviceDebug {{ target_model }} || f_detect_kerr
     {% else %}
-    buildDevice {{ target_model }}
+    buildDevice {{ target_model }} || f_detect_kerr
     {% endif %}
      {% if generate_pixel_factory_image | bool %}
     
@@ -416,7 +416,7 @@ SH_COMMON_BUILD_SNIPPET: |
         if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
         mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
         {% elif custom_build_command is defined %}
-        {{ custom_build_command }} || f_detect_kerr
+        {{ custom_build_command }}
         {% elif axp_build_eng | bool %}
         #mka sepolicy
         buildDeviceDebug {{ target_model }} || f_detect_kerr
