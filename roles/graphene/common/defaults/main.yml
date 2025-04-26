@@ -150,21 +150,25 @@ SH_GRAPHENE_BUILD: |
       export TARGET_RELEASE=cur
       
       source build/envsetup.sh
-      case $target_model in
-        lynx) lunch aosp_{{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }} ;;
-        *) lunch {{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }} ;;
-      esac
       
       {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
       # fetch & extract blobs
       yarn install --ignore-engines --cwd vendor/adevtool/
+      
+      lunch sdk_phone64_x86_64-cur-user      
       m -j{{ max_processes }} aapt2
+      
       sudo rm -rf vendor/adevtool/dl/*
       vendor/adevtool/bin/run generate-all -d {{ target_model }}
       {% endif %}
 
-      # ensure mismatching build is non-fatal
+      # ensure mismatching BUILD_ID is non-fatal
       sed -i 's/error /warning /g' vendor/google_devices/{{ target_model }}/{{ target_model }}.mk
+
+      case $target_model in
+        lynx) lunch aosp_{{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }} ;;
+        *) lunch {{ target_model }}-${TARGET_RELEASE}-{{ lunch_buildtype }} ;;
+      esac
       
       # extendrom
       {% if use_extendrom is defined and use_extendrom == "true" %}
