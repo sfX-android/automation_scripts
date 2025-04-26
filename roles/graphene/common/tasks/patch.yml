@@ -29,8 +29,8 @@
 - name: "Set Emergency Call threshold"
   ansible.builtin.lineinfile:
     path: "{{ SRCPATH }}/frameworks/base/services/core/java/com/android/server/GestureLauncherService.java"
-    regexp: '(.* )(EMERGENCY_GESTURE_POWER_TAP_COUNT_THRESHOLD\s+=\s+).*'
-    line: '\1\2{{ emergency_gesture_power_tap_count_threshold }};'
+    regexp: '(.* )(EMERGENCY_GESTURE_POWER_TAP_COUNT_THRESHOLD).*'
+    line: '\1\2 = {{ emergency_gesture_power_tap_count_threshold }};'
     backrefs: true
   when: emergency_gesture_power_tap_count_threshold is defined
 
