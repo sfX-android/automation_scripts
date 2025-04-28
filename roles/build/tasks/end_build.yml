@@ -25,6 +25,8 @@
             exit 3
         fi
       {% endif %}
+  args:
+    executable: /bin/bash
   loop: "{{ parselogerr }}"
   when: parselogerr is defined
 
