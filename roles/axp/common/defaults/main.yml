@@ -67,7 +67,18 @@ axp_clean_paths:
     - "{{ SRCPATH }}/device"
     - "{{ SRCPATH }}/vendor/axp"
 
-# common search strings to parse the log after building.
+
+# Bootloader ID (first line) for verifying build log
+# this MUST be set per device, the following are just for the case if no AVB is used at all
+# and can be anything, as long as it appears in the log and only once
+axp_bootloader_id_pro: 'You should find your build here'
+axp_bootloader_id_slim: 'You should find your build here'
+
+# set bootloader id for the current build process depending on the AXP.OS flavor
+axp_bootloader_id: >-
+    {% if axp_type | d(ROM_FLAVOR) == "slim" %}{{ axp_bootloader_id_slim }}{% else %}{{ axp_bootloader_id_pro }}{% endif %}
+
+# common search strings used to parse the log after building.
 # when overriding these, copy the WHOLE part of this to a device vars yml.
 # search: regex string to search for (using: "grep -oE")
 # expect: a (non-regex!) string expected as a result
@@ -79,6 +90,8 @@ parselogerr:
       expect: ''
     - search: 'Algorithm:.*SHA(1|256)_RSA(1024|2048)' # ALWAYS COPY THIS! AVB (if enabled) should never use a weak key (at least "SHA512_4096")
       search: ''
+    - search: "{{ axp_bootloader_id }}" # ALWAYS COPY THIS! Check the device's bootloader ID (if AVB / vbmeta_verify is on)
+      expect_cnt: 1
     - search: 'Hash Algorithm:.*sha(256|1)' # fail if vbmeta hash algo found (info_image) but not sha512
       expect: ''
     - search: 'Successfully verified sha(1|256) hash of' # fail if vbmeta verify found (verify_image) but not sha512
