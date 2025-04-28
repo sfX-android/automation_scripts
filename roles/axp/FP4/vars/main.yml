@@ -28,3 +28,7 @@ axp_release_recovery: True
 
 # allow creating factory image
 custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
+
+# Bootloader ID (first line) for verifying build log
+axp_bootloader_id_pro: ''
+axp_bootloader_id_slim: '272DE00712A447F3'

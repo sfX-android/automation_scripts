@@ -25,3 +25,7 @@ extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
+
+# Bootloader ID (first line) for verifying build log
+axp_bootloader_id_pro: '27AA5BB1975D18B0'
+axp_bootloader_id_slim: ''

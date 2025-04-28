@@ -23,11 +23,6 @@ extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 # allow creating factory image
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 
-#dtree_cl: |-
-#  \- device tree: [commits](https://github.com/AXP-OS/android_device_google_sunfish/commits/{{ build_tag }})
-
-#cdtree_cl: |-
-#  \- common tree: [commits](https://github.com/AXP-OS/android_device_google_gs101/commits/{{ build_tag }})
-
-#kernel_cl: |-
-#  \- Kernel: [commits](https://github.com/AXP-OS/android_kernel_google_msm-4.14/commits/{{ build_tag }})
+# Bootloader ID (first line) for verifying build log
+axp_bootloader_id_pro: '2357DB9EBF8090F9'
+axp_bootloader_id_slim: 'B49112D3DD534A21'

@@ -25,3 +25,7 @@ custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
+
+# Bootloader ID (first line) for verifying build log
+axp_bootloader_id_pro: '45000208280357DD'
+axp_bootloader_id_slim: ''

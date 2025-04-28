@@ -28,7 +28,8 @@ axp_release_recovery: True
 #custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
 
 # Bootloader ID (first line) for verifying build log
-axp_bootloader_id: '2F554EFA46B4B4A9'
+axp_bootloader_id_pro: ''
+axp_bootloader_id_slim: '2F554EFA46B4B4A9'
 
 # override common log err catcher
 parselogerr:

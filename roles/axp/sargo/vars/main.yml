@@ -26,3 +26,9 @@ extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 # allow creating factory image
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 
+# remove disk space reservation (e.g. on product partition)
+remove_space_reservation: 'yes'
+
+# Bootloader ID (first line) for verifying build log
+axp_bootloader_id_pro: 'BB8B6D9E18C68E46'
+axp_bootloader_id_slim: 'AC2F6121652F3607'

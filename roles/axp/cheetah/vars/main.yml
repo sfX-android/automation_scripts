@@ -25,3 +25,7 @@ extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
 # allow creating factory image
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+
+# Bootloader ID (first line) for verifying build log
+axp_bootloader_id_pro: '6F32410F17EF997F'
+axp_bootloader_id_slim: ''

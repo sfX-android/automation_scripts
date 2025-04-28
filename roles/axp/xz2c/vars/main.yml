@@ -19,3 +19,7 @@ target_kernel_dir: kernel/sony/sdm845
 
 # upload the recovery image
 axp_release_recovery: True
+
+# Bootloader ID (first line) for verifying build log
+axp_bootloader_id_pro: 'F0C96BB5DA92C431'
+axp_bootloader_id_slim: ''
