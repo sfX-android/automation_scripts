@@ -18,7 +18,7 @@
         fi
       {% else %}
         RES=$(grep -oE "{{ item.search }}" {{ BUILD_LOG }})
-        if [ "$RES" == "{{ item.expect" ];then
+        if [ "$RES" == "{{ item.expect }}" ];then
             echo '>{{ item.expect }}< is matching on >{{ item.search }}<!'
         else
             echo '>{{ item.expect }}< IS NOT MATCHING ON >{{ item.search }}<!!!'
