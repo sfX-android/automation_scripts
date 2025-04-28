@@ -9,7 +9,7 @@
 - name: "Check log for fail pattern"
   ansible.builtin.shell: |
       {% if item.expect_cnt is defined %}
-        RES=$(grep -coE "{{ item.search }}" {{ BUILD_LOG }})
+        RES=$(grep -coE '{{ item.search }}' {{ BUILD_LOG }})
         if [ "$RES" -eq '{{ item.expect_cnt }}' ];then
             echo 'Count >{{ item.expect_cnt }}< is matching on >{{ item.search }}<!'
         else
@@ -17,7 +17,7 @@
             exit 3
         fi
       {% else %}
-        RES=$(grep -oE "{{ item.search }}" {{ BUILD_LOG }})
+        RES=$(grep -oE '{{ item.search }}' {{ BUILD_LOG }})
         if [ "$RES" == '{{ item.expect }}' ];then
             echo '>{{ item.expect }}< is matching on >{{ item.search }}<!'
         else
