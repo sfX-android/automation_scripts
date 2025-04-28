@@ -96,7 +96,7 @@ persistent_dir: "{{ zipdir_mntp }}/{{ ROM_FLAVOR }}/persistent/{{ target_model }
 android_shortversion: NA
 
 # build logging
-build_log_name: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
+build_log_name: "build_{{ target_model }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
 build_log_name_noid: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}"
 BUILD_LOG: "{{ BUILDHOME }}/{{ build_log_name }}"
 build_log_name_latest: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}_latest.log"
