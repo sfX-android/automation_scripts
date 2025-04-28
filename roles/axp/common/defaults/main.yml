@@ -89,7 +89,7 @@ parselogerr:
     - search: 'cdbb77177f731920bbe0a0f94f84d9038ae0617d' # ALWAYS COPY THIS! sha1 of testkey we NEVER EVER want something signed with a testkey
       expect: ''
     - search: 'Algorithm:.*SHA(1|256)_RSA(1024|2048)' # ALWAYS COPY THIS! AVB (if enabled) should never use a weak key (at least "SHA512_4096")
-      search: ''
+      expect: ''
     - search: "{{ axp_bootloader_id }}" # ALWAYS COPY THIS! Check the device's bootloader ID (if AVB / vbmeta_verify is on)
       expect_cnt: 1
     - search: 'Hash Algorithm:.*sha(256|1)' # fail if vbmeta hash algo found (info_image) but not sha512
