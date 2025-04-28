@@ -179,11 +179,10 @@
       {% if just_git_push %}
           echo "[GIT] skipped already pushed tag: $TAG as just_git_push var is true"  >> {{ BUILD_LOG }}
       {% else %}
-          PTAG=$TAG
-          TAG=${TAG}_$(date +%s)
-          git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1
-          git push --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT] existing tag ($PTAG) found, changed ours to: $TAG" >> {{ BUILD_LOG }}
+          PTAG=${TAG}_$(date +%s)
+          git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" >> {{ BUILD_LOG }} 2>&1
+          git push --set-upstream up $PTAG >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT] existing tag ($TAG) found, changed ours to: $PTAG" >> {{ BUILD_LOG }}
       {% endif %}
       else
           git push --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
