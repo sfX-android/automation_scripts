@@ -26,3 +26,18 @@ axp_release_recovery: True
 
 # allow creating factory image
 #custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
+
+# override common log err catcher
+parselogerr:
+    - search: 'testkey' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
+      expect: ''
+    - search: 'cdbb77177f731920bbe0a0f94f84d9038ae0617d' # ALWAYS COPY THIS! sha1 of testkey we NEVER EVER want something signed with a testkey
+      expect: ''
+    - search: 'Algorithm:.*SHA(1|256)_RSA(1024|2048)' # ALWAYS COPY THIS! AVB (if enabled) should never use a weak key (at least "SHA512_4096")
+      expect_cnt: ''
+    - search: 'Hash Algorithm:.*sha512' # FP3 fails to boot when increasing
+      expect_cnt: 0
+    - search: 'Successfully verified sha256 hash of.*(boot|dtbo)' # FP3 fails to boot when touching these
+      expect_cnt: 2
+    - search: 'Successfully verified sha1 hashtree of.*vendor' # FP3 fails to boot when touching this
+      expect_cnt: 1
