@@ -67,6 +67,23 @@ axp_clean_paths:
     - "{{ SRCPATH }}/device"
     - "{{ SRCPATH }}/vendor/axp"
 
+# common search strings to parse the log after building.
+# when overriding these, copy the WHOLE part of this to a device vars yml.
+# search: regex string to search for (using: "grep -oE")
+# expect: a (non-regex!) string expected as a result
+# (usally you search for something you do NOT want to see in the log and expect an empty result then)
+parselogerr:
+    - search: 'testkey' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
+      expect: ''
+    - search: 'cdbb77177f731920bbe0a0f94f84d9038ae0617d' # ALWAYS COPY THIS! sha1 of testkey we NEVER EVER want something signed with a testkey
+      expect: ''
+    - search: 'Algorithm:.*SHA(1|256)_RSA(1024|2048)' # ALWAYS COPY THIS! AVB (if enabled) should never use a weak key (at least "SHA512_4096")
+      search: ''
+    - search: 'Hash Algorithm:.*sha(256|1)' # fail if vbmeta hash algo found (info_image) but not sha512
+      expect: ''
+    - search: 'Successfully verified sha(1|256) hash of' # fail if vbmeta verify found (verify_image) but not sha512
+      expect: ''
+    
 # allow to (manually) set selinux permissive
 axp_allow_permissive: True
 
