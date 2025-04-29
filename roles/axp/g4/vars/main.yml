@@ -46,4 +46,4 @@ dl_links: |-
 
 
 # special testing area
-extendrom_intercept_installsrc: 'true'
+#extendrom_intercept_installsrc: 'true'
