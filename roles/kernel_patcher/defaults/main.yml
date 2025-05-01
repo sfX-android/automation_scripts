@@ -51,4 +51,6 @@ sec_patch_topics_kernel:
 # set the max allowed commit date for the downloader (CVE_PATCHER_NOT_OLDER_THAN_DATE)
 # mainly to avoid false positives
 # if set to low it might try to download 20 years old patches.
-cve_max_oldest_commit_date: "2024-12-01"
+# if set to high it might miss downloading patches which were picked up in an ASB very late
+#cve_max_oldest_commit_date: "2024-10-01"
+cve_max_oldest_commit_date: "1970-01-01"
