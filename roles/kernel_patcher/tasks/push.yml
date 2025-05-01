@@ -4,6 +4,7 @@
   ansible.builtin.shell: |      
       export LC_ALL=C
       CMT=0
+      TE=0
       echo "processing: {{ item }}" >> {{ BUILD_LOG }}
       TAG="$(date +%F)"
       
