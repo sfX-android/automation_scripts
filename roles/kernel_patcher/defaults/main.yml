@@ -35,8 +35,10 @@ kernel_stable_path: "{{ cve_kernel_base_path }}/stable_kernel"
 git_asb_harvester: "ssh://git@code.binbash.rocks:22443/AXP.OS/tools_android_bulletin_harvester.git"
 asb_harvester_path:  "{{ cve_kernel_base_path }}/bulletin_harvester"
 
-# set dynamic sec_patch_date_last:
-sec_month: "{{ '%02d' | format((current_month | int) + 1) }}"
+# set dynamic sec_patch_date_last which handles edge cases
+# (days 1-4 of a month still use previous month ASB as its not released yet)
+sec_month: >-
+  {% if current_day | int < 5 %}{{ '%02d' | format((current_month | int)) }}{% else %}{{ '%02d' | format((current_month | int) + 1) }}{% endif %}
 sec_patch_date_last: "{{ current_year }}{{ sec_month }}"
 
 # set start and end ranges.
