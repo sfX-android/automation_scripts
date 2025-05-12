@@ -32,3 +32,6 @@ axp_enable_avb: 'false'
 
 # this is a low-end device (optimize for performance)
 axp_lowend_device: True
+
+# A10 does not support allow call recording
+extendrom_allow_any_call_recording: 'false'
