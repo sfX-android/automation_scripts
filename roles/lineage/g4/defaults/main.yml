@@ -21,7 +21,8 @@ post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_mod
 
 # extendrom stuff
 use_extendrom: "true"
-extendrom_package_list: "F-Droid F-DroidPrivilegedExtension additional_repos.xml"
+extendrom_package_list: "AOSmium_webview64 additional_repos.xml F-Droid F-DroidPrivilegedExtension noDefaultBrowserWebView"
+extendrom_fdroid_repos: "molly.xml nailyk.xml threema.xml futo_org.xml cromite.xml izzysoft.xml"
 
 #custom_release_script: true
 #custom_release_script_yml: "../../eos/hotdog_a10/tasks/release.yml"
