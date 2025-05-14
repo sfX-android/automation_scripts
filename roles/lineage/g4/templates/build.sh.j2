@@ -18,6 +18,7 @@ lunch lineage_{{ sub_model }}-userdebug
 # extendrom
 export ENABLE_EXTENDROM={{ use_extendrom }}
 export EXTENDROM_PACKAGES="{{ extendrom_package_list }}"
+export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
 vendor/extendrom/er.sh
 
 # build
