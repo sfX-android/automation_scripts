@@ -235,7 +235,7 @@ sec_patch_pick_branch: "{{ los_version_gitbranch }}"
 #sec_month: "{{ '%02d' | format((current_month | int) + 1) }}"
 # set dynamic sec_patch_date_last:
 #sec_patch_date_last: "{{ current_year }}{{ sec_month }}"
-sec_patch_date_last: 202505
+sec_patch_date_last: 202506
 
 # either 01 or 05 according to if you patch the KERNEL as well (e.g. by roles/kernel_patcher)
 # see https://source.android.com/docs/security/bulletin/2025-01-01#Common-questions-and-answers
@@ -296,8 +296,11 @@ sec_patch_topics_a11:
 # them when MERGED only.
 # This is the recommended behavior and should be changed only (e.g. in semaphore or vars)
 # when you are totally aware of the risks and potential BREAKAGE which can occur then.
+#
+# That being said: for all Android versions NOT supported by LOS anymore
+# you HAVE TO set this to True to get patches and the reason why this is the default here.
 ##############################################################################################
-sec_patch_unmerged: False    # set to True in semaphore to fetch unmerged/pending patch topics
+sec_patch_unmerged: True # set to False in semaphore to not fetch unmerged/pending patch topics
 ##############################################################################################
 #sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
 #sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
