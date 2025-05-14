@@ -94,6 +94,7 @@ rempath_unstable: >-
 # used e.g. for downloaded google's factory images
 persistent_dir: "{{ zipdir_mntp }}/{{ ROM_FLAVOR }}/persistent/{{ target_model }}"
 android_shortversion: NA
+axp_build_eng: false
 
 # build logging
 build_log_name: "build_{{ target_model }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
