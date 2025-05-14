@@ -48,7 +48,8 @@ ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
 # if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
-axp_build_eng: false
+# moved to global common
+#axp_build_eng: false
 # should we verify all build images via the created vbmeta.img?
 vbmeta_verify: True
 # directories to be cleaned on a clean build
