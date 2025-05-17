@@ -12,11 +12,10 @@
         export GPG_TTY=$(tty)
         for db in $(find {{ sigdb_bin_path }} -type f -name '*.bin');do
             echo "signing $db"
-            gpg --no-tty --armor --detach-sig --output ${db}.sig --sign $db
+            gpg --armor --detach-sig --output ${db}.sig --sign --passphrase '{{ vault_lovelace_gpg_pass }}' $db
          done
      become: yes
      args:
-       stdin: "{{ vault_lovelace_gpg_pass }}"
        executable: /bin/bash
      #loop: "{{ lookup('fileglob', sigdb_bin_path + '*.bin') }}"
  #gpg --armor --detach-sig --output {{ item }}.sig --sign {{ item }}
