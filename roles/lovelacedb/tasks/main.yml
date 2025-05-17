@@ -31,3 +31,6 @@
 
 # convert to common format
 - include_tasks: convert.yml
+
+# sign databases
+- include_tasks: sign.yml
