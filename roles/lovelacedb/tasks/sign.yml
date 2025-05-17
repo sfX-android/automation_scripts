@@ -9,10 +9,10 @@
 
    - name: "Sign all *.bin files in {{ sigdb_bin_path }}"
      ansible.builtin.shell: |
-        export GPG_TTY=$(tty)
+        #export GPG_TTY=$(tty)
         for db in $(find {{ sigdb_bin_path }} -type f -name '*.bin');do
             echo "signing $db"
-            gpg --armor --detach-sig --output ${db}.sig --sign --passphrase '{{ vault_lovelace_gpg_pass }}' $db
+            gpg --no-tty --armor --detach-sig --output ${db}.sig --sign --passphrase '{{ vault_lovelace_gpg_pass }}' $db
          done
      become: yes
      args:
