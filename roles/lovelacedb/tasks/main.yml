@@ -4,7 +4,6 @@
 
 # test
 - include_tasks: sign.yml
-  delegate_to: lovelacedb
 
 # static sources
 # (rarely updated or not updated at all)
@@ -38,4 +37,3 @@
 
 # sign databases
 - include_tasks: sign.yml
-  delegate_to: lovelacedb
