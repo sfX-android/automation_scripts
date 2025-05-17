@@ -10,11 +10,13 @@
    - name: "Sign all *.bin files in {{ sigdb_bin_path }}"
      ansible.builtin.shell: |
         export GPG_TTY=$(tty)
-        find {{ sigdb_bin_path }}/ -type f -name '*.bin' -exec gpg --no-tty --armor --detach-sig --output {}.sig --sign {} \;
+        #find {{ sigdb_bin_path }}/ -type f -name '*.bin' -exec gpg --no-tty --armor --detach-sig --output {}.sig --sign {} \;
+        gpg --armor --detach-sig --output {{ item }}.sig --sign {{ item }}
      become: yes
      args:
        stdin: "{{ vault_lovelace_gpg_pass }}"
        executable: /bin/bash
+     loop: "{{ lookup('fileglob', sigdb_bin_path + '/*.bin') }}"
 
    - name: "Verify all signed *.bin files"
      ansible.builtin.shell: |
