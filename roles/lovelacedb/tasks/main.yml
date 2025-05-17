@@ -1,8 +1,5 @@
 ---
 
-# sign databases
-- include_tasks: sign.yml
-
 - include_tasks: prep.yml
 
 # static sources
