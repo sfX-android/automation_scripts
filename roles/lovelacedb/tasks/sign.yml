@@ -7,20 +7,17 @@
        name: gnupg
        state: present
 
-   - name: Sign all *.bin files in {{ sigdb_bin_path }}
+   - name: "Sign all *.bin files in {{ sigdb_bin_path }}"
      ansible.builtin.shell: |
-       find {{ sigdb_bin_path }} -type f -name '*.bin' -exec gpg --armor --detach-sig --output {}.sig --sign {} \;
+        find {{ sigdb_bin_path }} -type f -name '*.bin' -exec gpg --armor --detach-sig --output {}.sig --sign {} \;
      become: yes
      args:
        stdin: "{{ vault_lovelace_gpg_pass }}"
 
-   - name: Verify all signed *.bin files
+   - name: "Verify all signed *.bin files"
      ansible.builtin.shell: |
        gpg --verify {{ item }}.sig {{ item }}
      loop: "{{ lookup('fileglob', sigdb_bin_path + '*.bin') }}"
-     environment:
-       GPG_TTY: "{{ lookup('env', 'GPG_TTY') }}"
-       GPG_AGENT_INFO: "{{ lookup('env', 'GPG_AGENT_INFO') }}"
      become: yes
    
   delegate_to: lovelacedb
