@@ -11,6 +11,7 @@
      ansible.builtin.shell: |
         export GPG_TTY=$(tty)
         for db in $(find {{ sigdb_bin_path }} -type f -name '*.bin');do
+            echo "signing $db"
             gpg --armor --detach-sig --output ${db}.sig --sign $db
          done
      become: yes
