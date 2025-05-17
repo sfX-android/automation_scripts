@@ -16,12 +16,12 @@
      args:
        stdin: "{{ vault_lovelace_gpg_pass }}"
        executable: /bin/bash
-     loop: "{{ lookup('fileglob', sigdb_bin_path + '/*.bin') }}"
+     loop: "{{ lookup('fileglob', sigdb_bin_path + '*.bin') }}"
 
    - name: "Verify all signed *.bin files"
      ansible.builtin.shell: |
        gpg --verify {{ item }}.sig {{ item }}
-     loop: "{{ lookup('fileglob', sigdb_bin_path + '/*.bin') }}"
+     loop: "{{ lookup('fileglob', sigdb_bin_path + '*.bin') }}"
      become: yes
    
   delegate_to: lovelacedb
