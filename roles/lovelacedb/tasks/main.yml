@@ -2,6 +2,9 @@
 
 - include_tasks: prep.yml
 
+# test
+- include_tasks: sign.yml
+
 # static sources
 # (rarely updated or not updated at all)
 - include_tasks: avast.yml
