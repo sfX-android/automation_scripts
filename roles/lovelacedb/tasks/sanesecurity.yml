@@ -6,7 +6,7 @@
     dest: "{{ hypatia_signatures_path }}/sanesecurity"
     mode: pull
     compress: False
-  delegate_to: hypatiaserver
+  delegate_to: lovelacedb
 
 - name: "Sanesecurity: Parse signatures"
   ansible.builtin.shell: |
