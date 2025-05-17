@@ -1,6 +1,6 @@
 ---
 
-- name: "Hypatia DB Updater"
+- name: "LoveLace DB Updater"
   hosts: hypatiaserver
   become: true
   become_user: root
@@ -25,7 +25,7 @@
         no_log: true
 
       - import_role:
-          name: hypatiadb
+          name: lovelacedb
 
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
