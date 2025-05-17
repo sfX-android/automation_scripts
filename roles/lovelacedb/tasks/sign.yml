@@ -11,6 +11,8 @@
      ansible.builtin.shell: |
         find {{ sigdb_bin_path }}/ -type f -name '*.bin' -exec gpg --armor --detach-sig --output {}.sig --sign {} \;
      become: yes
+     environment:
+        GPG_TTY: "{{ lookup('env', 'GPG_TTY') }}"
      args:
        stdin: "{{ vault_lovelace_gpg_pass }}"
 
@@ -19,5 +21,7 @@
        gpg --verify {{ item }}.sig {{ item }}
      loop: "{{ lookup('fileglob', sigdb_bin_path + '/*.bin') }}"
      become: yes
+     environment:
+        GPG_TTY: "{{ lookup('env', 'GPG_TTY') }}"
    
   delegate_to: lovelacedb
