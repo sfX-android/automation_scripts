@@ -1,10 +1,5 @@
 ---
 
-# test
-- include_tasks: sign.yml
-- fail:
-   msg: boo
-
 - include_tasks: prep.yml
 
 # static sources
