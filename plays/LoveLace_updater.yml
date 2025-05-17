@@ -1,7 +1,7 @@
 ---
 
 - name: "LoveLace DB Updater"
-  hosts: hypatiaserver
+  hosts: lovelacedb
   become: true
   become_user: root
   gather_facts: true
