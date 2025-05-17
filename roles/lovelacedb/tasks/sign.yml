@@ -14,13 +14,13 @@
             echo "signing $db"
             test -f ${db}.sig && rm ${db}.sig
             echo '{{ vault_lovelace_gpg_pass }}' | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --armor --detach-sig --output ${db}.sig --sign $db
-            #gpg --no-tty --armor --detach-sig --output ${db}.sig --sign --passphrase '{{ vault_lovelace_gpg_pass }}' $db
          done
      become: yes
      args:
        executable: /bin/bash
      #loop: "{{ lookup('fileglob', sigdb_bin_path + '*.bin') }}"
  #gpg --armor --detach-sig --output {{ item }}.sig --sign {{ item }}
+#gpg --no-tty --armor --detach-sig --output ${db}.sig --sign --passphrase '{{ vault_lovelace_gpg_pass }}' $db
 
    - name: "Verify all signed *.bin files"
      ansible.builtin.shell: |
