@@ -12,6 +12,7 @@
         #export GPG_TTY=$(tty)
         for db in $(find {{ sigdb_bin_path }} -type f -name '*.bin');do
             echo "signing $db"
+            test -f ${db}.sig && rm ${db}.sig
             echo '{{ vault_lovelace_gpg_pass }}' | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --armor --detach-sig --output ${db}.sig --sign $db
             #gpg --no-tty --armor --detach-sig --output ${db}.sig --sign --passphrase '{{ vault_lovelace_gpg_pass }}' $db
          done
