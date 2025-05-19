@@ -6,13 +6,24 @@
   args:
     chdir: "{{ SRCPATH }}"
 
-#- name: "Apply vendor_axp patches"
-#  ansible.builtin.shell: |
-#      {{ DOS_INIT }}
-#      cd {{ item.path }} && patch -r - --no-backup-if-mismatch --forward --ignore-whitespace --verbose -p1 < {{ item.patch }} >> {{ BUILD_LOG }} 2>&1
-#  args:
-#    executable: /bin/bash
-#    chdir: "{{ SRCPATH }}"
-#  loop:
-#    - path: packages/apps/Settings
-#      patch: "{{ SRCPATH }}/vendor/axp/patches/common/a10/0002_packages_apps_Settings_src_com_android_settings_accounts_AccountTypePreferenceLoader_java.patch"
+- name: "Fix missing import VisibleForTesting"
+  ansible.builtin.shell: |
+    PREQ=0
+    grep -q 'import androidx.annotation.VisibleForTesting' src/com/android/settings/accounts/AccountTypePreferenceLoader.java || PREQ=1
+    if [ $PREQ -eq 1 ];then
+        echo "adding import androidx.annotation.VisibleForTesting"
+        awk '
+        /import / { last = NR; lines[NR] = $0 }
+        { lines[NR] = $0 }
+        END {
+            for (i = 1; i <= NR; i++) {
+                print lines[i]
+                if (i == last) {
+                    print "import androidx.annotation.VisibleForTesting;"
+                }
+            }
+        }' src/com/android/settings/accounts/AccountTypePreferenceLoader.java > src/com/android/settings/accounts/AccountTypePreferenceLoader.java.temp \
+          && mv src/com/android/settings/accounts/AccountTypePreferenceLoader.java.temp src/com/android/settings/accounts/AccountTypePreferenceLoader.java
+  args:
+    chdir: "{{ SRCPATH }}/packages/apps/Settings"
+    executable: /bin/bash
