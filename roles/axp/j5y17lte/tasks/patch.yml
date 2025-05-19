@@ -24,6 +24,9 @@
             }
         }' src/com/android/settings/accounts/AccountTypePreferenceLoader.java > src/com/android/settings/accounts/AccountTypePreferenceLoader.java.temp \
           && mv src/com/android/settings/accounts/AccountTypePreferenceLoader.java.temp src/com/android/settings/accounts/AccountTypePreferenceLoader.java
+        git add src/com/android/settings/accounts/AccountTypePreferenceLoader.java
+        git commit -m "fix missing import VisibleForTesting"
+    fi
   args:
     chdir: "{{ SRCPATH }}/packages/apps/Settings"
     executable: /bin/bash
