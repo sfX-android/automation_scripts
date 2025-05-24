@@ -40,7 +40,9 @@
       - include_tasks: ../../common/tasks/secpatch.yml
         when: 
           - (android_version_int | int < 12) or sec_patch_unmerged
-
+      - fail:
+          msg: YEEEEEEeeeeeeeeeeeeeHa..
+          
       # AXP.OS patches
       - include_tasks: patch.yml
 
