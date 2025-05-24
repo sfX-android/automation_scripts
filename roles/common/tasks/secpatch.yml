@@ -113,12 +113,22 @@
         line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last_human }}"
       when: spres.changed
 
+    - name: "Git commit version bump"
+      ansible.builtin.shell: |
+          export LC_ALL=C
+          {{ DOS_INIT }}
+          CMT=0
+          git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+          CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+          if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+              git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "bump security patch date: {{ sec_patch_date_last_human }}"
+              echo "[GIT] bumped security patch date: {{ sec_patch_date_last_human }}" >> {{ BUILD_LOG }}
+          fi
+      args:
+        executable: /bin/bash
+        chdir: "{{ SRCPATH }}/build/core"
+      when: spres.changed
+
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
     - pick_queries is defined and (pick_queries | length > 0)
-
-#- name: I wanna fail
-#  fail:
-#    msg: |
-#      queries: {{ pick_queries }}
-#      length:  {{ pick_queries | length }}
