@@ -35,7 +35,9 @@
      args:
        chdir: "{{ DOSPATH }}"
 
-  when: (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+  when:
+     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+     - dosdir.stat.isdir is defined
 
 - name: Prepare DOS build
   file:
@@ -43,40 +45,44 @@
     state: directory
   loop:
     - "{{ SRCPATH }}"
+
+- block:
+
+   - include_tasks: ../../../common/tasks/clean.yml
+     #vars:
+     #  override_reset_git: 'true'
     
-- include_tasks: ../../../common/tasks/clean.yml
-  #vars:
-  #  override_reset_git: 'true'
- 
-- name: "Specific DOS -basic- cleanup"
-  file:
-    path: "{{ item }}"
-    state: absent
-  no_log: true
-  loop:
-    - "{{ SRCPATH }}/out/target/product/{{ target_model }}/rec_tmp"
+   - name: "Specific DOS -basic- cleanup"
+     file:
+       path: "{{ item }}"
+       state: absent
+     no_log: true
+     loop:
+       - "{{ SRCPATH }}/out/target/product/{{ target_model }}/rec_tmp"
+   
+   # DO NOT use ansible.builtin.file here!
+   # e.g. kernel paths will break this. it seems it causes a high load on Semaphore site when there are too many kernels to be deleted.
+   # in particular within MySQL which (I guess here) likely cannot handle the massive amount of entries -> even when using no_log:true which still
+   # causes several lines in the log output (no log enabled bla)
+   - name: "Specific paths -full- cleanup"
+     ansible.builtin.shell: |
+        echo "cleaning: {{ axp_clean_paths | join(' ') }}" >> {{ BUILD_LOG }}
+        for WHAT in {{ axp_clean_paths | join(' ') }};do
+           rm -rf $WHAT ".repo/projects/${WHAT}.git" ".repo/projects/${WHAT}.git" .repo/project-objects/platform/$WHAT  >> {{ BUILD_LOG }} 2>&1 || true
+        done
+     when: 
+        - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+   
+   - name: "Specific AXP.OS -full- cleanup"
+     shell: |
+        if [ -d "{{ item.path }}" ];then find {{ item.path }} {{ item.extra | d('') }} -name {{ item.file }} -delete -print; fi
+     args:
+       chdir: "{{ SRCPATH }}"
+     loop:
+       - { path: "vendor/axp", file: "EXTENDROM_PATCHER_DONE" }
+       - { path: "vendor/extendrom", file: "EXTENDROM_PATCHER_DONE" }
+       - { path: "./", file: ".wg.patched", extra: "-maxdepth 1" }
+     when:
+        - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
-# DO NOT use ansible.builtin.file here!
-# e.g. kernel paths will break this. it seems it causes a high load on Semaphore site when there are too many kernels to be deleted.
-# in particular within MySQL which (I guess here) likely cannot handle the massive amount of entries -> even when using no_log:true which still
-# causes several lines in the log output (no log enabled bla)
-- name: "Specific paths -full- cleanup"
-  ansible.builtin.shell: |
-     echo "cleaning: {{ axp_clean_paths | join(' ') }}" >> {{ BUILD_LOG }}
-     for WHAT in {{ axp_clean_paths | join(' ') }};do
-        rm -rf $WHAT ".repo/projects/${WHAT}.git" ".repo/projects/${WHAT}.git" .repo/project-objects/platform/$WHAT  >> {{ BUILD_LOG }} 2>&1 || true
-     done
-  when: 
-     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
-
-- name: "Specific AXP.OS -full- cleanup"
-  shell: |
-     if [ -d "{{ item.path }}" ];then find {{ item.path }} {{ item.extra | d('') }} -name {{ item.file }} -delete -print; fi
-  args:
-    chdir: "{{ SRCPATH }}"
-  loop:
-    - { path: "vendor/axp", file: "EXTENDROM_PATCHER_DONE" }
-    - { path: "vendor/extendrom", file: "EXTENDROM_PATCHER_DONE" }
-    - { path: "./", file: ".wg.patched", extra: "-maxdepth 1" }
-  when:
-     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+  when: dosdir.stat.isdir is defined
