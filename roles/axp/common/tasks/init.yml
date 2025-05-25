@@ -11,6 +11,7 @@
       shell: |
           git init
           git remote add origin {{ axp_git_repo }}
+          git fetch --all
           git pull
           git checkout "{{ axp_main_branch | d('HEAD') }}" -f
           #git branch --set-upstream-to origin/{{ axp_main_branch | d('HEAD') }}
