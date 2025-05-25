@@ -14,7 +14,7 @@
           git fetch --all
           git pull
           git checkout "{{ axp_main_branch | d('HEAD') }}" -f
-          git branch --set-upstream-to origin/{{ axp_main_branch | d('HEAD') }}
+          #git branch --set-upstream-to origin/{{ axp_main_branch | d('HEAD') }}
           
           sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
           git submodule update --init --recursive
