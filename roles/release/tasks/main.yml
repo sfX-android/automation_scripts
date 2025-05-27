@@ -1,12 +1,16 @@
 ---
 
-# release if not failed before and not using a custom release script
-- include_tasks: release.yml
-  when: custom_release_script is undefined or custom_release_script != true
+- block:
 
-# use a custom release script if defined
-- include_tasks: "{{ custom_release_script_yml }}"
-  when:
-    - custom_release_script
-    - custom_release_script_yml is defined
-  
+    # release if not failed before and not using a custom release script
+    - include_tasks: release.yml
+      when:
+        - custom_release_script is undefined or custom_release_script != true
+    
+    # use a custom release script if defined
+    - include_tasks: "{{ custom_release_script_yml }}"
+      when:
+        - custom_release_script
+        - custom_release_script_yml is defined
+
+  when: not skip_release_publish | d(True)
