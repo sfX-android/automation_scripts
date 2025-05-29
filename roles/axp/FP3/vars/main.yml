@@ -41,9 +41,9 @@ parselogerr:
       expect: ''
     - search: "{{ axp_bootloader_id }}" # ALWAYS COPY THIS! Check the device's bootloader ID (if AVB / vbmeta_verify is on)
       expect_cnt: 1
-    - search: 'Hash Algorithm:.*sha512' # FP3 fails to boot when increasing
+    - search: 'Successfully verified sha512 hashtree of.*system.img' # system should be on sha512
       expect_cnt: 0
-    - search: 'Successfully verified sha256 hash of.*(boot|dtbo)' # FP3 fails to boot when touching these
+    - search: 'Successfully verified sha256 hash of.*(boot|dtbo).img' # FP3 fails to boot when increasing
       expect_cnt: 2
     - search: 'Successfully verified sha1 hashtree of.*vendor' # FP3 fails to boot when touching this
       expect_cnt: 1
