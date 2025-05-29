@@ -1,5 +1,9 @@
 ---
 
+- name: fail
+  fail:
+    msg: fail
+
 - include_tasks: ../../common/tasks/setvars.yml
 - include_tasks: copy.yml
 
