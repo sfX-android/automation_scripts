@@ -22,11 +22,14 @@
     - import_role:
         name: common
 
-    - include_role:
-        name: "{{ ROM_FLAVOR }}/common"
-        public: yes
-      when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
-        
+    #- include_role:
+    #    name: "{{ ROM_FLAVOR }}/common"
+    #    public: yes
+    #  when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
+    
+    - include_vars: name: "{{ ROM_FLAVOR }}/common/defaults/main.yml"
+      when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"    
+      
     - name: "Set topics based on Android version"
       ansible.builtin.set_fact:
           sec_patch_topics: "{{ lookup('vars', 'sec_patch_topics_' + android_shortversion) }}"
