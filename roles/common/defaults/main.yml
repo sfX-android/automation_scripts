@@ -278,11 +278,10 @@ sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
 # ranges will not include the last match so must be 1 higher
 # (to include December it must end with "13" in order to match the 12th month as well)
 # to identify a start for the ranges - see above!
-sec_patch_topics_a11:  >
-  {{
-    range(202403, 202413) | list
-    + range(202501, sec_patch_date_last | int) | list
-  }}
+
+sec_patch_topics_a11:
+      - "{{ range(202403, 202413 }}"
+      - "{{ range(202501, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 12 / S and later
