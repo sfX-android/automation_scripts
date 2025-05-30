@@ -485,7 +485,8 @@ sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
 # (to include December it must end with "13" in order to match the 12th month as well)
 # to identify a start for the ranges - see above!
 sec_patch_topics_a10:
-      - "{{ range(202501, sec_patch_date_last | int) }}"
+    - 202411     # (2025-05 breaks due to missing https://review.lineageos.org/c/LineageOS/android_frameworks_opt_net_wifi/+/408452)
+    - "{{ range(202501, sec_patch_date_last | int) }}"
 ##############################################################################################
 # ASB patches for: Android 11 / R
 ##############################################################################################
