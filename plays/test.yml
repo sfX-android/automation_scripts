@@ -23,36 +23,13 @@
         name: common
 
     - include_role:
-        name: eos/common
+        name: "{{ ROM_FLAVOR }}/common"
         public: yes
-      when: ROM_FLAVOR == "eos"
-
-    - include_role:
-        name: graphene/common
-        public: yes
-      when: ROM_FLAVOR == "graphene"
-
-    - debug:
-         var: git_repo_main_manifests
-
-    - debug:
-         var: SRCPATH
-  
-    - set_fact:
-        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ semaphore_vars.task_details.target_version }}.ansible_running"
-
-    - name: "set semaphore running indicator"
-      connection: local
-      copy:
-        dest: "{{ semaphore_runfile }}"
-        content: |
-          date="{{ ansible_date_time.iso8601 }}"
-          play=debug.yml
-          role="{{ ROM_FLAVOR }}"
-
-    - name: fake sec patch date
-      shell: echo 2023-06-05
-      register: sec_level_date
+      when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
+        
+    - name: "Set topics based on Android version"
+      ansible.builtin.set_fact:
+          sec_patch_topics: "{{ lookup('vars', 'sec_patch_topics_' + android_shortversion) }}"
       
     - name: "Telegram TEST notify"
       connection: local
@@ -64,6 +41,8 @@
           text: |
             DEBUG playbook ended successfully
 
+            sec_patch_topics: {{ sec_patch_topics }}
+            
             ***Platform security patch level:*** [{{ sec_level_date.stdout | regex_escape() }}](https://source.android.com/docs/security/bulletin/{{ sec_level_date.stdout | regex_replace('([0-9]+-[0-9]+)(-05)','\1-01' ) }})
           disable_web_page_preview: True
       when: telegram_notifications | bool
