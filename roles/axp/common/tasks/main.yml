@@ -34,7 +34,9 @@
 
       - include_tasks: sync.yml
       - include_tasks: adjust_DOS_options.yml
-    
+      
+      - include_tasks: patch.yml
+      
       # apply ASB patches if needed
       # currently LOS supports ASB patches up to and including: Android 13
       - include_tasks: single_secpatch.yml
@@ -43,10 +45,10 @@
           - (android_version_int | int < 13) or sec_patch_unmerged
           
       # AXP.OS patches
-      - include_tasks: patch.yml
+      #- include_tasks: patch.yml
 
-      #- fail:
-      #    msg: YEEEEEEeeeeeeeeeeeeeHa..
+      - fail:
+          msg: YEEEEEEeeeeeeeeeeeeeHa..
           
       # special deblob workarounds
       - include_tasks: patch_device_gs201.yml
