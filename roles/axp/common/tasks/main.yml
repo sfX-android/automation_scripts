@@ -39,7 +39,7 @@
       
       # apply ASB patches if needed
       # currently LOS supports ASB patches up to and including: Android 13
-      - include_tasks: single_secpatch.yml
+      #- include_tasks: single_secpatch.yml
       - include_tasks: ../../common/tasks/secpatch.yml
         when: 
           - (android_version_int | int < 13) or sec_patch_unmerged
