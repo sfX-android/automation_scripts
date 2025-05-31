@@ -13,4 +13,4 @@
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   loop:
-    - { path: "frameworks/opt/net/wifi", fetch: " https://review.lineageos.org/c/LineageOS/android_frameworks_opt_net_wifi/+/408452", pick: "FETCH_HEAD" }
+    - { path: "frameworks/opt/net/wifi", fetch: "https://github.com/LineageOS/android_frameworks_opt_net_wifi refs/changes/52/408452/1", pick: "FETCH_HEAD" }
