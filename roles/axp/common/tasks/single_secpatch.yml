@@ -1,0 +1,16 @@
+---
+################################################################################################
+# some patches are added TODAY to an ANCIENT old ASB patch level
+# these require to be handled manually here
+################################################################################################
+
+# required by ASB 2025-05: https://review.lineageos.org/c/LineageOS/android_frameworks_opt_net_wifi/+/408452
+- name: "Special backported ASB patches (A11)"
+  when: android_shortversion == "a11"
+  ansible.builtin.shell: >-
+      cd {{ item.path }} && git fetch {{ item.fetch }} && git cherry-pick {{ item.pick }}
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
+  loop:
+    - { path: "frameworks/opt/net/wifi", fetch: " https://review.lineageos.org/c/LineageOS/android_frameworks_opt_net_wifi/+/408452", pick: "FETCH_HEAD" }
