@@ -195,6 +195,10 @@ sec_patch_topics_pie:
       - topic:P_asb_{{ SECPATCH_DATE_PIE }}
 
 ##############################################################################################
+##############################################################################################
+# Android Security Bulletin (ASB) patching AREA - START
+##############################################################################################
+##############################################################################################
 # new generic security patch handling based on LOS's gerrit topics
 # it will use the Lineage OS branch which has been configured during an Ansible/Semaphore run
 # and goes through the list of topics based on year and month.
@@ -243,54 +247,69 @@ sec_patch_level: '01'
 
 # as start and end of security patches is something you MIGHT need to decide depending on the used
 # custom OS and/or version you should copy the whole next part into your OS role and adjust as needed.
-# checking for available topics: 
-#    https://review.lineageos.org/q/topic:P_asb_2024-12
+
+##############################################################################################
+# Note:
+# ranges will not include the last match so it must be increased by 1
+# e.g.:
+# range(202205, 202212) will catch from May to November(!) 2022
+# range(202205, 202213) will catch from May to December(!) 2022
+##############################################################################################
 
 ##############################################################################################
 # ASB patches for: Android 9 / P
+# Last merged upstream (LOS): https://review.lineageos.org/q/topic:P_asb_2022-04
 ##############################################################################################
 sec_patch_date_last_a9: "{{ sec_patch_date_last }}"
-# ranges will not include the last match so must be 1 higher
-# (to include December it must end with "13" in order to match the 12th month as well)
-# to identify a start for the ranges - see above!
 sec_patch_topics_a9:
-      - "{{ range(202205, 202213) }}"
-      - "{{ range(202301, 202313) }}"
-      - "{{ range(202401, 202413) }}"
-      - "{{ range(202501, sec_patch_date_last | int) }}"
+    - "{{ range(202205, 202213) }}"
+    - "{{ range(202301, 202313) }}"
+    - "{{ range(202401, 202413) }}"
+    - "{{ range(202501, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 10 / Q
+# Last merged upstream (LOS): https://review.lineageos.org/q/topic:Q_asb_2023-02
 ##############################################################################################
 sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
-# ranges will not include the last match so must be 1 higher
-# (to include December it must end with "13" in order to match the 12th month as well)
-# to identify a start for the ranges - see above!
 sec_patch_topics_a10:
-      - "{{ range(202303, 202313) }}"
-      - "{{ range(202401, 202413) }}"
-      - "{{ range(202501, sec_patch_date_last | int) }}"
+    - "{{ range(202303, 202313) }}"
+    - "{{ range(202401, 202413) }}"
+    - "{{ range(202501, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 11 / R
+# Last merged upstream (LOS): https://review.lineageos.org/q/topic:R_asb_2024-02
 ##############################################################################################
 sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
-# ranges will not include the last match so must be 1 higher
-# (to include December it must end with "13" in order to match the 12th month as well)
-# to identify a start for the ranges - see above!
-
 sec_patch_topics_a11:
-      - "{{ range(202403, 202413 }}"
-      - "{{ range(202501, sec_patch_date_last | int) }}"
+    - "{{ range(202403, 202413 }}"
+    - "{{ range(202501, sec_patch_date_last | int) }}"
 
 ##############################################################################################
-# ASB patches for: Android 12 / S and later
-# NOTE: 
-# A12 and later is (atm) still supported by LOS so when being patient you get them
-# automatically without doing anything.
+# ASB patches for: Android 12 / S
+# Last merged upstream (LOS): https://review.lineageos.org/q/topic:S_asb_2025-03
 ##############################################################################################
-# WARNING:
-# NOT-YET-RELEASED ASB patches for any Android version
+sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
+sec_patch_topics_a12:
+    - "{{ range(202504, sec_patch_date_last | int) }}"
+
+##############################################################################################
+# ASB patches for: Android 13 / T
+# Last merged upstream (LOS): still supported (https://review.lineageos.org/q/topic:T_asb_2025-XX)
+#
+# A13 and later are still supported by LOS so when being being patient you get them
+# automatically without doing anything once they are merged.
+# if you can't wait, set sec_patch_unmerged: True (default now)
+##############################################################################################
+sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
+sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
+sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
+#sec_patch_date_last_a16: "{{ sec_patch_date_last }}"
+
+##############################################################################################
+# NOT-YET-MERGED ASB patches for any Android version
+##############################################################################################
 # sometimes merging patches upstream takes an unreasonable amount of time and so "hanging"
 # in gerrit even though they are MAYBE(!) working just fine.
 # By default we will ignore these "pending" patches for supported Android versions so you get
@@ -300,19 +319,10 @@ sec_patch_topics_a11:
 #
 # That being said: for all Android versions NOT supported by LOS anymore
 # you HAVE TO set this to True to get patches and the reason why this is the default here.
-##############################################################################################
-sec_patch_unmerged: True # set to False in semaphore to not fetch unmerged/pending patch topics
-##############################################################################################
-#sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
-#sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
-#sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
-#sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
+sec_patch_unmerged: True  # set to False in semaphore for not fetching unmerged patch topics
 
-#sec_patch_topics_a12:
-#      - "{{ range(202501, sec_patch_date_last | int) }}"
-#
-#sec_patch_topics_a13:
-#      - "{{ range(202501, sec_patch_date_last | int) }}"
-#
-#[...]
+##############################################################################################
+##############################################################################################
+# Android Security Bulletin (ASB) patching AREA - END
+##############################################################################################
 ##############################################################################################
