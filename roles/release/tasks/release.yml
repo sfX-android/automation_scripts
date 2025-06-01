@@ -101,24 +101,34 @@
           ZIPF=$(zipinfo -1 {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }})
           has_recovery=$(echo "$ZIPF"| grep -c recovery)
           has_vendorboot=$(echo "$ZIPF"| grep -c vendor_boot)
+
+          {% if unstable_build | d(False) | bool %}
+          {%     if axp_type | d('') == "slim" %}
+                    REMPATH="{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/recovery') }}"
+          {%     else %}
+                    REMPATH="{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/recovery') }}"
+          {%     endif %}
+          {% else %}
+                  REMPATH="{{ rempath }}"
+          {% endif %}
           
           if [ $has_recovery -eq 1 ];then
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} recovery.img > {{ axp_recovery_name }}
             sha256sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha256
-            scp {{ axp_recovery_name }}* {{ groups.downloadserver[0] }}:{{ rempath }}/recovery/
+            scp {{ axp_recovery_name }}* {{ groups.downloadserver[0] }}:${REMPATH}/
             mv {{ axp_recovery_name }}* {{ axp_finalzip_dir }}/
           elif [ $has_vendorboot -eq 1 ];then
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} vendor_boot.img > {{ axp_recovery_name_vboot }}
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name_boot }}
             sha256sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha256
             sha256sum {{ axp_recovery_name_vboot }} > {{ axp_recovery_name_vboot }}.sha256
-            scp {{ axp_recovery_name_boot }}* {{ groups.downloadserver[0] }}:{{ rempath }}/recovery/
-            scp {{ axp_recovery_name_vboot }}* {{ groups.downloadserver[0] }}:{{ rempath }}/recovery/
+            scp {{ axp_recovery_name_boot }}* {{ groups.downloadserver[0] }}:${REMPATH}/
+            scp {{ axp_recovery_name_vboot }}* {{ groups.downloadserver[0] }}:${REMPATH}/
             mv {{ axp_recovery_name_boot }}* {{ axp_recovery_name_vboot }}* {{ axp_finalzip_dir }}/
           else
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name_boot }}
             sha256sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha256
-            scp {{ axp_recovery_name_boot }}* {{ groups.downloadserver[0] }}:{{ rempath }}/recovery/
+            scp {{ axp_recovery_name_boot }}* {{ groups.downloadserver[0] }}:${REMPATH}/
             mv  {{ axp_recovery_name_boot }}* {{ axp_finalzip_dir }}/
           fi
       delegate_to: "{{ groups.buildserver[0] }}"
