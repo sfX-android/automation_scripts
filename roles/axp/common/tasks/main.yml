@@ -47,8 +47,8 @@
       # AXP.OS patches
       - include_tasks: patch.yml
 
-      - fail:
-          msg: YEEEEEEeeeeeeeeeeeeeHa..
+      #- fail:
+      #    msg: YEEEEEEeeeeeeeeeeeeeHa..
           
       # special deblob workarounds
       - include_tasks: patch_device_gs201.yml
