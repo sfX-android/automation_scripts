@@ -491,8 +491,8 @@ sec_patch_topics_a9:
 sec_patch_topics_a10:
     - "{{ range(202501, sec_patch_date_last | int) }}"
 
-sec_patch_topics_a11:
-    - "{{ range(202501, sec_patch_date_last | int) }}"
+#sec_patch_topics_a11:
+#    - "{{ range(202501, sec_patch_date_last | int) }}"
 
 # A12 + A13 were still supported at DOS's EOL so no need to override the common one
 # A14 and later are still supported by LOS so again no need to override the common one
