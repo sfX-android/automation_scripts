@@ -53,9 +53,7 @@
         ansible.builtin.set_fact:
             sec_level_date: "{{ pprop.stdout }}"
 
-      - block:
-        when: axp_release_recovery
-       
+      - block:      
           - name: "RECOVERY: switch to stable"
             ansible.builtin.copy:
               remote_src: yes
@@ -77,6 +75,7 @@
             loop:
               - img
               - img.sha256
+        when: axp_release_recovery
 
       - name: "OS: switch to stable"
         ansible.builtin.copy:
