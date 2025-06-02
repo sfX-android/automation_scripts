@@ -7,6 +7,8 @@
 
   vars:
     os_zip_filename_no_ext: "{{ os_zip_filename | regex_replace('.zip','') }}"
+    ROMFILE: "{{ os_zip_filename }}"
+    recovery_filename_no_ext: "{{ os_zip_filename_no_ext | regex_replace('-dos-','RECOVERY') }}"
     #tg_success: |
     #    {{ ICON_GOOD }} ***New build released\!***
     #    {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE channel
@@ -51,17 +53,32 @@
         ansible.builtin.set_fact:
             sec_level_date: "{{ pprop.stdout }}"
 
-      - name: "Set ROMFILE"
-        ansible.builtin.shell: >-
-            echo "{{ os_zip_filename }}"
-        register: ROMFILE
+      -block:
+       when: axp_release_recovery
+       
+          - name: "RECOVERY: switch to stable"
+            ansible.builtin.copy:
+              remote_src: yes
+              src: "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}.{{ item }}"
+              dest: "{{ rempath }}/recovery"
+            loop:
+              - img
+              - img.sha256
+    
+          - name: "RECOVERY: verify IMG integrity"
+            ansible.builtin.shell: "sha256sum --check {{ recovery_filename_no_ext }}.img.sha256"
+            args:
+              chdir: "{{ rempath }}/recovery"
+      
+          - name: "RECOVERY: delete from unstable"
+            ansible.builtin.file:
+              path: "{{ rempath_unstable }}/recovery/{{ os_zip_filename_no_ext }}.{{ item }}"
+              state: absent
+            loop:
+              - img
+              - img.sha256
 
-      - name: "Set HASH"
-        ansible.builtin.shell: >-
-            cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha256sum" | cut -d ' ' -f1
-        register: hashfile
-
-      - name: "Switch to stable"
+      - name: "OS: switch to stable"
         ansible.builtin.copy:
           remote_src: yes
           src: "{{ rempath_unstable }}/{{ os_zip_filename_no_ext }}.{{ item }}"
@@ -72,12 +89,12 @@
           - zip.sha256sum
           - zip.prop
 
-      - name: "Verify ZIP integrity"
+      - name: "OS: verify ZIP integrity"
         ansible.builtin.shell: "sha512sum --check {{ os_zip_filename_no_ext }}.zip.sha512sum"
         args:
           chdir: "{{ rempath }}"
   
-      - name: "Delete from unstable"
+      - name: "OS: delete from unstable"
         ansible.builtin.file:
           path: "{{ rempath_unstable }}/{{ os_zip_filename_no_ext }}.{{ item }}"
           state: absent
