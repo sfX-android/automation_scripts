@@ -33,6 +33,8 @@
         when: axp_type | d('') == "slim"
 
       - include_vars: "../roles/{{ ROM_FLAVOR }}/{{ target_model }}/vars/main.yml"
+      - include_vars: "../roles/{{ ROM_FLAVOR }}/{{ sub_model }}/vars/main.yml"
+        when: sub_model is defined
       
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
