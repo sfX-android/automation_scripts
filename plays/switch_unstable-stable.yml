@@ -53,8 +53,8 @@
         ansible.builtin.set_fact:
             sec_level_date: "{{ pprop.stdout }}"
 
-      -block:
-       when: axp_release_recovery
+      - block:
+        when: axp_release_recovery
        
           - name: "RECOVERY: switch to stable"
             ansible.builtin.copy:
