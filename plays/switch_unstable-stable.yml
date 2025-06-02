@@ -71,7 +71,7 @@
       
           - name: "RECOVERY: delete from unstable"
             ansible.builtin.file:
-              path: "{{ rempath_unstable }}/recovery/{{ os_zip_filename_no_ext }}.{{ item }}"
+              path: "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}.{{ item }}"
               state: absent
             loop:
               - img
