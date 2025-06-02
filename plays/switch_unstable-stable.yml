@@ -82,6 +82,11 @@
               - img.sha256
         when: axp_release_recovery
 
+      - name: "OS: Get HASH (for notification)"
+        ansible.builtin.shell: >-
+            cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha256sum" | cut -d ' ' -f1
+        register: hashfile
+        
       - name: "OS: switch to stable"
         ansible.builtin.copy:
           remote_src: yes
