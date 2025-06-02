@@ -485,11 +485,11 @@ sec_patch_level: '05'
 
 # specific DOS overrides are required as we consider DOS as upstream until its EOL in 2024-12
 
-sec_patch_topics_a9:
-    - "{{ range(202501, sec_patch_date_last | int) }}"
+#sec_patch_topics_a9:
+#    - "{{ range(202501, sec_patch_date_last | int) }}"
 
-sec_patch_topics_a10:
-    - "{{ range(202501, sec_patch_date_last | int) }}"
+#sec_patch_topics_a10:
+#    - "{{ range(202501, sec_patch_date_last | int) }}"
 
 #sec_patch_topics_a11:
 #    - "{{ range(202501, sec_patch_date_last | int) }}"
