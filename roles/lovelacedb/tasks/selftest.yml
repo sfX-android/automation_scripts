@@ -4,5 +4,3 @@
   ansible.builtin.shell: >-
     cp -v {{ hypatia_testfiles_path }}/* {{ hypatia_signatures_path }}/raw/
 
-- fail:
-    msg: foo
