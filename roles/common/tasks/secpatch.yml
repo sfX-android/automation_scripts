@@ -80,18 +80,20 @@
 
     # this can happen when ancient patch levels get a recent patch added which must be commited BEFORE an ancient one
     # (e.g. 378122 is a requirement for 378123 and both must be commited before 378065 can be applied which itself was commited earlier..)
-    - name: "A10: Pre-patch (when secpatch order does not fit anymore)"
-      when: android_shortversion == "a10"
+    - name: "A10 or older: fix repopick order"
+      when: android_version_int | int < 11
       ansible.builtin.shell: >
         cd {{ item.path }} && git fetch {{ item.fetch }} && git cherry-pick {{ item.pick }}
       args:
         chdir: "{{ SRCPATH }}"
         executable: /bin/bash
       loop:
-        - { path: "packages/apps/Traceur", fetch: "https://github.com/LineageOS/android_packages_apps_Traceur refs/changes/19/378119/1", pick: "FETCH_HEAD" }             # Q_asb_2023-06
-        - { path: "packages/services/Telecomm", fetch: "https://github.com/LineageOS/android_packages_services_Telecomm refs/changes/22/378122/2", pick: "FETCH_HEAD" }   # Q_asb_2023-08
-        - { path: "frameworks_base", fetch: "https://github.com/LineageOS/android_frameworks_base refs/changes/97/378097/2", pick: "FETCH_HEAD" }                         # Q_asb_2023-08
-        - { path: "packages/services/Telecomm", fetch: "https://github.com/LineageOS/android_packages_services_Telecomm refs/changes/23/378123/2", pick: "FETCH_HEAD" }   # Q_asb_2023-12
+        - { path: "vendor/lineage", fetch: "https://github.com/LineageOS/android_vendor_lineage refs/changes/78/378478/2", pick: "FETCH_HEAD" }
+        
+        #- { path: "packages/apps/Traceur", fetch: "https://github.com/LineageOS/android_packages_apps_Traceur refs/changes/19/378119/1", pick: "FETCH_HEAD" }             # Q_asb_2023-06
+        #- { path: "packages/services/Telecomm", fetch: "https://github.com/LineageOS/android_packages_services_Telecomm refs/changes/22/378122/2", pick: "FETCH_HEAD" }   # Q_asb_2023-08
+        #- { path: "frameworks_base", fetch: "https://github.com/LineageOS/android_frameworks_base refs/changes/97/378097/2", pick: "FETCH_HEAD" }                         # Q_asb_2023-08
+        #- { path: "packages/services/Telecomm", fetch: "https://github.com/LineageOS/android_packages_services_Telecomm refs/changes/23/378123/2", pick: "FETCH_HEAD" }   # Q_asb_2023-12
       
     - name: "SECURITY PATCH MERGE: create repopick lists by year (required to find path names)"
       # "yes y" is required to continue when the changes are > 200
