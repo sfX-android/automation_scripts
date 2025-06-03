@@ -7,3 +7,6 @@
     dest: "{{ hypatia_signatures_path }}/raw/"
   with_fileglob:
     - "{{ hypatia_testfiles_path }}/*"
+
+- fail:
+    msg: foo
