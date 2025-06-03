@@ -1,12 +1,8 @@
 ---
 
-- name: "Hypatia: Set selftest files"
-  ansible.builtin.copy:
-    remote_src: true
-    src: "{{ item }}"
-    dest: "{{ hypatia_signatures_path }}/raw/"
-  with_fileglob:
-    - "{{ hypatia_testfiles_path }}/*"
+- name: "Hypatia: Add selftest files"
+  ansible.builtin.shell: >-
+    cp -v {{ hypatia_testfiles_path }}/* {{ hypatia_signatures_path }}/raw/
 
 - fail:
     msg: foo
