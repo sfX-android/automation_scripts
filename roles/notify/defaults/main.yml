@@ -5,7 +5,7 @@ tg_success: |
         
         {{ device_cl | d('') }}{% if axp_build_recovery_only is defined and axp_build_recovery_only %} \- RECOVERY image{% endif %}
         
-        Build ID: {{ build_id | replace(".","\.") }}
+        Build ID: {{ build_id | regex_escape() }}
         {% if release_channel is defined %}
         Release channel: {{ release_channel | regex_escape() }}
         {% endif %}
