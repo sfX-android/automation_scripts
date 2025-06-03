@@ -2,6 +2,7 @@
 
 - name: "Hypatia: Set selftest files"
   ansible.builtin.copy:
+    remote_src: true
     src: "{{ item }}"
     dest: "{{ hypatia_signatures_path }}/raw/"
   with_fileglob:
