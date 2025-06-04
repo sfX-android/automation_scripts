@@ -22,6 +22,7 @@
 - include_tasks: threatfox.yml
 - include_tasks: threatview.yml
 - include_tasks: sanesecurity.yml
+- include_tasks: signaturebase.yml
 - include_tasks: stalkerware.yml
 - include_tasks: virusshare_subset.yml
 - include_tasks: zimperium.yml
