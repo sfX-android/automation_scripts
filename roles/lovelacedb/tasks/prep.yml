@@ -29,3 +29,22 @@
     mode: 0750
   retries: 10
   delay: 60
+
+- name: "Prep: check static hash files"
+  ansible.builtin.stat:
+    path: "{{ item.file }}"
+  loop:
+    - { name: "avast", file: "{{ hypatia_signatures_path }}/raw/avast-covid19.sha256" }
+    - { name: "umair", file: "{{ hypatia_signatures_path }}/raw/umair9747.md5" }
+    - { name: "malwarehunt", file: "{{ hypatia_signatures_path }}/raw/malware-hunter.sha256" }
+    - { name: "tthreads_hdb", file: "{{ hypatia_signatures_path }}/raw/targetedthreats.hdb" }
+    - { name: "tthreads_hsb", file: "{{ hypatia_signatures_path }}/raw/targetedthreats.hsb" }
+  register: hash_stat
+
+- name: "Prep: build mapping of hash stats by name"    # requires Ansible 2.12
+  ansible.builtin.set_fact:
+    hash_stat_dict: >-
+      {{
+        hash_stat.results
+        | items2dict(key_name='item.name', value_name='stat')
+      }}
