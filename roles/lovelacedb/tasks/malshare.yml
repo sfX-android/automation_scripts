@@ -1,0 +1,12 @@
+---
+
+# the cron must be set MANUALLY! see download.sh once created for a guide!
+- name: "Malshare: prep daily download cron"
+  ansible.builtin.template:
+    src: "malshare-cron.j2"
+    dest: "{{ hypatia_signatures_path }}/malshare/download.sh"
+    mode: 0700
+
+- name: "Malshare: Add local generated hashes"
+  ansible.builtin.shell: >-
+    cp -v {{ hypatia_malsharedb_path }} {{ hypatia_signatures_path }}/raw/
