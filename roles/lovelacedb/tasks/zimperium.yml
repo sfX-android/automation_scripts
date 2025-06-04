@@ -44,7 +44,7 @@
         f="${hashfiles[$type]}"
         if [[ -s "$f" ]]; then
           sort -u -o "$f" "$f"
-          mv -v "$f" {{ hypatia_signatures_path }}/zimperium/
+          mv -v "$f" {{ hypatia_signatures_path }}/raw/
         else
           rm -f "$f" && echo "no hashes in $f"
         fi
