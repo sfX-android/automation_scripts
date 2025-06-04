@@ -30,7 +30,7 @@
   retries: 10
   delay: 60
 
-- name: "Prep: check static hash files"
+- name: "Prep: check hash files existence"
   ansible.builtin.stat:
     path: "{{ item.file }}"
   loop:
@@ -39,8 +39,12 @@
     - { name: "malwarehunt", file: "{{ hypatia_signatures_path }}/raw/malware-hunter.sha256" }
     - { name: "tthreads_hdb", file: "{{ hypatia_signatures_path }}/raw/targetedthreats.hdb" }
     - { name: "tthreads_hsb", file: "{{ hypatia_signatures_path }}/raw/targetedthreats.hsb" }
+    - { name: "sanesec", file: "{{ hypatia_signatures_path }}/raw/sanesecurity-malwarehash.hsb" }
     - { name: "zimperium_md5", file: "{{ hypatia_signatures_path }}/raw/zimperium.md5" }
     - { name: "zimperium_sha256", file: "{{ hypatia_signatures_path }}/raw/zimperium.sha256" }
+    - { name: "stalkerware", file: "{{ hypatia_signatures_path }}/raw/stalkerware.hsb" }
+    - { name: "threatfox", file: "{{ hypatia_signatures_path }}/raw/threatfox.sha256" }
+    - { name: "mantaray", file: "{{ hypatia_signatures_path }}/raw/VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.md5" }
   register: hash_stat
 
 - name: "Prep: build mapping of hash stats by name"    # requires Ansible 2.12

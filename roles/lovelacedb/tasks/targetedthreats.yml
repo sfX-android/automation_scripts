@@ -6,7 +6,7 @@
     dest: "{{ hypatia_signatures_path }}/targetedthreats"
     force: true
   timeout: 180
-  register: tthreads
+  register: get_tthreads
 
 - name: "Targetedthreats: Parse signatures"
   ansible.builtin.shell: |
@@ -41,4 +41,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/targetedthreats"
-  when: hash_stat_dict.tthreads_hdb.isreg is not defined or hash_stat_dict.tthreads_hsb.isreg is not defined or tthreads.changed
+  when: hash_stat_dict.tthreads_hdb.isreg is not defined or hash_stat_dict.tthreads_hsb.isreg is not defined or get_tthreads.changed

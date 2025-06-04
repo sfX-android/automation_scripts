@@ -8,3 +8,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/virusshare_mantaray"
+  when: hash_stat_dict.mantaray.isreg is not defined

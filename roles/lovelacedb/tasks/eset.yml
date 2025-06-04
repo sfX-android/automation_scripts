@@ -6,9 +6,12 @@
     dest: "{{ hypatia_signatures_path }}/eset"
     force: true
   timeout: 180
+  register: get_eset
 
 - name: "Eset: Parse signatures"
   ansible.builtin.shell: |
+    rm {{ hypatia_signatures_path }}/raw/eset.*
+
     processHashes() {
         local name=$(basename $1)
         if [ -f $1/samples.$2 ]; then
@@ -25,3 +28,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/eset"
+  when: get_eset.changed

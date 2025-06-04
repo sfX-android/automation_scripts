@@ -6,9 +6,12 @@
     dest: "{{ hypatia_signatures_path }}/amnestytech"
     force: true
   timeout: 180
+  register: get_amnesty
 
 - name: "Amnestytech: Parse signatures"
   ansible.builtin.shell: |
+    rm {{ hypatia_signatures_path }}/raw/amnestytech.*
+
     for sha in $(find . -type f -name sha256.txt);do
        cat $sha >> {{ hypatia_signatures_path }}/raw/amnestytech.sha256
        echo >> {{ hypatia_signatures_path }}/raw/amnestytech.sha256
@@ -20,3 +23,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/amnestytech"
+  when: get_amnesty.changed

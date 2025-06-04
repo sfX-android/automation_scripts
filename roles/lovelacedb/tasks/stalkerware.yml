@@ -6,9 +6,12 @@
     dest: "{{ hypatia_signatures_path }}/stalkerware"
     force: true
   timeout: 180
+  register: get_stalkerw
 
 - name: "Stalkerware: Parse signatures"
   ansible.builtin.shell: |
+    rm {{ hypatia_signatures_path }}/raw/stalkerware.hsb
+    
     while IFS=, read -r col1SHA col2Package col3Certificate col4Version col5Name; do
         if [ -n "$col1SHA" ] && [ -n "$col5Name" ]; then
           echo "$col1SHA:0:$col5Name" >> {{ hypatia_signatures_path }}/raw/stalkerware.hsb
@@ -18,3 +21,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/stalkerware"
+  when: hash_stat_dict.stalkerware.isreg is not defined or get_stalkerw.changed

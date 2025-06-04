@@ -6,11 +6,18 @@
     state: directory
     mode: 0700
 
+#- name: "Threatfox: Get signatures"
+#  ansible.builtin.shell: |
+#    wget -q "{{ hypatia_uri_threatfox }}" -O archive.zip  2>> /dev/null
+#  args:
+#    chdir: "{{ hypatia_signatures_path }}/threatfox"
+
 - name: "Threatfox: Get signatures"
-  ansible.builtin.shell: |
-    wget -q "{{ hypatia_uri_threatfox }}" -O archive.zip  2>> /dev/null
-  args:
-    chdir: "{{ hypatia_signatures_path }}/threatfox"
+  ansible.builtin.get_url:
+    url: "{{ hypatia_uri_threatfox }}"
+    dest: "{{ hypatia_signatures_path }}/threatfox/archive.zip"
+    mode: 0400
+  register: get_tfox
 
 - name: "Threatfox: Parse signatures"
   ansible.builtin.shell: |
@@ -19,3 +26,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/threatfox"
+  when: hash_stat_dict.threatfox.isreg is not defined or get_tfox.changed

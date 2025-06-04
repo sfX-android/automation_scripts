@@ -6,7 +6,7 @@
     dest: "{{ hypatia_signatures_path }}/zimperium"
     force: true
   timeout: 180
-  register: zimperium
+  register: get_zimperium
 
 - name: "Zimperium: Parse signatures"
   ansible.builtin.shell: |
@@ -52,4 +52,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/zimperium"
-  when: hash_stat_dict.zimperium_md5.isreg is not defined or hash_stat_dict.zimperium_sha256.isreg is not defined or zimperium.changed
+  when: hash_stat_dict.zimperium_md5.isreg is not defined or hash_stat_dict.zimperium_sha256.isreg is not defined or get_zimperium.changed
