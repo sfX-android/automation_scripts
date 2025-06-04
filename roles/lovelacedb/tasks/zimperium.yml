@@ -6,10 +6,50 @@
     dest: "{{ hypatia_signatures_path }}/zimperium"
     force: true
   timeout: 180
+  register: zimperium
 
 - name: "Zimperium: Parse signatures"
   ansible.builtin.shell: |
-    find . -type f -name 
+      declare -A hashfiles
+      hashfiles=( ["md5"]="zimperium.md5" ["sha1"]="zimperium.sha1" ["sha256"]="zimperium.sha256" )
+      
+      # Empty output files
+      > "${hashfiles[md5]}"
+      > "${hashfiles[sha1]}"
+      > "${hashfiles[sha256]}"
+      
+      # Process all .txt files in the directory
+      for file in $(find ./ -type f -name 'apks.csv'); do
+        [[ -e "$file" ]] || continue
+        while IFS= read -r line; do
+          # Skip empty lines and common headers
+          [[ -z "$line" ]] && continue
+          [[ "$line" =~ ^([Mm][Dd]5|[sS][Hh][Aa]1|[sS][Hh][Aa]256|TYPE|PKGNAME) ]] && continue
+          # Split into words and check each for hash length and content
+          for word in $line; do
+            word="${word//$'\t'/}" # Remove tabs if present
+            if [[ "$word" =~ ^[a-fA-F0-9]{32}$ ]]; then
+              echo "$word" >> "${hashfiles[md5]}"
+            elif [[ "$word" =~ ^[a-fA-F0-9]{40}$ ]]; then
+              echo "$word" >> "${hashfiles[sha1]}"
+            elif [[ "$word" =~ ^[a-fA-F0-9]{64}$ ]]; then
+              echo "$word" >> "${hashfiles[sha256]}"
+            fi
+          done
+        done < "$file"
+      done
+      
+      # Deduplicate and sort, remove empty files
+      for type in "${!hashfiles[@]}"; do
+        f="${hashfiles[$type]}"
+        if [[ -s "$f" ]]; then
+          sort -u -o "$f" "$f"
+          mv -v "$f" {{ hypatia_signatures_path }}/zimperium/
+        else
+          rm -f "$f" && echo "no hashes in $f"
+        fi
+      done
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/zimperium"
+  when: hash_stat_dict.zimperium_md5.isreg is not defined or hash_stat_dict.zimperium_sha256.isreg is not defined or zimperium.changed
