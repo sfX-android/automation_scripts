@@ -6,10 +6,12 @@
     dest: "{{ hypatia_signatures_path }}/umair9747"
     force: true
   timeout: 180
+  register: umair
 
-- name: "Umair9747: Parse signatures"
+- name: "Umair9747: Add signatures"
   ansible.builtin.shell: |
     cp mass-scanning-android-malware-samples/md5.txt {{ hypatia_signatures_path }}/raw/umair9747.md5
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/umair9747"
+  when: hash_stat_dict.umair.isreg is not defined or umair.changed
