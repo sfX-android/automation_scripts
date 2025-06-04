@@ -16,6 +16,7 @@
             echo '{{ vault_lovelace_gpg_pass }}' | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --detach-sig --output ${db}.sig --sign $db
          done
      become: yes
+     no_log: true
      args:
        executable: /bin/bash
 
