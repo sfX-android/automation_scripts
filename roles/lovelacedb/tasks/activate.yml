@@ -1,0 +1,10 @@
+---
+
+- name: "Activate new signatures db"
+  ansible.builtin.shell: |
+     cp -v {{ sigdb_bin_path }}/* {{ lovelace_www_root_path }}/
+     chmod 644 {{ lovelace_www_root_path }}/*
+  become: yes
+  args:
+      executable: /bin/bash
+  delegate_to: lovelacedb
