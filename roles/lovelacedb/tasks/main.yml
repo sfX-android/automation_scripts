@@ -5,6 +5,7 @@
 # static sources
 # (rarely updated or not updated at all)
 - include_tasks: selftest.yml
+- include_tasks: hypatia_import.yml
 - include_tasks: avast.yml
 - include_tasks: malware_hunter.yml
 - include_tasks: targetedthreats.yml
