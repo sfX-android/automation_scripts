@@ -1,0 +1,5 @@
+---
+
+- name: "Hypatia-import: Add static imported hashes"
+  ansible.builtin.shell: >-
+    cp -v {{ hypatia_imported_path }}/* {{ hypatia_signatures_path }}/raw/
