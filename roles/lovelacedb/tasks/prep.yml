@@ -1,9 +1,9 @@
 ---
 
-- name: "Prep: clean db raw path"
-  ansible.builtin.file:
-    path: "{{ hypatia_signatures_path }}/raw"
-    state: absent
+#- name: "Prep: clean db raw path"
+#  ansible.builtin.file:
+#    path: "{{ hypatia_signatures_path }}/raw"
+#    state: absent
     
 - name: "Prep: db path"
   ansible.builtin.file:
@@ -27,3 +27,5 @@
     url: "{{ hypatia_uri_converter }}"
     dest: "{{ hypatia_path_converter }}"
     mode: 0750
+  retries: 10
+  delay: 60
