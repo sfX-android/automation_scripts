@@ -35,3 +35,6 @@
 
 # sign databases
 - include_tasks: sign.yml
+
+# activate new db
+- include_tasks: activate.yml
