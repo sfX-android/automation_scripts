@@ -1,0 +1,18 @@
+---
+
+- name: "Signature-base: Prep sig path"
+  ansible.builtin.file:
+    path: "{{ hypatia_signatures_path }}/threatfox"
+    state: directory
+    mode: 0700
+
+- name: "Signature-base: Get signatures"
+  ansible.builtin.get_url:
+    url: "{{ item.uri }}"
+    dest: "{{ hypatia_signatures_path }}/raw/{{ item.dest }}"
+    mode: 0400
+  loop:
+    - uri: "{{ hypatia_uri_signaturebase }}"
+      dest: signature-base.loki
+    - uri: "{{ hypatia_uri_signaturebase_otx }}"
+      dest: signature-base-otx.loki
