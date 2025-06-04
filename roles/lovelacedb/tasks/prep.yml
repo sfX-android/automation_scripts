@@ -47,10 +47,11 @@
     - { name: "mantaray", file: "{{ hypatia_signatures_path }}/raw/VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.md5" }
   register: hash_stat
 
-- name: "Prep: build mapping of hash stats by name"    # requires Ansible 2.12
+- name: "Prep: build mapping of hash stats by name"
   ansible.builtin.set_fact:
     hash_stat_dict: >-
       {{
-        hash_stat.results
-        | items2dict(key_name='item.name', value_name='stat')
+        (hash_stat_dict | default({}))
+        | combine({ item.item.name: item.stat })
       }}
+  loop: "{{ hash_stat.results }}"
