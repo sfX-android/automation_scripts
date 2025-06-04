@@ -19,6 +19,7 @@
 - include_tasks: cybercure.yml
 - include_tasks: eset.yml
 - include_tasks: malicious_hash.yml
+- include_tasks: malshare.yml
 - include_tasks: malware_bazaar.yml
 - include_tasks: threatfox.yml
 - include_tasks: threatview.yml
