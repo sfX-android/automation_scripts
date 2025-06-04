@@ -28,6 +28,7 @@ hypatia_uri_malware_hunter: "https://figshare.com/ndownloader/files/42804604"
 hypatia_uri_malicioushash_base: "https://raw.githubusercontent.com/romainmarcoux/malicious-hash/main/full-hash-"
 hypatia_uri_signaturebase: "https://raw.githubusercontent.com/Neo23x0/signature-base/refs/heads/master/iocs/hash-iocs.txt"
 hypatia_uri_signaturebase_otx: "https://raw.githubusercontent.com/Neo23x0/signature-base/refs/heads/master/iocs/otx-hash-iocs.txt"
+hypatia_uri_malshare: "https://malshare.com/api.php?api_key=${APIKEY}&action=getlist"  # see {{ hypatia_signatures_path }}/malshare/download.sh to replace the APIKEY!
 
 # LOCAL sources
 hypatia_malsharedb_path: "{{ hypatia_signatures_path }}/malshare/malshare.sha256"
