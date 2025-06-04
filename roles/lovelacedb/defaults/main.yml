@@ -6,6 +6,7 @@ hypatia_www_user: www-data
 sigdb_bin_path: "{{ hypatia_signatures_path }}/production/"
 hypatia_index_html: "{{ sigdb_bin_path }}/index.html"
 hypatia_testfiles_path: "{{ hypatia_signatures_path }}/selftest"
+lovelace_www_root_path: /var/www/html/db
 
 # sources
 hypatia_uri_amnestytech: "https://github.com/amnestytech/investigations"
