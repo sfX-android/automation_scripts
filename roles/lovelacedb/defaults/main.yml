@@ -28,6 +28,8 @@ hypatia_uri_zimperium: "https://github.com/Zimperium/IOC"
 hypatia_uri_malware_bazaar: "https://bazaar.abuse.ch/export/txt/sha256/recent/"
 hypatia_uri_malware_hunter: "https://figshare.com/ndownloader/files/42804604"
 hypatia_uri_malicioushash_base: "https://raw.githubusercontent.com/romainmarcoux/malicious-hash/main/full-hash-"
+hypatia_uri_signaturebase: "https://raw.githubusercontent.com/Neo23x0/signature-base/refs/heads/master/iocs/hash-iocs.txt"
+hypatia_uri_signaturebase_otx: "https://raw.githubusercontent.com/Neo23x0/signature-base/refs/heads/master/iocs/otx-hash-iocs.txt"
 
 # malware-hunter (wget https://figshare.com/ndownloader/files/42804604 -O malware-hunter/MH-100K-dataset.zip)
 #hypatia_path_malwarehunter: /srv/sigdb/malware-hunter
