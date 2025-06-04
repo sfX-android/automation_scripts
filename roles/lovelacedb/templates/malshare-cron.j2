@@ -1,0 +1,51 @@
+#!/bin/bash
+##############################################################################################################
+#
+# Copyright(C): 2025 <steadfasterX |AT| binbash #dot# rocks>
+# License: GPL_v2
+#
+# Downloads daily last 24 hours hashes from malshare, stores the results and merges
+# any previously downloaded hashes into a single db file (unique hashes only).
+#
+# 1. request a free API key at: https://malshare.com/register.php
+# 2. add this script to cron (cp -p {{ hypatia_signatures_path }}/malshare/download.sh /etc/cron.daily/malshare)
+# 3. disable the following line to set your APIKEY in the cron(!) file:
+#APIKEY=xxxxxxxxxxxxxxxxxxxxxxxxx
+#    (i.e. NOT in {{ hypatia_signatures_path }}/malshare/download.sh)
+#
+##############################################################################################################
+
+base_path="{{ hypatia_signatures_path }}/malshare"
+
+dl="$base_path/hashdb"
+TODAY=$(date +%F)
+if [ -z "$APIKEY" ];then
+	echo "APIKEY env var is missing!"
+	exit 4
+fi
+
+if [ ! -f "$dl/${TODAY}.sha256" ];then
+	[ ! -d "$dl" ] && mkdir ${dl}
+
+	curl -s "{{ hypatia_uri_malshare }}" > $dl/${TODAY}.json
+	if [ $? -eq 0 ];then
+		jq -r .[].sha256 $dl/${TODAY}.json > $dl/${TODAY}.sha256
+		if [ -s "$dl/${TODAY}.sha256" ];then
+			rm $dl/${TODAY}.json
+			sort -u $dl/*.sha256 > $base_path/malshare.sha256.tmp
+			if [ -s "$base_path/malshare.sha256.tmp" ];then
+				mv -v $base_path/malshare.sha256.tmp $base_path/malshare.sha256
+			else
+				echo "ERROR: calculated db empty"; exit 3
+			fi
+		else
+			echo "ERROR: $dl/${TODAY}.sha256 empty?!"
+			exit 3
+		fi
+	else
+		echo "ERROR ($?): downloading daily db"
+		exit 3
+	fi
+else
+	echo "skipping re-download of $dl/${TODAY}.sha256"
+fi
