@@ -1,0 +1,69 @@
+---
+
+- name: "F-Droid: Switch between BETA & STABLE"
+  hosts: fdroidserver
+  gather_facts: false
+  become: no
+
+  vars:
+    #tg_success: |
+    #    {{ ICON_GOOD }} ***New build released\!***
+    #    {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE channel
+    tg_failed: |
+        {{ ICON_BAD }} ***ERROR***
+        {{ target_model | regex_escape() }}: switching {{ os_zip_filename_no_ext | regex_escape() }} to STABLE failed\!
+  
+  tasks:
+    - block:
+
+      - import_role:
+          name: common
+
+      - include_role:
+          name: "{{ ROM_FLAVOR }}/common"
+          tasks_from: vars.yml
+          public: yes
+
+      - fail:
+          msg: "boo.. vault_tg_group_id_failing is undefined"
+        when: 
+          - vault_tg_group_id_failing is undefined
+          - telegram_notifications | bool
+
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_automation }}"
+        when:
+          - telegram_notifications | bool
+        
+      - name: "F-Droid: switch"
+        ansible.builtin.shell: |
+            app_and_version=$(echo "{{ app_name }}" | sed 's/%%/_{{ app_version }}/g')
+            bash /srv/fdroid/update_repo.sh {{ switch_type }} "{{ app_and_version }}"
+        args:
+          chdir: "{{ rempath }}"
+  
+      - name: "Set result (compat fix for release role)"
+        ansible.builtin.shell: 'true'
+        register: buildresult
+  
+      - include_role:
+          name: notify
+
+      # when any of the above fails notify always 
+      rescue:
+
+        - set_fact:
+            tg_group_id: "{{ vault_tg_group_id_failing }}"
+          when:
+            - telegram_notifications | bool
+
+        - include_role:
+            name: notify
+           
+        - fail:
+            msg: |
+              ERROR OCCURED:
+              
+              {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
+              
+              See above for details.
