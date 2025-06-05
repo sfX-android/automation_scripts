@@ -9,10 +9,12 @@
     target_model: "F-Droid"
     tg_success: |
         {{ ICON_GOOD }} ***F-Droid App released to Stable repo\!***
-        {{ app_name | regex_replace('%%','') | regex_escape() }}: successfully switched {{ app_version | regex_escape() }} to STABLE repo
+        {{ app_name | regex_replace('%%','') | regex_escape() }}:
+        successfully switched {{ app_version | regex_escape() }} to STABLE repo
     tg_failed: |
         {{ ICON_BAD }} ***ERROR***
-        {{ app_name | regex_replace('%%','') | regex_escape() }}: switching {{ app_version | regex_escape() }} to STABLE failed\!
+        {{ app_name | regex_replace('%%','') | regex_escape() }}:
+        switching {{ app_version | regex_escape() }} to STABLE failed\!
   
   tasks:
     - block:
