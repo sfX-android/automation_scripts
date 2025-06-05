@@ -19,10 +19,10 @@
       #- import_role:
       #    name: common
 
-      #- include_role:
-      #    name: "{{ ROM_FLAVOR }}/common"
-      #    tasks_from: vars.yml
-      #    public: yes
+      - include_role:
+          name: "{{ ROM_FLAVOR }}/common"
+          tasks_from: justvault.yml
+          public: yes
 
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
