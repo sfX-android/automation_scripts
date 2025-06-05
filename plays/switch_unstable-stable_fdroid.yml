@@ -20,7 +20,7 @@
       #    name: common
 
       - include_role:
-          name: "{{ ROM_FLAVOR }}/common"
+          name: common
           tasks_from: justvault.yml
           public: yes
 
