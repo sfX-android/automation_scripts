@@ -8,7 +8,7 @@
   vars:
     os_zip_filename_no_ext: "{{ os_zip_filename | regex_replace('.zip','') }}"
     recovery_filename_no_ext: >-
-      {{ os_zip_filename_no_ext | regex_replace('-dos-','-RECOVERY-') }}
+      {{ os_zip_filename_no_ext | regex_replace('(.+-[0-9]+\.[0-9]+-[0-9]{8}).*','\1') }}
     #tg_success: |
     #    {{ ICON_GOOD }} ***New build released\!***
     #    {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE channel
@@ -61,21 +61,20 @@
           - name: "RECOVERY: switch to stable"
             ansible.builtin.copy:
               remote_src: yes
-              src: "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}.{{ item }}"
-              dest: "{{ rempath }}/recovery"
-            loop:
-              - img
-              - img.sha256
+              src: "{{ item }}"
+              dest: "{{ rempath }}/recovery/"
+            with_fileglob:
+              - "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*"
     
           - name: "RECOVERY: verify IMG integrity"
-            ansible.builtin.shell: "sha256sum --check {{ recovery_filename_no_ext }}.img.sha256"
+            ansible.builtin.shell: >-
+                sha256sum --check {{ recovery_filename_no_ext }}*.img.sha256
             args:
               chdir: "{{ rempath }}/recovery"
       
           - name: "RECOVERY: delete from unstable"
-            ansible.builtin.file:
-              path: "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}.{{ item }}"
-              state: absent
+            ansible.builtin.shell: >-
+              rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*.{{ item }}
             loop:
               - img
               - img.sha256
