@@ -38,7 +38,7 @@
       - name: "F-Droid: switch"
         ansible.builtin.shell: |
             app_and_version=$(echo "{{ app_name }}" | sed 's/%%/_{{ app_version }}/g')
-            bash {{ fdroidpath }}/update_repo.sh {{ switch_type }} "{{ app_and_version }}"
+            bash {{ fdroidpath }}/update_repo.sh {{ switch_type }} "$app_and_version"
   
       - name: "Set result (compat fix for release role)"
         ansible.builtin.shell: 'true'
