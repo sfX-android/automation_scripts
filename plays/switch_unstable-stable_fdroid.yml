@@ -2,7 +2,7 @@
 
 - name: "F-Droid: Switch between BETA & STABLE"
   hosts: fdroidserver
-  gather_facts: false
+  gather_facts: true
   become: yes
 
   vars:
