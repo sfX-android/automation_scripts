@@ -6,6 +6,7 @@
   become: no
 
   vars:
+    target_model: "F-Droid"
     #tg_success: |
     #    {{ ICON_GOOD }} ***New build released\!***
     #    {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE channel
