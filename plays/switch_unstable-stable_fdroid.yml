@@ -7,12 +7,12 @@
 
   vars:
     target_model: "F-Droid"
-    #tg_success: |
-    #    {{ ICON_GOOD }} ***New build released\!***
-    #    {{ target_model | regex_escape() }}: successfully switched {{ os_zip_filename_no_ext | regex_escape() }} to STABLE channel
+    tg_success: |
+        {{ ICON_GOOD }} ***F-Droid App released to Stable repo\!***
+        {{ app_name | regex_escape() }}: successfully switched {{ app_version | regex_escape() }} to STABLE repo
     tg_failed: |
         {{ ICON_BAD }} ***ERROR***
-        {{ target_model | regex_escape() }}: switching {{ os_zip_filename_no_ext | regex_escape() }} to STABLE failed\!
+        {{ app_name | regex_escape() }}: switching {{ app_version | regex_escape() }} to STABLE failed\!
   
   tasks:
     - block:
