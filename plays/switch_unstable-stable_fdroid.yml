@@ -3,7 +3,7 @@
 - name: "F-Droid: Switch between BETA & STABLE"
   hosts: fdroidserver
   gather_facts: true
-  become: yes
+  become: no
 
   vars:
     #tg_success: |
@@ -36,6 +36,7 @@
           - telegram_notifications | bool
         
       - name: "F-Droid: switch"
+        become: yes
         ansible.builtin.shell: |
             app_and_version=$(echo "{{ app_name }}" | sed 's/%%/_{{ app_version }}/g')
             bash {{ fdroidpath }}/update_repo.sh {{ fdroid_switch_type }} "$app_and_version"
