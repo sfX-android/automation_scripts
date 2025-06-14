@@ -189,6 +189,9 @@ SH_GRAPHENE_BUILD: |
       # prep release path
       if [ -d releases/ ]; then rm -rf releases;fi
       ln -s ../graphene_releases releases
+      
+      # clean prev releases
+      rm -rfv releases/* && echo "... deleted previous release files"
 
       # verify manifests
       {{ SH_GRAPHENE_VERIFY }}
