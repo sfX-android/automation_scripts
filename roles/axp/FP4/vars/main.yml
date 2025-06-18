@@ -26,6 +26,9 @@ skip_wireguard: True
 # upload the recovery image
 axp_release_recovery: True
 
+# add OpenEUICC
+extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
+
 # allow creating factory image
 custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
 
