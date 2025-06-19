@@ -75,11 +75,21 @@
       changed_when: picklist.changed
       until: picklist.changed
 
+    - name: "Show ASB and cherry-pick commands"
+      ansible.builtin.debug:
+        msg: |
+          ----------------------------------------------
+          ASB-{{ item.key }} will be patched by:
+          {{ item.cmd }}
+          ----------------------------------------------
+      loop: "{{ cherry_commands }}"
+      when: picklist.changed
+  
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
       any_errors_fatal: true  # fail immediately and not waiting for finishing the whole loop
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
-        echo "patch cmd: {{ cherry | regex_replace('-f ',' ') }}"
+        echo "patching ASB : {{ cherry | regex_replace('-f ',' ') }}"
         {{ cherry | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }} -v >> {{ BUILD_LOG }} 2>&1 || {{ cherry }} -fv >> {{ BUILD_LOG }} || exit 123
       args:
         executable: /bin/bash
