@@ -84,11 +84,13 @@
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
       vars:
         cherry_replaced: >-
-          {% set result = cherry %}
-          {% for dep in secpatch_static_dependencies | default([]) %}
-          {%   set result = result | regex_replace(dep.id ~ '\\b', dep.dep) %}
-          {% endfor %}
-          {{ result }}
+         {{
+           secpatch_static_dependencies | default([]) |
+           reduce(
+            'result | regex_replace(item.id ~ "\\b", item.dep)',
+             cherry
+             )
+          }}
       ansible.builtin.shell: |
         if [ -f CHERRYPICK.FAILED ]; then echo "Previous cherry-picked failed!! Skipping...."; exit 3; fi
         source build/envsetup.sh > /dev/null
