@@ -74,12 +74,19 @@
         label: "{{ item.key }}"  # Using ASB as the label for the loop
       changed_when: picklist.changed
       until: picklist.changed
-  
+
+    # as Ansible cannot break from a loop we detect issues and set an indicator file instead so we can skip following tasks
+    - name: "Cleanup a previous cherry pick failed indicator"
+      ansible.builtin.file:
+          path: "{{ SRCPATH }}/CHERRYPICK.FAILED"
+          state: absent
+    
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
       ansible.builtin.shell: |
+        if [ -f CHERRYPICK.FAILED ];then echo "Previous cherry-picked failed!! Skipping...."; exit 3;fi
         source build/envsetup.sh > /dev/null
         echo "patching ASB : {{ cherry | regex_replace('-f ',' ') }}"
-        {{ cherry | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }} -v >> {{ BUILD_LOG }} 2>&1 || {{ cherry }} -fv >> {{ BUILD_LOG }} || exit 123
+        {{ cherry | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }} -v >> {{ BUILD_LOG }} 2>&1 || {{ cherry }} -fv >> {{ BUILD_LOG }} || (touch CHERRYPICK.FAILED ;exit 123)
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
