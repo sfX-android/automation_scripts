@@ -86,7 +86,7 @@
         cherry_replaced: >-
          {{
            secpatch_static_dependencies | default([]) |
-           reduce(
+           community.general.reduce(
             'result | regex_replace(item.id ~ "\\b", item.dep)',
              cherry
              )
