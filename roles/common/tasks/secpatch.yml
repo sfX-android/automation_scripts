@@ -51,7 +51,9 @@
 - name: "Define Queries by ASB"
   ansible.builtin.set_fact:
     pick_queries: >-
-      {{ pick_queries | d({}) | combine({item: (flattened_sec_patch_topics | select('match', item) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR '))}) }}
+      {{ pick_queries | d({}) | combine({
+        item: (sec_patch_topicname ~ (item|string)|regex_replace('(^.{4})(.{2})', '\1-\2') ~ ' ' ~ secpatch_common_exclusions)
+      }) }}
   loop: "{{ flattened_sec_patch_topics }}"
   
 - block:
