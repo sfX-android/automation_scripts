@@ -86,7 +86,6 @@
       when: picklist.changed
   
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
-      any_errors_fatal: true  # fail immediately and not waiting for finishing the whole loop
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
         echo "patching ASB : {{ cherry | regex_replace('-f ',' ') }}"
@@ -129,6 +128,11 @@
         executable: /bin/bash
         chdir: "{{ SRCPATH }}/build/core"
       when: spres.changed
+
+  rescue:
+    - name: "Fail fast on failures" # fail immediately and not waiting for finishing full loops
+      ansible.builtin.fail:
+        msg: "Failed, stopping NOW!"
 
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
