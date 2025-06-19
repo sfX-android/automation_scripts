@@ -44,57 +44,18 @@
       or SRCPATH is undefined
       or sec_patch_topicname is undefined
 
-#- name: "Define Query"
-#  ansible.builtin.set_fact:
-#    pick_query: >-
-#      {{ sec_patch_topics | flatten | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR ') }}
-
 - name: "Flatten sec_patch_topics"
   ansible.builtin.set_fact:
     flattened_sec_patch_topics: "{{ sec_patch_topics | flatten }}"
-    
-- name: "Extract years from sec_patch_topics"
-  ansible.builtin.set_fact:
-    sec_patch_years: >-
-      {{ flattened_sec_patch_topics | map('regex_search', '(^.{4})') | list | unique }}
  
-- name: "Define Queries by Year"
+- name: "Define Queries by ASB"
   ansible.builtin.set_fact:
     pick_queries: >-
       {{ pick_queries | d({}) | combine({item: (flattened_sec_patch_topics | select('match', item) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR '))}) }}
-  loop: "{{ sec_patch_years }}"
+  loop: "{{ flattened_sec_patch_topics }}"
   
- # ansible.builtin.set_fact:
- #   pick_queries: >-
- #     {% for year in sec_patch_years %}
- #     {{ pick_queries | d({}) | combine({year: flattened_sec_patch_topics | select('match', year) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR ')}) }}
- #     {% endfor %}
-      
-#  ansible.builtin.set_fact:
-#    pick_queries: >-
- #     {% for year in sec_patch_years %}
- #      {{ pick_queries | d(year) }} + {{ flattened_sec_patch_topics | select('match', year) | map('regex_replace', '(^.{4})(.{2})', sec_patch_topicname + '\1-\2 ' + secpatch_common_exclusions) | join(' OR ') }}
- #     {% endfor %}
-
 - block:
-
-    # this can happen when ancient patch levels get a recent patch added which must be commited BEFORE an ancient one
-    # (e.g. 378122 is a requirement for 378123 and both must be commited before 378065 can be applied which itself was commited earlier..)
-    - name: "A10 or older: fix repopick order"
-      when: android_version_int | int < 11
-      ansible.builtin.shell: >
-        cd {{ item.path }} && git fetch {{ item.fetch }} && git cherry-pick {{ item.pick }}
-      args:
-        chdir: "{{ SRCPATH }}"
-        executable: /bin/bash
-      loop:
-        - { path: "vendor/lineage", fetch: "https://github.com/LineageOS/android_vendor_lineage refs/changes/78/378478/2", pick: "FETCH_HEAD" }
-        
-        #- { path: "packages/apps/Traceur", fetch: "https://github.com/LineageOS/android_packages_apps_Traceur refs/changes/19/378119/1", pick: "FETCH_HEAD" }             # Q_asb_2023-06
-        #- { path: "packages/services/Telecomm", fetch: "https://github.com/LineageOS/android_packages_services_Telecomm refs/changes/22/378122/2", pick: "FETCH_HEAD" }   # Q_asb_2023-08
-        #- { path: "frameworks_base", fetch: "https://github.com/LineageOS/android_frameworks_base refs/changes/97/378097/2", pick: "FETCH_HEAD" }                         # Q_asb_2023-08
-        #- { path: "packages/services/Telecomm", fetch: "https://github.com/LineageOS/android_packages_services_Telecomm refs/changes/23/378123/2", pick: "FETCH_HEAD" }   # Q_asb_2023-12
-      
+   
     - name: "SECURITY PATCH MERGE: create repopick lists by year (required to find path names)"
       # "yes y" is required to continue when the changes are > 200
       ansible.builtin.shell: >
@@ -107,21 +68,30 @@
       register: picklist
       loop: "{{ pick_queries | dict2items }}"
       loop_control:
-        label: "{{ item.key }}"  # Using year as the label for the loop
+        label: "{{ item.key }}"  # Using ASB as the label for the loop
       changed_when: picklist.changed
       until: picklist.changed
 
-    - name: "SECURITY PATCH MERGE: apply security patches up to: {{ sec_patch_date_last_human }}"
+    - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
-        echo "patch cmd: {{ item | regex_replace('-f ',' ') }}"
-        {{ item | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }} -v >> {{ BUILD_LOG }} 2>&1 || {{ item }} -fv >> {{ BUILD_LOG }} || exit 123
+        echo "patch cmd: {{ cherry | regex_replace('-f ',' ') }}"
+        {{ cherry | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }} -v >> {{ BUILD_LOG }} 2>&1 || {{ cherry }} -fv >> {{ BUILD_LOG }} || exit 123
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
       register: spres
-      loop: "{{ picklist.results | selectattr('changed', 'eq', True) | map(attribute='stdout_lines') | flatten }}"
+      loop: "{{ picklist.results | selectattr('changed', 'eq', True) 
+               | sort(attribute='item.key') 
+               | map(attribute='stdout_lines') 
+               | flatten }}"
       when: picklist.changed
+      loop_control:
+        loop_var: cherry
+
+    - name: "DEBUG FAIL"
+      fail:
+        msg: DEBUG FAIL
     
     - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last_human }}"
       ansible.builtin.lineinfile:
