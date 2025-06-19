@@ -74,28 +74,6 @@
         label: "{{ item.key }}"  # Using ASB as the label for the loop
       changed_when: picklist.changed
       until: picklist.changed
-
-    - name: "Prepare cherry-pick list with ASB keys"
-      ansible.builtin.set_fact:
-        cherry_commands: >-
-          {{
-            picklist.results
-            | selectattr('changed', 'eq', True)
-            | sort(attribute='item.key')
-            | map('extract', ['item', 'key', 'stdout_lines'])
-            | map('community.general.json_query', '[*].{"key": @[0], "cmds": @[1]}')
-            | sum(start=[])
-          }}
-
-    - name: "Show ASB and cherry-pick commands"
-      ansible.builtin.debug:
-        msg: |
-          ----------------------------------------------
-          ASB-{{ item.key }} will be patched by:
-          {{ item.cmd }}
-          ----------------------------------------------
-      loop: "{{ cherry_commands }}"
-      when: picklist.changed
   
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
       ansible.builtin.shell: |
