@@ -81,7 +81,7 @@
           path: "{{ SRCPATH }}/CHERRYPICK.FAILED"
           state: absent
 
-    - name: SECURITY PATCH MERGE: apply security patches in ASB order
+    - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
       vars:
         cherry_replaced: >-
           {% set result = cherry %}
