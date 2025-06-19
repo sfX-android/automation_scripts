@@ -76,6 +76,7 @@
       until: picklist.changed
 
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
+      any_errors_fatal: true  # fail immediately and not waiting for finishing the whole loop
       ansible.builtin.shell: |
         source build/envsetup.sh > /dev/null
         echo "patch cmd: {{ cherry | regex_replace('-f ',' ') }}"
