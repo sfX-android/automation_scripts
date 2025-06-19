@@ -86,7 +86,7 @@
         cherry_replaced: >-
          {{
            secpatch_static_dependencies | default([]) |
-           community.general.reduce(
+           ansible.utils.reduce(
             'result | regex_replace(item.id ~ "\\b", item.dep)',
              cherry
              )
