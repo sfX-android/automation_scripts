@@ -120,10 +120,6 @@
       when: picklist.changed
       loop_control:
         loop_var: cherry
-
-    - name: "DEBUG FAIL"
-      fail:
-        msg: DEBUG FAIL
     
     - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last_human }}"
       ansible.builtin.lineinfile:
