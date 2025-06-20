@@ -84,14 +84,18 @@
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
       ansible.builtin.shell: |
         if [ -f CHERRYPICK.FAILED ]; then echo "Previous cherry-picked failed!! Skipping...."; exit 3; fi
+        unset id order batch
         cmd="{{ cherry | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }}"
         
         # set static order if required
         for batch in {{ secpatch_static_dependencies }};do
           id="${batch/:*}"
-          order=$(echo "${batch/*:}" | tr ',' ' ')
-          cmd=$(echo "$cmd" | sed "s/$id/$order/g")
-          echo "FORCING PATCH ORDER for: $id ($order)"
+          chk=$(echo "$cmd" | grep -c "$id")
+          if [ $chk -gt 0 ];then
+            order=$(echo "${batch/*:}" | tr ',' ' ')
+            cmd=$(echo "$cmd" | sed "s/$id/$order/g")
+            echo "FORCING PATCH ORDER for: $id ($order)"
+          fi
         done
         
         source build/envsetup.sh > /dev/null
