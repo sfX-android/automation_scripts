@@ -226,9 +226,9 @@ secpatch_los_exclusions: '359421'
 secpatch_eos_exclusions: '324039|324040|324041|366137|377775' # includes secpatch_common_exclusions + secpatch_los_exclusions
 
 # define known relation chains
-secpatch_static_dependencies:
-    - id: "365453"
-      dep: "378097 365453"
+# format: <replace-id1>:<patch-first>,<patch-next>
+# must be space separated
+secpatch_static_dependencies: "365453:378097,365453"
 
 # usually you should never need to change this! See above how it is generated:
 sec_patch_pick_branch: "{{ los_version_gitbranch }}"
