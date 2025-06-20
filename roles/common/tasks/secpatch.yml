@@ -66,7 +66,7 @@
         | sed 's/\*Manifest Change\*/.repo/'
         {% if secpatch_exclusionlist_eos is defined and secpatch_exclusionlist_eos != '' %}| grep -iEv '{{ secpatch_exclusionlist_eos }}'{% endif %}
         {% if secpatch_exclusionlist_los is defined and secpatch_exclusionlist_los != '' %}| grep -iEv '{{ secpatch_exclusionlist_los }}'{% endif %}
-        exit ${PIPESTATUS[1]}
+        ; exit ${PIPESTATUS[1]}
       args:
         chdir: "{{ SRCPATH }}"
         executable: /bin/bash
