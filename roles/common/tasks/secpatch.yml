@@ -82,20 +82,22 @@
           state: absent
 
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
-      vars:
-        cherry_replaced: >-
-         {{
-           secpatch_static_dependencies | default([]) |
-           ansible.utils.reduce(
-            'result | regex_replace(item.id ~ "\\b", item.dep)',
-             cherry
-             )
-          }}
       ansible.builtin.shell: |
         if [ -f CHERRYPICK.FAILED ]; then echo "Previous cherry-picked failed!! Skipping...."; exit 3; fi
+        cmd="{{ cherry | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }}"
+        
+        # set static order if required
+        for batch in {{ secpatch_static_dependencies }};do
+          id="${batch/:*}"
+          order=$(echo "${batch/*:}" | tr ',' ' ')
+          cmd=$(echo "$cmd" | sed "s/$id/$order/g")
+          echo "FORCING PATCH ORDER for: $id ($order)"
+        done
+        
         source build/envsetup.sh > /dev/null
-        echo "patching ASB : {{ cherry_replaced | ansible.builtin.regex_replace('-f ',' ') }}"
-        {{ cherry_replaced | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }} -v >> {{ BUILD_LOG }} 2>&1 || {{ cherry_replaced }} -fv >> {{ BUILD_LOG }} || (touch CHERRYPICK.FAILED ;exit 123)
+        echo -e "patching ASB:\n$cmd"
+        
+        $cmd -v >> {{ BUILD_LOG }} 2>&1 || $cmd -fv >> {{ BUILD_LOG }} || (touch CHERRYPICK.FAILED ;exit 123)
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
