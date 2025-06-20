@@ -92,9 +92,14 @@
           id="${batch/:*}"
           chk=$(echo "$cmd" | grep -c "$id")
           if [ $chk -gt 0 ];then
-            order=$(echo "${batch/*:}" | tr ',' ' ')
-            cmd=$(echo "$cmd" | sed "s/$id/$order/g")
-            echo "FORCING PATCH ORDER for: $id ($order)"
+            deps=$(echo "${batch/*:}" | tr ',' ' ')
+            
+            for cl in $deps;do
+              cmd=$(echo "$cmd" | sed "s/$cl//g")
+            done
+            
+            cmd=$(echo "$cmd" | sed "s/$id/$deps $id/g")
+            echo "FORCED NEW PATCH ORDER for: $id ($deps $id)"
           fi
         done
         
