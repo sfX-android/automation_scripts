@@ -101,7 +101,9 @@
         git remote add up git@github.com:AXP-OS/${reponame}.git
         echo "[GIT] $reponame is/becomes a PUBLIC repo" >> {{ BUILD_LOG }}
         # Remove "Prevent force pushes" on the upstream branch
-        gh api --method DELETE /repos/AXP-OS/${reponame}/branches/upstream_{{ android_shortversion }}/protection/required_linear_history
+        #gh api --method DELETE /repos/AXP-OS/${reponame}/branches/upstream_{{ android_shortversion }}/protection/required_linear_history
+        gh auth status
+        gh api -X PUT "/repos/AXP-OS/${reponame}/branches/upstream_{{android_shortversion}}/protection" -f 'allow_force_pushes.enabled=true'
       else
         git remote add up {{ git_axpos_org_private }}/${reponame}.git
         echo "[GIT] $reponame is/becomes a PRIVATE repo" >> {{ BUILD_LOG }}
