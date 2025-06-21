@@ -101,7 +101,13 @@
         git remote add up git@github.com:AXP-OS/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] $reponame is/becomes a PUBLIC repo" >> {{ BUILD_LOG }}
         # Remove "Prevent force pushes" on the upstream branch
-        gh api -X PUT "/repos/AXP-OS/${reponame}/branches/upstream_{{android_shortversion}}/protection" -f 'allow_force_pushes.enabled=true' >> {{ BUILD_LOG }} 2>&1 || echo skipping branch unprotect >> {{ BUILD_LOG }} 2>&1
+        gh api -X PUT "/repos/AXP-OS/${reponame}/branches/upstream_{{android_shortversion}}/protection" \
+          -f required_status_checks='null' \
+          -f enforce_admins=false \
+          -f required_pull_request_reviews='null' \
+          -f restrictions='null' \
+          -f allow_force_pushes.enabled=true \
+          >> {{ BUILD_LOG }} 2>&1 || echo skipping branch unprotect >> {{ BUILD_LOG }} 2>&1
       else
         git remote add up {{ git_axpos_org_private }}/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] $reponame is/becomes a PRIVATE repo" >> {{ BUILD_LOG }}
