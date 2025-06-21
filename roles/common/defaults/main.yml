@@ -310,10 +310,17 @@ sec_patch_topics_a12:
 # automatically without doing anything once they are merged.
 # if you can't wait, set sec_patch_unmerged: True (default now)
 ##############################################################################################
+sec_patch_topics_a13: ''
 sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
+
+sec_patch_topics_a14: ''
 sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
+
+sec_patch_topics_a15: ''
 sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
-#sec_patch_date_last_a16: "{{ sec_patch_date_last }}"
+
+sec_patch_topics_a16: ''
+sec_patch_date_last_a16: "{{ sec_patch_date_last }}"
 
 ##############################################################################################
 # NOT-YET-MERGED ASB patches for any Android version
