@@ -144,15 +144,14 @@
       rerr=0
       if [ ! -z "$REMHASH" -a "$REMHASH" != "up/HEAD" ];then
           echo "[GIT] REMHASH is set and valid" >> {{ BUILD_LOG }}
-          git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
+          resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} || rerr=$?)
       else
           echo "[GIT] REMHASH is empty or invalid" >> {{ BUILD_LOG }}
-          git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
+          resp=$(git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} || rerr=$?)
       fi
       echo "rerr=$rerr" >> {{ BUILD_LOG }}
       if [ $rerr -ne 0 ]; then
           echo "[GIT] REMHASH is $REMHASH" >> {{ BUILD_LOG }}
-          resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} || true)
           found=0
           echo "$resp" | tail -n 20 | grep -q "pack exceeds maximum allowed size" || found=1
           if [ $found -eq 0 ]; then
@@ -165,19 +164,24 @@
                   exit 3
               fi
               # now the final push should just work
-              git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }}
           else
              found=0
              echo "$resp" | tail -n 20 | grep -q "fatal: did not receive expected object" || found=1
              if [ $found -eq 0 ]; then
                obj=$(echo "$resp" | tail -n 20 | grep -o "fatal: did not receive expected object .*" | cut -d ' ' -f 7)
                git push --force -u up ${obj}:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1
-               git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1
              else
                echo "[GIT] error $rerr occured while pushing" >> {{ BUILD_LOG }}
                echo "$resp" | tail -n 20 >> {{ BUILD_LOG }}
                exit $rerr
              fi
+          fi
+          if [ ! -z "$REMHASH" -a "$REMHASH" != "up/HEAD" ];then
+              echo "[GIT] Final push" >> {{ BUILD_LOG }}
+              git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1
+          else
+              echo "[GIT] Final push (fresh)" >> {{ BUILD_LOG }}
+              git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1
           fi
       fi
       echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
