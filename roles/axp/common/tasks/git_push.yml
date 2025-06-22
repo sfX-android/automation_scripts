@@ -142,10 +142,10 @@
       # push origin sources first
       # falls back to push in batches to workaround issues when index pack is too big
       rerr=0
-      if [ ! -z "$prepo" ];then
+      if [ ! -z "$REMHASH" ];then
           git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
       else
-          git push -u up upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
+          git push --force -u up upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
       fi
       echo "rerr=$rerr" >> {{ BUILD_LOG }}
       if [ $rerr -ne 0 ]; then
