@@ -78,7 +78,7 @@
       REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
       
       if [ "$CURHASH" != "$REMHASH" ]; then
-        echo -e "\n[GIT] WARNING: changes detected in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
+        echo -e "\n[GIT] WARNING: changes detected ($CURHASH != $REMHASH) in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
       else
         echo "[GIT] no changes in $localpath, skipping" >> {{ BUILD_LOG }}
         continue
