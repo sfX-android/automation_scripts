@@ -6,6 +6,7 @@
     USER: "{{ ansible_env.USER }}"
     PATH: "{{ ansible_env.PATH }}"
   ansible.builtin.shell: |
+    source ~/.bashrc
     export LC_ALL=C
     {{ DOS_INIT }}
     
@@ -240,4 +241,3 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-    tty: yes
