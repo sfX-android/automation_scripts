@@ -10,6 +10,7 @@
     {% else %}
     lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
     {% endif %}
+    env | grep -i python >> {{ BUILD_LOG }} 2>&1
     
     # tag name
     TAG="$(date +%F)_{{ sub_model | d('${BDEVICE}') }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
