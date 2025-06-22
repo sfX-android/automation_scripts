@@ -1,6 +1,10 @@
 ---
 
 - name: "Push any detected change"
+  environment:
+    HOME: "{{ ansible_env.HOME }}"
+    USER: "{{ ansible_env.USER }}"
+    PATH: "{{ ansible_env.PATH }}"
   ansible.builtin.shell: |
     export LC_ALL=C
     {{ DOS_INIT }}
@@ -76,6 +80,9 @@
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
       REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
+      export HOME={{ ansible_env.HOME }}
+      export USER={{ ansible_env.USER }}
+      export PATH={{ ansible_env.PATH }}
       {{ repo_bin }} info . >> {{ BUILD_LOG }} 2>&1
       
       if [ "$CURHASH" != "$REMHASH" ]; then
