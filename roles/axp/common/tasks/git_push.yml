@@ -76,6 +76,7 @@
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
       #REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
+      git fetch --all >> {{ BUILD_LOG }} 2>&1
       REMHASH=$(git rev-parse up/HEAD)
 
       if [ "$CURHASH" != "$REMHASH" ]; then
