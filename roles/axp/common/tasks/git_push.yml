@@ -120,7 +120,7 @@
         echo "[GIT] repo exists within the org already" >> {{ BUILD_LOG }}
       else
         echo "[GIT] repo does not exist within the org yet! Creating..." >> {{ BUILD_LOG }}
-        #git remote remove up 2>> /dev/null || true
+        git remote remove up 2>> /dev/null || true
         if [ -z "$prepo" ];then
           gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)"
           gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain'
@@ -152,6 +152,7 @@
       # falls back to push in batches to workaround issues when index pack is too big
       rerr=0
       git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
+      echo "rerr=$rerr" >> {{ BUILD_LOG }}
       if [ $rerr -ne 0 ]; then
           resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>&1 || true)
           found=0
