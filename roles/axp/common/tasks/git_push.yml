@@ -1,16 +1,15 @@
 ---
 
 - name: "Push any detected change"
-  environment:
-    HOME: "{{ ansible_env.HOME }}"
-    USER: "{{ ansible_env.USER }}"
-    PATH: "{{ ansible_env.PATH }}"
   ansible.builtin.shell: |
-    source ~/.bashrc
-    env >> {{ BUILD_LOG }} 2>&1
-    exit 33
     export LC_ALL=C
     {{ DOS_INIT }}
+    
+    {% if sub_model is defined %}
+    lunch lineage_{{ sub_model }}${brf_suffix}-user && echo lunch success
+    {% else %}
+    lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
+    {% endif %}
     
     # tag name
     TAG="$(date +%F)_{{ sub_model | d('${BDEVICE}') }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
