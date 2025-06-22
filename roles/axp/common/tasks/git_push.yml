@@ -1,7 +1,7 @@
 ---
 
 - name: "Push any detected change"
-  shell: |
+  ansible.builtin.shell: |
     export LC_ALL=C
     {{ DOS_INIT }}
     
@@ -102,17 +102,17 @@
         echo "[GIT] $reponame is/becomes a PUBLIC repo" >> {{ BUILD_LOG }}
         # Remove "Prevent force pushes" on the upstream branch
         cat <<EOF | gh api --method PUT \
-      -H "Accept: application/vnd.github+json" \
-      /repos/AXP-OS/$reponame/branches/upstream_{{ android_shortversion }}/protection \
-      --input -
-      {
+    -H "Accept: application/vnd.github+json" \
+    /repos/AXP-OS/$reponame/branches/upstream_{{ android_shortversion }}/protection \
+    --input -
+    {
        "required_status_checks": null,
        "enforce_admins": false,
        "required_pull_request_reviews": null,
        "restrictions": null,
        "allow_force_pushes": true
-      } >> {{ BUILD_LOG }} 2>&1
-      EOF
+    } >> {{ BUILD_LOG }} 2>&1
+    EOF
       else
         git remote add up {{ git_axpos_org_private }}/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] $reponame is/becomes a PRIVATE repo" >> {{ BUILD_LOG }}
