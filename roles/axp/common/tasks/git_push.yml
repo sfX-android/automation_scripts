@@ -102,17 +102,6 @@
       if [ -z "$prepo" ];then
         git remote add up git@github.com:AXP-OS/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] $reponame is/becomes a PUBLIC repo" >> {{ BUILD_LOG }}
-        # Remove "Prevent force pushes" on the upstream branch
-        #gh api --method PUT \
-        #  -H "Accept: application/vnd.github+json" \
-        #  /repos/AXP-OS/$reponame/branches/upstream_{{ android_shortversion }}/protection \
-        #  --input - <<<'{
-        #   "required_status_checks": null,
-        #   "enforce_admins": false,
-        #   "required_pull_request_reviews": null,
-        #   "restrictions": null,
-        #   "allow_force_pushes": true
-        #  }' >> {{ BUILD_LOG }} 2>&1  || echo "skipping forcepush perm" >> {{ BUILD_LOG }}
       else
         git remote add up {{ git_axpos_org_private }}/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] $reponame is/becomes a PRIVATE repo" >> {{ BUILD_LOG }}
@@ -153,7 +142,11 @@
       # push origin sources first
       # falls back to push in batches to workaround issues when index pack is too big
       rerr=0
-      git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
+      if [ ! -z "$prepo" ];then
+          git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
+      else
+          git push -u up upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
+      fi
       echo "rerr=$rerr" >> {{ BUILD_LOG }}
       if [ $rerr -ne 0 ]; then
           echo "[GIT] REMHASH is $REMHASH" >> {{ BUILD_LOG }}
