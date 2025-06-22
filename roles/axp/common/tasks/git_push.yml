@@ -101,16 +101,16 @@
         git remote add up git@github.com:AXP-OS/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] $reponame is/becomes a PUBLIC repo" >> {{ BUILD_LOG }}
         # Remove "Prevent force pushes" on the upstream branch
-        gh api --method PUT \
-          -H "Accept: application/vnd.github+json" \
-          /repos/AXP-OS/$reponame/branches/upstream_{{ android_shortversion }}/protection \
-          --input - <<<'{
-           "required_status_checks": null,
-           "enforce_admins": false,
-           "required_pull_request_reviews": null,
-           "restrictions": null,
-           "allow_force_pushes": true
-          }' >> {{ BUILD_LOG }} 2>&1  || echo "skipping forcepush perm" >> {{ BUILD_LOG }}
+        #gh api --method PUT \
+        #  -H "Accept: application/vnd.github+json" \
+        #  /repos/AXP-OS/$reponame/branches/upstream_{{ android_shortversion }}/protection \
+        #  --input - <<<'{
+        #   "required_status_checks": null,
+        #   "enforce_admins": false,
+        #   "required_pull_request_reviews": null,
+        #   "restrictions": null,
+        #   "allow_force_pushes": true
+        #  }' >> {{ BUILD_LOG }} 2>&1  || echo "skipping forcepush perm" >> {{ BUILD_LOG }}
       else
         git remote add up {{ git_axpos_org_private }}/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] $reponame is/becomes a PRIVATE repo" >> {{ BUILD_LOG }}
@@ -120,7 +120,7 @@
         echo "[GIT] repo exists within the org already" >> {{ BUILD_LOG }}
       else
         echo "[GIT] repo does not exist within the org yet! Creating..." >> {{ BUILD_LOG }}
-        git remote remove up 2>> /dev/null || true
+        #git remote remove up 2>> /dev/null || true
         if [ -z "$prepo" ];then
           gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)"
           gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain'
