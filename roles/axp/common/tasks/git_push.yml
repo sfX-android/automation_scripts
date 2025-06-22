@@ -111,7 +111,7 @@
        "required_pull_request_reviews": null,
        "restrictions": null,
        "allow_force_pushes": true
-    } >> {{ BUILD_LOG }} 2>&1
+    } >> {{ BUILD_LOG }} 2>&1 || echo "skipping forcepush perm" >> {{ BUILD_LOG }}
     EOF
       else
         git remote add up {{ git_axpos_org_private }}/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
