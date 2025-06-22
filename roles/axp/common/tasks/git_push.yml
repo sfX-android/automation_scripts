@@ -86,7 +86,7 @@
       export HOME={{ ansible_env.HOME }}
       export USER={{ ansible_env.USER }}
       export PATH={{ ansible_env.PATH }}
-      {{ repo_bin }} status . >> {{ BUILD_LOG }} 2>&1
+      {{ repo_bin }} --no-pager --color=never info . >> {{ BUILD_LOG }} 2>&1
       
       if [ "$CURHASH" != "$REMHASH" ]; then
         echo -e "\n[GIT] WARNING: changes detected ($CURHASH != $REMHASH) in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
