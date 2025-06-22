@@ -147,7 +147,7 @@
           git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
       else
           echo "[GIT] REMHASH is empty or invalid" >> {{ BUILD_LOG }}
-          git push --force -u up upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
+          git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} >> /dev/null 2>> {{ BUILD_LOG }} || rerr=$?
       fi
       echo "rerr=$rerr" >> {{ BUILD_LOG }}
       if [ $rerr -ne 0 ]; then
