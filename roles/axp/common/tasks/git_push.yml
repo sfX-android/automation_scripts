@@ -4,7 +4,6 @@
   ansible.builtin.shell: |
     export LC_ALL=C
     {{ DOS_INIT }}
-    whoami
     
     {% if sub_model is defined %}
     lunch lineage_{{ sub_model }}${brf_suffix}-user && echo lunch success
@@ -87,7 +86,7 @@
       export HOME={{ ansible_env.HOME }}
       export USER={{ ansible_env.USER }}
       export PATH={{ ansible_env.PATH }}
-      {{ repo_bin }} info . >> {{ BUILD_LOG }} 2>&1
+      {{ repo_bin }} status . >> {{ BUILD_LOG }} 2>&1
       
       if [ "$CURHASH" != "$REMHASH" ]; then
         echo -e "\n[GIT] WARNING: changes detected ($CURHASH != $REMHASH) in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
