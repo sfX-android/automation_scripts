@@ -152,7 +152,7 @@
       echo "rerr=$rerr" >> {{ BUILD_LOG }}
       if [ $rerr -ne 0 ]; then
           echo "[GIT] REMHASH is $REMHASH" >> {{ BUILD_LOG }}
-          resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1 || true)
+          resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} || true)
           found=0
           echo "$resp" | tail -n 20 | grep -q "pack exceeds maximum allowed size" || found=1
           if [ $found -eq 0 ]; then
