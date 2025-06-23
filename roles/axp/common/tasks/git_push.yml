@@ -78,7 +78,7 @@
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
       #REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2) # python crash on repo info within Ansible!
-      git fetch --all >> /dev/null 2>&1 || true # 2>> {{ BUILD_LOG }} || true
+      #git fetch --all >> /dev/null 2>&1 || true # 2>> {{ BUILD_LOG }} || true
       #REMHASH=$(git rev-parse up/HEAD 2>> {{ BUILD_LOG }} || true)
       REMHASH=$(git log --pretty=oneline --decorate | grep "m/{{ los_version_gitbranch }}" |cut -d ' ' -f1)
 
