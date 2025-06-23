@@ -23,7 +23,7 @@ git_axpos_org_private: "ssh://git@code.binbash.rocks:22443/{{ git_axpos_org_name
 # list of private repos within the AXP.OS org
 # reasons for listing them here are e.g. they get rejected on github, containing proprietary stuff or sim.
 # comma separated list:
-git_private_repos: "platform_prebuilts_tools android_cts"
+git_private_repos: "platform_prebuilts_tools,android_cts"
 
 # build vars
 os_name: "AXP.OS"
