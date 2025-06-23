@@ -77,9 +77,10 @@
       
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-      #REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2)
+      #REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2) # python crash on repo info within Ansible!
       git fetch --all >> /dev/null 2>> {{ BUILD_LOG }} || true
-      REMHASH=$(git rev-parse up/HEAD 2>> {{ BUILD_LOG }} || true)
+      #REMHASH=$(git rev-parse up/HEAD 2>> {{ BUILD_LOG }} || true)
+      REMHASH=$(git log --pretty=oneline --decorate | grep HEAD, |cut -d ' ' -f1)
 
       if [ "$CURHASH" != "$REMHASH" ]; then
         echo -e "\n[GIT] WARNING: changes detected ($CURHASH != $REMHASH) in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
