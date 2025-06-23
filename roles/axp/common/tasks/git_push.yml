@@ -17,6 +17,7 @@
     # check where we changed origin
     for repo in $({{ repo_bin }} list | tr -d ' ');do
       croot
+      echo "[GIT] processing $repo" >> {{ BUILD_LOG }}
       reponame_orig=$(echo "$repo" | cut -d ':' -f2)
       reponame=$(echo "$repo" | cut -d ':' -f2 | sed 's#LineageOS/##g;s#/#_#g')
       localpath=$(echo "$repo" | cut -d ':' -f1)
@@ -57,6 +58,7 @@
       fi
       
       cd $localpath
+      echo "[GIT] switched to $localpath" >> {{ BUILD_LOG }}
       
       # commit any leftovers!
       # besides "normal" patches divest also run several patch scripts(!) which by design can not be
