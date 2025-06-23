@@ -23,7 +23,7 @@
       localpath=$(echo "$repo" | cut -d ':' -f1)
       
       ################### TEMP SKIP ALL
-      #prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame" || true)
+      #prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame," || true)
       #if [ -z "$prepo" ];then
       #  continue
       #fi
@@ -100,7 +100,7 @@
       git remote remove up 2>> /dev/null || true
       git fetch --unshallow >> /dev/null 2>&1 || true
       # first check if this is a problematic repo
-      prepo=$(echo "{{ git_private_repos }},${repoisvendor}" | grep -o "$reponame" || true)
+      prepo=$(echo "{{ git_private_repos }},${repoisvendor}" | tr ',' '\n' | grep "${reponame}$" || true)
       if [ -z "$prepo" ];then
         git remote add up git@github.com:AXP-OS/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] $reponame is/becomes a PUBLIC repo" >> {{ BUILD_LOG }}
