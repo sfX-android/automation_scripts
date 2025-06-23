@@ -146,10 +146,10 @@
       rerr=0
       if [ ! -z "$REMHASH" -a "$REMHASH" != "up/HEAD" ];then
           echo "[GIT] REMHASH is set and valid" >> {{ BUILD_LOG }}
-          resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} 2>&1 || rerr=$?)
+          resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} 2>&1) || rerr=$?
       else
           echo "[GIT] REMHASH is empty or invalid" >> {{ BUILD_LOG }}
-          resp=$(git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} 2>&1|| rerr=$?)
+          resp=$(git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} 2>&1) || rerr=$?
       fi
       echo "rerr=$rerr" >> {{ BUILD_LOG }}
       if [ $rerr -ne 0 ]; then
