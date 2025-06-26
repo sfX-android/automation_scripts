@@ -21,7 +21,7 @@
       include_tasks: ../../axp/common/tasks/git_push.yml
       when:
         - ROM_FLAVOR == "axp"
-        - commit_push | d(False)
+        - commit_push | bool
         - not early_push | d(False)
         - not axp_build_recovery_only | d(False)
         - not axp_build_eng | bool
