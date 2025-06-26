@@ -66,6 +66,6 @@
         include_tasks: git_push.yml
 
   when:
-    - commit_push | d(False)
+    - commit_push | bool
     - early_push | d(False)
           
