@@ -44,6 +44,7 @@
       clean_out: {{ clean_out | d("N/A") }} | override_clean_out: {{ override_clean_out | d("N/A") }}
       reset_git: {{ reset_git | d("N/A") }} | override_reset_git: {{ override_reset_git | d("N/A") }}
       release_build: {{ release_build | d("N/A") }} | override_release_build: {{ override_release_build | d("N/A") }}
+      commit_push: {{ commit_push }}
       
       #
 
