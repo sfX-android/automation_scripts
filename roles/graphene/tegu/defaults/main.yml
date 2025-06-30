@@ -1,0 +1,20 @@
+---
+
+# human readable model name
+target_model_vendor: "Google"
+target_model_name: 'Pixel 9a'
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
+
+# android version
+android_shortversion: a15
+
+git_repo_local_manifests_branch: "android-15_newkeys"
+
+# extendrom stuff
+use_extendrom: "true"
+
+# do not gen an OS zip checksum
+skip_gen_checksum: true
+
+# see https://grapheneos.org/build#building
+graphene_build_targets: "vendorbootimage vendorkernelbootimage target-files-package"
