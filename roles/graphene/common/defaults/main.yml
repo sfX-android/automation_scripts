@@ -107,7 +107,7 @@ SH_GRAPHENE_BUILD: |
       touch {{ SRC_KEYSDIR_BASE }}/BUILD
       # special handling as we HAVE to use a sub dir to satisfy the graphene build scripts
       # while setting an own dev key breaks signing when using a sub dir..
-      for r in pk8 pem x509.pem; do ln -fs {{ target_model }}/${r} {{ SRC_KEYSDIR_BASE }}/ ;done
+      for r in $(find {{ keysdir }} | grep -E "pk8|pem"); do ln -fs {{ target_model }}/${r/*\/} {{ SRC_KEYSDIR_BASE }}/ ;done
       
       # be strict on failures
       set -e
