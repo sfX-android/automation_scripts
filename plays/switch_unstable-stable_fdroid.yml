@@ -9,9 +9,9 @@
     target_model: "F-Droid"
     tg_success: |
         {{ ICON_GOOD }} ***F\-Droid app released to the AXP\.OS \- Stable repo\!***
-        Repo [info](https://axpos.org/F-Droid)
+        \(repo details can be found [here](https://axpos.org/F-Droid)\)
 
-        App\(s\): _{{ app_name | regex_replace('%%','') | regex_escape() }}_
+        App\(s\): _{{ app_name | regex_replace('"','') | regex_replace('%%','') | regex_escape() }}_
         Version: _{{ app_version | regex_escape() | regex_replace('_.*', '') }}_
     tg_failed: |
         {{ ICON_BAD }} ***F\-Droid App release ERROR***
