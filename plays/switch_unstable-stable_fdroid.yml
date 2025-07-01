@@ -8,7 +8,7 @@
   vars:
     target_model: "F-Droid"
     tg_success: |
-        {{ ICON_GOOD }} ***F\-Droid app released to the AXP\.OS \- Stable repo\!***
+        {{ ICON_GOOD }} ***The AXP\.OS \- Stable F-Droid repo has received an update\!*** {{ ICON_GOOD }}
         \(repo details can be found [here](https://axpos.org/F-Droid)\)
 
         App\(s\): _{{ app_name | regex_replace('"','') | regex_replace('%%','') | regex_escape() }}_
