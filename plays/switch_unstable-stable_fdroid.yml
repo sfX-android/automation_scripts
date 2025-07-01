@@ -8,13 +8,15 @@
   vars:
     target_model: "F-Droid"
     tg_success: |
-        {{ ICON_GOOD }} ***F\-Droid App released to Stable repo\!***
-        {{ app_name | regex_replace('%%','') | regex_escape() | regex_replace('_', '\_') }}:
-        successfully switched {{ app_version | regex_escape() | regex_replace('_', '\_') }} to STABLE repo
+        {{ ICON_GOOD }} ***F\-Droid app released to the AXP\.OS \- Stable repo\!***
+        Repo [info](https://axpos.org/F-Droid)
+
+        App\(s\): _{{ app_name | regex_replace('%%','') | regex_escape() }}_
+        Version: _{{ app_version | regex_escape() | regex_replace('_.*', '') }}_
     tg_failed: |
         {{ ICON_BAD }} ***F\-Droid App release ERROR***
-        {{ app_name | regex_replace('%%','') | regex_escape() | regex_replace('_', '\_') }}:
-        switching {{ app_version | regex_escape() | regex_replace('_', '\_') }} to STABLE failed\!
+        {{ app_name | regex_replace('%%','') | regex_escape() }}:
+        switching {{ app_version | regex_escape() | regex_replace('_.*', '') }} to STABLE failed\!
   
   tasks:
     - block:
