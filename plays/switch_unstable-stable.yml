@@ -60,17 +60,17 @@
       - block:      
           - name: "RECOVERY: switch to stable"
             ansible.builtin.shell: >-
-              cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}* {{ rempath }}/recovery/
+              cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* {{ rempath }}/recovery/
             
           - name: "RECOVERY: verify IMG integrity"
             ansible.builtin.shell: >-
-                sha256sum --check {{ recovery_filename_no_ext }}*.img.sha256
+                sha256sum --check {{ recovery_filename_no_ext }}*{{ target_model }}*.img.sha256
             args:
               chdir: "{{ rempath }}/recovery"
       
           - name: "RECOVERY: delete from unstable"
             ansible.builtin.shell: >-
-              rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*.{{ item }}
+              rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}
             loop:
               - img
               - img.sha256
