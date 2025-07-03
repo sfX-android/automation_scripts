@@ -1,0 +1,19 @@
+---
+
+- name: "Download latest Fairphone Firmware"
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    
+    {% if sub_model is defined %}
+    lunch lineage_{{ sub_model }}${brf_suffix}-user && echo lunch success
+    {% else %}
+    lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
+    {% endif %}
+    
+    {{ SH_COMMON_FAIRPHONE_DL_FIRMWARE }}
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  when:
+    - target_model_vendor == "Fairphone"
+    - download_fairphone_firmware | d(False)
