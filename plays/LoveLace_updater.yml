@@ -6,6 +6,9 @@
   become_user: root
   gather_facts: true
 
+  vars:
+    notify_min: True
+    
   pre_tasks:
 
     - debug:
