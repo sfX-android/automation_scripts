@@ -186,19 +186,19 @@ SH_COMMON_FAIRPHONE_DL_FIRMWARE: |
     # containing the official Fairphone images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
     VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
     FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
-    source vendor/firmware/{{ target_model }}/0SOURCE
+    source vendor/firmware/{{ target_model }}/0SOURCE >> {{ BUILD_LOG }} 2>&1
     if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
     if [ -f "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" ];then
-        echo "Using previously downloaded factory image: ${FACTORYFULLNAME}.zip"
+        echo "Using previously downloaded factory image: ${FACTORYFULLNAME}.zip" | tee -a {{ BUILD_LOG }}
     else
-        echo "${FACTORYFULLNAME}.zip not found in: {{ persistent_dir }}, downloading.."
+        echo "${FACTORYFULLNAME}.zip not found in: {{ persistent_dir }}, downloading.." | tee -a {{ BUILD_LOG }}
         wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O {{ persistent_dir }}/${FACTORYFULLNAME}.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O {{ persistent_dir }}/${FACTORYFULLNAME}.zip; exit 9)
     fi
     cp "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" out/{{ target_model }}-factory.zip 
     
     export FACZIP="$PWD/out/{{ target_model }}-factory.zip"
     cd vendor/firmware/{{ target_model }}
-    ./rename.sh
+    ./rename.sh >> {{ BUILD_LOG }} 2>&1
     croot
 
 # enable the following in a device's vars file with:
