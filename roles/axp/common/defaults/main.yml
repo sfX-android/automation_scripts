@@ -431,11 +431,6 @@ SH_COMMON_BUILD_SNIPPET: |
         fi
         git status
         croot
-
-        # when fairphone
-        {% if target_model_vendor == "Fairphone" and download_fairphone_firmware | d(False) %}
-        {{ SH_COMMON_FAIRPHONE_DL_FIRMWARE }}
-        {% endif %}
         
         # build
         resetEnv
