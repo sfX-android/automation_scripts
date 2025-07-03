@@ -34,8 +34,11 @@
 
       - include_tasks: sync.yml
       - include_tasks: adjust_DOS_options.yml
-      
-      #- include_tasks: patch.yml
+
+      # download latest firmware, taken from vendor/firmware/*/0SOURCE
+      - include_tasks: firmware_update.yml
+        when:
+        - (download_fairphone_firmware | d(False)) or generate_pixel_factory_image
       
       # apply ASB patches if needed
       # currently LOS supports ASB patches up to and including: Android 13
