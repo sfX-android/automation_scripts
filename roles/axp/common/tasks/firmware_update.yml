@@ -10,7 +10,7 @@
     lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
     {% endif %}
     
-    {{ SH_COMMON_FAIRPHONE_DL_FIRMWARE }}
+    {{ SH_COMMON_FAIRPHONE_DL_FIRMWARE }} >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
