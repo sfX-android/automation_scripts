@@ -9,6 +9,8 @@
     {% else %}
     lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
     {% endif %}
+
+    m lpunpack
     
     {{ SH_COMMON_FAIRPHONE_DL_FIRMWARE }}
   args:
