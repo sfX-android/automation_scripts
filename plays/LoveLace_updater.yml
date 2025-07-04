@@ -20,12 +20,16 @@
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
-    
-      - include_vars: ../roles/common/defaults/main.yml
-        no_log: true
 
-      - include_vars: ../roles/axp/common/defaults/main.yml
-        no_log: true
+      - include_role:
+          public: yes
+          name: common
+
+#      - include_vars: ../roles/common/defaults/main.yml
+#        no_log: true
+#
+#      - include_vars: ../roles/axp/common/defaults/main.yml
+#        no_log: true
 
       - name: "Check notify req"
         fail:
@@ -48,7 +52,9 @@
 
       - name: "FAIL"
         fail:
-          msg: fooooo
+          msg: |
+            {{tg_group_id  }}
+            {{telegram_notifications }}
           
       - import_role:
           name: lovelacedb
