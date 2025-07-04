@@ -27,10 +27,8 @@
       - include_vars: ../roles/axp/common/defaults/main.yml
         no_log: true
 
-      - import_role:
-          name: lovelacedb
-
-      - fail:
+      - name: "Check notify req"
+        fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: 
           - vault_tg_group_id_failing is undefined
@@ -47,6 +45,13 @@
         when:
           - debug_build is defined and debug_build == "true"
           - telegram_notifications | bool
+
+      - name: "FAIL"
+        fail:
+          msg: fooooo
+          
+      - import_role:
+          name: lovelacedb
 
       - include_role:
           name: notify
