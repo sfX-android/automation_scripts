@@ -156,44 +156,6 @@ divest_cve_checker_download: "https://codeberg.org/AXP-OS/cve_checker/releases/d
 divest_cve_checker_jar: "{{ BUILDHOME }}/cve_checker.jar"
 skip_dl_cve_checker: False
 
-# !LEGACY! security patch handling (and for PIE only)
-# see next paragraph for the new method!
-# ref: https://review.lineageos.org/q/topic:P_asb_2024-10
-SECPATCH_DATE_PIE: "2024-12" # HAS TO be always the last available one!
-sec_patch_topics_pie:
-      - topic:P_asb_2022-05
-      - topic:P_asb_2022-06
-      - topic:P_asb_2022-07
-      - topic:P_asb_2022-08
-      - topic:P_asb_2022-09
-      - topic:P_asb_2022-10
-      - topic:P_asb_2022-11
-      - topic:P_asb_2022-12
-      - topic:P_asb_2023-01
-      - topic:P_asb_2023-02
-      - topic:P_asb_2023-03
-      - topic:P_asb_2023-04
-      - topic:P_asb_2023-05
-      - topic:P_asb_2023-06
-      - topic:P_asb_2023-07
-      - topic:P_asb_2023-08
-      - topic:P_asb_2023-09
-      - topic:P_asb_2023-10
-      - topic:P_asb_2023-11
-      - topic:P_asb_2023-12
-      - topic:P_asb_2024-01
-      - topic:P_asb_2024-02
-      - topic:P_asb_2024-03
-      - topic:P_asb_2024-04
-      - topic:P_asb_2024-05
-      - topic:P_asb_2024-06
-      - topic:P_asb_2024-07
-      - topic:P_asb_2024-08
-      - topic:P_asb_2024-09
-      - topic:P_asb_2024-10
-      - topic:P_asb_2024-11
-      - topic:P_asb_{{ SECPATCH_DATE_PIE }}
-
 ##############################################################################################
 ##############################################################################################
 # Android Security Bulletin (ASB) patching AREA - START
@@ -219,7 +181,7 @@ sec_patch_topics_pie:
 #   377775: affects Trebuchet (eOS)
 #   414554: A13: manifest change
 #   359421: Traceur
-#secpatch_common_exclusions: '-"Manifest change" -"Track our own fork" -"Bump Security String"'
+#secpatch_manifest_exclusions: '-"Manifest change" -"Track our own fork"'
 secpatch_common_exclusions: '-"Bump Security String"'
 #secpatch_los_exclusions: '338357|342095|414554'               # includes secpatch_common_exclusions
 secpatch_los_exclusions: '359421'
