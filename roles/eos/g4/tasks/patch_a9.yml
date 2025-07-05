@@ -8,6 +8,7 @@
   loop:
     - "repopick --gerrit https://review.lineageos.org -f 307334/2 -P frameworks/base/"  # scale font patch
     - "git apply external/patches/frameworks_base_shadercache.patch"                    # always use shader cache
+    - "sed -i 's/LOCAL_MODULE := microg.xml/LOCAL_MODULE := microg.xml_OFF/g' prebuilts/prebuiltapks/GmsCore/Android.mk"  # we use extendrom to set microg defaults
     #- "cd art && git fetch https://android.googlesource.com/platform/art refs/changes/78/2226578/2 && git cherry-pick FETCH_HEAD" # fix mmap build error when build server kernel >= 5.18
 
 - include_role:
