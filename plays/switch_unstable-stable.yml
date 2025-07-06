@@ -60,7 +60,11 @@
       - block:      
           - name: "RECOVERY: switch to stable"
             ansible.builtin.shell: >-
+              {% if axp_type | d('') == "slim" }
+              cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}* {{ rempath }}/recovery/
+              {% else %}
               cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* {{ rempath }}/recovery/
+              {% endif %}
             
           - name: "RECOVERY: verify IMG integrity"
             ansible.builtin.shell: >-
@@ -70,7 +74,11 @@
       
           - name: "RECOVERY: delete from unstable"
             ansible.builtin.shell: >-
+              {% if axp_type | d('') == "slim" }
+              rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}
+              {% else %}
               rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}
+              {% endif %}
             loop:
               - img
               - img.sha256
