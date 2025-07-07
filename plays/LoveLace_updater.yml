@@ -49,9 +49,10 @@
             {{tg_group_id  }}
             {{telegram_notifications }}
           
-      - import_role:
+      - name: "Start LoveLace update"
         become: yes
         become_user: root
+        import_role:
           name: lovelacedb
 
       - include_role:
