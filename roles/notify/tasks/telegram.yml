@@ -53,28 +53,31 @@
     path: "/tmp/build_{{ ROM_FLAVOR }}_error.log"
   register: logfile
   connection: local
+  ignore_errors: true
   #no_log: true
   when: ROM_FLAVOR == "MAID"
 
-- name: "Compress log"
-  community.general.archive:
-    path: "{{ logfile.stat.path }}"
-    dest: "{{ logfile.stat.path }}.gz"
+- block:
+
+    - name: "Compress log"
+      community.general.archive:
+        path: "{{ logfile.stat.path }}"
+        dest: "{{ logfile.stat.path }}.gz"
+      connection: local
+      no_log: true
+        
+    - name: "Telegram: attach log (on errors)"
+      connection: local
+      shell: |
+         curl -F document=@{{ logfile.stat.path }}.gz \ 
+         -H "Content-Type:multipart/form-data" \ 
+         "https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument?chat_id={{ tg_group_id }}"
+      when: 
+        - (buildresult.rc is undefined or buildresult.rc != 0)
+        - tg_group_id == vault_tg_group_id_failing
+      no_log: true
+
   when: logfile.stat.isreg is defined
-  connection: local
-  no_log: true
-    
-- name: "Telegram: attach log (on errors)"
-  connection: local
-  shell: |
-     curl -F document=@{{ logfile.stat.path }}.gz \ 
-     -H "Content-Type:multipart/form-data" \ 
-     "https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument?chat_id={{ tg_group_id }}"
-  when: 
-    - (buildresult.rc is undefined or buildresult.rc != 0)
-    - tg_group_id == vault_tg_group_id_failing
-    - logfile.stat.isreg is defined
-  no_log: true
 
 # uploading via multipart/form-data seems to not work
 # https://core.telegram.org/bots/api#senddocument
