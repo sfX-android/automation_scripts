@@ -3,6 +3,8 @@
 - name: "Set default buildresult"
   ansible.builtin.shell: "false"
   register: buildresult
+  ignore_errors: true
+  changed_when: buildresult.rc != 0
 
 - include_tasks: prep.yml
 
