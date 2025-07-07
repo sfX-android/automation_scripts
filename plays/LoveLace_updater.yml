@@ -9,6 +9,7 @@
   vars:
     notify_min: True
     skip_build_log_symlink: True
+    skip_getsecpatchlevel: True
     
   pre_tasks:
 
