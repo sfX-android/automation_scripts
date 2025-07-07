@@ -4,7 +4,7 @@
   ansible.builtin.shell: "false"
   register: buildresult
   ignore_errors: true
-  changed_when: buildresult.rc != 0
+  changed_when: buildresult.rc == 1
 
 - include_tasks: prep.yml
 
