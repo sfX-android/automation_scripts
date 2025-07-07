@@ -18,8 +18,8 @@
     cat {{ hypatia_signatures_path }}/blocklist-various/blocklist-*.txt > {{ hypatia_signatures_path }}/blocklist-various/blocklists.txt
     hagezi_fakes_file="{{ hypatia_signatures_path }}/blocklist-various/blocklist-hagezi-fakes.txt"
     hagezi_threats_file="{{ hypatia_signatures_path }}/blocklist-various/blocklist-hagezi-threats.txt"
-    sed -i "s/%%HAGEZI_FAKES%%/$(wc -l $hagezi_fakes_file)/g" {{ hypatia_index_html }}
-    sed -i "s/%%HAGEZI_THREATS%%/$(wc -l $hagezi_threats_file)/g" {{ hypatia_index_html }}
+    sed -i "s/%%HAGEZI_FAKES%%/$(wc -l $hagezi_fakes_file | cut -d ' ' -f1)/g" {{ hypatia_index_html }}
+    sed -i "s/%%HAGEZI_THREATS%%/$(wc -l $hagezi_threats_file | cut -d ' ' -f1)/g" {{ hypatia_index_html }}
 
     # regular db
     echo "<pre>" >> {{ hypatia_index_html }}
