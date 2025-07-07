@@ -2,7 +2,8 @@
 
 - name: "LoveLace DB Updater"
   hosts: lovelacedb
-  become: no
+  become: yes
+  become_user: root
   gather_facts: true
 
   vars:
@@ -49,10 +50,7 @@
             {{tg_group_id  }}
             {{telegram_notifications }}
           
-      - name: "Start LoveLace update"
-        become: yes
-        become_user: root
-        import_role:
+      - import_role:
           name: lovelacedb
 
       - include_role:
