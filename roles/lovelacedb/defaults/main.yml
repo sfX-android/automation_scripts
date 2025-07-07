@@ -30,9 +30,10 @@ hypatia_uri_malicioushash_base: "https://raw.githubusercontent.com/romainmarcoux
 hypatia_uri_signaturebase: "https://raw.githubusercontent.com/Neo23x0/signature-base/refs/heads/master/iocs/hash-iocs.txt"
 hypatia_uri_signaturebase_otx: "https://raw.githubusercontent.com/Neo23x0/signature-base/496acc5a1260bfaf58963e90d1c1325b24c10b10/iocs/otx-hash-iocs.txt"
 hypatia_uri_malshare: "https://malshare.com/api.php?api_key=${APIKEY}&action=getlist"  # see {{ hypatia_signatures_path }}/malshare/download.sh to replace the APIKEY!
-hypatia_uri_hagezi_threats: "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/tif-onlydomains.txt"
-hypatia_uri_hagezi_fakes: "https://gitlab.com/hagezi/mirror/-/raw/main/dns-blocklists/wildcard/fake-onlydomains.txt"
-hypatia_uri_hagezi_multipro: "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/pro-onlydomains.txt"
+# blocklists
+hypatia_uri_hagezi_threats: "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/tif.txt"
+hypatia_uri_hagezi_fakes: "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/fake-onlydomains.txt"
+hypatia_uri_hagezi_multipro: "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/pro.txt"
 
 # LOCAL sources
 hypatia_malsharedb_path: "{{ hypatia_signatures_path }}/malshare/malshare.sha256"
