@@ -30,8 +30,6 @@
     mv raw-extended/hypatia-*-bloom.bin production/
     
     sed -s 'N;/md5: 0, sha1: 0, sha256: 0/!P;D' -i {{ hypatia_index_html }}
-    sed -r '/Skipping/{/virustotal/!s~[^ -~]{64}+~<a href="https://www.virustotal.com/gui/file/&" target="_blank" rel="nofollow noopener noreferrer">&</a>~}' -i {{ hypatia_index_html }}
-    sed -r '/Skipping/{/virustotal/!s~[^ -~]{40}+~<a href="https://www.virustotal.com/gui/file/&" target="_blank" rel="nofollow noopener noreferrer">&</a>~}' -i {{ hypatia_index_html }}
-    sed -r '/Skipping/{/virustotal/!s~[^ -~]{32}+~<a href="https://www.virustotal.com/gui/file/&" target="_blank" rel="nofollow noopener noreferrer">&</a>~}' -i {{ hypatia_index_html }}
+    sed -E 's#(Skipping excluded hash: )(.*)#\1<a href="https://www.virustotal.com/gui/file/\2" target="_blank" rel="nofollow noopener noreferrer">\2</a>#g' -i {{ hypatia_index_html }}
   args:
     chdir: "{{ hypatia_signatures_path }}"
