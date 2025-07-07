@@ -10,3 +10,6 @@
       dest: blocklist-hagezi-fakes.txt
     - uri: "{{ hypatia_uri_hagezi_threats }}"
       dest: blocklist-hagezi-threats.txt
+    - uri: "{{ hypatia_uri_hagezi_multipro }}"
+      dest: blocklist-hagezi-multipro.txt
+
