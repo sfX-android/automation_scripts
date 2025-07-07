@@ -1,5 +1,9 @@
 ---
 
+- name: "Set default buildresult"
+  ansible.builtin.shell: false
+  register: buildresult
+
 - include_tasks: prep.yml
 
 # static sources
@@ -40,3 +44,8 @@
 
 # activate new db
 - include_tasks: activate.yml
+
+- name: "Set buildresult"
+  ansible.builtin.shell: true
+  register: buildresult
+  
