@@ -10,6 +10,7 @@
     - sec_level_date.stdout is undefined
     - buildresult.rc is defined and buildresult.rc == 0
     - os_zip_filename is undefined
+    - not skip_getsecpatchlevel | d(False)
 
 - include_tasks: telegram.yml
   when: telegram_notifications | bool
