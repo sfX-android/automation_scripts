@@ -8,6 +8,7 @@
 
   vars:
     notify_min: True
+    skip_build_log_symlink: True
     
   pre_tasks:
 
