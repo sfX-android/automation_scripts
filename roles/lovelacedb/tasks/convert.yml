@@ -35,7 +35,7 @@
     echo "</pre>" >> {{ hypatia_extended_html }}
     cat {{ hypatia_extended_html }} >> {{ hypatia_index_html }}
     cd raw-extended/
-    for db in $(find -type f -name 'hypatia-*-bloom.bin');do
+    for db in $(ls hypatia-*-bloom.bin);do
       mv $db ../production/${db/bloom/extended\-bloom}
     done
     cd ..
