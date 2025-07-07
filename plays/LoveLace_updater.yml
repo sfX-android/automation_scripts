@@ -2,8 +2,7 @@
 
 - name: "LoveLace DB Updater"
   hosts: lovelacedb
-  become: true
-  become_user: root
+  become: no
   gather_facts: true
 
   vars:
@@ -51,6 +50,8 @@
             {{telegram_notifications }}
           
       - import_role:
+        become: yes
+        become_user: root
           name: lovelacedb
 
       - include_role:
