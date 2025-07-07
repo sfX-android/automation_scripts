@@ -16,6 +16,7 @@
     - notify_on_success is undefined or (notify_on_success is defined and notify_on_success | bool)
 
 - name: "Telegram: Minimal Summary (success)"
+  become: no
   connection: local
   community.general.telegram:
     token: "{{ vault_tg_token }}"
