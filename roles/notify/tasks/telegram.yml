@@ -46,6 +46,7 @@
     path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
   register: logfile
   connection: local
+  ignore_errors: true
   no_log: true
   when: ROM_FLAVOR != "MAID"
 
@@ -53,7 +54,6 @@
     path: "/tmp/build_{{ ROM_FLAVOR }}_error.log"
   register: logfile
   connection: local
-  ignore_errors: true
   #no_log: true
   when: ROM_FLAVOR == "MAID"
 
