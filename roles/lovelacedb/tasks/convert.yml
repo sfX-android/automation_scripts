@@ -1,11 +1,14 @@
 ---
 
-- name: "Prep html"
+- name: "Prep html files"
   ansible.builtin.template:
     src: index.j2
-    dest: "{{ hypatia_index_html }}"
+    dest: "{{ item }}"
     mode: 0400
     owner: "{{ hypatia_www_user }}"
+  loop:
+    - "{{ hypatia_index_html }}"
+    - "{{ hypatia_extended_html }}"
 
 - name: "Convert databases"
   ansible.builtin.shell: |
