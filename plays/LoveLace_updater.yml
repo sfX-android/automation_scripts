@@ -43,13 +43,7 @@
           tg_group_id: "{{ vault_tg_group_id_failing }}"
         when:
           - telegram_notifications | bool
-
-      - name: "FAIL"
-        fail:
-          msg: |
-            {{tg_group_id  }}
-            {{telegram_notifications }}
-          
+         
       - import_role:
           name: lovelacedb
 
