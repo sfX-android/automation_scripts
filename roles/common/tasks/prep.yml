@@ -38,5 +38,6 @@
           dest: "{{ BUILD_LOG_LATEST }}"
           force: true
           state: link
+        when: not skip_build_log_symlink | d(False)
 
   when: android_shortversion is defined
