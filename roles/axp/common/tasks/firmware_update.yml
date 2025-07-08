@@ -26,4 +26,4 @@
     chdir: "{{ SRCPATH }}"
   when:
     - target_model_vendor == "Fairphone"
-    - download_fairphone_firmware | d(False)
+    - download_fairphone_firmware | d(False) | bool
