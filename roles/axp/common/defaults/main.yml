@@ -201,7 +201,6 @@ SH_COMMON_FAIRPHONE_DL_FIRMWARE: |
     export CODEN="{{ target_model }}"
     
     cd vendor/firmware/{{ target_model }}
-    source ../../Scripts/init.sh
     ./update.sh >> {{ BUILD_LOG }} 2>&1
 
 # enable the following in a device's vars file with:
