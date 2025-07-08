@@ -57,10 +57,11 @@
         ansible.builtin.set_fact:
             sec_level_date: "{{ pprop.stdout }}"
 
-      - block:      
+      - block:
+
           - name: "RECOVERY: switch to stable"
             ansible.builtin.shell: >-
-              {% if axp_type | d('') == "slim" }
+              {% if axp_type | d('') == "slim" %}
               cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}* {{ rempath }}/recovery/
               {% else %}
               cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* {{ rempath }}/recovery/
@@ -74,7 +75,7 @@
       
           - name: "RECOVERY: delete from unstable"
             ansible.builtin.shell: >-
-              {% if axp_type | d('') == "slim" }
+              {% if axp_type | d('') == "slim" %}
               rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}
               {% else %}
               rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}
@@ -82,6 +83,7 @@
             loop:
               - img
               - img.sha256
+
         when: axp_release_recovery
 
       # must have .stdout, so do not set_fact or vars it!
