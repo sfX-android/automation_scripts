@@ -362,6 +362,9 @@ SH_COMMON_BUILD_SNIPPET: |
 
     # setup build env including stupid DOS workarounds
     {{ DOS_INIT }}
+
+    # ensure vendor secpatch date is set
+    source vendor/firmware/{{ target_model }}/0SOURCE || true
             
     {% if axp_build_eng | bool %}
     breakfast lineage_{{ target_model }}${brf_suffix}-eng
