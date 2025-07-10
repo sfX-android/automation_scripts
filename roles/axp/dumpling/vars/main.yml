@@ -23,6 +23,9 @@ axp_release_recovery: True
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
 
+# disable advanced avb handling
+axp_enable_avb: 'false'
+
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: ''
 axp_bootloader_id_slim: ''
