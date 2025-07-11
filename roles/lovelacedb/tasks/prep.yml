@@ -34,6 +34,7 @@
   ansible.builtin.stat:
     path: "{{ item.file }}"
   loop:
+    - { name: "amnestytech", file: "{{ hypatia_signatures_path }}/raw/amnestytech.sha256" }
     - { name: "avast", file: "{{ hypatia_signatures_path }}/raw/avast-covid19.sha256" }
     - { name: "umair", file: "{{ hypatia_signatures_path }}/raw/umair9747.md5" }
     - { name: "malwarehunt", file: "{{ hypatia_signatures_path }}/raw/malware-hunter.sha256" }
