@@ -9,11 +9,10 @@
 - include_tasks: prep.yml
 
 # set excludes
-- include_tasks: exclusions.yml
-
-- name: debug
-  fail:
-    msg: boo
+#- include_tasks: exclusions.yml
+#- name: debug
+#  fail:
+#    msg: boo
 
 # static sources
 # (rarely updated or not updated at all)
