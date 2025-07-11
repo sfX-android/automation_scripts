@@ -26,14 +26,15 @@
 - include_tasks: eset.yml
 - include_tasks: malicious_hash.yml
 - include_tasks: malshare.yml
-
-
-
 - include_tasks: malware_bazaar.yml
 - include_tasks: threatfox.yml
 - include_tasks: threatview.yml
 - include_tasks: sanesecurity.yml
 - include_tasks: signaturebase.yml
+
+
+- include_tasks: stalkerware.yml
+- include_tasks: virusshare_subset.yml
 
 # TEMP DEBUG
 - include_tasks: convert.yml
@@ -41,8 +42,7 @@
 - include_tasks: activate.yml
 - meta: end_play
 
-- include_tasks: stalkerware.yml
-- include_tasks: virusshare_subset.yml
+
 - include_tasks: zimperium.yml
 
 # blocklist sources
