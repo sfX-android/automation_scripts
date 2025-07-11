@@ -31,18 +31,9 @@
 - include_tasks: threatview.yml
 - include_tasks: sanesecurity.yml
 - include_tasks: signaturebase.yml
-
 - include_tasks: stalkerware.yml
 - include_tasks: virusshare_subset.yml
-
-
 - include_tasks: zimperium.yml
-
-# TEMP DEBUG
-- include_tasks: convert.yml
-- include_tasks: sign.yml
-- include_tasks: activate.yml
-- meta: end_play
 
 # blocklist sources
 - include_tasks: blocklists.yml
@@ -60,3 +51,8 @@
   ansible.builtin.shell: "true"
   register: buildresult
   
+# TEMP DEBUG
+#- include_tasks: convert.yml
+#- include_tasks: sign.yml
+#- include_tasks: activate.yml
+#- meta: end_play
