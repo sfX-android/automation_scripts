@@ -9,7 +9,7 @@
 
 - name: "Exclusions: Parse F-Droid hashes"
   ansible.builtin.shell: |
-    grep sha256 {{ hypatia_signatures_path }}/exclusions/fdroid.xml | sed -e 's/.*<hash type="sha256">//' -e 's/<\/hash>//' > fdroid- | sort -u  > {{ hypatia_signatures_path }}/exclusions/fdroid-sha256.hashes
+    grep sha256 {{ hypatia_signatures_path }}/exclusions/fdroid.xml | sed -e 's/.*<hash type="sha256">//' -e 's/<\/hash>.*//' > {{ hypatia_signatures_path }}/exclusions/fdroid-sha256.hashes
   args:
     chdir: "{{ hypatia_signatures_path }}"
   when: hash_stat_dict.fdroid.isreg is not defined or get_exclude_fdroid.changed
