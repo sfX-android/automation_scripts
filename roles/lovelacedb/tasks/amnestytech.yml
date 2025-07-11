@@ -23,4 +23,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ hypatia_signatures_path }}/amnestytech"
-  when: get_amnesty.changed
+  when: hash_stat_dict.amnestytech.isreg is not defined or get_amnesty.changed
