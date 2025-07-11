@@ -11,7 +11,8 @@
 # set excludes
 - include_tasks: exclusions.yml
 
-- fail:
+- name: debug
+  fail:
     msg: boo
 
 # static sources
