@@ -35,6 +35,9 @@ hypatia_uri_hagezi_threats: "https://raw.githubusercontent.com/hagezi/dns-blockl
 hypatia_uri_hagezi_fakes: "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/fake-onlydomains.txt"
 hypatia_uri_hagezi_multipro: "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/pro.txt"
 
+# virusshare download range (https://virusshare.com/hashes)
+virusshare_hash_range: "{{ range(402, 493) | list }}"
+
 # LOCAL sources
 hypatia_malsharedb_path: "{{ hypatia_signatures_path }}/malshare/malshare.sha256"
 hypatia_imported_path: "{{ hypatia_signatures_path }}/hypatia"
