@@ -21,13 +21,6 @@
 
 # dynamic sources
 - include_tasks: amnestytech.yml
-
-# TEMP DEBUG
-- include_tasks: convert.yml
-- include_tasks: sign.yml
-- include_tasks: activate.yml
-- meta: end_play
-
 - include_tasks: clamav.yml
 - include_tasks: cybercure.yml
 - include_tasks: eset.yml
