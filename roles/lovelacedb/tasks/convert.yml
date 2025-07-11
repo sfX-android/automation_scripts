@@ -47,6 +47,7 @@
     cd ..
 
     sed -s 'N;/md5: 0, sha1: 0, sha256: 0/!P;D' -i {{ hypatia_index_html }}
+    sed 's|false postive rate|<a href="https://en.wikipedia.org/wiki/Bloom_filter#Probability_of_false_positives" target=_blank>false positive rate</a>|g' -i {{ hypatia_index_html }}
     
     # add virustotal links
     sed -E 's#(Skipping excluded hash: )(.*)#\1<a href="https://www.virustotal.com/gui/file/\2" target="_blank" rel="nofollow noopener noreferrer">\2</a>#g' -i {{ hypatia_index_html }}
