@@ -11,7 +11,9 @@
 - name: "Avast: Parse avast signatures"
   ansible.builtin.shell: |
     if [ -f "{{ hypatia_signatures_path }}/raw/avast-covid19.sha256" ];then && rm {{ hypatia_signatures_path }}/raw/avast-covid19.sha256;fi
-    tail -n +2 */*.csv | sed 's/,/ , /' | awk '{ print $1 }' | sort -u  >> {{ hypatia_signatures_path }}/raw/avast-covid19.sha256
+    tail -n +2 android/*.csv | sed 's/,/ , /' | awk '{ print $1 }' | sort -u  > {{ hypatia_signatures_path }}/raw/avast-covid19-android.sha256
+    tail -n +2 windows/*.csv | sed 's/,/ , /' | awk '{ print $1 }' | sort -u  > {{ hypatia_signatures_path }}/raw/avast-covid19-windows.sha256
+    tail -n +2 url/*.csv | sed 's/,/ , /' | awk '{ print $1 }' | sort -u  > {{ hypatia_signatures_path }}/blocklist-various/blocklist-avast-covid.txt
   args:
-    chdir: "{{ hypatia_signatures_path }}/avast"
+    chdir: "{{ hypatia_signatures_path }}/avast/datasets"
   when: hash_stat_dict.avast.isreg is not defined or get_avast.changed
