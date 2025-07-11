@@ -53,3 +53,6 @@ hypatia_testfiles_path: "{{ hypatia_signatures_path }}/selftest"
 # converter to hypatia format
 hypatia_path_converter: "/opt/dbconverter.jar"
 hypatia_uri_converter: "https://codeberg.org/AXP-OS/tools_lovelaceav_convertdb/releases/download/latest/dbconverter.jar"
+
+# exclusions
+hypatia_uri_exclude_fdroid: "https://f-droid.org/repo/index.xml"
