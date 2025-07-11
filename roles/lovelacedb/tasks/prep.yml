@@ -46,6 +46,7 @@
     - { name: "stalkerware", file: "{{ hypatia_signatures_path }}/raw/stalkerware.hsb" }
     - { name: "threatfox", file: "{{ hypatia_signatures_path }}/raw/threatfox.sha256" }
     - { name: "mantaray", file: "{{ hypatia_signatures_path }}/raw/VirusShare_0-475_MR4n6_Hash_Sets_RAW_2023_Q2.md5" }
+    - { name: "fdroid", file: "{{ hypatia_signatures_path }}/exclusions/fdroid.hashes" }
   register: hash_stat
 
 - name: "Prep: build mapping of hash stats by name"
