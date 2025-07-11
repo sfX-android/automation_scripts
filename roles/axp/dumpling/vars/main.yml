@@ -24,8 +24,8 @@ axp_release_recovery: True
 skip_wireguard: True
 
 # disable advanced avb handling
-axp_enable_avb: 'false'
+#axp_enable_avb: 'false'
 
 # Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: ''
+axp_bootloader_id_pro: '88F1461CFC869B86'
 axp_bootloader_id_slim: ''
