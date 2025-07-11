@@ -19,6 +19,12 @@
 # extended sources
 #- include_tasks: virusshare_mantaray.yml
 
+# TEMP DEBUG
+- include_tasks: convert.yml
+- include_tasks: sign.yml
+- include_tasks: activate.yml
+- meta: end_play
+
 # dynamic sources
 - include_tasks: amnestytech.yml
 - include_tasks: clamav.yml
