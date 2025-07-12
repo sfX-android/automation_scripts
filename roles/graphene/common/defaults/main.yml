@@ -156,7 +156,8 @@ SH_GRAPHENE_BUILD: |
       yarn install --ignore-engines --cwd vendor/adevtool/
       
       lunch sdk_phone64_x86_64-cur-user
-      m -j{{ max_processes }} aapt2 arsclib
+      m -j{{ max_processes }} aapt2
+      #m -j{{ max_processes }} arsclib
       
       sudo rm -rf vendor/adevtool/dl/*
       vendor/adevtool/bin/run generate-all -d {{ target_model }}
