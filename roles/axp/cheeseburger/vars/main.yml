@@ -24,5 +24,5 @@ axp_release_recovery: True
 skip_wireguard: True
 
 # Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: ''
+axp_bootloader_id_pro: '2AC928E13BB0B460'
 axp_bootloader_id_slim: ''
