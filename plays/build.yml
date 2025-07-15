@@ -14,18 +14,7 @@
         path: "{{ semaphore_lock_dir }}"
         state: directory
           
-    - set_fact:
-        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ build_id }}.ansible_running"
 
-    - name: "set semaphore running indicator"
-      connection: local
-      copy:
-        dest: "{{ semaphore_runfile }}"
-        content: |
-          date="{{ ansible_date_time.iso8601 }}"
-          play=build.yml
-          target={{ target_model }}
-          role="{{ ROM_FLAVOR }}/{{ target_model }}"
 
     - name: DEBUG-pre
       ansible.builtin.debug:
