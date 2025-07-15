@@ -1,0 +1,17 @@
+---
+# fixes:
+# avbtool: Given image does not look like a vbmeta image
+
+- name: "Disable chaining"
+  ansible.builtin.lineinfile:
+    path: "{{ item.f }}"
+    line: '#\1'
+    regexp: '^({{ item.s }})'
+    backrefs: true
+  loop:
+      - f: "{{ SRCPATH }}/device/oneplus/msm8998-common/common.mk"
+        s: '\$\(call inherit-product, build/target/product/verity.mk\)'
+      - f: "{{ SRCPATH }}/device/oneplus/msm8998-common/common.mk"
+        s: 'PRODUCT_VENDOR_VERITY_PARTITION :=.*'
+      - f: "{{ SRCPATH }}/device/oneplus/msm8998-common/common.mk"
+        s: 'PRODUCT_SYSTEM_VERITY_PARTITION :=.*'
