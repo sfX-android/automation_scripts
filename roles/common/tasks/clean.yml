@@ -71,6 +71,7 @@
   file:
     path: "{{ SEPARATE_OUT_DIR }}"
     state: directory
+    recurse: true
   when: 
     - SEPARATE_OUT_DIR is defined
 
