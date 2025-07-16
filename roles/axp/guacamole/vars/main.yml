@@ -21,8 +21,7 @@ target_kernel_dir: kernel/oneplus/sm8150
 axp_release_recovery: True
 
 # disable Wireguard patching (already part of the upstream kernel)
-# temp!!!!!!!!
-skip_wireguard: True
+#skip_wireguard: True
 
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: '26B88EDA82ED966A'
