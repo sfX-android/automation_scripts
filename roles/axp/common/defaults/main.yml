@@ -160,6 +160,8 @@ DOS_INIT: |
     if [ ! -L "$HOME/.local/bin/rename" ];then ln -s {{ SRCPATH }}/rename $HOME/.local/bin/rename; fi
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
+    gpg-agent --homedir {{ BUILDHOME }}/.gnupg --use-standard-socket --daemon
+    
     cd {{ SRCPATH }}
     source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
     source {{ DOSPATH }}/Scripts/init.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing init: success" >> {{ BUILD_LOG }}
