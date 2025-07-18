@@ -11,6 +11,7 @@
         - "{{ DOSPATH }}"
         - "{{ persistent_dir }}"
         - "~/.local/gh"
+        - "~/.local/tea"
     
     - name: Copy DOS renamer
       ansible.builtin.copy:
@@ -36,9 +37,8 @@
 - block:
 
         - name: "Prep Github CLI"
-          ansible.builtin.unarchive:
-              remote_src: yes
-              src: "{{ github_cli_download_uri }}"
+          ansible.builtin.get_url:
+              url: "{{ github_cli_download_uri }}"
               dest: "~/.local/gh"
               
         - name: "Setup Github CLI"
@@ -52,12 +52,12 @@
           ansible.builtin.unarchive:
               remote_src: yes
               src: "{{ gitea_cli_download_uri }}"
-              dest: "~/.local/bin"
+              dest: "~/.local/tea"
 
         - name: "Setup Gitea CLI"
           ansible.builtin.copy:
               remote_src: yes
-              src: "~/.local/bin/tea-{{ gitea_cli_version }}-linux-amd64"
+              src: "~/.local/tea/tea-{{ gitea_cli_version }}-linux-amd64"
               dest: "~/.local/bin/tea"
               mode: 0755
 
