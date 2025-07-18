@@ -37,8 +37,9 @@
 - block:
 
         - name: "Prep Github CLI"
-          ansible.builtin.get_url:
-              url: "{{ github_cli_download_uri }}"
+          ansible.builtin.unarchive:
+              remote_src: yes
+              src: "{{ github_cli_download_uri }}"
               dest: "~/.local/gh"
               
         - name: "Setup Github CLI"
@@ -49,9 +50,8 @@
               mode: 0755
 
         - name: "Prep Gitea CLI"
-          ansible.builtin.unarchive:
-              remote_src: yes
-              src: "{{ gitea_cli_download_uri }}"
+          ansible.builtin.get_url:
+              url: "{{ gitea_cli_download_uri }}"
               dest: "~/.local/tea"
 
         - name: "Setup Gitea CLI"
