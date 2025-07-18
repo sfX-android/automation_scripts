@@ -35,6 +35,7 @@
 - block:
 
         - name: "Install Github CLI"
+          become: yes    # requires sudoers change!
           ansible.builtin.apt:
               deb: "{{ github_cli_download_uri }}"
         
