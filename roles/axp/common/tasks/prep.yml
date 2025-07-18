@@ -3,7 +3,7 @@
 - block:
 
     - name: "Ensure the defined sources paths exist"
-      file:
+      ansible.builtin.file:
         path: "{{ item }}"
         state: directory
       loop:
@@ -12,7 +12,7 @@
         - "{{ persistent_dir }}"
     
     - name: Copy DOS renamer
-      copy:
+      ansible.builtin.copy:
         src: rename
         dest: "{{ SRCPATH }}/"
         mode: 0755
@@ -31,3 +31,37 @@
   delay: 30
   changed_when: false
   when: not skip_dl_cve_checker | d(True) | bool
+
+- block:
+
+        - name: "Install Github CLI"
+          ansible.builtin.apt:
+              deb: "{{ github_cli_download_uri }}"
+        
+        - name: "Prep Gitea CLI"
+          ansible.builtin.unarchive:
+              remote_src: yes
+              src: "{{ gitea_cli_download_uri }}"
+              dest: "~/.local/bin"
+
+        - name: "Setup Gitea CLI"
+          ansible.builtin.copy:
+              remote_src: yes
+              src: "~/.local/bin/tea-{{ gitea_cli_version }}-linux-amd64"
+              dest: "~/.local/bin/tea"
+              mode: 0755
+
+        - name: "Test Github CLI login state"
+          ansible.builtin.shell: >
+                gh auth status || (echo -e "ERROR: Missing API login! Please run:\ngh auth login --hostname {{ github_cli_target_host }}"; exit 4)
+
+        - name: "Test Gitea CLI login state"
+          ansible.builtin.shell: |
+                tea login ls --output yaml | grep -E "{{ gitea_login_name }}$" \
+                    || (echo -e "ERROR: Missing API login! Please run:\ntea login add --name {{ gitea_login_name }} --url {{ gitea_cli_main_host }}"; exit 4)
+                {% if gitea_cli_mirror_host is defined %}
+                tea login ls --output yaml | grep "{{ gitea_login_name }}_mirror" \
+                    || (echo -e "ERROR: Missing API login! Please run:\ntea login add --name {{ gitea_login_name }}_mirror --url {{ gitea_cli_mirror_host }}"; exit 4)
+                {% endif %}
+
+  when: commit_push | bool
