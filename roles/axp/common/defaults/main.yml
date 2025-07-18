@@ -24,6 +24,10 @@ git_axpos_org_private: "ssh://git@code.binbash.rocks:22443/{{ git_axpos_org_name
 # reasons for listing them here are e.g. they get rejected on github, containing proprietary stuff or sim.
 # comma separated list:
 git_private_repos: "platform_prebuilts_tools,android_cts"
+# Gitea CLI tool
+gitea_cli_download_uri: "https://gitea.com/gitea/tea/releases/download/v0.10.1/tea-0.10.1-linux-amd64.xz"
+# Github CLI tool
+github_cli_download_uri: "https://github.com/cli/cli/releases/download/v2.76.0/gh_2.76.0_linux_amd64.deb"
 
 # build vars
 os_name: "AXP.OS"
