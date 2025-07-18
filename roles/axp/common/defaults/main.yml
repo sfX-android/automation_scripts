@@ -42,7 +42,8 @@ gitea_cli_main_host: code.binbash.rocks
 #    read:user
 #    repo
 #    admin:public_key
-github_cli_download_uri: "https://github.com/cli/cli/releases/download/v2.76.0/gh_2.76.0_linux_amd64.deb"
+github_cli_version: '2.76.0'
+github_cli_download_uri: "https://github.com/cli/cli/releases/download/v{{ github_cli_version }}/gh_{{ github_cli_version }}_linux_amd64.tar.gz"
 github_cli_main_host: github.com
 
 # build vars
