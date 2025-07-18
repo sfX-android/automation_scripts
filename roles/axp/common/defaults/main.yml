@@ -32,7 +32,7 @@ gitea_login_name: axpos
 #    repo
 #    admin:public_key
 gitea_cli_version: '0.10.1'
-gitea_cli_download_uri: "https://gitea.com/gitea/tea/releases/download/v{{ gitea_cli_version }}/tea-{{ gitea_cli_version }}-linux-amd64.xz"
+gitea_cli_download_uri: "https://gitea.com/gitea/tea/releases/download/v{{ gitea_cli_version }}/tea-{{ gitea_cli_version }}-linux-amd64"    # xz is not supported by unarchive
 gitea_cli_main_host: code.binbash.rocks
 
 # Github CLI tool
