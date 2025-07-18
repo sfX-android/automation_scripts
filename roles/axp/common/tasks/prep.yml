@@ -10,6 +10,7 @@
         - "{{ SRCPATH }}"
         - "{{ DOSPATH }}"
         - "{{ persistent_dir }}"
+        - "~/.local/gh"
     
     - name: Copy DOS renamer
       ansible.builtin.copy:
