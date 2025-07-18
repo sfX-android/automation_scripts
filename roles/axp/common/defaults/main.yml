@@ -25,7 +25,8 @@ git_axpos_org_private: "ssh://git@code.binbash.rocks:22443/{{ git_axpos_org_name
 # comma separated list:
 git_private_repos: "platform_prebuilts_tools,android_cts"
 # Gitea CLI tool
-gitea_cli_download_uri: "https://gitea.com/gitea/tea/releases/download/v0.10.1/tea-0.10.1-linux-amd64.xz"
+gitea_cli_version: '0.10.1'
+gitea_cli_download_uri: "https://gitea.com/gitea/tea/releases/download/v{{ gitea_cli_version }}/tea-{{ gitea_cli_version }}-linux-amd64.xz"
 # Github CLI tool
 github_cli_download_uri: "https://github.com/cli/cli/releases/download/v2.76.0/gh_2.76.0_linux_amd64.deb"
 
