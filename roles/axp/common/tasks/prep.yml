@@ -36,6 +36,7 @@
 
         - name: "Install Github CLI"
           become: yes    # requires sudoers change!
+          become_user: root
           ansible.builtin.apt:
               deb: "{{ github_cli_download_uri }}"
         
