@@ -3,10 +3,13 @@
 - name: "Push any detected change"
   ansible.builtin.shell: |
     export LC_ALL=C
+    export PATH="~/.local/bin:$PATH"
     {{ DOS_INIT }}
     
     # tag name
     TAG="$(date +%F)_{{ sub_model | d('${BDEVICE}') }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
+    # fallback tag
+    PTAG=${TAG}_$(date +%s)
     
     # reproduce manifest
     REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
@@ -197,7 +200,6 @@
           echo "[GIT] skipped already pushed tag: $TAG as just_git_push var is true"  >> {{ BUILD_LOG }}
       {% else %}
           echo "[GIT] existing tag ($TAG) found, making ours unique ..."
-          PTAG=${TAG}_$(date +%s)
           git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" >> {{ BUILD_LOG }} 2>&1
           git push --set-upstream up $PTAG >> {{ BUILD_LOG }} 2>&1 || (sleep 10s; git push --set-upstream up $PTAG >> {{ BUILD_LOG }} 2>&1)
           echo "[GIT] pushed our unique tag ($PTAG) successfully!" >> {{ BUILD_LOG }}
