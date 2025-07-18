@@ -199,10 +199,12 @@
       {% if just_git_push %}
           echo "[GIT] skipped already pushed tag: $TAG as just_git_push var is true"  >> {{ BUILD_LOG }}
       {% else %}
-          echo "[GIT] existing tag ($TAG) found, making ours unique ..."
-          git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" >> {{ BUILD_LOG }} 2>&1
-          git push --set-upstream up $PTAG >> {{ BUILD_LOG }} 2>&1 || (sleep 10s; git push --set-upstream up $PTAG >> {{ BUILD_LOG }} 2>&1)
-          echo "[GIT] pushed our unique tag ($PTAG) successfully!" >> {{ BUILD_LOG }}
+          tptag=$PTAG
+          echo "[GIT] existing tag ($TAG) found, making ours unique ($PTAG) ..." >> {{ BUILD_LOG }}
+          git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" >> {{ BUILD_LOG }} 2>&1 \
+            || (FPTAG=${TAG}_$(date +%s); git tag -a "$FPTAG" -m "axp.os: tagged on $FPTAG" >> {{ BUILD_LOG }} 2>&1; tptag=$FPTAG)
+          git push --set-upstream up $tpag >> {{ BUILD_LOG }} 2>&1 || (sleep 10s; git push --set-upstream up $tptag >> {{ BUILD_LOG }} 2>&1)
+          echo "[GIT] pushed our unique tag ($tpag) successfully!" >> {{ BUILD_LOG }}
       {% endif %}
       else
           git push --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
