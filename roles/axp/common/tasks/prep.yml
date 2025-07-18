@@ -53,7 +53,7 @@
 
         - name: "Test Github CLI login state"
           ansible.builtin.shell: >
-                gh auth status || (echo -e "ERROR: Missing API login! Please run:\ngh auth login --hostname {{ github_cli_target_host }}"; exit 4)
+                gh auth status || (echo -e "ERROR: Missing API login! Please run:\ngh auth login --hostname {{ github_cli_main_host }}"; exit 4)
 
         - name: "Test Gitea CLI login state"
           ansible.builtin.shell: |
