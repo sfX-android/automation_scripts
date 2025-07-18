@@ -71,10 +71,10 @@
         - name: "Test Gitea CLI login state"
           ansible.builtin.shell: |
                 export PATH="~/.local/bin:$PATH"
-                tea login ls --output yaml | grep -E "{{ gitea_login_name }}$" \
+                tea login ls --output json | jq -r .[].name | grep -E "{{ gitea_login_name }}$" \
                     || (echo -e "ERROR: Missing API login! Please run:\ntea login add --name {{ gitea_login_name }} --url {{ gitea_cli_main_host }}"; exit 4)
                 {% if gitea_cli_mirror_host is defined %}
-                tea login ls --output yaml | grep "{{ gitea_login_name }}_mirror" \
+                tea login ls --output yaml | jq -r .[].name | grep "{{ gitea_login_name }}_mirror" \
                     || (echo -e "ERROR: Missing API login! Please run:\ntea login add --name {{ gitea_login_name }}_mirror --url {{ gitea_cli_mirror_host }}"; exit 4)
                 {% endif %}
           args:
