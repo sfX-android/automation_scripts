@@ -34,12 +34,19 @@
 
 - block:
 
-        - name: "Install Github CLI"
-          become: yes    # requires sudoers change!
-          become_user: root
-          ansible.builtin.apt:
-              deb: "{{ github_cli_download_uri }}"
-        
+        - name: "Prep Github CLI"
+          ansible.builtin.unarchive:
+              remote_src: yes
+              src: "{{ github_cli_download_uri }}"
+              dest: "~/.local/gh"
+              
+        - name: "Setup Github CLI"
+          ansible.builtin.copy:
+              remote_src: yes
+              src: "~/.local/gh/gh_{{ github_cli_version }}_linux_amd64/bin/gh"
+              dest: "~/.local/bin/gh"
+              mode: 0755
+
         - name: "Prep Gitea CLI"
           ansible.builtin.unarchive:
               remote_src: yes
