@@ -64,6 +64,8 @@
         - name: "Test Github CLI login state"
           ansible.builtin.shell: >
                 gh auth status || (echo -e "ERROR: Missing API login! Please run:\ngh auth login --hostname {{ github_cli_main_host }}"; exit 4)
+          args:
+              executable: /bin/bash
 
         - name: "Test Gitea CLI login state"
           ansible.builtin.shell: |
@@ -73,5 +75,7 @@
                 tea login ls --output yaml | grep "{{ gitea_login_name }}_mirror" \
                     || (echo -e "ERROR: Missing API login! Please run:\ntea login add --name {{ gitea_login_name }}_mirror --url {{ gitea_cli_mirror_host }}"; exit 4)
                 {% endif %}
+          args:
+              executable: /bin/bash
 
   when: commit_push | bool
