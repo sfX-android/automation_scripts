@@ -1,1 +1,17 @@
 ---
+
+#- include_tasks: device.yml
+#- include_tasks: kernel.yml
+
+- name: "Identify models"
+  connection: local
+  ansible.builtin.shell: |
+    ls -1 ../roles/{{ parse_roles_subdir }} | grep -vE "{{ model_exclusions }}"
+  register: target_models
+
+- include_tasks: loop.yml
+  vars:
+    target_model: "{{ model }}"
+  loop: "{{ target_models.stdout_lines }}"
+  loop_control:
+    loop_var: model

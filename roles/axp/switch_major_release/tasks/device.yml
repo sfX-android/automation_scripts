@@ -1,0 +1,70 @@
+---
+
+- name: "Switch device tree to new Major Release"
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    upstream_branch="{{ axp_switchMR_upstream_branch }}"
+    axp_release="{{ axp_switchMR_target_branch }}"
+    axp_init_branch="{{ axp_switchMR_init_branch }}"
+
+    if [ -d /tmp/device ]; then rm -r /tmp/device; fi
+    git clone {{ axp_git_org }}/android_{{ device_tree }} -b $axp_init_branch /tmp/device
+    cd /tmp/device
+
+    git remote add los https://github.com/LineageOS/android_{{ device_tree }}
+    git fetch los $upstream_branch
+    git checkout $upstream_branch
+    git branch $axp_release
+    git checkout $axp_release
+
+    grep -q "vendor/axp/config/common.mk" {{ device_tree_mk }} \
+      || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ device_tree_mk }}
+    
+    grep -q "vendor/axp/BoardConfigVendor.mk" {{ device_tree_boardmk }} \
+      || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ device_tree_boardmk }}
+    
+    CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+    if [ $CMTL -gt 0 ];then
+        git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+        git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "board: device: enable AXP.OS"
+    fi
+
+    if [ ! -f .github/workflows/sync.yml ];then
+      mkdir -p .github/workflows/ || true
+
+      cat <<EOSYNC > .github/workflows/sync.yml
+      name: "Sync"
+
+      on:
+        workflow_dispatch:
+        schedule:
+          - cron: "$(( RANDOM % 60 )) $(( RANDOM % 24 )) * * *"
+
+      # Sets permissions of the GITHUB_TOKEN to allow pushing via github token
+      permissions:
+        contents: write
+
+      jobs:
+        sync-upstream:
+          name: "Sync with upstream"
+          uses: AXP-OS/.github/.github/workflows/sync_upstream.yml@main
+          with:
+              remote-repo: LineageOS/\${{ github.event.repository.name }}
+              remote-branch: $upstream_branch
+              local-repo: \${{ github.repository_owner }}/\${{ github.event.repository.name }}
+              local-branch: "$(git branch --no-color --show-current)"
+              dryrun: false
+          secrets: inherit
+      EOSYNC
+
+      git add -f .github/
+      git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync"
+    else
+      echo "Skipped adding CI/CD sync to device tree!"
+    fi
+
+    git push origin $axp_release
+
+    rm -r /tmp/device
+  args:
+    executable: /bin/bash
