@@ -26,3 +26,7 @@ skip_wireguard: True
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: '2AC928E13BB0B460'
 axp_bootloader_id_slim: ''
+
+# git push
+axp_git_push_device_include: "device_google_cheeseburger|device_oneplus_msm8998-common" 
+axp_git_push_vendor_include: "vendor_google_cheeseburger|vendor_oneplus_msm8998-common"

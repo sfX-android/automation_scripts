@@ -23,3 +23,10 @@ axp_release_recovery: True
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: 'F0C96BB5DA92C431'
 axp_bootloader_id_slim: ''
+
+# git push
+axp_git_push_device_include: "device_sony_xz2c|device_sony_tama-common"
+axp_git_push_vendor_include: "vendor_sony_xz2c|vendor_sony_tama-common"
+
+# fix build error on sunfish
+disable_artifact_path_requirements: 'true'

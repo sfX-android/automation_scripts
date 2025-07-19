@@ -32,3 +32,7 @@ remove_space_reservation: 'yes'
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: 'BB8B6D9E18C68E46'
 axp_bootloader_id_slim: 'AC2F6121652F3607'
+
+# git push
+axp_git_push_device_include: "device_google_sargo|device_google_bonito"
+axp_git_push_vendor_include: "vendor_google_sargo"

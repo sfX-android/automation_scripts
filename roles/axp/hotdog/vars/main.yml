@@ -23,3 +23,10 @@ axp_release_recovery: True
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: 'B9C105F3CB6FAFD3'
 axp_bootloader_id_slim: ''
+
+# git push
+axp_git_push_device_include: "device_oneplus_hotdog|device_oneplus_sm8150-common"
+axp_git_push_vendor_include: "vendor_oneplus_sm8150-common|vendor_oneplus_hotdog"
+
+ # re-testing effect of hibernation on bat life
+axp_defconfig_device: "CONFIG_HIBERNATION=y CONFIG_DEBUG_FS=n"

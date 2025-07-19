@@ -1,13 +1,14 @@
 #!/bin/bash
 #####################################################################################################################
 # global vars for AXP.OS - Slim flavor
-#
+# extends/overrides: axp.vars.j2
+# 
 # can be overwritten / extended by device specific definitions.
 # Device example:
-# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/templates/divested.vars.hotdog.j2
+#   roles/axp/common/g4/vars/main.yml
 #
 # additional / current list of possible options:
-# https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
+#   axp.vars.j2
 #####################################################################################################################
 
 ########################################
@@ -28,7 +29,7 @@ export DOS_BUILDS="{{ dos_release_dir }}"
 
 # misc
 export DOS_DEBLOBBER_REMOVE_WIDEVINE_DRM=true    # remove widevine drm
-export DOS_DEBLOBBER_REMOVE_CNE=true             # remove all CNE blobs #XXX: Breaks Wi-Fi calling
+#export DOS_DEBLOBBER_REMOVE_CNE=true             # remove all CNE blobs #XXX: Breaks Wi-Fi calling
 
 #####################################################################################################################
 echo "included $0 config"

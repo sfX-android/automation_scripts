@@ -26,3 +26,7 @@ skip_wireguard: True
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: 'D2F1C2BFE54C5952'
 axp_bootloader_id_slim: ''
+
+#git_push:
+axp_git_push_device_include: "device_oneplus_fajita|device_oneplus_sdm845-common"
+axp_git_push_vendor_include: "vendor_oneplus_sdm845-common|vendor_oneplus_fajita"

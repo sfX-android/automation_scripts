@@ -26,3 +26,7 @@ custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: '2357DB9EBF8090F9'
 axp_bootloader_id_slim: 'B49112D3DD534A21'
+
+# git push
+axp_git_push_device_include: "device_google_sunfish"
+axp_git_push_vendor_include: "vendor_google_sunfish"

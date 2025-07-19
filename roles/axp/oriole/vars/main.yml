@@ -30,3 +30,7 @@ skip_wireguard: True
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: ''
 axp_bootloader_id_slim: '42D46266F04BBF79'
+
+# git push
+axp_git_push_device_include: "device_google_oriole|device_google_raven|device_google_raviole|android_device_google_gs101"
+axp_git_push_vendor_include: "vendor_google_oriole"

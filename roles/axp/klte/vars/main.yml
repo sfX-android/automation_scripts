@@ -20,12 +20,6 @@ extendrom_package_list: "{{ extendrom_package_list_default | regex_replace('AOSm
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/samsung/msm8974
 
-# common defaults overrides
-#vbmeta_verify: false
-
-# enable kernel patching for unsupported devices
-#divest_unsupported_device: true
-
 # disable Wireguard patching (unsupported, bc kernel = v3.4)
 skip_wireguard: True
 
@@ -37,6 +31,13 @@ axp_enable_avb: 'false'
 
 # this is a low-end device (optimize for performance)
 axp_lowend_device: True
+
+# git push
+axp_git_push_device_include: "device_samsung_klte|device_samsung_klte-common"
+axp_git_push_vendor_include: "vendor_samsung"
+
+# disable Wireguard patching (unsupported, bc kernel = v3.4)
+axp_defconfig_globals: ''
 
 # special testing area
 extendrom_intercept_installsrc: 'true'

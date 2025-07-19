@@ -28,3 +28,10 @@ vbmeta_verify: false
 
 # disable AVB + verity
 axp_enable_avb: 'false'
+
+# git push
+axp_git_push_device_include: "device_sony_kirin|device_sony_nile-common"
+axp_git_push_vendor_include: "vendor_sony_kirin|vendor_sony_nile-common"
+
+# TESTING
+axp_graphene_malloc: 'false'

@@ -3,8 +3,6 @@
 target_model_vendor: LGE
 target_model_name: 'G4'
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
-#FIXME: must be set via h815/vars
-sub_model: h815
 
 # android version
 android_shortversion: a11
@@ -32,6 +30,10 @@ post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_mod
 vbmeta_verify: false
 axp_enable_avb: 'false'
 
+# git push
+axp_git_push_device_include: "device_lge_g4|device_lge_g4-common"
+axp_git_push_vendor_include: "vendor_lge"
+
 # enable kernel patching
 # this kernel is special bc it (still) exists in Fix_CVE_Patchers.sh (they supported it a while ago)
 # but as they removed the patcher script we need to set it to unsupported:
@@ -44,6 +46,16 @@ axp_lowend_device: True
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/axp/{{ sub_model }})
 
+# CONFIG_STRICT_MEMORY_RWX=y breaks boot!
+axp_defconfig_device: "CONFIG_STRICT_MEMORY_RWX=n"
+
+# removing IMS will break boot
+# > "/vendor/bin/imscmservice": library "lib-imsrcscmservice.so" not found: needed by main executable
+axp_deblobber_remove_ims: 'false'
+axp_deblobber_remove_rcs: 'false'
+
+# libcir is needed by consumerir
+axp_deblobber_remove_ir: 'false'
 
 # special testing area
 extendrom_intercept_installsrc: 'true'

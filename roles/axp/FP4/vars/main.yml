@@ -35,3 +35,7 @@ custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: ''
 axp_bootloader_id_slim: '272DE00712A447F3'
+
+# git push
+axp_git_push_device_include: "device_fairphone_FP4"
+axp_git_push_vendor_include: "vendor_fairphone_FP4"

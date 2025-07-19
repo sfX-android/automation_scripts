@@ -4,16 +4,14 @@
 #
 # can be overwritten / extended by device specific definitions.
 # Device example:
-# https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common/templates/divested.vars.hotdog.j2
+#   roles/axp/common/g4/vars/main.yml
 #
 # additional / current list of possible options:
-# https://github.com/Divested-Mobile/DivestOS-Build/blob/master/Scripts/init.sh
+#   https://github.com/AXP-OS/build/blob/axp/Scripts/init.sh
 #####################################################################################################################
 
 # General
 export DOS_WORKSPACE_ROOT="{{ DOSPATH }}/"
-export DOS_SIGNING_KEYS="$DOS_WORKSPACE_ROOT/Signing_Keys/4096pro"
-export DOS_SIGNING_GPG="$DOS_WORKSPACE_ROOT/Signing_Keys/gnupg"
 export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
 export CCACHE_COMPRESSLEVEL=1
 export DOS_MALWARE_SCAN_ENABLED=false #Set true to perform a fast scan on patchWorkspace() and a through scan on buildAll()
@@ -25,8 +23,10 @@ export DOS_GENERATE_DELTAS=false #Creates deltas from existing target_files in $
 export DOS_AUTO_ARCHIVE_BUILDS=true #Copies files to $DOS_BUILDS after signing
 export DOS_REMOVE_AFTER=false #Removes device OUT directory after complete to reclaim space. Requires AUTO_ARCHIVE_BUILDS=true
 export DOS_REMOVE_AFTER_FULL=false #Removes the entire OUT directory
+
+export DOS_SIGNING_GPG="{{ BUILDHOME }}/.gnupg"
 export DOS_GPG_SIGNING=true
-export DOS_GPG_SIGNING_KEY="B8744D67F9F1E14E145DFD8E7F627E920F316994"
+export DOS_GPG_SIGNING_KEY="FE4B2FA2B225F0AB903AF4136740E645718A8E47"
 
 # Theme
 export DOS_THEME_50="FFCA28" #Amber 400
@@ -42,24 +42,25 @@ export DOS_GPS_NTP_SERVER="2.android.pool.ntp.org" #Options: Any NTP pool
 export DOS_GPS_SUPL_HOST="supl.google.com" #Options: Any *valid* SUPL server
 
 # Deblobber
-export DOS_DEBLOBBER_REMOVE_ACCESSORIES=true #Set false to allow use of external accessories that depend on blobs
-export DOS_DEBLOBBER_REMOVE_ATFWD=true #Set true to remove basic ATFWD blobs
-export DOS_DEBLOBBER_REMOVE_AUDIOFX=true #Set true to remove AudioFX
-export DOS_DEBLOBBER_REMOVE_APTX=false #Set true to remove aptX Bluetooth codec
-export DOS_DEBLOBBER_REMOVE_CNE=true #Set true to remove all CNE blobs #XXX: Breaks Wi-Fi calling
-export DOS_DEBLOBBER_REMOVE_DPM=true #Set true to remove all DPM blobs #XXX: Maybe breaks multi-sim and carrier aggregation (LTE+)
-export DOS_DEBLOBBER_REMOVE_DPP=false #Set true to remove all Display Post Processing blobs #XXX: Breaks boot on select devices
-export DOS_DEBLOBBER_REMOVE_FP=false #Set true to remove all fingerprint reader blobs
-export DOS_DEBLOBBER_REMOVE_EUICC=true #Set true to remove all eUICC blobs
-export DOS_DEBLOBBER_REMOVE_IMS=false #Set true to remove all IMS blobs XXX: Carriers are phasing out 3G, making IMS mandatory for calls
-export DOS_DEBLOBBER_REMOVE_IPA=false #Set true to remove all IPA blobs
-export DOS_DEBLOBBER_REMOVE_IR=false #Set true to remove all IR blobs
-export DOS_DEBLOBBER_REMOVE_RCS=true #Set true to remove all RCS blobs
+export DOS_DEBLOBBER_REMOVE_ACCESSORIES="{{ axp_deblobber_remove_accessories | default('true') }}" #Set false to allow use of external accessories that depend on blobs
+export DOS_DEBLOBBER_REMOVE_ATFWD="{{ axp_deblobber_remove_atfwd | default('true') }}" #Set true to remove basic ATFWD blobs
+export DOS_DEBLOBBER_REMOVE_AUDIOFX="{{ axp_deblobber_remove_audiofx | default('true') }}" #Set true to remove AudioFX
+export DOS_DEBLOBBER_REMOVE_APTX="{{ axp_deblobber_remove_aptx | default('false') }}" #Set true to remove aptX Bluetooth codec
+export DOS_DEBLOBBER_REMOVE_CNE="{{ axp_deblobber_remove_cne | default('false') }}" # allow VoLTE/WiFi calling
+export DOS_DEBLOBBER_REMOVE_DPM="{{ axp_deblobber_remove_dpm | default('false') }}" # avoid breaking multi-sim and carrier aggregation (LTE+)
+export DOS_DEBLOBBER_REMOVE_DPP="{{ axp_deblobber_remove_dpp | default('false') }}" #Set true to remove all Display Post Processing blobs #XXX: Breaks boot on select devices
+export DOS_DEBLOBBER_REMOVE_FP="{{ axp_deblobber_remove_fp | default('false') }}" #Set true to remove all fingerprint reader blobs
+export DOS_DEBLOBBER_REMOVE_EUICC="{{ axp_deblobber_remove_euicc | default('true') }}" #Set true to remove all eUICC blobs
+export DOS_DEBLOBBER_REMOVE_IMS="{{ axp_deblobber_remove_ims | default('false') }}" #Set true to remove all IMS blobs XXX: Carriers are phasing out 3G, making IMS mandatory for calls
+export DOS_DEBLOBBER_REMOVE_IPA="{{ axp_deblobber_remove_ipa | default('false') }}" #Set true to remove all IPA blobs
+export DOS_DEBLOBBER_REMOVE_IR="{{ axp_deblobber_remove_ir | default('false') }}" #Set true to remove all IR blobs
+export DOS_DEBLOBBER_REMOVE_RCS="{{ axp_deblobber_remove_rcs | default('true') }}" #Set true to remove all RCS blobs
+export DOS_DEBLOBBER_REMOVE_WIDEVINE_DRM="{{ axp_deblobber_remove_widevine_drm | default('false') }}" # do not remove widevine drm
 
 # Features
-export DOS_HOSTS_BLOCKING=true #Set false to prevent inclusion of a HOSTS file
-export DOS_SENSORS_PERM=false #Set true to provide a per-app sensors permission for 14.1/15.1 #XXX: can break things like camera
-export DOS_USE_KSM=false #Set true to use KSM for increased memory efficiency at the cost of easier side-channel attacks and increased CPU usage #XXX: testing only
+export DOS_HOSTS_BLOCKING="{{ axp_hosts_blocking | default('true') }}" #Set false to prevent inclusion of a HOSTS file
+export DOS_SENSORS_PERM="{{ axp_sensors_perm | default('false') }}" #Set true to provide a per-app sensors permission for 14.1/15.1 #XXX: can break things like camera
+export DOS_USE_KSM="{{ axp_use_ksm | default('false') }}" #Set true to use KSM for increased memory efficiency at the cost of easier side-channel attacks and increased CPU usage #XXX: testing only
 
 # CVE Kernel patcher
 export DOS_PATCHER_LOOSE_VERSIONS=true          # enable loose patching
@@ -114,7 +115,6 @@ export AOS_BRANDING_BUILDTYPE="dos"                          # the LINEAGE_BUILD
 export DOS_MAX_THREADS_REPO={{ max_processes_sync }}   # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 10)
 export DOS_MAX_THREADS_BUILD={{ max_processes }}   # Max amount of threads used for build, e.g. used by make (shouldn't exceed your CPU cores count)
 export DOS_SIGNING_KEYS="{{ keys_base_path }}/{{ os_name }}"
-#export DOS_SIGNING_GPG=""
 export AXP_ENABLE_AVB={{ axp_enable_avb | d('true') }}
 
 # release directory
@@ -124,13 +124,9 @@ export DOS_BUILDS="{{ dos_release_dir }}"
 export DOS_HOSTS_BLOCKING_LIST="https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/pro.txt" # https://github.com/hagezi/dns-blocklists
 export EXTENDROM_PATCHER_RESET=false  # never reset before applying custom patches (as this will break DOS changes)
 export EXTENDROM_SIGSPOOF_RESET=false  # never reset framework base before applying er signature spoof support
-export DOS_DEBLOBBER_REMOVE_WIDEVINE_DRM=false # do not remove widevine drm
-export AXP_DEFCONFIG_GLOBALS="CONFIG_NET CONFIG_INET CONFIG_NET_UDP_TUNNEL CONFIG_CRYPTO_ALGAPI CONFIG_WIREGUARD" # add to kernel defconfig
+export AXP_DEFCONFIG_GLOBALS="{{ axp_defconfig_globals | default('CONFIG_NET CONFIG_INET CONFIG_NET_UDP_TUNNEL CONFIG_CRYPTO_ALGAPI CONFIG_WIREGUARD') }}" # add to kernel defconfig
 export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC by default
-#export DOS_GRAPHENE_HMALLOC_TOGGLE=false # do not enable the hmalloc disable toogle (bc it is supported on specific Android releases only) - WIP
-export DOS_MICROG_SUPPORT=false #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
-export DOS_DEBLOBBER_REMOVE_CNE=false # allow VoLTE/WiFi calling
-export DOS_DEBLOBBER_REMOVE_DPM=false # avoid breaking multi-sim and carrier aggregation (LTE+)
+export DOS_MICROG_SUPPORT="{{ axp_microg_support | default('false') }}" #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
 
 # git info used for committing changes within the sources
 export DOS_PATCHER_URI_KERNEL=https://codeberg.org/AXP-OS/kernel_patches/src/branch/main
@@ -163,3 +159,16 @@ export DOS_OTA_SERVER_ONION_DOMAIN_SECONDARY="sfxota.binbash.rocks"
 export AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC="device_generic_car|device_generic_goldfish|device_generic_goldfish-opengl|device_generic_trusty|device_generic_uml|device_generic_x86|device_generic_x86_64" # skipped by git push, not used for building AXP.OS
 export AXP_GIT_PUSH_DEVICE_EXCLUDE="${AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC}|device_google_|device_sony_|device_oneplus_|vendor_lge_|device_samsung_|device_fairphone_" # skipped by git push, use AXP_GIT_PUSH_DEVICE_INCLUDE to overwrite per device
 export AXP_GIT_PUSH_VENDOR_EXCLUDE="vendor_google|vendor_sony|vendor_oneplus|vendor_lge|vendor_samsung|vendor_fairphone|vendor_xiaomi" # skipped by git push, use AXP_GIT_PUSH_VENDOR_INCLUDE to overwrite per device
+export AXP_GIT_PUSH_DEVICE_INCLUDE="{{ axp_git_push_device_include }}"
+export AXP_GIT_PUSH_VENDOR_INCLUDE="{{ axp_git_push_vendor_include }}"
+
+# special/rare device specific overwrites
+{% if disable_artifact_path_requirements is defined %}
+export DISABLE_ARTIFACT_PATH_REQUIREMENTS="{{ disable_artifact_path_requirements }}"
+{% endif %}
+
+{% if axp_defconfig_device is defined %}
+export AXP_DEFCONFIG_DEVICE="{{ axp_defconfig_device }}"
+{% endif %}
+
+export DOS_GRAPHENE_MALLOC="{{ axp_graphene_malloc | default('true') }}"

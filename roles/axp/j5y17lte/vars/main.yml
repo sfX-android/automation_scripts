@@ -35,3 +35,21 @@ axp_lowend_device: True
 
 # A10 does not support allow call recording
 extendrom_allow_any_call_recording: 'false'
+
+# git push
+axp_git_push_device_include: "device_samsung_j5y17lte|device_samsung_universal7870-common"
+axp_git_push_vendor_include: "vendor_samsung_universal7870-common|vendor_samsung_j5y17lte"
+
+# CONFIG_ARM64_SW_TTBR0_PAN breaks boot!
+axp_defconfig_device: "CONFIG_ARM64_SW_TTBR0_PAN=n"
+
+# deblobbing audiofx breaks video recording due to the removal of libLifevibes_lvverx.so + libLifevibes_lvvetx.so
+dos_deblobber_remove_audiofx: 'false'
+
+# disable hardened malloc. likely related to the increased key size of the AXP signature
+# > I:comment is 3915 bytes; signature is 3897 bytes from end
+# > libc: malloc(65536) failed: returning null pointer
+# > terminating with uncaught exception of type std::bad_alloc: std::bad_alloc
+# > libc++abi: terminating with uncaught exception of type std::bad_alloc: std::bad_alloc
+axp_graphene_malloc: >-
+  {% if axp_build_recovery_only is defined and axp_build_recovery_only %}'false'{% else %}'true'{% endif %}
