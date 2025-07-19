@@ -5,7 +5,10 @@
   when: (axp_type | d(ROM_FLAVOR)) == "slim"
 
 - include_tasks: prep.yml
+
+- include_vars: "../../{{ target_model }}/vars/main.yml"
 - include_tasks: vars.yml
+
 - include_tasks: init.yml
 
 - name: "Just push-to-git selected!"
