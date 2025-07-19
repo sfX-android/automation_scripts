@@ -21,7 +21,7 @@
           - telegram_notifications | bool
 
       - import_role:
-          name: {{ ROM_FLAVOR }}/switch_major_release
+          name: "{{ ROM_FLAVOR }}/switch_major_release"
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
