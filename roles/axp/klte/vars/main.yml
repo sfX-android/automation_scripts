@@ -20,6 +20,10 @@ extendrom_package_list: "{{ extendrom_package_list_default | regex_replace('AOSm
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/samsung/msm8974
 
+# path to the common tree, if none exists the device tree
+# required e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: device_samsung_klte-common
+
 # disable Wireguard patching (unsupported, bc kernel = v3.4)
 skip_wireguard: True
 
@@ -33,7 +37,7 @@ axp_enable_avb: 'false'
 axp_lowend_device: True
 
 # git push
-axp_git_push_device_include: "device_samsung_klte|device_samsung_klte-common"
+axp_git_push_device_include: "device_samsung_klte|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_samsung"
 
 # disable Wireguard patching (unsupported, bc kernel = v3.4)

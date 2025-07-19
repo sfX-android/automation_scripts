@@ -17,8 +17,9 @@ extendrom_debug_path_size_crash_default: 200
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/google/msm-4.9
 
-# common device name (used in vendor/axp)
-common_target_model: bonito
+# path to the common tree, if none exists the device tree
+# required e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: device_google_bonito
 
 # add OpenEUICC and use 32bit WebView
 extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
@@ -34,5 +35,5 @@ axp_bootloader_id_pro: 'BB8B6D9E18C68E46'
 axp_bootloader_id_slim: 'AC2F6121652F3607'
 
 # git push
-axp_git_push_device_include: "device_google_sargo|device_google_bonito"
+axp_git_push_device_include: "device_google_sargo|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_sargo"

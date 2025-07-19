@@ -4,4 +4,4 @@ build_id: "switch_major_release"
 target_model: "{{ build_id }}"
 parse_roles_subdir: axp  # roles/xxx to parse
 generate_fairphone_factory_image: false
-model_exclusions: "common|a52q|xz2c"
+model_exclusions: "common|j5y17lte|klte|h815|g4"

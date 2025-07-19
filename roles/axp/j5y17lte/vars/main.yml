@@ -20,6 +20,10 @@ extendrom_package_list: "{{ extendrom_package_list_default }} opencamera_j5_late
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/samsung/exynos7870
 
+# path to the common tree, if none exists the device tree
+# required e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: device_samsung_universal7870-common
+
 # enable kernel patching
 divest_unsupported_device: true
 unsupported_device_kernel_patch: true
@@ -37,7 +41,7 @@ axp_lowend_device: True
 extendrom_allow_any_call_recording: 'false'
 
 # git push
-axp_git_push_device_include: "device_samsung_j5y17lte|device_samsung_universal7870-common"
+axp_git_push_device_include: "device_samsung_j5y17lte|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_samsung_universal7870-common|vendor_samsung_j5y17lte"
 
 # CONFIG_ARM64_SW_TTBR0_PAN breaks boot!

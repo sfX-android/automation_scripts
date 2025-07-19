@@ -23,6 +23,10 @@ git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}_g4
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/lge/msm8992
 
+# path to the common tree, if none exists the device tree
+# required e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: device_lge_g4-common
+
 # common defaults override:
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
@@ -31,7 +35,7 @@ vbmeta_verify: false
 axp_enable_avb: 'false'
 
 # git push
-axp_git_push_device_include: "device_lge_g4|device_lge_g4-common"
+axp_git_push_device_include: "device_lge_g4|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_lge"
 
 # enable kernel patching

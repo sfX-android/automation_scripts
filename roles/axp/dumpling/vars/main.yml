@@ -17,6 +17,10 @@ extendrom_debug_path_size_crash_default: 200
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/oneplus/msm8998
 
+# path to the common tree, if none exists the device tree
+# required e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: device_oneplus_msm8998-common
+
 # upload the recovery image
 axp_release_recovery: True
 
@@ -31,5 +35,5 @@ axp_bootloader_id_pro: '88F1461CFC869B86'
 axp_bootloader_id_slim: ''
 
 # git push
-axp_git_push_device_include: "device_oneplus_dumpling|device_oneplus_msm8998-common"
+axp_git_push_device_include: "device_oneplus_dumpling|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_oneplus_msm8998-common|vendor_oneplus_dumpling"

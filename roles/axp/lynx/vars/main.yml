@@ -17,6 +17,10 @@ extendrom_debug_path_size_crash_default: 200
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/google/gs201/private/gs-google
 
+# path to the common tree, if none exists the device tree
+# required e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: device_google_gs201
+
 # add OpenEUICC
 extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
@@ -31,5 +35,5 @@ axp_bootloader_id_pro: '45000208280357DD'
 axp_bootloader_id_slim: ''
 
 # git push
-axp_git_push_device_include: "device_google_lynx|android_device_google_gs201"
+axp_git_push_device_include: "device_google_lynx|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_lynx"

@@ -17,6 +17,10 @@ extendrom_debug_path_size_crash_default: 200
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/sony/sdm660
 
+# path to the common tree, if none exists the device tree
+# required e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: device_sony_nile-common
+
 # upload the recovery image
 axp_release_recovery: True
 
@@ -30,7 +34,7 @@ vbmeta_verify: false
 axp_enable_avb: 'false'
 
 # git push
-axp_git_push_device_include: "device_sony_kirin|device_sony_nile-common"
+axp_git_push_device_include: "device_sony_kirin|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_sony_kirin|vendor_sony_nile-common"
 
 # TESTING

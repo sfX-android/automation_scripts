@@ -9,8 +9,22 @@
       axp_switchMR_upstream_branch: {{ los_version_gitbranch }}
       axp_switchMR_target_branch: {{ git_repo_local_manifests_branch }}
       axp_switchMR_init_branch: {{ axp_switchMR_init_branch }}
-      device_tree: {{ device_tree }}
+      device_tree: {{ target_model_common_tree }}
       git_commit_args: {{ git_commit_args | d('undef') }}
       
 - include_tasks: device.yml
+  vars:
+    target_model: "{{ target_model }}"
+    axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
+    axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
+    axp_switchMR_init_branch: "{{ axp_switchMR_init_branch }}"
+    device_tree: "{{ target_model_common_tree }}"
+    git_commit_args: "{{ git_commit_args | d('undef') }}"
+
 - include_tasks: kernel.yml
+  vars:
+    target_model: "{{ target_model }}"
+    axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
+    axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
+    axp_switchMR_init_branch: "{{ axp_switchMR_init_branch }}"
+    git_commit_args: "{{ git_commit_args | d('undef') }}"

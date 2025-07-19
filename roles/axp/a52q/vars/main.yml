@@ -20,6 +20,10 @@ extendrom_debug_path_size_crash_default: 200
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/samsung/sm7125
 
+# path to the common tree, if none exists the device tree
+# required e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: device_samsung_sm7125-common
+
 # common defaults overrides
 #vbmeta_verify: false
 
@@ -32,5 +36,6 @@ divest_unsupported_device: true
 # no verified boot:
 #vbmeta_verify: false
 
-# experimental
-#extendrom_allow_any_call_recording: 'true'
+# git push
+axp_git_push_device_include: "device_samsung_a52q|{{ target_model_common_tree }}"
+axp_git_push_vendor_include: "vendor_samsung_a52q"
