@@ -83,7 +83,14 @@
       [ $? -ne 0 ] && exit 6
       # commit
       CHANGED=$(find -L vendor/axp/patches/common/{{ android_shortversion }} -type f -name '*.patch' -exec grep -H project {} \; | tr ' ' '#' | cut -d '#' -f2 | sort -u | tr '\n' ' ')
-      {{ repo_bin }} forall -j{{ max_processes }} ${CHANGED} -c "git add -A && git commit --author='${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>' -m 'axp.os: applied vendor patches\n\nhttps://github.com/AXP-OS/vendor_axp/tree/main/patches/common/{{ android_shortversion }}'" >> {{ BUILD_LOG }} 2>&1
+      if [ ! -z "$CHANGED" ];then
+        {{ repo_bin }} forall -j{{ max_processes }} ${CHANGED} -c "git add -A && git commit --author='${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>' -m 'axp.os: applied vendor patches
+      
+      https://github.com/AXP-OS/vendor_axp/tree/main/patches/common/{{ android_shortversion }}'" >> {{ BUILD_LOG }} 2>&1
+      else
+        echo "ERROR: no changes found! Seems the patches haven't applied properly"
+        exit 3
+      fi
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
