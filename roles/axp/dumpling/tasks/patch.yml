@@ -1,6 +1,6 @@
 ---
 # fixes:
-# avbtool: Given image does not look like a vbmeta image
+# > "avbtool: Given image does not look like a vbmeta image"
 
 - name: "Disable chaining"
   ansible.builtin.lineinfile:
@@ -15,3 +15,15 @@
         s: 'PRODUCT_VENDOR_VERITY_PARTITION :=.*'
       - f: "{{ SRCPATH }}/device/oneplus/msm8998-common/common.mk"
         s: 'PRODUCT_SYSTEM_VERITY_PARTITION :=.*'
+
+- name: "Apply specific dumpling pick(s) - if A13 or lower"
+  ansible.builtin.shell: >-
+      cd {{ item.path }} \
+        && curl -sSLo {{ item.fetch }} | grep -q  {{ item.expected_content_string }} \\
+        && git am -
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
+  loop:
+    - { path: "device/oneplus/dumpling", fetch: "https://github.com/LineageOS/android_device_oneplus_dumpling/commit/ffea7c7c479e8e8538a7bc31ff8e06a4c15b540c.patch", expected_content_string: "def_device_name_simple" }
+  when: android_version_int | int < 14
