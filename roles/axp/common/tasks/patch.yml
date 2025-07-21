@@ -87,3 +87,4 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
+  when: android_version_int | int < 14
