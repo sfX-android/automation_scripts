@@ -189,11 +189,13 @@ DOS_INIT: |
     source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
     source {{ DOSPATH }}/Scripts/init.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing init: success" >> {{ BUILD_LOG }}
 
-    # support A14 and later
-    {% if (android_version_int | int > 13) %}
-    brf_suffix="-ap2a"
-    export TARGET_RELEASE=ap2a
-    {% endif %}
+    # A14 and later require a target release, we define always the highest for an android version
+    # see https://source.android.com/docs/setup/reference/build-numbers
+    case {{ android_version_int }} in
+        14) export TARGET_RELEASE=ap2a brf_suffix="-ap2a" ;;
+        15) export TARGET_RELEASE=ap4a brf_suffix="-ap4a" ;;
+        16) export TARGET_RELEASE=bp1a brf_suffix="-bp1a" ;;
+    esac
 
 # we do not want to generate a fastboot factory image by default (override in semaphore if needed)
 generate_pixel_factory_image: False
