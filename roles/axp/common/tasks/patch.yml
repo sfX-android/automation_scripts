@@ -74,7 +74,7 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
 
-- name: "Apply AXP.OS patches (common)"
+- name: "Apply AXP.OS patches (common, < A14)"
   ansible.builtin.shell: |
       {{ DOS_INIT }}
       resetEnv
@@ -95,3 +95,20 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
   when: android_version_int | int < 14
+
+- name: "Apply AXP.OS patches (common, >= A15)"
+  ansible.builtin.shell: |
+      {{ DOS_INIT }}
+      resetEnv
+      #FIXME: unclear atm why this causes an issue at all - while nowhere else in the world
+      sed  '/var external_ndk_androidmks/a \        "system/qcom/softap/sdk/",' build/soong/ui/build/androidmk_denylist.go -i
+      
+      # we remove bloatware which causes:
+      # error: build/make/target/product/generic/Android.bp:1037:1: "aosp_shared_system_image" depends on undefined module "XXXX".
+      for r in $(grep -r remove .repo/local_manifests/axp.xml | cut -d '"' -f2 |grep -v android_ ; echo PrintRecommendationService);do
+        sed -E "s# (\"${r/*\/}\")# //\1#g" build/make/target/product/generic/Android.bp -i
+      done
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  when: android_version_int | int > 14
