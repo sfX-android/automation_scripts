@@ -2,7 +2,7 @@
 
 - name: "Disable firmware blobs"
   ansible.builtin.lineinfile:
-    path: "{{ SRCPATH }}/vendor/{{ target_model_vendor | lower }}/{{ target_model_name }}/Android.mk"
+    path: "{{ SRCPATH }}/vendor/{{ target_model_vendor | lower }}/{{ target_model }}/Android.mk"
     line: '#\1'
     regexp: '^(\$\(call add-radio-file.*)'
     backrefs: true
