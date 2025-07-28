@@ -460,7 +460,7 @@ SH_COMMON_BUILD_SNIPPET: |
         CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         # commit if required
         if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
-           git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
+           git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
            echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
         fi
         git status

@@ -135,7 +135,7 @@
           CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
           if [ $CMTL -gt 0 ];then
               git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
-              git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "bump security patch date: {{ sec_patch_date_last_human }}"
+              git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "bump security patch date: {{ sec_patch_date_last_human }}"
               echo "[GIT] bumped security patch date: {{ sec_patch_date_last_human }}" >> {{ BUILD_LOG }}
           fi
       args:
