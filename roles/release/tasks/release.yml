@@ -114,6 +114,16 @@
           
           if [ $has_recovery -eq 1 ];then
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} recovery.img > {{ axp_recovery_name }}
+            
+            {% if target_model_vendor | lower == "samsung" %}# Prepare an ODIN flashable image
+            unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} recovery.img > recovery.img
+            tar --format=ustar -cvf {{ axp_recovery_name }}.tar recovery.img \
+              && md5sum -t {{ axp_recovery_name }}.tar >> {{ axp_recovery_name }}.tar \
+              && mv {{ axp_recovery_name }}.tar {{ axp_recovery_name }}.tar.md5 \
+              && echo "Created ODIN flashable recovery file ({{ axp_recovery_name }}.tar.md5)!" | tee -a {{ BUILD_LOG }}
+            rm recovery.img
+            {% endif %}
+            
             sha256sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha256
             scp {{ axp_recovery_name }}* {{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
             mv {{ axp_recovery_name }}* {{ axp_finalzip_dir }}/
