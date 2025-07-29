@@ -185,7 +185,7 @@ DOS_INIT: |
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
     #gpg-agent --homedir {{ BUILDHOME }}/.gnupg --use-standard-socket --daemon
-    gpg --list-keys
+    gpg --list-keys  >> {{ BUILD_LOG }} 2>&1 || true
     
     cd {{ SRCPATH }}
     source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
