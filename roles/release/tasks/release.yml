@@ -28,12 +28,12 @@
 
         {% if unstable_build | d(False) | bool %}
         {%     if axp_type | d('') == "slim" %}
-                  scp $LOCP/{{ item }} {{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/') }}
+                  scp $LOCP/{{ item }} {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/') }}
         {%     else %}
-                  scp $LOCP/{{ item }} {{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
+                  scp $LOCP/{{ item }} {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/') }}
         {%     endif %}
         {% else %}
-                scp $LOCP/{{ item }} {{ hostvars['leechserver'].ansible_host }}:{{ rempath }}
+                scp $LOCP/{{ item }} {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}
         {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
       loop:
@@ -69,7 +69,7 @@
     - axp_build_recovery_only is undefined or (axp_build_recovery_only is defined and not axp_build_recovery_only)
 
 - name: "Release RECOVERY for {{ BDEVICE }}"
-  ansible.builtin.shell: "scp {{ ZIPDIR }}/{{ item }} {{ hostvars['leechserver'].ansible_host }}:{{ rempath }}"
+  ansible.builtin.shell: "scp {{ ZIPDIR }}/{{ item }} {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}"
   delegate_to: "{{ groups.buildserver[0] }}"
   loop:
     - "{{ ROMFILE.stdout }}"
@@ -125,20 +125,20 @@
             {% endif %}
             
             sha256sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha256
-            scp {{ axp_recovery_name }}* {{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
+            scp {{ axp_recovery_name }}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
             mv {{ axp_recovery_name }}* {{ axp_finalzip_dir }}/
           elif [ $has_vendorboot -eq 1 ];then
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} vendor_boot.img > {{ axp_recovery_name_vboot }}
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name_boot }}
             sha256sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha256
             sha256sum {{ axp_recovery_name_vboot }} > {{ axp_recovery_name_vboot }}.sha256
-            scp {{ axp_recovery_name_boot }}* {{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
-            scp {{ axp_recovery_name_vboot }}* {{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
+            scp {{ axp_recovery_name_boot }}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
+            scp {{ axp_recovery_name_vboot }}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
             mv {{ axp_recovery_name_boot }}* {{ axp_recovery_name_vboot }}* {{ axp_finalzip_dir }}/
           else
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name_boot }}
             sha256sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha256
-            scp {{ axp_recovery_name_boot }}* {{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
+            scp {{ axp_recovery_name_boot }}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
             mv  {{ axp_recovery_name_boot }}* {{ axp_finalzip_dir }}/
           fi
       delegate_to: "{{ groups.buildserver[0] }}"
