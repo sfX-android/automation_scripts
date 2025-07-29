@@ -32,7 +32,7 @@
 - name: "Apply DOS patches"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
-    resetEnv
+    #do not resetEnv
     # tensor need additional fixups
     if [ -f "{{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch" ];then
       cd {{ SRCPATH }}/.repo/manifests && git am {{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch; cd {{ SRCPATH }}
