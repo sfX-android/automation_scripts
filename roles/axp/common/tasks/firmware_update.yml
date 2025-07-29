@@ -9,7 +9,7 @@
     {% else %}
     lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
     {% endif %}
-    resetEnv
+    resetEnv >> {{ BUILD_LOG }} 2>&1
     
     # quick workaround for unrecognized property "product_variables.device_has_arm_mte"
     mv external/hardened_malloc/Android.bp hmall.Androidbp
