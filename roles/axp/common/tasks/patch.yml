@@ -42,7 +42,7 @@
     # start CVE patcher
     {{ DOS_INIT }}
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
-    resetEnv
+    resetEnv >> {{ BUILD_LOG }} 2>&1
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
   register: patchout
   args:
@@ -79,7 +79,7 @@
 - name: "Apply AXP.OS patches (common, < A14)"
   ansible.builtin.shell: |
       {{ DOS_INIT }}
-      resetEnv
+      resetEnv >> {{ BUILD_LOG }} 2>&1
       # apply
       {{ SRCPATH }}/vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/common/{{ android_shortversion }}
       [ $? -ne 0 ] && exit 6
@@ -101,7 +101,7 @@
 - name: "Apply AXP.OS patches (common, >= A15)"
   ansible.builtin.shell: |
       {{ DOS_INIT }}
-      resetEnv
+      resetEnv >> {{ BUILD_LOG }} 2>&1
       #FIXME: unclear atm why this causes an issue at all - while nowhere else in the world
       sed  '/var external_ndk_androidmks/a \        "system/qcom/softap/sdk/",' build/soong/ui/build/androidmk_denylist.go -i
       
