@@ -468,6 +468,13 @@ SH_COMMON_BUILD_SNIPPET: |
         
         # build
         resetEnv
+        {% if android_version_int >= 15 %}
+        {%     if (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true") %}
+        # as we patch bionic/libc ABI reference updates are required
+        $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant APEX --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
+        $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant LLNDK --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
+        {%     endif %}
+        {% endif %}
         {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
         mka generate_verity_key
         {% endif %}
