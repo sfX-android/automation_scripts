@@ -62,6 +62,7 @@ USE_CCACHE: 1
 CCACHE_EXEC: /usr/bin/ccache
 CCACHE_COMPRESS: 1
 CCACHE_DIR: "/ssd/ccache/jenkins/{{ android_shortversion }}"
+ccache_max_size: 10G
 
 # base url where the user can download released builds
 leech_server: "https://leech.binbash.rocks:8008"
