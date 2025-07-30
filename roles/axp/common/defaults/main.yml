@@ -407,7 +407,7 @@ SH_COMMON_BUILD_SNIPPET: |
         export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
         mkdir -p {{ CCACHE_DIR }}
         export CCACHE_DIR="{{ CCACHE_DIR }}"
-        {{ CCACHE_EXEC }} --max-size=10G
+        {{ CCACHE_EXEC }} --max-size={{ ccache_max_size }}
     fi
 
     f_detect_kerr(){
