@@ -3,5 +3,5 @@
 - name: "Disable 3rd party firmware blobs"
   ansible.builtin.replace:
     path: "{{ SRCPATH }}/vendor/{{ target_model_vendor | lower }}/{{ target_model }}/Android.mk"
-    line: '#\1'
     regexp: '^(\$\(call add-radio-file.*)'
+    replace: '#\1'
