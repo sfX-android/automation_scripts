@@ -5,17 +5,29 @@
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"
     axp_release="{{ axp_switchMR_target_branch }}"
+    reponame=android_{{ target_kernel_dir | regex_replace('/','_') }} 
     push_req=0
+    create_req=0
 
     if [ -d /tmp/kernel ]; then rm -r /tmp/kernel; fi
-    git clone {{ axp_git_org }}/android_{{ target_kernel_dir | regex_replace('/','_') }} /tmp/kernel
+    git clone {{ axp_git_org }}/$reponame /tmp/kernel || create_req=1
 
-    cd /tmp/kernel
+    if [ $create_req -eq 1 ];then
+      echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
+      git clone --mirror https://github.com/LineageOS/$reponame /tmp/kernel
+      cd /tmp/kernel
+      gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: https://github.com/LineageOS/$reponame"
+      gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain'
+      git remote set-url origin https://github.com/AXP-OS/$reponame.git
+      git push --mirror
+    else
+      cd /tmp/kernel
+      git remote add los https://github.com/LineageOS/$reponame
+    fi
 
     if [ ! -f .github/workflows/sync.yml ];then
       mkdir -p .github/workflows/ || true
 
-      git remote add los https://github.com/LineageOS/android_kernel_google_msm-4.14
       git fetch los $upstream_branch
       git checkout los/$upstream_branch
       git checkout origin/$axp_release || git checkout -b $axp_release
