@@ -15,6 +15,8 @@
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
       gh repo fork LineageOS/$reponame --org AXP-OS --clone=false
+      # even though the command will wait until the fork is fully created give some extra time
+      sleep 5
     fi
     
     cd /tmp/kernel
