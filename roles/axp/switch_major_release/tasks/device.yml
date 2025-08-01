@@ -7,7 +7,7 @@
     axp_release="{{ axp_switchMR_target_branch }}"
 
     if [ -d /tmp/device ]; then rm -r /tmp/device; fi
-    git clone {{ axp_git_org }}/android_{{ device_tree }} /tmp/device
+    git clone git@github.com:AXP-OS/android_{{ device_tree }} /tmp/device
     cd /tmp/device
 
     git remote add los https://github.com/LineageOS/android_{{ device_tree }}
