@@ -53,9 +53,8 @@
               local-branch: "$(git branch --no-color --show-current)"
               dryrun: false
           secrets: inherit
-      EOSYNC
-      {% endraw %}
-
+    EOSYNC
+    {% endraw %}
       git add -f .github/
       git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync"
     else
