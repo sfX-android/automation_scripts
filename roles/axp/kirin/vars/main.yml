@@ -21,6 +21,10 @@ target_kernel_dir: kernel/sony/sdm660
 # required e.g. for git, vendor/axp, release handling etc
 target_model_common_tree: device_sony_nile-common
 
+# regular makefile name within a device tree, required e.g. for switch_major_release
+# defaults to device.mk
+target_model_device_tree_mk: nile.mk
+
 # upload the recovery image
 axp_release_recovery: True
 
