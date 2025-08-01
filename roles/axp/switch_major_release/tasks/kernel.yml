@@ -14,20 +14,15 @@
 
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
-      git clone --mirror https://github.com/LineageOS/$reponame /tmp/kernel
-      cd /tmp/kernel
-      gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: https://github.com/LineageOS/$reponame"
-      gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain'
-      git remote set-url origin {{ axp_git_org }}/$reponame.git
-      git push --mirror
-    else
-      cd /tmp/kernel
-      git remote add los https://github.com/LineageOS/$reponame
+      gh repo fork LineageOS/$reponame --org AXP-OS --clone=false
     fi
-
+    
+    cd /tmp/kernel
+    
     if [ ! -f .github/workflows/sync.yml ];then
       mkdir -p .github/workflows/ || true
-
+      
+      git remote add los https://github.com/LineageOS/$reponame
       git fetch los $upstream_branch
       git checkout los/$upstream_branch
       git checkout origin/$axp_release 2>/dev/null|| git checkout -b $axp_release
