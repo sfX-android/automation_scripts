@@ -10,11 +10,11 @@
     create_req=0
 
     if [ -d /tmp/kernel ]; then rm -r /tmp/kernel; fi
-    git clone {{ axp_git_org }}/$reponame /tmp/kernel || create_req=1
+    git clone {{ axp_git_org }}/$reponame /tmp/kernel 2>/dev/null || create_req=1
 
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
-      gh repo fork LineageOS/$reponame --org AXP-OS --clone=false
+      gh repo fork LineageOS/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
       # even though the command will wait until the fork is fully created give some extra time
       sleep 5
     fi
@@ -24,10 +24,10 @@
     if [ ! -f .github/workflows/sync.yml ];then
       mkdir -p .github/workflows/ || true
       
-      git remote add los https://github.com/LineageOS/$reponame
-      git fetch los $upstream_branch
-      git checkout los/$upstream_branch
-      git checkout origin/$axp_release 2>/dev/null|| git checkout -b $axp_release
+      git remote add los https://github.com/LineageOS/$reponame >> {{ BUILD_LOG }} 2>&1
+      git fetch los $upstream_branch >> {{ BUILD_LOG }} 2>&1
+      git checkout los/$upstream_branch >> {{ BUILD_LOG }} 2>&1
+      git checkout origin/$axp_release 2>/dev/null|| git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
       
     {% raw %}
       cat <<EOSYNC > .github/workflows/sync.yml
@@ -58,7 +58,7 @@
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
           git add -f .github/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
-          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync"
+          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync"  >> {{ BUILD_LOG }} 2>&1
           push_req=$(( push_req + 1))
       fi
     else
@@ -66,9 +66,10 @@
     fi
 
     if [ "$push_req" -gt 0 ];then
-      git push origin $axp_release
+      git push origin $axp_release  >> {{ BUILD_LOG }} 2>&1
+      echo "[GIT] Pushed $reponame!" >> {{ BUILD_LOG }} 2>&1
     else
-      echo "Skipped pushing (no changes were made)."
+      echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
 
     rm -r /tmp/kernel
