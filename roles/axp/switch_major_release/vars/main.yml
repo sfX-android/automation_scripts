@@ -93,7 +93,7 @@ semaphore_aos_template_survey_vars: >-
       },
       {
         "name": "generate_pixel_factory_image",
-        "title": "Generate fastboot factory Image?",
+        "title": "Generate factory image (Pixel devices)?",
         "description": "vendor/firmware/<device>/0SOURCE must be set",
         "required": false,
         "type": ""
