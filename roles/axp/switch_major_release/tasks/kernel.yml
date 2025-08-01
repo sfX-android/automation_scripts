@@ -17,6 +17,7 @@
       gh repo fork LineageOS/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
       # even though the command will wait until the fork is fully created give some extra time
       sleep 5
+      git clone {{ axp_git_org }}/$reponame /tmp/kernel >> {{ BUILD_LOG }} 2>&1
     fi
     
     cd /tmp/kernel
