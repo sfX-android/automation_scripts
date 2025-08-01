@@ -10,7 +10,7 @@
     create_req=0
 
     if [ -d /tmp/kernel ]; then rm -r /tmp/kernel; fi
-    git clone {{ axp_git_org }}/$reponame /tmp/kernel2 >> {{ BUILD_LOG }} 2>&1 || create_req=1
+    git clone {{ axp_git_org }}/$reponame /tmp/kernel >> {{ BUILD_LOG }} 2>&1 || create_req=1
 
     echo "create_req: $create_req" >> {{ BUILD_LOG }}
     exit 23
