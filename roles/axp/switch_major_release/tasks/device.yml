@@ -2,7 +2,8 @@
 
 - name: "Switch device tree to new Major Release"
   ansible.builtin.shell: |
-    {{ DOS_INIT }}
+    echo "{ DOS_INIT }"
+    exit 3
     upstream_branch="{{ axp_switchMR_upstream_branch }}"
     axp_release="{{ axp_switchMR_target_branch }}"
 
