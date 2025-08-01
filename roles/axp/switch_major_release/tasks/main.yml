@@ -1,17 +1,25 @@
 ---
 
-#- include_tasks: device.yml
-#- include_tasks: kernel.yml
+- block: 
 
-- name: "Identify models"
-  connection: local
-  ansible.builtin.shell: |
-    ls -1 ../roles/{{ parse_roles_subdir }} | grep -vE "{{ model_exclusions }}"
-  register: target_models
+    - include_tasks: device.yml
+    - include_tasks: kernel.yml
 
-- include_tasks: loop.yml
-  vars:
-    target_model: "{{ model }}"
-  loop: "{{ target_models.stdout_lines }}"
-  loop_control:
-    loop_var: model
+  when: switch_all_devices is undefined
+  
+- block:
+  
+  - name: "Identify models"
+    connection: local
+    ansible.builtin.shell: |
+      ls -1 ../roles/{{ parse_roles_subdir }} | grep -vE "{{ model_exclusions }}"
+    register: target_models
+  
+  - include_tasks: loop.yml
+    vars:
+      target_model: "{{ model }}"
+    loop: "{{ target_models.stdout_lines }}"
+    loop_control:
+      loop_var: model
+
+  when: switch_all_devices is defined and switch_all_devices
