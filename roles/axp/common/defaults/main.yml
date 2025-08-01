@@ -193,8 +193,8 @@ DOS_INIT: |
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
     {% if axp_gpg_signing_key is defined and axp_gpg_signing_key != '' %}
-    killall --user $(id -nu) gpg-agent
-    ps -faux |grep gpg-agent >> {{ BUILD_LOG }} 2>&1 
+    killall --user $USER gpg-agent
+    ps -faux |grep 'gpg-agent' >> {{ BUILD_LOG }} 2>&1 
     #gpg-agent --homedir {{ BUILDHOME }}/.gnupg --daemon
     export GNUPGHOME="{{ BUILDHOME }}/.gnupg"
     gpg --list-secret-keys >> {{ BUILD_LOG }} 2>&1 || true
