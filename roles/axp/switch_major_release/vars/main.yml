@@ -7,3 +7,103 @@ generate_fairphone_factory_image: false
 skip_dl_cve_checker: True
 model_exclusions: "common|j5y17lte|klte|h815|g4"
 telegram_notifications: False
+
+############ semaphore
+
+# Variables used to create a new task template
+
+semaphore_aos_template_project_id: 6                     # Project "AXP.OS"
+semaphore_aos_template_inventory_id: 29                  # Inventory "axp_build_inventory"
+semaphore_aos_template_repo_id: 9                        # Repository "sfX-android/automation_scripts"
+semaphore_aos_template_env_id: "{{ template_env_id }}"   # Environment - must be set within Semaphore
+semaphore_aos_template_vaultkey_id: 21                   # Key Store "vault_pw"
+semaphore_aos_template_view_id: "{{ template_view_id }}" # View id - must be set within Semaphore
+semaphore_aos_template_desc: "{{ template_desc | d('') }}" # Template Description
+semaphore_aos_template_playbook: "plays/build.yml"        # playbook to attach to
+
+# survey vars
+semaphore_aos_template_survey_vars: >-
+    [
+      {
+        "name": "override_clean_basic",
+        "title": "clean ZIPs (true* | false)?",
+        "required": false,
+        "type": "",
+        "description": "true | false"
+      },
+      {
+        "name": "override_clean_out",
+        "title": "clean build (true* | false)?",
+        "required": false,
+        "type": "",
+        "description": "true | false"
+      },
+      {
+        "name": "override_reset_git",
+        "title": "reset all projects & resync (true* | false)?",
+        "required": false,
+        "type": "",
+        "description": "true | false"
+      },
+      {
+        "name": "override_release_build",
+        "title": "release the build (true* | false)?",
+        "required": false,
+        "type": "",
+        "description": "true | false"
+      },
+      {
+        "name": "debug_build",
+        "title": "private notify (true* | false)?",
+        "required": false,
+        "type": "",
+        "description": "true | false"
+      },
+      {
+        "name": "axp_build_eng",
+        "title": "Engineering Build (true | false*)?",
+        "description": "will create a debug eng build",
+        "required": false,
+        "type": ""
+      },
+      {
+        "name": "unstable_build",
+        "title": "unstable build (true* | false)?",
+        "required": false,
+        "type": "",
+        "description": "true | false"
+      },
+      {
+        "name": "download_fairphone_firmware",
+        "title": "Download & Update firmware (yes|no*)?",
+        "type": "enum",
+        "description": "vendor/firmware/<device>/0SOURCE must be set",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "False"
+      },
+      {
+        "name": "generate_pixel_factory_image",
+        "title": "Generate fastboot factory Image?",
+        "description": "vendor/firmware/<device>/0SOURCE must be set",
+        "required": false,
+        "type": ""
+      }
+    ]
+
+# vaults
+semaphore_aos_template_vaults: >-
+    [{
+      "name": "main",
+      "vault_key_id": {{ semaphore_aos_template_vaultkey_id }},
+      "type": "password",
+      "script": null
+    }]
