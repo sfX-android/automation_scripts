@@ -35,6 +35,7 @@
             ]",
         "survey_vars": {{ semaphore_aos_template_survey_vars }},
         "vaults": {{ semaphore_aos_template_vaults }},
+        "type": "deploy",
         "allow_override_args_in_task": false }
     status_code: [ 201, 200 ]
   register: tmplc
