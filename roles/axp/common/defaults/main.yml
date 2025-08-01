@@ -192,8 +192,13 @@ DOS_INIT: |
     if [ ! -L "$HOME/.local/bin/rename" ];then ln -s {{ SRCPATH }}/rename $HOME/.local/bin/rename; fi
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
+    {% if axp_gpg_signing_key is defined and axp_gpg_signing_key != '' %}
     #gpg-agent --homedir {{ BUILDHOME }}/.gnupg --use-standard-socket --daemon
-    gpg --list-keys  >> {{ BUILD_LOG }} 2>&1 || true
+    export GNUPGHOME="{{ BUILDHOME }}/.gnupg"
+    export GPG_TTY=$(tty) >> {{ BUILD_LOG }} 2>&1 || true
+    gpg --list-keys >> {{ BUILD_LOG }} 2>&1 || true
+    env >> {{ BUILD_LOG }}
+    {% endif %}
     
     cd {{ SRCPATH }}
     source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
