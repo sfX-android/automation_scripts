@@ -18,7 +18,7 @@
       cd /tmp/kernel
       gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: https://github.com/LineageOS/$reponame"
       gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain'
-      git remote set-url origin https://github.com/AXP-OS/$reponame.git
+      git remote set-url origin {{ axp_git_org }}/$reponame.git
       git push --mirror
     else
       cd /tmp/kernel
