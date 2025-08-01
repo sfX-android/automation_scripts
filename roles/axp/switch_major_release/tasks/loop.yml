@@ -8,7 +8,6 @@
       target_model: {{ target_model }}
       axp_switchMR_upstream_branch: {{ los_version_gitbranch }}
       axp_switchMR_target_branch: {{ git_repo_local_manifests_branch }}
-#      axp_switchMR_init_branch: {{ axp_switchMR_init_branch }}
       device_tree: {{ target_model_common_tree }}
       
 - include_tasks: device.yml
@@ -16,7 +15,6 @@
     target_model: "{{ target_model }}"
     axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
     axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
-#    axp_switchMR_init_branch: "{{ axp_switchMR_init_branch }}"
     device_tree: "{{ target_model_common_tree }}"
 
 - include_tasks: kernel.yml
@@ -24,4 +22,3 @@
     target_model: "{{ target_model }}"
     axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
     axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
-#    axp_switchMR_init_branch: "{{ axp_switchMR_init_branch }}"
