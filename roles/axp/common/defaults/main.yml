@@ -193,10 +193,10 @@ DOS_INIT: |
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
     {% if axp_gpg_signing_key is defined and axp_gpg_signing_key != '' %}
-    #gpg-agent --homedir {{ BUILDHOME }}/.gnupg --use-standard-socket --daemon
+    killall --user $(id -nu) gpg-agent
+    gpg-agent --homedir {{ BUILDHOME }}/.gnupg --use-standard-socket --daemon
     export GNUPGHOME="{{ BUILDHOME }}/.gnupg"
-    export GPG_TTY=$(tty) >> {{ BUILD_LOG }} 2>&1 || true
-    gpg --list-keys >> {{ BUILD_LOG }} 2>&1 || true
+    gpg --list-secret-keys >> {{ BUILD_LOG }} 2>&1 || true
     env >> {{ BUILD_LOG }}
     {% endif %}
     
