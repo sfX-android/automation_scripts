@@ -14,7 +14,7 @@
     git remote add los https://github.com/LineageOS/android_{{ device_tree }}
     git fetch los $upstream_branch
     git checkout los/$upstream_branch
-    git checkout -b $axp_release
+    git checkout origin/$axp_release || git checkout -b $axp_release
 
     grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
       || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}
