@@ -43,7 +43,7 @@
       git checkout los/$upstream_branch >> {{ BUILD_LOG }} 2>&1
       git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
 
-      mkdir -p .github/workflows/ || true
+      mkdir -p .github/workflows/ 2>/dev/null || true
       
     {% raw %}
       cat <<EOSYNC > .github/workflows/sync.yml
@@ -90,6 +90,6 @@
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
 
-    #rm -fr /tmp/kernel
+    rm -fr /tmp/kernel
   args:
     executable: /bin/bash
