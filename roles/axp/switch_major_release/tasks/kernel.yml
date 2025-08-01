@@ -71,10 +71,10 @@
           secrets: inherit
     EOSYNC
     {% endraw %}
+      git add -f .github/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
           echo "[GIT] changes detected, will commit..." >> {{ BUILD_LOG }} 2>&1
-          git add -f .github/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
           git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync"  >> {{ BUILD_LOG }} 2>&1
           push_req=$(( push_req + 1))
       fi
