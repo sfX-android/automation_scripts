@@ -16,10 +16,10 @@
 
       git remote add los https://github.com/LineageOS/android_kernel_google_msm-4.14
       git fetch los $upstream_branch
-      git checkout $upstream_branch
-      git branch $axp_release
-      git checkout $axp_release
-
+      git checkout los/$upstream_branch
+      git checkout -b $axp_release
+      
+      {% raw %}
       cat <<EOSYNC > .github/workflows/sync.yml
       name: "Sync"
 
@@ -43,8 +43,8 @@
               local-branch: "$(git branch --no-color --show-current)"
               dryrun: false
           secrets: inherit
-      EOSYNC
-
+    EOSYNC
+    {% endraw %}
       git add -f .github/
       git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync"
     else
