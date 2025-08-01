@@ -22,9 +22,7 @@
       # Set description, public, disable issues and wiki
       gh repo edit AXP-OS/${reponame} \
         --description "forked from: https://github.com/LineageOS/$reponame" \
-        --visibility public \
-        --disable-issues \
-        --disable-wiki >> {{ BUILD_LOG }} 2>&1
+        --visibility public >> {{ BUILD_LOG }} 2>&1
       
       # Assign team with push permission
       gh api -X PUT -H "Accept: application/vnd.github+json" \
@@ -86,6 +84,7 @@
     if [ "$push_req" -gt 0 ];then
       git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
       echo "[GIT] Pushed $reponame!" >> {{ BUILD_LOG }} 2>&1
+      gh repo edit AXP-OS/${reponame} --default-branch $axp_release >> {{ BUILD_LOG }} 2>&1
     else
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
