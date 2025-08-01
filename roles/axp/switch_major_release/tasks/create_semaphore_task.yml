@@ -40,4 +40,4 @@
   register: tmplc
   changed_when: tmplc.status == 201
   when: semaphore_aos_template_name not in sp_all_templates.json | map(attribute='name') | list
-  #no_log: true
+  no_log: true
