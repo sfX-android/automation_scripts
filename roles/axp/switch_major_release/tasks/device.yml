@@ -7,6 +7,7 @@
     axp_release="{{ axp_switchMR_target_branch }}"
     reponame=android_{{ device_tree }} 
     push_req=0
+    create_req=0
 
     if [ -d /tmp/device ]; then rm -r /tmp/device; fi
     git clone {{ axp_git_org }}/$reponame /tmp/device >> {{ BUILD_LOG }} 2>&1 || create_req=1
