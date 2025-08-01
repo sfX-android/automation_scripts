@@ -5,10 +5,9 @@
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"
     axp_release="{{ axp_switchMR_target_branch }}"
-    axp_init_branch="{{ axp_switchMR_init_branch }}"
 
     if [ -d /tmp/device ]; then rm -r /tmp/device; fi
-    git clone {{ axp_git_org }}/android_{{ device_tree }} -b $axp_init_branch /tmp/device
+    git clone {{ axp_git_org }}/android_{{ device_tree }} /tmp/device
     cd /tmp/device
 
     git remote add los https://github.com/LineageOS/android_{{ device_tree }}
