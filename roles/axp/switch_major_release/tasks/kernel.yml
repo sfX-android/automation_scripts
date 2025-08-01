@@ -10,14 +10,29 @@
     create_req=0
 
     if [ -d /tmp/kernel ]; then rm -r /tmp/kernel; fi
-    git clone {{ axp_git_org }}/$reponame /tmp/kernel >> {{ BUILD_LOG }} 2>&1 || create_req=1
+    git clone --bare {{ axp_git_org }}/$reponame /tmp/kernel >> {{ BUILD_LOG }} 2>&1 || create_req=1
 
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
       gh repo fork LineageOS/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
+
       # even though the command will wait until the fork is fully created give some extra time
       sleep 5
-      git clone {{ axp_git_org }}/$reponame /tmp/kernel >> {{ BUILD_LOG }} 2>&1
+
+      # Set description, public, disable issues and wiki
+      gh repo edit AXP-OS/${reponame} \
+        --description "forked from: https://github.com/LineageOS/$reponame" \
+        --visibility public \
+        --disable-issues \
+        --disable-wiki >> {{ BUILD_LOG }} 2>&1
+      
+      # Assign team with push permission
+      gh api -X PUT -H "Accept: application/vnd.github+json" \
+        /orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame} \
+        -f permission=maintain >> {{ BUILD_LOG }} 2>&1
+
+      # finally clone the forked repo locally
+      git clone --bare {{ axp_git_org }}/$reponame /tmp/kernel >> {{ BUILD_LOG }} 2>&1
     fi
     
     cd /tmp/kernel
