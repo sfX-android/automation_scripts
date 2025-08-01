@@ -17,8 +17,8 @@
     git branch $axp_release
     git checkout $axp_release
 
-    grep -q "vendor/axp/config/common.mk" {{ device_tree_mk }} \
-      || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ device_tree_mk }}
+    grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
+      || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}
     
     grep -q "vendor/axp/BoardConfigVendor.mk" {{ device_tree_boardmk }} \
       || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ device_tree_boardmk }}
