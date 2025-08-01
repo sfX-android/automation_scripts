@@ -10,6 +10,8 @@ telegram_notifications: False
 
 ############ semaphore
 
+semaphore_api_uri: "http://127.0.0.1:8153/api"
+
 # Variables used to create a new task template
 
 semaphore_aos_template_project_id: 6                     # Project "AXP.OS"
