@@ -85,6 +85,7 @@
     if [ "$push_req" -gt 0 ];then
       git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
       echo "[GIT] Pushed $reponame!" >> {{ BUILD_LOG }} 2>&1
+      sleep 5
       gh repo edit AXP-OS/${reponame} --default-branch $axp_release >> {{ BUILD_LOG }} 2>&1
     else
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
