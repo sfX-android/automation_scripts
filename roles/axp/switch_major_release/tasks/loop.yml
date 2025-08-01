@@ -11,6 +11,10 @@
       device_tree: {{ target_model_common_tree }}
 
 - include_tasks: create_semaphore_task.yml
+  vars:
+    semaphore_aos_template_name: "AOS {{ axp_type }}: {{ target_model_full }} ({{ target_model }})"
+    semaphore_aos_template_env_id: "{{ target_model }}"
+    semaphore_aos_template_view_id: {% if axp_type == "slim" %}36{% else %}35{% endif %}
 
 - include_tasks: device.yml
   vars:
