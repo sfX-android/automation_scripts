@@ -9,7 +9,7 @@
     push_req=0
     create_req=0
 
-    if [ -d /tmp/kernel ]; then rm -r /tmp/kernel; fi
+    if [ -d /tmp/kernel ]; then rm -rf /tmp/kernel; fi
     git clone {{ axp_git_org }}/$reponame /tmp/kernel >> {{ BUILD_LOG }} 2>&1 || create_req=1
 
     if [ $create_req -eq 1 ];then
@@ -90,6 +90,6 @@
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
 
-    #rm -r /tmp/kernel
+    #rm -fr /tmp/kernel
   args:
     executable: /bin/bash
