@@ -5,10 +5,9 @@
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"
     axp_release="{{ axp_switchMR_target_branch }}"
-    axp_init_branch="{{ axp_switchMR_init_branch }}"
 
     if [ -d /tmp/kernel ]; then rm -r /tmp/kernel; fi
-    git clone {{ axp_git_org }}/android_{{ target_kernel_dir }} -b $axp_init_branch /tmp/kernel
+    git clone {{ axp_git_org }}/android_{{ target_kernel_dir }} /tmp/kernel
 
     cd /tmp/kernel
 
