@@ -22,6 +22,7 @@
       # Set description, public, disable issues and wiki
       gh repo edit AXP-OS/${reponame} \
         --description "forked from: https://github.com/LineageOS/$reponame" \
+        --accept-visibility-change-consequences \
         --visibility public >> {{ BUILD_LOG }} 2>&1
       
       # Assign team with push permission
