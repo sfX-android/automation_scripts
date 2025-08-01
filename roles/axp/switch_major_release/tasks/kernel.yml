@@ -12,9 +12,6 @@
     if [ -d /tmp/kernel ]; then rm -r /tmp/kernel; fi
     git clone {{ axp_git_org }}/$reponame /tmp/kernel >> {{ BUILD_LOG }} 2>&1 || create_req=1
 
-    echo "create_req: $create_req" >> {{ BUILD_LOG }}
-    exit 23
-
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
       gh repo fork LineageOS/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
