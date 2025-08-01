@@ -18,6 +18,7 @@ semaphore_aos_template_project_id: 6                     # Project "AXP.OS"
 semaphore_aos_template_inventory_id: 29                  # Inventory "axp_build_inventory"
 semaphore_aos_template_repo_id: 9                        # Repository "sfX-android/automation_scripts"
 semaphore_aos_template_vaultkey_id: 21                   # Key Store "vault_pw"
+semaphore_aos_template_view_id: 37                       # View: "AOS WIP"
 semaphore_aos_template_desc: "{{ template_desc | d('') }}" # Template Description
 semaphore_aos_template_playbook: "plays/build.yml"        # playbook to attach to
 
