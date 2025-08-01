@@ -1,15 +1,11 @@
 ---
 
-- block: 
-
-    - include_tasks: device.yml
-    - include_tasks: kernel.yml
-
-  when: switch_all_devices is undefined
+- include_tasks: loop.yml
+  when: axp_switchMR_all_devices is undefined
   
 - block:
   
-  - name: "Identify models"
+  - name: "Identify ALL models"
     connection: local
     ansible.builtin.shell: |
       ls -1 ../roles/{{ parse_roles_subdir }} | grep -vE "{{ model_exclusions }}"
@@ -22,4 +18,4 @@
     loop_control:
       loop_var: model
 
-  when: switch_all_devices is defined and switch_all_devices
+  when: axp_switchMR_all_devices is defined and axp_switchMR_all_devices | bool
