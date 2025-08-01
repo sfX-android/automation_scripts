@@ -30,7 +30,7 @@
 
       git fetch los $upstream_branch
       git checkout los/$upstream_branch
-      git checkout origin/$axp_release || git checkout -b $axp_release
+      git checkout origin/$axp_release 2>/dev/null|| git checkout -b $axp_release
       
     {% raw %}
       cat <<EOSYNC > .github/workflows/sync.yml
