@@ -31,10 +31,7 @@
         "app": "ansible",
         "playbook": "{{ semaphore_aos_template_playbook }}",
         "description": "{{ semaphore_aos_template_desc }}",
-        "arguments": "[
-            \"-vv\",
-            \"-e axp_type=slim\"
-            ]",
+        "arguments": "[\"-vv\",\"-e axp_type=slim\"]",
         "survey_vars": {{ semaphore_aos_template_survey_vars }},
         "vaults": {{ semaphore_aos_template_vaults }},
         "type": "deploy",
