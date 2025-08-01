@@ -32,6 +32,7 @@
     - not early_push | d(False)
   
 - include_tasks: clean.yml
+  when: axp_skip_common_tasks is undefined
 
 - block:
 
@@ -65,6 +66,7 @@
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
 
 - include_tasks: commit_kernel.yml
+  when: axp_skip_common_tasks is undefined
 
 - block:
 
