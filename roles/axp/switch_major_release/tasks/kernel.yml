@@ -90,6 +90,6 @@
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
 
-    rm -r /tmp/kernel
+    #rm -r /tmp/kernel
   args:
     executable: /bin/bash
