@@ -67,8 +67,7 @@
       echo "Skipped adding CI/CD sync to device tree!"
     fi
 
-    if [ "$push_req" -gt 0 ];then git push origin $axp_release;done
-
+    if [ "$push_req" -gt 0 ];then git push origin $axp_release;fi
     rm -r /tmp/device
   args:
     executable: /bin/bash
