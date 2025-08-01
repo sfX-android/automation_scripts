@@ -5,6 +5,7 @@
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"
     axp_release="{{ axp_switchMR_target_branch }}"
+    push_req=0
 
     if [ -d /tmp/device ]; then rm -r /tmp/device; fi
     git clone {{ axp_git_org }}/android_{{ device_tree }} /tmp/device
@@ -25,6 +26,7 @@
     if [ $CMTL -gt 0 ];then
         git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
         git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "board: device: enable AXP.OS"
+        push_req=1
     fi
 
     if [ ! -f .github/workflows/sync.yml ];then
@@ -55,13 +57,17 @@
           secrets: inherit
     EOSYNC
     {% endraw %}
-      git add -f .github/
-      git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync"
+      CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+      if [ $CMTL -gt 0 ];then
+          git add -f .github/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
+          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync"
+          push_req=$(( push_req + 1))
+      fi
     else
       echo "Skipped adding CI/CD sync to device tree!"
     fi
 
-    git push origin $axp_release
+    if [ "$push_req" -gt 0 ];then git push origin $axp_release;done
 
     rm -r /tmp/device
   args:
