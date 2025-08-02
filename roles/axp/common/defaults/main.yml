@@ -416,7 +416,8 @@ SH_COMMON_BUILD_SNIPPET: |
     {% if CCACHE_COMPRESS == 1 %}
         export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
     {% else %}
-        export CCACHE_NOCOMPRESS=true
+        export CCACHE_NOCOMPRESS=1
+        unset CCACHE_COMPRESS
     {% endif %}
         mkdir -p {{ CCACHE_DIR }}
         export CCACHE_DIR="{{ CCACHE_DIR }}"
