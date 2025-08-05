@@ -111,6 +111,7 @@ SH_GRAPHENE_BUILD: |
       # CCACHE
       if [ "{{ USE_CCACHE }}" -eq 1 ];then
           export CCACHE_EXEC=/usr/bin/ccache
+          export PATH="/usr/lib/ccache/:$PATH"
       {% if CCACHE_COMPRESS == 1 %}
           export CCACHE_COMPRESS={{ CCACHE_COMPRESS }}
       {% else %}
