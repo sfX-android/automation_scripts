@@ -23,10 +23,7 @@ android_version_int: "{{ android_shortversion | replace('a','') | replace('A',''
 # A14 and later require a target release, we define always the highest for an android version
 # see https://source.android.com/docs/setup/reference/build-numbers
 android_target_release: >-
-    {if android_version_int == "14" }ap2a
-    {% elif android_version_int == "15" %}bp1a
-    {% elif android_version_int == "16" %}bp2a
-    {% else %}0{% endif %}
+    {if android_version_int == "14" }ap2a{% elif android_version_int == "15" %}bp1a{% elif android_version_int == "16" %}bp2a{% else %}0{% endif %}
 
 # construct LOS version/git branch based on android version
 los_version: "{{ android_shortversion | replace('a15','22.2') | replace('a14','21.0') | replace('a13','20.0') | replace('a12','19.1') | replace('a11','18.1') | replace('a10','17.1') | replace('a9','16.0') }}"
