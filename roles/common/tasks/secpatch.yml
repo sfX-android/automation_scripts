@@ -121,12 +121,23 @@
       loop_control:
         loop_var: cherry
     
-    - name: "SECURITY PATCH MERGE: bump security patch version string to: {{ sec_patch_date_last_human }}"
+    - name: "SECURITY PATCH MERGE: bump security patch version string (A13 and older)"
       ansible.builtin.lineinfile:
         path: "{{ SRCPATH }}/build/core/version_defaults.mk"
         regexp: "PLATFORM_SECURITY_PATCH := .*"
         line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last_human }}"
-      when: spres.changed
+      when:
+        - (spres.changed or force_secpatchdate)
+        - android_version_int | int < 14
+
+    - name: "SECURITY PATCH MERGE: bump security patch version string (A14 and later)"
+      ansible.builtin.lineinfile:
+        path: "{{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto"
+        regexp: "(string_value:\s+)("[0-9-]+")"
+        line: '\1"{{ sec_patch_date_last_human }}"'
+      when:
+        - (spres.changed or force_secpatchdate)
+        - android_version_int | int > 13
 
     - name: "Git commit version bump"
       ansible.builtin.shell: |
