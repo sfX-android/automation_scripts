@@ -201,7 +201,7 @@ DOS_INIT: |
     source {{ DOSPATH }}/Scripts/init.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing init: success" >> {{ BUILD_LOG }}
 
     # set target release (see common/defaults)
-    export TARGET_RELEASE={{ android_target_release }} brf_suffix="-{{ android_target_release }}" ;;
+    export TARGET_RELEASE={{ android_target_release }} brf_suffix="-{{ android_target_release }}"
 
     # set advanced deblobbing on A15 and later
     if [ {{ android_version_int }} -ge 15 ];then
