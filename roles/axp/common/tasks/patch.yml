@@ -41,6 +41,7 @@
     fi
     # start CVE patcher
     {{ DOS_INIT }}
+    mka blueprint_tools >> {{ BUILD_LOG }} 2>&1
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
