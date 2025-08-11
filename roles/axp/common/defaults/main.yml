@@ -200,14 +200,15 @@ DOS_INIT: |
     source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
     source {{ DOSPATH }}/Scripts/init.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing init: success" >> {{ BUILD_LOG }}
 
-    # A14 and later require a target release, we define always the highest for an android version
-    # see https://source.android.com/docs/setup/reference/build-numbers
-    case {{ android_version_int }} in
-        14) export TARGET_RELEASE=ap2a brf_suffix="-ap2a" ;;
-        15) export TARGET_RELEASE=bp1a brf_suffix="-bp1a" #AXP_ADVANCED_DEBLOB=true 
-        ;;
-        16) export TARGET_RELEASE=bp2a brf_suffix="-bp2a" AXP_ADVANCED_DEBLOB=true ;;
-    esac
+    # set target release (see common/defaults)
+    export TARGET_RELEASE={{ android_target_release }} brf_suffix="-{{ android_target_release }}" ;;
+
+    # set advanced deblobbing on A15 and later
+    if [ {{ android_version_int }} -ge 15 ];then
+        export AXP_ADVANCED_DEBLOB=true
+    else
+        unset AXP_ADVANCED_DEBLOB
+    fi
 
 # we do not want to generate a fastboot factory image by default (override in semaphore if needed)
 generate_pixel_factory_image: False
