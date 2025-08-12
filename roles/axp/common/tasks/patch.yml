@@ -25,12 +25,17 @@
       sed  '/var external_ndk_androidmks/a \        "system/qcom/softap/sdk/",' build/soong/ui/build/androidmk_denylist.go -i
       # fix: unrecognized property "product_variables.device_has_arm_mte.cflags"
       sed -i '/device_has_arm_mte[: ]*{/,/},/d' external/hardened_malloc/Android.bp
-      
-      # we remove bloatware which causes:
+      # fix: build error due to removed lineage bloatware when making blueprint tools (also part of patchWorkspace but we need it earlier)
+      awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+      # fix: build errors due to removed system bloatware:
       # error: build/make/target/product/generic/Android.bp:1037:1: "aosp_shared_system_image" depends on undefined module "XXXX".
       for r in $(grep -r remove .repo/local_manifests/axp.xml | cut -d '"' -f2 |grep -v android_ ; echo PrintRecommendationService);do
         sed -E "s# (\"${r/*\/}\")# //\1#g" build/make/target/product/generic/Android.bp -i
       done
+
+      # FIXME: a more generic solution is required for this
+      # fix: build error due to duplicate firmware when making blueprint tools (handled by roles/axp/sunfish/tasks/patch.yml already but we need it earlier)
+      sed -E 's/^(\$\(call add-radio-file.*)/#\1/g' vendor/google/sunfish/Android.mk
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
