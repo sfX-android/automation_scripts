@@ -35,7 +35,7 @@
 
       # FIXME: a more generic solution is required for this
       # fix: build error due to duplicate firmware when making blueprint tools (handled by roles/axp/sunfish/tasks/patch.yml already but we need it earlier)
-      sed -E 's/^(\$\(call add-radio-file.*)/#\1/g' vendor/google/sunfish/Android.mk
+      sed -E -i 's/^(\$\(call add-radio-file.*)/#\1/g' vendor/google/sunfish/Android.mk
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
