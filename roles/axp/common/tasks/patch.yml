@@ -46,8 +46,14 @@
       PIXELDIRS=$(grep -o "name=.*" .repo/manifests/snippets/pixel.xml |cut -d '"' -f2 | tr '\n' ' ')
       {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} $PIXELDIRS
     fi
-    # start CVE patcher
+    
+    # start DOS+AOS patching process
     {{ DOS_INIT }}
+    {% if sub_model is defined %}
+    lunch lineage_{{ sub_model }}${brf_suffix}-user && echo lunch success
+    {% else %}
+    lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
+    {% endif %}
     mka blueprint_tools >> {{ BUILD_LOG }} 2>&1
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
