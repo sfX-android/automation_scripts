@@ -23,6 +23,8 @@
       resetEnv >> {{ BUILD_LOG }} 2>&1
       #FIXME: unclear atm why this causes an issue at all - while nowhere else in the world
       sed  '/var external_ndk_androidmks/a \        "system/qcom/softap/sdk/",' build/soong/ui/build/androidmk_denylist.go -i
+      # fix: unrecognized property "product_variables.device_has_arm_mte.cflags"
+      sed -i '/device_has_arm_mte[: ]*{/,/},/d' external/hardened_malloc/Android.bp
       
       # we remove bloatware which causes:
       # error: build/make/target/product/generic/Android.bp:1037:1: "aosp_shared_system_image" depends on undefined module "XXXX".
