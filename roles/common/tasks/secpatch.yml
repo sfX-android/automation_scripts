@@ -138,6 +138,7 @@
         path: "{{ SRCPATH }}/build/core/version_defaults.mk"
         regexp: "PLATFORM_SECURITY_PATCH := .*"
         line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last_human }}"
+      register: spcm
       when:
         - android_version_int | int < 14
 
@@ -146,6 +147,7 @@
         path: "{{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto"
         regexp: '(string_value:\\s+)("[0-9-]+")'
         line: '\1"{{ sec_patch_date_last_human }}"'
+      register: spcm
       when:
         - android_version_int | int > 13
 
@@ -169,7 +171,7 @@
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
-      when: spres.changed
+      when: spcm.changed
 
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
