@@ -121,39 +121,6 @@
       loop_control:
         loop_var: cherry
     
-    - name: "SECURITY PATCH MERGE: bump security patch version string (A13 and older)"
-      ansible.builtin.lineinfile:
-        path: "{{ SRCPATH }}/build/core/version_defaults.mk"
-        regexp: "PLATFORM_SECURITY_PATCH := .*"
-        line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last_human }}"
-      when:
-        - (spres.changed or force_secpatchdate)
-        - android_version_int | int < 14
-
-    - name: "SECURITY PATCH MERGE: bump security patch version string (A14 and later)"
-      ansible.builtin.lineinfile:
-        path: "{{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto"
-        regexp: '(string_value:\\s+)("[0-9-]+")'
-        line: '\1"{{ sec_patch_date_last_human }}"'
-      when:
-        - (spres.changed or force_secpatchdate)
-        - android_version_int | int > 13
-
-    - name: "Git commit version bump"
-      ansible.builtin.shell: |
-          export LC_ALL=C
-          {{ DOS_INIT |d('export AXP_GIT_AUTHOR="$USER" AXP_GIT_MAIL="$USER_MAIL"') }}
-          CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-          if [ $CMTL -gt 0 ];then
-              git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
-              git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "bump security patch date: {{ sec_patch_date_last_human }}"
-              echo "[GIT] bumped security patch date: {{ sec_patch_date_last_human }}" >> {{ BUILD_LOG }}
-          fi
-      args:
-        executable: /bin/bash
-        chdir: "{{ SRCPATH }}/build/core"
-      when: spres.changed
-
   rescue:
     - name: "Fail fast on failures" # fail immediately and not waiting for finishing full loops
       ansible.builtin.fail:
@@ -162,3 +129,48 @@
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
     - pick_queries is defined and (pick_queries | length > 0)
+
+# bump security patch date
+- block:
+
+    - name: "SECURITY PATCH MERGE: bump security patch version string (A13 and older)"
+      ansible.builtin.lineinfile:
+        path: "{{ SRCPATH }}/build/core/version_defaults.mk"
+        regexp: "PLATFORM_SECURITY_PATCH := .*"
+        line: "PLATFORM_SECURITY_PATCH := {{ sec_patch_date_last_human }}"
+      when:
+        - android_version_int | int < 14
+
+    - name: "SECURITY PATCH MERGE: bump security patch version string (A14 and later)"
+      ansible.builtin.lineinfile:
+        path: "{{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto"
+        regexp: '(string_value:\\s+)("[0-9-]+")'
+        line: '\1"{{ sec_patch_date_last_human }}"'
+      when:
+        - android_version_int | int > 13
+
+    - name: "Git commit version bump"
+      ansible.builtin.shell: |
+          export LC_ALL=C
+          {{ DOS_INIT |d('export AXP_GIT_AUTHOR="$USER" AXP_GIT_MAIL="$USER_MAIL"') }}
+
+          {% if android_version_int | int > 13 %}
+                cd build/release
+          {% else %}
+                cd build/core
+          {% endif %}
+          
+          CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+          if [ $CMTL -gt 0 ];then
+              git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+              git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "bump security patch date: {{ sec_patch_date_last_human }}"
+              echo "[GIT] bumped security patch date: {{ sec_patch_date_last_human }}" >> {{ BUILD_LOG }}
+          fi
+      args:
+        executable: /bin/bash
+        chdir: "{{ SRCPATH }}"
+      when: spres.changed
+
+  when:
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (spres.changed or force_secpatchdate)
