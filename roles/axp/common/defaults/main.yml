@@ -536,6 +536,9 @@ SH_COMMON_BUILD_SNIPPET: |
 # AXP.OS patches the kernel!
 sec_patch_level: '05'
 
+# we always need to change sec_patch_level as we patch the kernel
+force_secpatchdate: True
+
 # specific DOS overrides are required as we consider DOS as upstream until its EOL in 2024-12
 
 #sec_patch_topics_a9:
