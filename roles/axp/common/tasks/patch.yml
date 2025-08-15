@@ -59,7 +59,7 @@
     {% else %}
     lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
     {% endif %}
-    mka blueprint_tools >> {{ BUILD_LOG }} 2>&1
+    {% if android_version_int | int >= 15 %}mka blueprint_tools >> {{ BUILD_LOG }} 2>&1{% endif %}
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
