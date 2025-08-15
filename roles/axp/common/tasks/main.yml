@@ -9,6 +9,20 @@
 - include_vars: "../../{{ target_model }}/vars/main.yml"
 - include_tasks: vars.yml
 
+
+- name: "SECURITY PATCH MERGE: bump security patch version string (A14 and later)"
+  ansible.builtin.lineinfile:
+    path: "{{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto"
+    regexp: '(string_value:\s+)("[0-9-]+")'
+    line: '\1"{{ sec_patch_date_last_human }}"'
+    backrefs: true
+  register: spcm
+  when:
+    - android_version_int | int > 13
+
+- ansible.builtin.fail:
+    msg: foo
+
 - include_tasks: init.yml
 
 - name: "Just push-to-git selected!"
