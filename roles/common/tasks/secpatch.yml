@@ -147,6 +147,7 @@
         path: "{{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto"
         regexp: '(string_value:\\s+)("[0-9-]+")'
         line: '\1"{{ sec_patch_date_last_human }}"'
+        backrefs: true
       register: spcm
       when:
         - android_version_int | int > 13
