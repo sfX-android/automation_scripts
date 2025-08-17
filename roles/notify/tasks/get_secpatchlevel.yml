@@ -2,25 +2,30 @@
 
 - block: 
 
-    - name: "Read Security patch date (legacy)"
-      ansible.builtin.shell: >-
-        grep -E 'PLATFORM_SECURITY_PATCH\s+:=\s+' build/core/version_defaults.mk| cut -d "=" -f 2 | tr -d " " | tail -n1
-      args:
-        chdir: "{{ SRCPATH }}"
-        executable: /bin/bash
-      register: sec_level_date_los
-      when:
-        - android_version_int | int < 14
-    
-    - name: "Read Security patch date"
-      ansible.builtin.shell: >-
-        grep string_value build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto | cut -d '"' -f2 | tr -d " " | tail -n1
-      args:
-        chdir: "{{ SRCPATH }}"
-        executable: /bin/bash
-      register: sec_level_date_los
-      when:
-        - android_version_int | int > 13
+        - name: "Read Security patch date (legacy)"
+          ansible.builtin.shell: >-
+            grep -E 'PLATFORM_SECURITY_PATCH\s+:=\s+' build/core/version_defaults.mk | cut -d "=" -f 2 | tr -d " " | tail -n1
+          args:
+            chdir: "{{ SRCPATH }}"
+            executable: /bin/bash
+          register: sec_level_date_los_legacy
+          when:
+            - android_version_int | int < 14
+
+        - name: "Read Security patch date"
+          ansible.builtin.shell: >-
+            grep string_value build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto | cut -d '"' -f2 | tr -d " " | tail -n1
+          args:
+            chdir: "{{ SRCPATH }}"
+            executable: /bin/bash
+          register: sec_level_date_los_new
+          when:
+            - android_version_int | int > 13
+
+        - name: "Set sec_level_date_los"
+          ansible.builtin.set_fact:
+             sec_level_date_los: >-
+               {{ sec_level_date_los_legacy.stdout | default(sec_level_date_los_new.stdout, true) }}
 
   when: ROM_FLAVOR != "graphene"
 
