@@ -38,6 +38,7 @@
   register: sec_level_date_gos
   when: ROM_FLAVOR == "graphene"
 
-- ansible.builtin.set_fact:
-    sec_level_date: "{% if sec_level_date_los.stdout is defined %}{{ sec_level_date_los.stdout }}{% else %}{{ sec_level_date_gos.stdout }}{% endif %}"
-  when: sec_level_date_los.stdout is defined or sec_level_date_gos.stdout is defined
+- name: "Define sec_level_date"
+  ansible.builtin.set_fact:
+    sec_level_date: "{% if sec_level_date_los is defined %}{{ssec_level_date_los }}{% else %}{{ sec_level_date_gos.stdout }}{% endif %}"
+  when: sec_level_date_los is defined or sec_level_date_gos.stdout is defined
