@@ -278,7 +278,8 @@ sec_patch_topics_a12:
 # automatically without doing anything once they are merged.
 # if you can't wait, set sec_patch_unmerged: True (default now)
 ##############################################################################################
-sec_patch_topics_a13: ''
+sec_patch_topics_a13:
+    - "{{ current_year }}{{ current_month }}"
 sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
 
 sec_patch_topics_a14: ''
