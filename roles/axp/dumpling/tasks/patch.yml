@@ -18,12 +18,12 @@
 
 - name: "Apply specific dumpling pick(s) - if A13 or lower"
   ansible.builtin.shell: >-
-      cd {{ item.path }} \
-        && curl -sSLo {{ item.fetch }} | grep -q  {{ item.expected_content_string }} \\
-        && git am -
+      cd {{ item.path }}
+        && curl -sSL {{ item.fetch }} | grep -q  {{ item.expected_content_string }}
+        && (curl -sSL {{ item.fetch }} | git am -)
   args:
     chdir: "{{ SRCPATH }}"
     executable: /bin/bash
   loop:
-    - { path: "device/oneplus/dumpling", fetch: "https://github.com/LineageOS/android_device_oneplus_dumpling/commit/ffea7c7c479e8e8538a7bc31ff8e06a4c15b540c.patch", expected_content_string: "def_device_name_simple" }
+    - { path: "device/oneplus/dumpling", fetch: "https://github.com/LineageOS/android_device_oneplus_dumpling/commit/ffea7c7c479e8e8538a7bc31ff8e06a4c15b540c.patch", expected_content_string: "def_device_name_simple" }  # fix device name in about info
   when: android_version_int | int < 14
