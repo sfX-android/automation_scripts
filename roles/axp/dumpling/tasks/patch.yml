@@ -18,8 +18,8 @@
 
 - name: "Apply specific dumpling pick(s) - if A13 or lower"
   ansible.builtin.shell: >-
-      cd {{ item.path }}
-        && curl -sSL {{ item.fetch }} | grep -q  {{ item.expected_content_string }}
+      cd {{ item.path }} \
+        && curl -sSL {{ item.fetch }} | grep -q  {{ item.expected_content_string }} \
         && (curl -sSL {{ item.fetch }} | git am -)
   args:
     chdir: "{{ SRCPATH }}"
