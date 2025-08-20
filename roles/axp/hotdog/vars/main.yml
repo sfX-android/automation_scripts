@@ -34,3 +34,7 @@ axp_git_push_vendor_include: "vendor_oneplus_sm8150-common|vendor_oneplus_hotdog
 
  # re-testing effect of hibernation on bat life
 axp_defconfig_device: "CONFIG_HIBERNATION=y CONFIG_DEBUG_FS=n"
+
+# testing if this fixes:
+# Cannot use CONFIG_CC_STACKPROTECTOR_STRONG: -fstack-protector-strong not supported by compiler
+USE_CCACHE: 0
