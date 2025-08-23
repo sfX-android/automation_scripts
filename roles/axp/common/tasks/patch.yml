@@ -32,10 +32,6 @@
       for r in $(grep -r remove .repo/local_manifests/axp.xml | cut -d '"' -f2 |grep -v android_ ; echo PrintRecommendationService);do
         sed -E "s# (\"${r/*\/}\")# //\1#g" build/make/target/product/generic/Android.bp -i
       done
-
-      # FIXME: a more generic solution is required for this
-      # fix: build error due to duplicate firmware when making blueprint tools (handled by roles/axp/sunfish/tasks/patch.yml already but we need it earlier)
-      sed -E -i 's/^(\$\(call add-radio-file.*)/#\1/g' vendor/google/sunfish/Android.mk
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
