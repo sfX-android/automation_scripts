@@ -21,6 +21,11 @@ target_kernel_dir: kernel/google/msm-4.14
 # required e.g. for git, vendor/axp, release handling etc
 target_model_common_tree: device_google_sunfish
 
+# the common tree main makefile, usually named device.mk or common.mk
+# used in e.g. switch_major_release role.
+# defaults to "device.mk"
+#target_model_common_tree_mk: common.mk
+
 # the BoardConfig file within a device tree, required e.g. for switch_major_release
 # usually is one of: BoardConfigCommon, BoardConfig, BoardConfigLineage.
 # defaults to BoardConfigCommon
