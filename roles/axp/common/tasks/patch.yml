@@ -41,6 +41,13 @@
     chdir: "{{ SRCPATH }}"
   when: android_version_int | int > 14
 
+- name: "Disable 3rd party firmware blobs"
+  ansible.builtin.replace:
+    path: "{{ SRCPATH }}/vendor/{{ target_model_vendor | lower }}/{{ target_model }}/Android.mk"
+    regexp: '^(\$\(call add-radio-file.*)'
+    replace: '#\1'
+  when: android_version_int | int > 13
+
 - name: "Apply DOS patches"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
@@ -116,10 +123,3 @@
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
   when: android_version_int | int < 14
-
-- name: "Disable 3rd party firmware blobs"
-  ansible.builtin.replace:
-    path: "{{ SRCPATH }}/vendor/{{ target_model_vendor | lower }}/{{ target_model }}/Android.mk"
-    regexp: '^(\$\(call add-radio-file.*)'
-    replace: '#\1'
-  when: android_version_int | int > 13
