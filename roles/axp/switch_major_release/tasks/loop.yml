@@ -10,19 +10,19 @@
       axp_switchMR_target_branch: {{ git_repo_local_manifests_branch }}
       device_tree: {{ target_model_common_tree }}
 
-#- include_tasks: create_semaphore_task.yml
-#  vars:
-#    semaphore_aos_template_name: "AOS {{ git_repo_local_manifests_branch | upper }} {{ axp_type }}: {{ target_model_full }} ({{ target_model }})"
-
-#- include_tasks: device.yml
-#  vars:
-#    target_model: "{{ target_model }}"
-#    axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
-#    axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
-#    device_tree: "{{ target_model_common_tree }}"
+- include_tasks: device.yml
+  vars:
+    target_model: "{{ target_model }}"
+    axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
+    axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
+    device_tree: "{{ target_model_common_tree }}"
 
 - include_tasks: kernel.yml
   vars:
     target_model: "{{ target_model }}"
     axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
     axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
+
+- include_tasks: create_semaphore_task.yml
+  vars:
+    semaphore_aos_template_name: "AOS {{ git_repo_local_manifests_branch | upper }} {{ axp_type }}: {{ target_model_full }} ({{ target_model }})"
