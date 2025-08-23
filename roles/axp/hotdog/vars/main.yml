@@ -21,6 +21,11 @@ target_kernel_dir: kernel/oneplus/sm8150
 # required e.g. for git, vendor/axp, release handling etc
 target_model_common_tree: device_oneplus_sm8150-common
 
+# the common tree main makefile, usually named device.mk or common.mk
+# used in e.g. switch_major_release role.
+# defaults to "device.mk"
+target_model_common_tree_mk: common.mk
+
 # upload the recovery image
 axp_release_recovery: True
 
