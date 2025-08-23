@@ -34,7 +34,7 @@
       git clone {{ axp_git_org }}/$reponame -b $upstream_branch /tmp/kernel >> {{ BUILD_LOG }} 2>&1
     fi
 
-    git checkout origin/$upstream_branch || (git remote add los https://github.com/LineageOS/$reponame >> {{ BUILD_LOG }} 2>&1 && git checkout origin/$upstream_branch)
+    git checkout origin/$upstream_branch || (git remote add los https://github.com/LineageOS/$reponame >> {{ BUILD_LOG }} 2>&1 && git checkout los/$upstream_branch)
     
     cd /tmp/kernel
     
