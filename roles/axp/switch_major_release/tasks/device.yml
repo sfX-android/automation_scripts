@@ -10,7 +10,7 @@
     create_req=0
 
     if [ -d /tmp/device ]; then rm -r /tmp/device; fi
-    git clone {{ axp_git_org }}/$reponame /tmp/device >> {{ BUILD_LOG }} 2>&1 || create_req=1
+    git clone {{ axp_git_org }}/$reponame -b $upstream_branch /tmp/device >> {{ BUILD_LOG }} 2>&1 || create_req=1
 
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
