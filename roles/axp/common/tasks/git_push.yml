@@ -7,7 +7,7 @@
     {{ DOS_INIT }}
     
     # tag name
-    TAG="$(date +%F)_{{ sub_model | d('${BDEVICE}') }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
+    TAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
     # fallback tag
     PTAG=${TAG}_$(date +%s)
     
@@ -238,6 +238,34 @@
     croot
     mv .repo/local_manifests/axp.xml ${REPRMANIFEST}
     echo "[GIT] fully completed!" >> {{ BUILD_LOG }}
+
+    echo "[VERSIONING] create list of APK versions..." >> {{ BUILD_LOG }}
+    for erapp in {{ extendrom_package_list | d(extendrom_package_list_default) }}; do
+        for app in $(find vendor/extendrom/prebuilt out/target/product/{{ sub_model | d(target_model) }} -type f -name "${erapp}*.apk"); do
+            AVER=$(aapt dump badging "${app}" | gawk -F \' '/^package: name/{print $6}')
+            ANAME=$(aapt dump badging "${app}" | gawk -F \' '/application-label:/{print $2}')
+            echo "|${ANAME}|\`${AVER}\`|"
+        done
+    done | sort -u | grep -vE "Placeholder|Framework Proxy" > out/allapps.versions
+    echo -e "[VERSIONING] List created: \n$(cat out/allapps.versions)" >> {{ BUILD_LOG }}
+
+    echo "[VERSIONING] create version file from template..." >> {{ BUILD_LOG }}
+    awk '/\|-\|-\|/ { print; system("cat out/allapps.versions"); next }1' external/axp_versioning/template.md > temp_file && mv temp_file external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    
+    echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
+    cd external/axp_versioning
+    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }}
+    git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "add app versions for {{ build_id }}"  >> /dev/null 2>> {{ BUILD_LOG }}
+    TE=0
+    git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
+    if [ $TE -eq 0 ];then
+      git push --set-upstream origin $TAG >> {{ BUILD_LOG }} 2>&1
+      echo "[VERSIONING] [GIT] pushed new tag: $TAG" >> {{ BUILD_LOG }}
+    else
+      git push --force --set-upstream origin $TAG >> {{ BUILD_LOG }} 2>&1
+      echo "[VERSIONING] [GIT] FORCE pushed new tag: $TAG" >> {{ BUILD_LOG }}
+    fi
+    echo "[VERSIONING] All DONE!"  
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
