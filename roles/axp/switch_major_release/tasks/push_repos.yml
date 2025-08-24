@@ -42,11 +42,13 @@
     git checkout los/$upstream_branch >> {{ BUILD_LOG }} 2>&1
     git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
 
-    grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
-      || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}
+    if [ "{{ target_model_common_tree }}" == "{{ device_tree }}" ];then
+      grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
+        || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}
     
-    grep -q "vendor/axp/BoardConfigVendor.mk" {{ target_model_device_tree_boardmk }} \
-      || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ target_model_device_tree_boardmk }}
+      grep -q "vendor/axp/BoardConfigVendor.mk" {{ target_model_device_tree_boardmk }} \
+        || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ target_model_device_tree_boardmk }}
+    fi
     
     CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
     if [ $CMTL -gt 0 ];then
