@@ -40,7 +40,7 @@
             git lfs track \"*.${lf}\"
           done
           (git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} &&
-           git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) || true
+            git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) || true
       else
           gh repo fork $GHORG/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
           # even though the command will wait until the fork is fully created give some extra time
@@ -84,7 +84,7 @@
     if [ $CMTL -gt 0 ];then
         git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
         git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "board/device: enable AXP.OS" >> {{ BUILD_LOG }} 2>&1
-        push_req=$(( $push_req + 1))
+        push_req=$(( push_req + 1))
     fi
 
     if [ ! -f .github/workflows/sync.yml ];then
@@ -119,7 +119,7 @@
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
           git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync" >> {{ BUILD_LOG }} 2>&1
-          push_req=$(( $push_req + 1))
+          push_req=$(( push_req + 1))
       fi
     else
       echo "Skipped adding CI/CD sync to device tree!" >> {{ BUILD_LOG }} 2>&1
