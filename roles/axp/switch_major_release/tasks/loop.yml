@@ -16,7 +16,7 @@
       all_device_repos: {{ all_device_repos }}
       
 - name: Include device tasks for each push target
-  include_tasks: device.yml
+  include_tasks: push_repos.yml
   loop: "{{ all_device_repos }}"
   loop_control:
     loop_var: device_repo
