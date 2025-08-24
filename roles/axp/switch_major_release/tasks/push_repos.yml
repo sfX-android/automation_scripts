@@ -24,8 +24,11 @@
     
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
+
       if [ $private -eq 1 ];then
-          git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch up && git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
+          git clone https://github.com/$GHORG/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 
+          #&& git fetch up && git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
+          cd /tmp/cdevice
 
           tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }} >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] repo created..." >> {{ BUILD_LOG }}
@@ -56,11 +59,11 @@
           gh api -X PUT -H "Accept: application/vnd.github+json" \
            /orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame} \
            -f permission=maintain >> {{ BUILD_LOG }} 2>&1
+          
+          # finally clone the forked repo locally
+          git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1    
       fi
 
-      # finally clone the forked repo locally
-      git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1
-      
       push_req=1
     fi
 
