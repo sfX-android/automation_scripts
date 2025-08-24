@@ -8,7 +8,7 @@
     push_req=0
     create_req=0
 
-    if [ -d /tmp/cdevice ]; then rm -r /tmp/cdevice; fi
+    if [ -d /tmp/cdevice ]; then rm -fr /tmp/cdevice; fi
 
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets
