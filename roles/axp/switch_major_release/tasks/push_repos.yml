@@ -12,9 +12,15 @@
     if [ -d /tmp/cdevice ]; then rm -r /tmp/cdevice; fi
     git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
 
+    if [[ "{{ device_tree }}" == *vendor_* ]]; then
+        GHORG=TheMuppets
+    else
+        GHORG=LineageOS
+    fi
+    
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
-      gh repo fork LineageOS/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
+      gh repo fork $GHORG/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
 
       # even though the command will wait until the fork is fully created give some extra time
       sleep 5
@@ -35,11 +41,11 @@
     fi
 
     cd /tmp/cdevice
-    git checkout origin/$upstream_branch || (git remote add losi https://github.com/LineageOS/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch losi && git checkout losi/$upstream_branch)
+    git checkout origin/$upstream_branch || (git remote add itmp https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch itmp && git checkout itmp/$upstream_branch)
 
-    git remote add los https://github.com/LineageOS/android_{{ device_tree }} >> {{ BUILD_LOG }} 2>&1
-    git fetch los $upstream_branch >> {{ BUILD_LOG }} 2>&1
-    git checkout los/$upstream_branch >> {{ BUILD_LOG }} 2>&1
+    git remote add up https://github.com/$GHORG/android_{{ device_tree }} >> {{ BUILD_LOG }} 2>&1
+    git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
+    git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
     git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
 
     if [ "{{ target_model_common_tree }}" == "{{ device_tree }}" ];then
@@ -77,7 +83,7 @@
           name: "Sync with upstream"
           uses: AXP-OS/.github/.github/workflows/sync_upstream.yml@main
           with:
-              remote-repo: LineageOS/\${{ github.event.repository.name }}
+              remote-repo: $GHORG/\${{ github.event.repository.name }}
               remote-branch: $upstream_branch
               local-repo: \${{ github.repository_owner }}/\${{ github.event.repository.name }}
               local-branch: "$(git branch --no-color --show-current)"
