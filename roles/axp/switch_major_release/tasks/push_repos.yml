@@ -10,7 +10,7 @@
 
     if [ -d /tmp/cdevice ]; then rm -r /tmp/cdevice; fi
 
-    if [[ "$device_tree" =~ vendor_ ]]; then
+    if [[ "$device_tree" =~ "vendor_*" ]]; then
         GHORG=TheMuppets
         reponame=proprietary_{{ device_tree }}
         private=1
