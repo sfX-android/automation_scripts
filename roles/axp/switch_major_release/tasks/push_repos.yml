@@ -5,18 +5,19 @@
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"
     axp_release="{{ axp_switchMR_target_branch }}"
-    reponame=android_{{ device_tree }} 
     push_req=0
     create_req=0
 
-    if [ -d /tmp/cdevice ]; then rm -r /tmp/cdevice; fi
-    git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
-
     if [[ "{{ device_tree }}" == *vendor_* ]]; then
         GHORG=TheMuppets
+        reponame=proprietary_{{ device_tree }}
     else
         GHORG=LineageOS
+        reponame=android_{{ device_tree }}
     fi
+    
+    if [ -d /tmp/cdevice ]; then rm -r /tmp/cdevice; fi
+    git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
     
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
