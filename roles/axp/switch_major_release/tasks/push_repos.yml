@@ -67,7 +67,7 @@
     cd /tmp/cdevice
     git checkout origin/$upstream_branch  >> {{ BUILD_LOG }} 2>&1 || (git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch up && git checkout up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1)
 
-    git remote add up https://github.com/$GHORG/android_{{ device_tree }} >> {{ BUILD_LOG }} 2>/dev/null || true
+    git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>/dev/null || true
     git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
     git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
     git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
