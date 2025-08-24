@@ -1,0 +1,60 @@
+---
+
+- name: "Switch device tree to new Major Release"
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    upstream_branch="{{ axp_switchMR_upstream_branch }}"
+    axp_release="{{ axp_switchMR_target_branch }}"
+    reponame=android_{{ device_tree }} 
+    push_req=0
+    create_req=0
+
+    if [ -d /tmp/device ]; then rm -r /tmp/device; fi
+    git clone {{ axp_git_org }}/$reponame /tmp/device >> {{ BUILD_LOG }} 2>&1 || create_req=1
+
+    if [ $create_req -eq 1 ];then
+      echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
+      gh repo fork LineageOS/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
+
+      # even though the command will wait until the fork is fully created give some extra time
+      sleep 5
+
+      # Set description, public, disable issues and wiki
+      gh repo edit AXP-OS/${reponame} \
+        --description "forked from: https://github.com/LineageOS/$reponame" \
+        --accept-visibility-change-consequences \
+        --visibility public >> {{ BUILD_LOG }} 2>&1
+      
+      # Assign team with push permission
+      gh api -X PUT -H "Accept: application/vnd.github+json" \
+        /orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame} \
+        -f permission=maintain >> {{ BUILD_LOG }} 2>&1
+
+      # finally clone the forked repo locally
+      git clone {{ axp_git_org }}/$reponame /tmp/device >> {{ BUILD_LOG }} 2>&1
+    fi
+
+    cd /tmp/device
+    git checkout origin/$upstream_branch || (git remote add losi https://github.com/LineageOS/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch losi && git checkout losi/$upstream_branch)
+
+    git remote add los https://github.com/LineageOS/android_{{ device_tree }} >> {{ BUILD_LOG }} 2>&1
+    git fetch los $upstream_branch >> {{ BUILD_LOG }} 2>&1
+    git checkout los/$upstream_branch >> {{ BUILD_LOG }} 2>&1
+    git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
+
+    # check and add new repo if needed only
+    CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
+    REMHASH=$(git log --pretty=oneline --decorate | grep "m/{{ los_version_gitbranch }}" |cut -d ' ' -f1)
+
+    if [ "$CURHASH" != "$REMHASH" ]; fi
+      git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
+      echo "[GIT] Pushed $reponame!" >> {{ BUILD_LOG }} 2>&1
+      sleep 10
+      gh repo edit AXP-OS/${reponame} --default-branch $axp_release >> {{ BUILD_LOG }} 2>&1
+    else
+      echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+    fi
+    
+    rm -r /tmp/device
+  args:
+    executable: /bin/bash
