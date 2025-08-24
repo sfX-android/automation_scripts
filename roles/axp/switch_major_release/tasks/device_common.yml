@@ -9,8 +9,8 @@
     push_req=0
     create_req=0
 
-    if [ -d /tmp/device ]; then rm -r /tmp/device; fi
-    git clone {{ axp_git_org }}/$reponame /tmp/device >> {{ BUILD_LOG }} 2>&1 || create_req=1
+    if [ -d /tmp/cdevice ]; then rm -r /tmp/cdevice; fi
+    git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
 
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
@@ -34,7 +34,7 @@
       git clone {{ axp_git_org }}/$reponame /tmp/device >> {{ BUILD_LOG }} 2>&1
     fi
 
-    cd /tmp/device
+    cd /tmp/cdevice
     git checkout origin/$upstream_branch || (git remote add losi https://github.com/LineageOS/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch losi && git checkout losi/$upstream_branch)
 
     git remote add los https://github.com/LineageOS/android_{{ device_tree }} >> {{ BUILD_LOG }} 2>&1
@@ -102,6 +102,6 @@
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
     
-    rm -r /tmp/device
+    rm -r /tmp/cdevice
   args:
     executable: /bin/bash
