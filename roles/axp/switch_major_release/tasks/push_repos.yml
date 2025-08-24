@@ -21,13 +21,17 @@
     fi
     echo "[GIT] private = $private" >> {{ BUILD_LOG }}
     
-    git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
+    if [ $private -eq 1 ];then
+        git clone {{ git_axpos_org_private }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
+    else
+        git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
+    fi
     
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo {{ axp_git_org }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
 
       if [ $private -eq 1 ];then
-          git clone https://github.com/$GHORG/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 
+          git clone {{ git_axpos_org_private }}/$GHORG/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 
           #&& git fetch up && git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
           cd /tmp/cdevice
 
