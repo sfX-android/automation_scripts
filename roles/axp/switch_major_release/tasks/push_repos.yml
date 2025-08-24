@@ -19,11 +19,12 @@
         reponame=android_{{ device_tree }}
         private=0
     fi
+    echo "[GIT] private = $private" >> {{ BUILD_LOG }}
     
     git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
     
     if [ $create_req -eq 1 ];then
-      echo "[GIT] repo does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
+      echo "[GIT] repo {{ axp_git_org }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
 
       if [ $private -eq 1 ];then
           git clone https://github.com/$GHORG/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 
@@ -31,7 +32,7 @@
           cd /tmp/cdevice
 
           tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }} >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT] repo created..." >> {{ BUILD_LOG }}
+          echo "[GIT] $reponame repo created..." >> {{ BUILD_LOG }}
           for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
             git lfs track \"*.${lf}\"
           done
