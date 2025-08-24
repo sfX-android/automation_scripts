@@ -35,7 +35,7 @@ axp_bootloader_id_slim: ''
 
 # git push
 axp_git_push_device_include: "device_oneplus_hotdog|{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "proprietary_vendor_oneplus_sm8150-common|proprietary_vendor_oneplus_hotdog"
+axp_git_push_vendor_include: "vendor_oneplus_sm8150-common|vendor_oneplus_hotdog"
 
  # re-testing effect of hibernation on bat life
 axp_defconfig_device: "CONFIG_HIBERNATION=y CONFIG_DEBUG_FS=n"
