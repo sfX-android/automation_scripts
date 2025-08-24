@@ -2,20 +2,29 @@
 
 - include_vars: "../../{{ target_model }}/vars/main.yml"
 
+- name: Set combined device list
+  set_fact:
+    all_device_repos: >-
+      {{ (axp_git_push_device_include.split('|') + axp_git_push_vendor_include.split('|')) | unique }}
+
 - name: DEBUG
   ansible.builtin.debug:
     msg: |
       target_model: {{ target_model }}
       axp_switchMR_upstream_branch: {{ los_version_gitbranch }}
       axp_switchMR_target_branch: {{ git_repo_local_manifests_branch }}
-      device_tree: {{ target_model_common_tree }}
-
-- include_tasks: device.yml
+      all_device_repos: {{ all_device_repos }}
+      
+- name: Include device tasks for each push target
+  include_tasks: device.yml
+  loop: "{{ all_device_repos }}"
+  loop_control:
+    loop_var: device_repo
   vars:
     target_model: "{{ target_model }}"
     axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
     axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
-    device_tree: "{{ target_model_common_tree }}"
+    device_tree: "{{ device_repo }}"
 
 - include_tasks: kernel.yml
   vars:
