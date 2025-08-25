@@ -6,8 +6,6 @@
       state: absent
 
 - name: "Setup repositories: Create public/private repo"
-  args:
-    executable: /bin/bash
   ansible.builtin.shell: |
     {{ DOS_INIT }}    
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
@@ -71,17 +69,14 @@
           git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1    
       fi
     fi
-
+  args:
+    executable: /bin/bash
+    
 - name: "Setup repositories for AXP.OS: Git branches & Upstream"
   ansible.builtin.shell: |
-    echo PWD: $PWD
-    
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
-    if [ "$PWD" !=  "/tmp/cdevice" ];then
-      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
-      exit 99
-    fi
+    cd /tmp/cdevice
     
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
@@ -90,7 +85,6 @@
     fi
     echo "[GIT] private = $private" >> {{ BUILD_LOG }}
     
-    cd /tmp/cdevice
     echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
     git checkout origin/$upstream_branch  >> {{ BUILD_LOG }} 2>&1 || (git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch up && git checkout up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1)
 
@@ -107,6 +101,7 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+    cd /tmp/cdevice
 
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
@@ -139,10 +134,7 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
-    if [ "$PWD" !=  "/tmp/cdevice" ];then
-      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
-      exit 99
-    fi
+    cd /tmp/cdevice
     
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
@@ -175,10 +167,7 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
-    if [ "$PWD" !=  "/tmp/cdevice" ];then
-      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
-      exit 99
-    fi
+    cd /tmp/cdevice
     
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
@@ -275,10 +264,7 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
-    if [ "$PWD" !=  "/tmp/cdevice" ];then
-      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
-      exit 99
-    fi
+    cd /tmp/cdevice
     
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
