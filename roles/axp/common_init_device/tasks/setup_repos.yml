@@ -43,7 +43,7 @@
       if [ $private -eq 1 ];then
           echo "[GIT] Create new PRIVATE repo: {{ git_axpos_org_private }}/$reponame" >> {{ BUILD_LOG }}
           #tea repo fork --owner AXP-OS github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 # PROB: set description requires api call then
-          git clone github.com/$GHORG/$reponame -b $upstream_branch /tmp/cdevice >> {{ BUILD_LOG }} 2>&1
+          git clone https://github.com/$GHORG/$reponame -b $upstream_branch /tmp/cdevice >> {{ BUILD_LOG }} 2>&1
           cd /tmp/cdevice
 
           tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }} >> {{ BUILD_LOG }} 2>&1
