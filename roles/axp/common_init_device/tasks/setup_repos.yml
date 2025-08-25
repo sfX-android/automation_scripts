@@ -73,9 +73,6 @@
     fi
 
 - name: "Setup repositories for AXP.OS: Git branches & Upstream"
-  args:
-    executable: /bin/bash
-    chdir: /tmp/cdevice
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
@@ -100,11 +97,11 @@
     git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
     git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
     git remote -v >> {{ BUILD_LOG }} 2>&1
-
-- name: "Setup repositories: include AXP.OS (common tree)"
   args:
     executable: /bin/bash
     chdir: /tmp/cdevice
+
+- name: "Setup repositories: include AXP.OS (common tree)"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
@@ -132,11 +129,11 @@
           push_req=$(( push_req + 1))
       fi
     fi
-
-- name: "Setup repositories: LFS"
   args:
     executable: /bin/bash
     chdir: /tmp/cdevice
+    
+- name: "Setup repositories: LFS"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
@@ -168,11 +165,11 @@
            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) \
         || true
     fi
-
-- name: "Setup repositories: CI/CD"
   args:
     executable: /bin/bash
     chdir: /tmp/cdevice
+    
+- name: "Setup repositories: CI/CD"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
@@ -268,11 +265,11 @@
     else
       echo "Skipped adding CI/CD sync to device tree." >> {{ BUILD_LOG }} 2>&1
     fi
-
-- name: "Setup repositories: Git push"
   args:
     executable: /bin/bash
     chdir: /tmp/cdevice
+    
+- name: "Setup repositories: Git push"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
@@ -314,7 +311,10 @@
     echo -e "###########################################################"  >> {{ BUILD_LOG }}
     echo -e "# ENDED: {{ device_tree }}"  >> {{ BUILD_LOG }}
     echo -e "###########################################################\n"  >> {{ BUILD_LOG }}
-
+  args:
+    executable: /bin/bash
+    chdir: /tmp/cdevice
+    
 - name: "Setup repositories: End clean"
   ansible.builtin.file:
       path: /tmp/cdevice
