@@ -58,7 +58,7 @@
              && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) \
           || true
       else
-          echo "[GIT] Create new PUBLIC repo: {{ git_axpos_org }}/$reponame" >> {{ BUILD_LOG }}
+          echo "[GIT] Create new PUBLIC repo: {{ axp_git_org }}/$reponame" >> {{ BUILD_LOG }}
           gh repo fork $GHORG/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
           # even though the command will wait until the fork is fully created give some extra time
           sleep 5
