@@ -182,7 +182,7 @@
 
     if [ "$push_req" -gt 0 ];then
       echo "[GIT] pushing required ($push_req)!" >> {{ BUILD_LOG }}
-      git push origin $upstream_branch >> {{ BUILD_LOG }} 2>&1
+      git push origin up/$upstream_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
       echo "[GIT] Pushed $reponame / $upstream_branch!" >> {{ BUILD_LOG }} 2>&1
       git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
       echo "[GIT] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
