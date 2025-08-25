@@ -241,6 +241,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
+  when: sjsjsjsj is defined
 
 - name: "Push APP versions"
   ansible.builtin.shell: |
@@ -265,13 +266,13 @@
     awk '/\|-\|-\|/ { print; system("cat out/allapps.versions"); next }1' external/axp_versioning/template.md > temp_file && mv temp_file external/axp_versioning/{{ sub_model | d(target_model) }}.md
 
     # set device name
-    sed 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
 
     # set release date
-    sed 's/%%RELDATE%%/$(date +%F) - or later/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i 's/%%RELDATE%%/$(date +%F) - or later/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
     
     # set manifest
-    sed "s#%%MANIFEST%%#{{ git_repo_local_manifests | regex_replace('git@','https://') }}/$TAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i "s#%%MANIFEST%%#{{ git_repo_local_manifests | regex_replace('git@','https://') }}/$TAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
   
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning
