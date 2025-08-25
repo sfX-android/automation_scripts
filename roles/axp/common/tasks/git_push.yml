@@ -269,10 +269,10 @@
     sed -i 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
 
     # set release date
-    sed -i 's/%%RELDATE%%/$(date +%F) - or later/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i "s/%%RELDATE%%/$(date +%F) - or later/g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
     
     # set manifest
-    sed -i "s#%%MANIFEST%%#{{ git_repo_local_manifests | regex_replace('git@','https://') }}/$TAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i "s#%%MANIFEST%%#https://github.com/$TAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
   
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning
