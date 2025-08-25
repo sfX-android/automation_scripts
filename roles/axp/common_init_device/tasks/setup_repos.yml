@@ -43,8 +43,9 @@
 
       if [ $private -eq 1 ];then
           echo "[GIT] Create new PRIVATE repo: {{ git_axpos_org_private }}/$reponame" >> {{ BUILD_LOG }}
-          tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }} >> {{ BUILD_LOG }} 2>&1
-          git clone {{ git_axpos_org_private }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 
+          tea repo create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: https://github.com/$GHORG/$reponame" --login {{ gitea_login_name }} >> {{ BUILD_LOG }} 2>&1
+          git clone {{ git_axpos_org_private }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1
+          
           echo "[GIT] $reponame repo created..." >> {{ BUILD_LOG }}
       else
           echo "[GIT] Create new PUBLIC repo: {{ axp_git_org }}/$reponame" >> {{ BUILD_LOG }}
@@ -54,14 +55,9 @@
 
           # Set description, public, disable issues and wiki
           gh repo edit AXP-OS/${reponame} \
-           --description "forked from: https://github.com/LineageOS/$reponame" \
+           --description "forked from: https://github.com/$GHORG/$reponame" \
            --accept-visibility-change-consequences \
            --visibility public >> {{ BUILD_LOG }} 2>&1
-      
-          # Assign team with push permission
-          gh api -X PUT -H "Accept: application/vnd.github+json" \
-           /orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame} \
-           -f permission=maintain >> {{ BUILD_LOG }} 2>&1
           
           # finally clone the forked repo locally
           git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1    
@@ -100,7 +96,7 @@
     if [ $private -eq 1 ];then
         echo "[GIT] setup LFS ..." >> {{ BUILD_LOG }}
         for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
-          git lfs track \"*.${lf}\"
+          git lfs track \"*.${lf}\" >> {{ BUILD_LOG }} 2>&1
         done
         echo "[GIT] gitattributes:" >> {{ BUILD_LOG }} 
         cat .gitattributes >> {{ BUILD_LOG }} || true
