@@ -1,0 +1,46 @@
+---
+
+# we do not use .divested.vars anymore as this causes trouble when
+# dev the same time at the same system
+- name: "Add device vars"
+  template:
+    src: "axp.vars.j2"
+    dest: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
+
+- block:
+    - name: "Add global override vars (slim)"
+      ansible.builtin.template:
+        src: "axpslim.vars.j2"
+        dest: "{{ BUILDHOME }}/.divested.vars.slim"
+
+    - name: "Include slim vars overrides"
+      ansible.builtin.lineinfile:
+        path: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
+        line: "source {{ BUILDHOME }}/.divested.vars.slim"
+        insertafter: EOF
+        state: present
+  when:
+    - axp_type | d('') == "slim"
+
+- block:
+
+    - name: "check if a device overwrite exists (sub_model)"
+      connection: local
+      stat:
+        path: "{{ BUILDHOME }}/.divested.vars.{{ sub_model }}"
+      register: devvarsub
+
+    - name: "Include sub_model vars"
+      ansible.builtin.lineinfile:
+        path: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
+        line: "source {{ BUILDHOME }}/.divested.vars.{{ sub_model }}"
+        insertafter: EOF
+        state: present
+      when: devvarsub.stat.exists
+
+  when: sub_model is defined
+
+- name: "Set remote path (recovery only)"
+  set_fact:
+    rempath: "{{ rempath + '/recovery' }}"
+  when: axp_build_recovery_only is defined and axp_build_recovery_only
