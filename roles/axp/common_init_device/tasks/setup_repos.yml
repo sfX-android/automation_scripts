@@ -5,11 +5,19 @@
       path: /tmp/cdevice
       state: absent
 
+- name: "Setup repositories: test"
+  args:
+    executable: /bin/bash
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+
+
 - name: "Setup repositories: Create public/private repo"
   args:
     executable: /bin/bash
   ansible.builtin.shell: |
     {{ DOS_INIT }}
+    
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
 
     echo -e "\n###########################################################"  >> {{ BUILD_LOG }}
@@ -26,13 +34,9 @@
     if [ $private -eq 1 ];then
         git clone {{ git_axpos_org_private }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
         echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> /tmp/cdevice" >> {{ BUILD_LOG }}
-        TORG="{{ git_axpos_org_private }}"
-        workflowpath=".gitea"
     else
         git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
         echo "[GIT] cloned {{ axp_git_org }}/$reponame -> /tmp/cdevice" >> {{ BUILD_LOG }}
-        TORG="{{ axp_git_org }}"
-        workflowpath=".github"
     fi
 
     if [ $create_req -eq 1 ];then
@@ -74,7 +78,6 @@
           # finally clone the forked repo locally
           git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1    
       fi
-      push_req=1
     fi
 
 - name: "Setup repositories for AXP.OS: Git branches & Upstream"
