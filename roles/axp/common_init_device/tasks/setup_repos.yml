@@ -166,6 +166,7 @@
               secrets: inherit
     EOSYNC
     {% endraw %}
+      fi
     
       git add -f $workflowpath/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
