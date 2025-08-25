@@ -16,7 +16,7 @@
       all_device_repos: {{ all_device_repos }}
       
 - name: Include device tasks for each push target
-  include_tasks: push_repos.yml
+  include_tasks: setup_repos.yml
   loop: "{{ all_device_repos }}"
   loop_control:
     loop_var: device_repo
@@ -26,7 +26,7 @@
     axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
     device_tree: "{{ device_repo }}"
 
-- include_tasks: kernel.yml
+- include_tasks: setup_kernel.yml
   vars:
     target_model: "{{ target_model }}"
     axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
