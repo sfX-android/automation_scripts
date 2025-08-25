@@ -29,7 +29,7 @@
 
       - name: "Remove any previous log file"
         ansible.builtin.shell: >-
-            find {{ BUILDHOME }} -maxdepth 1 -name '{{ build_log_name_noid }}*' -delete
+            find {{ BUILDHOME }} -maxdepth 1 -name '{{ build_log_name_noid }}*.log' -delete
         when: not keep_build_logs
 
       - name: "Setup logging symlink for 'latest'"
