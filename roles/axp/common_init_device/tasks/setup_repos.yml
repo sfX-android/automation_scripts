@@ -274,6 +274,11 @@
 
     CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
     REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
+
+    if [ "$PWD" !=  "/tmp/cdevice" ];then
+      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
+      exit 99
+    fi
     
     if [ "$CURHASH" != "$REMHASH" ]; then
       echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
