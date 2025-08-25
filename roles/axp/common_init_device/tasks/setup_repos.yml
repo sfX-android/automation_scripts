@@ -179,8 +179,11 @@
     if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
       mkdir -p $workflowpath/workflows/ 2>/dev/null || true
     
-      if [ $private -eq 1 ];then
-          workflowpath=".gitea"
+    if [ $private -eq 1 ];then
+      workflowpath=".gitea"
+      if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
+          mkdir -p $workflowpath/workflows/ 2>/dev/null || true
+          
           echo "[GIT] adding CI/CD to PRIVATE repo" >> {{ BUILD_LOG }}
     {% raw %}
           cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
@@ -205,12 +208,15 @@
                   dryrun: false
               secrets: inherit
     EOSYNC
+      fi
     {% endraw %}
 
-      else
+    else
       
     {% raw %}
-          workflowpath=".github"
+        workflowpath=".github"
+        if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
+          mkdir -p $workflowpath/workflows/ 2>/dev/null || true
           echo "[GIT] adding CI/CD to PUBLIC repo" >> {{ BUILD_LOG }}
           cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
           name: "Sync with upstream"
@@ -236,8 +242,9 @@
                   dryrun: false
               secrets: inherit
     EOSYNC
-    {% endraw %}
       fi
+    {% endraw %}
+    fi
     
       git add -f $workflowpath/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
