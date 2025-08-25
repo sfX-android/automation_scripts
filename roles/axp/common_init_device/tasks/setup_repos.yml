@@ -34,7 +34,7 @@
 
       if [ $private -eq 1 ];then
           echo "[GIT] Forking new PRIVATE repo: {{ git_axpos_org_private }}/$reponame from: github.com/$GHORG/$reponame" >> {{ BUILD_LOG }}
-          tea repo fork --owner {{ git_axpos_org_name }} https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
+          tea repo fork --owner {{ git_axpos_org_name }} --repo https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
 
           # set description & issues
           curl -sX 'PATCH' \
