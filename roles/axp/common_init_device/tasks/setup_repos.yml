@@ -38,7 +38,7 @@
 
           # set description & issues
           curl -sX 'PATCH' \
-            "https://{{ git_axpos_org_private_host }}/api/v1/repos/$GHORG/$reponame" \
+            "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" \
             -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
             -H 'accept: application/json' \
             -H 'Content-Type: application/json' \
@@ -50,8 +50,8 @@
                     "external_tracker_url": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues",
                     "external_tracker_style": "alphanumeric"
                     }
-                }'
-          git clone {{ git_axpos_org_private }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1         
+                }' >> {{ BUILD_LOG }} 2>&1       
+          git clone {{ git_axpos_org_private }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] $reponame repo created..." >> {{ BUILD_LOG }}
       else
           echo "[GIT] Create new PUBLIC repo: {{ axp_git_org }}/$reponame" >> {{ BUILD_LOG }}
