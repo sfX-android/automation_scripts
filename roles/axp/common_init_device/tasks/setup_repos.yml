@@ -43,7 +43,7 @@
             -H 'accept: application/json' \
             -H 'Content-Type: application/json' \
             -d  '{
-                  "description": "Mirror of: https://{{ git_axpos_org_private_host }}/$GHORG/$reponame (requires a login)",
+                  "description": "Mirror of: https://github.com/'$GHORG/$reponame' (requires a login)",
                   "has_issues": true,
                   "external_tracker": {
                     "external_tracker_format": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues/{index}",
