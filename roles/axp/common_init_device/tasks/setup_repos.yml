@@ -1,27 +1,25 @@
 ---
 
-- name: "Setup repositories for AXP.OS"
+. name: "Setup repositories: Start clean"
+  ansible.builtin.file:
+      path: /tmp/cdevice
+      state: absent
+
+- name: "Setup repositories: Create public/private repo"
+  args:
+    executable: /bin/bash
   ansible.builtin.shell: |
     {{ DOS_INIT }}
-    upstream_branch="{{ axp_switchMR_upstream_branch }}"
-    axp_release="{{ axp_switchMR_target_branch }}"
-    push_req=0
-    create_req=0
+    upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
 
     echo -e "\n###########################################################"  >> {{ BUILD_LOG }}
     echo -e "# STARTING: {{ device_tree }}"  >> {{ BUILD_LOG }}
     echo -e "###########################################################"  >> {{ BUILD_LOG }}
 
-    if [ -d /tmp/cdevice ]; then rm -fr /tmp/cdevice; fi
-
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
-        GHORG=TheMuppets
-        reponame=proprietary_{{ device_tree }}
-        private=1
+        GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
     else
-        GHORG=LineageOS
-        reponame=android_{{ device_tree }}
-        private=0
+        GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
     fi
     echo "[GIT] private = $private" >> {{ BUILD_LOG }}
     
@@ -37,7 +35,6 @@
         workflowpath=".github"
     fi
 
-    ############### CREATE REPO (START)
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo {{ axp_git_org }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
 
@@ -79,8 +76,22 @@
       fi
       push_req=1
     fi
-    ############### CREATE REPO (END)
 
+- name: "Setup repositories for AXP.OS: Git branches & Upstream"
+  args:
+    executable: /bin/bash
+    chdir: /tmp/cdevice
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+
+    if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
+        GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
+    else
+        GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
+    fi
+    echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+    
     cd /tmp/cdevice
     echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
     git checkout origin/$upstream_branch  >> {{ BUILD_LOG }} 2>&1 || (git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch up && git checkout up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1)
@@ -91,23 +102,53 @@
     git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
     git remote -v >> {{ BUILD_LOG }} 2>&1
 
+- name: "Setup repositories: include AXP.OS (common tree)"
+  args:
+    executable: /bin/bash
+    chdir: /tmp/cdevice
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+
+    if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
+        GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
+    else
+        GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
+    fi
+    echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+    
     if [ "{{ target_model_common_tree }}" == "{{ device_tree }}" ];then
       echo "[GIT] checking AXP.OS common tree include.." >> {{ BUILD_LOG }}
+      
       grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
         || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}    
       grep -q "vendor/axp/BoardConfigVendor.mk" {{ target_model_device_tree_boardmk }} \
         || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ target_model_device_tree_boardmk }}
+      
+      CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+      if [ $CMTL -gt 0 ];then
+          git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "board/device: enable AXP.OS" >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT] git commit done" >> {{ BUILD_LOG }}
+          push_req=$(( push_req + 1))
+      fi
     fi
-    
-    CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-    if [ $CMTL -gt 0 ];then
-        git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
-        git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "board/device: enable AXP.OS" >> {{ BUILD_LOG }} 2>&1
-        echo "[GIT] git commit done" >> {{ BUILD_LOG }}
-        push_req=$(( push_req + 1))
+
+- name: "Setup repositories: LFS"
+  args:
+    executable: /bin/bash
+    chdir: /tmp/cdevice
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+
+    if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
+        GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
+    else
+        GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
     fi
+    echo "[GIT] private = $private" >> {{ BUILD_LOG }}
     
-    ############### LFS (START)
     if [ $private -eq 1 ];then
         echo "[GIT] setup LFS ..." >> {{ BUILD_LOG }}
         for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
@@ -124,13 +165,27 @@
            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) \
         || true
     fi
-    ############### LFS (END)
+
+- name: "Setup repositories: CI/CD"
+  args:
+    executable: /bin/bash
+    chdir: /tmp/cdevice
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+
+    if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
+        GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
+    else
+        GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
+    fi
+    echo "[GIT] private = $private" >> {{ BUILD_LOG }}
     
-    ############### ADD CI/CD (START)
     if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
       mkdir -p $workflowpath/workflows/ 2>/dev/null || true
     
       if [ $private -eq 1 ];then
+          workflowpath=".gitea"
           echo "[GIT] adding CI/CD to PRIVATE repo" >> {{ BUILD_LOG }}
     {% raw %}
           cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
@@ -160,6 +215,7 @@
       else
       
     {% raw %}
+          workflowpath=".github"
           echo "[GIT] adding CI/CD to PUBLIC repo" >> {{ BUILD_LOG }}
           cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
           name: "Sync with upstream"
@@ -198,10 +254,27 @@
     else
       echo "Skipped adding CI/CD sync to device tree." >> {{ BUILD_LOG }} 2>&1
     fi
-    ############### ADD CI/CD (END)
 
-    if [ "$push_req" -gt 0 ];then
-      echo "[GIT] pushing required ($push_req)!" >> {{ BUILD_LOG }}
+- name: "Setup repositories: Git push"
+  args:
+    executable: /bin/bash
+    chdir: /tmp/cdevice
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+
+    if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
+        GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
+    else
+        GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
+    fi
+    echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+
+    CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
+    REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
+    
+    if [ "$CURHASH" != "$REMHASH" ]; then
+      echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
       git push origin up/$upstream_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
       echo "[GIT] Pushed $reponame / $upstream_branch!" >> {{ BUILD_LOG }} 2>&1
       git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
@@ -211,7 +284,7 @@
         curl -siX PATCH -H "Content-Type: application/json" \
           -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
           -d '{"default_branch": "'$axp_release'"}'\
-          "https://code.binbash.rocks/api/v1/repos/{{ git_axpos_org_name }}/$reponame"
+          "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame"
       else
         gh repo edit AXP-OS/${reponame} --default-branch $axp_release >> {{ BUILD_LOG }} 2>&1
       fi
@@ -220,9 +293,11 @@
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
     
-    rm -r /tmp/cdevice
     echo -e "###########################################################"  >> {{ BUILD_LOG }}
     echo -e "# ENDED: {{ device_tree }}"  >> {{ BUILD_LOG }}
     echo -e "###########################################################\n"  >> {{ BUILD_LOG }}
-  args:
-    executable: /bin/bash
+
+. name: "Setup repositories: End clean"
+  ansible.builtin.file:
+      path: /tmp/cdevice
+      state: absent
