@@ -23,16 +23,23 @@
     
     if [ $private -eq 1 ];then
         git clone {{ git_axpos_org_private }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
+        echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> /tmp/cdevice >> {{ BUILD_LOG }}
+        TORG="{{ git_axpos_org_private }}"
+        workflowpath=".gitea"
     else
         git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
+        echo "[GIT] cloned {{ axp_git_org }}/$reponame -> /tmp/cdevice >> {{ BUILD_LOG }}
+        TORG="{{ axp_git_org }}"
+        workflowpath=".github"
     fi
     
     if [ $create_req -eq 1 ];then
       echo "[GIT] repo {{ axp_git_org }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
 
       if [ $private -eq 1 ];then
-          git clone {{ git_axpos_org_private }}/$GHORG/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 
-          #&& git fetch up && git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT] Create new PRIVATE repo: {{ git_axpos_org_private }}/$reponame" >> {{ BUILD_LOG }}
+          #tea repo fork --owner AXP-OS github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 # PROB: set description requires api call then
+          git clone github.com/$GHORG/$reponame -b $upstream_branch /tmp/cdevice >> {{ BUILD_LOG }} 2>&1
           cd /tmp/cdevice
 
           tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }} >> {{ BUILD_LOG }} 2>&1
@@ -40,6 +47,7 @@
           for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
             git lfs track \"*.${lf}\"
           done
+          echo "[GIT] gitattributes:" >> {{ BUILD_LOG }} 
           cat .gitattributes >> {{ BUILD_LOG }} || true
           git add -A .  >> /dev/null 2>> {{ BUILD_LOG }}
           git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
@@ -50,6 +58,7 @@
              && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) \
           || true
       else
+          echo "[GIT] Create new PUBLIC repo: {{ git_axpos_org }}/$reponame" >> {{ BUILD_LOG }}
           gh repo fork $GHORG/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
           # even though the command will wait until the fork is fully created give some extra time
           sleep 5
@@ -68,22 +77,23 @@
           # finally clone the forked repo locally
           git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1    
       fi
-
       push_req=1
     fi
 
     cd /tmp/cdevice
+    echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
     git checkout origin/$upstream_branch  >> {{ BUILD_LOG }} 2>&1 || (git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch up && git checkout up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1)
 
     git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>/dev/null || true
     git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
     git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
     git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
+    git remote -v >> {{ BUILD_LOG }} 2>&1
 
     if [ "{{ target_model_common_tree }}" == "{{ device_tree }}" ];then
+      echo "[GIT] checking AXP.OS common tree include.." >> {{ BUILD_LOG }}
       grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
-        || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}
-    
+        || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}    
       grep -q "vendor/axp/BoardConfigVendor.mk" {{ target_model_device_tree_boardmk }} \
         || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ target_model_device_tree_boardmk }}
     fi
@@ -92,52 +102,99 @@
     if [ $CMTL -gt 0 ];then
         git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
         git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "board/device: enable AXP.OS" >> {{ BUILD_LOG }} 2>&1
+        echo "[GIT] git commit done" >> {{ BUILD_LOG }}
         push_req=$(( push_req + 1))
     fi
 
-    if [ ! -f .github/workflows/sync.yml ];then
-      mkdir -p .github/workflows/ 2>/dev/null || true
+    ############### ADD CI/CD (START)
+    if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
+      mkdir -p $workflowpath/workflows/ 2>/dev/null || true
+    
+      if [ $private -eq 1 ];then
+          echo "[GIT] adding CI/CD to PRIVATE repo" >> {{ BUILD_LOG }}
     {% raw %}
-      cat <<EOSYNC > .github/workflows/sync.yml
-      name: "Sync"
-
-      on:
-        workflow_dispatch:
-        schedule:
-          - cron: "$(( RANDOM % 60 )) $(( RANDOM % 24 )) * * *"
-
-      # Sets permissions of the GITHUB_TOKEN to allow pushing via github token
-      permissions:
-        contents: write
-
-      jobs:
-        sync-upstream:
+          cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
           name: "Sync with upstream"
-          uses: AXP-OS/.github/.github/workflows/sync_upstream.yml@main
-          with:
-              remote-repo: $GHORG/\${{ github.event.repository.name }}
-              remote-branch: $upstream_branch
-              local-repo: \${{ github.repository_owner }}/\${{ github.event.repository.name }}
-              local-branch: "$(git branch --no-color --show-current)"
-              dryrun: false
-          secrets: inherit
+    
+          on:
+            workflow_dispatch:
+            schedule:
+              - cron: "$(( RANDOM % 60 )) $(( RANDOM % 24 )) * * *"
+    
+          jobs:
+            sync-upstream:
+              name: "Sync with upstream"
+              runs-on: docker-node-latest
+              uses: https://codeberg.org/AXP-OS/actions/.gitea/workflows/sync_upstream.yaml@main
+              with:
+                  remote-server: github.com
+                  remote-repo: $GHORG/\${{ github.event.repository.name }}
+                  remote-branch: $upstream_branch
+                  local-repo: \${{ github.repository_owner }}/\${{ github.event.repository.name }}
+                  local-branch: "$(git branch --no-color --show-current)"
+                  dryrun: false
+              secrets: inherit
     EOSYNC
     {% endraw %}
-      git add -f .github/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
+
+      else
+      
+    {% raw %}
+          echo "[GIT] adding CI/CD to PUBLIC repo" >> {{ BUILD_LOG }}
+          cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
+          name: "Sync with upstream"
+    
+          on:
+            workflow_dispatch:
+            schedule:
+              - cron: "$(( RANDOM % 60 )) $(( RANDOM % 24 )) * * *"
+    
+          # Sets permissions of the GITHUB_TOKEN to allow pushing via github token
+          permissions:
+            contents: write
+    
+          jobs:
+            sync-upstream:
+              name: "Sync with upstream"
+              uses: AXP-OS/.github/.github/workflows/sync_upstream.yml@main
+              with:
+                  remote-repo: $GHORG/\${{ github.event.repository.name }}
+                  remote-branch: $upstream_branch
+                  local-repo: \${{ github.repository_owner }}/\${{ github.event.repository.name }}
+                  local-branch: "$(git branch --no-color --show-current)"
+                  dryrun: false
+              secrets: inherit
+    EOSYNC
+    {% endraw %}
+    
+      git add -f $workflowpath/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
           git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync" >> {{ BUILD_LOG }} 2>&1
           push_req=$(( push_req + 1))
+          echo "[GIT] git commit added for ci/cd" >> {{ BUILD_LOG }}
       fi
     else
-      echo "Skipped adding CI/CD sync to device tree!" >> {{ BUILD_LOG }} 2>&1
+      echo "Skipped adding CI/CD sync to device tree." >> {{ BUILD_LOG }} 2>&1
     fi
+    ############### ADD CI/CD (END)
 
     if [ "$push_req" -gt 0 ];then
+      echo "[GIT] pushing required ($push_req)!" >> {{ BUILD_LOG }}
+      git push origin $upstream_branch >> {{ BUILD_LOG }} 2>&1
+      echo "[GIT] Pushed $reponame / $upstream_branch!" >> {{ BUILD_LOG }} 2>&1
       git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
-      echo "[GIT] Pushed $reponame!" >> {{ BUILD_LOG }} 2>&1
+      echo "[GIT] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
       sleep 10
-      gh repo edit AXP-OS/${reponame} --default-branch $axp_release >> {{ BUILD_LOG }} 2>&1
+      if [ $private -eq 1 ];then
+        curl -siX PATCH -H "Content-Type: application/json" \
+          -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
+          -d '{"default_branch": "'$axp_release'"}'\
+          "https://code.binbash.rocks/api/v1/repos/{{ git_axpos_org_name }}/$reponame"
+      else
+        gh repo edit AXP-OS/${reponame} --default-branch $axp_release >> {{ BUILD_LOG }} 2>&1
+      fi
+      echo "[GIT] default branch set to $axp_release!" >> {{ BUILD_LOG }}
     else
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
