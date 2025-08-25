@@ -284,6 +284,8 @@
       git push --set-upstream $(git remote show | head -n1) $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[VERSIONING] [GIT] pushed new tag: $TAG" >> {{ BUILD_LOG }}
     else
+      git tag -d "$TAG"; git push up --delete "$TAG" 2>> /dev/null || true
+      git tag -a "$TAG" -m "axp.os: tagged {{ sub_model | d(target_model) }} on $TAG"
       git push --force --set-upstream $(git remote show | head -n1) $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[VERSIONING] [GIT] FORCE pushed new tag: $TAG" >> {{ BUILD_LOG }}
     fi
