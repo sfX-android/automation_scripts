@@ -8,6 +8,10 @@
     push_req=0
     create_req=0
 
+    echo -e "\n###########################################################"  >> {{ BUILD_LOG }}
+    echo -e "# STARTING: {{ device_tree }}"  >> {{ BUILD_LOG }}
+    echo -e "###########################################################"  >> {{ BUILD_LOG }}
+
     if [ -d /tmp/cdevice ]; then rm -fr /tmp/cdevice; fi
 
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
@@ -201,5 +205,8 @@
     fi
     
     rm -r /tmp/cdevice
+    echo -e "###########################################################"  >> {{ BUILD_LOG }}
+    echo -e "# ENDED: {{ device_tree }}"  >> {{ BUILD_LOG }}
+    echo -e "###########################################################\n"  >> {{ BUILD_LOG }}
   args:
     executable: /bin/bash
