@@ -1,6 +1,6 @@
 ---
 
-- name: "Switch device tree to new Major Release"
+- name: "Setup repositories for AXP.OS"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"
@@ -23,12 +23,12 @@
     
     if [ $private -eq 1 ];then
         git clone {{ git_axpos_org_private }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
-        echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> /tmp/cdevice >> {{ BUILD_LOG }}
+        echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> /tmp/cdevice" >> {{ BUILD_LOG }}
         TORG="{{ git_axpos_org_private }}"
         workflowpath=".gitea"
     else
         git clone {{ axp_git_org }}/$reponame /tmp/cdevice >> {{ BUILD_LOG }} 2>&1 || create_req=1
-        echo "[GIT] cloned {{ axp_git_org }}/$reponame -> /tmp/cdevice >> {{ BUILD_LOG }}
+        echo "[GIT] cloned {{ axp_git_org }}/$reponame -> /tmp/cdevice" >> {{ BUILD_LOG }}
         TORG="{{ axp_git_org }}"
         workflowpath=".github"
     fi
