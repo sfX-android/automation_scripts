@@ -1,6 +1,6 @@
 ---
 
-. name: "Setup repositories: Start clean"
+- name: "Setup repositories: Start clean"
   ansible.builtin.file:
       path: /tmp/cdevice
       state: absent
@@ -297,7 +297,7 @@
     echo -e "# ENDED: {{ device_tree }}"  >> {{ BUILD_LOG }}
     echo -e "###########################################################\n"  >> {{ BUILD_LOG }}
 
-. name: "Setup repositories: End clean"
+- name: "Setup repositories: End clean"
   ansible.builtin.file:
       path: /tmp/cdevice
       state: absent
