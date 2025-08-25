@@ -74,6 +74,8 @@
 
 - name: "Setup repositories for AXP.OS: Git branches & Upstream"
   ansible.builtin.shell: |
+    echo PWD: $PWD
+    
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
     if [ "$PWD" !=  "/tmp/cdevice" ];then
