@@ -22,15 +22,15 @@
       {{ DOS_INIT }}
       resetEnv >> {{ BUILD_LOG }} 2>&1
       #FIXME: unclear atm why this causes an issue at all - while nowhere else in the world
-      sed  '/var external_ndk_androidmks/a \        "system/qcom/softap/sdk/",' build/soong/ui/build/androidmk_denylist.go -i
+      sed  '/var external_ndk_androidmks/a \        "system/qcom/softap/sdk/",' build/soong/ui/build/androidmk_denylist.go -i >> {{ BUILD_LOG }} 2>&1
       # fix: unrecognized property "product_variables.device_has_arm_mte.cflags"
-      sed -i '/device_has_arm_mte[: ]*{/,/},/d' external/hardened_malloc/Android.bp
+      sed -i '/device_has_arm_mte[: ]*{/,/},/d' external/hardened_malloc/Android.bp >> {{ BUILD_LOG }} 2>&1
       # fix: build error due to removed lineage bloatware when making blueprint tools (also part of patchWorkspace but we need it earlier)
-      awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+      awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk >> {{ BUILD_LOG }} 2>&1
       # fix: build errors due to removed system bloatware:
       # error: build/make/target/product/generic/Android.bp:1037:1: "aosp_shared_system_image" depends on undefined module "XXXX".
       for r in $(grep -r remove .repo/local_manifests/axp.xml | cut -d '"' -f2 |grep -v android_ ; echo PrintRecommendationService);do
-        sed -E "s# (\"${r/*\/}\")# //\1#g" build/make/target/product/generic/Android.bp -i
+        sed -E "s# (\"${r/*\/}\")# //\1#g" build/make/target/product/generic/Android.bp -i >> {{ BUILD_LOG }} 2>&1
       done
   args:
     executable: /bin/bash
@@ -52,20 +52,22 @@
     if [ -f "{{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch" ];then
       cd {{ SRCPATH }}/.repo/manifests && git am {{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch; cd {{ SRCPATH }}
       PIXELDIRS=$(grep -o "name=.*" .repo/manifests/snippets/pixel.xml |cut -d '"' -f2 | tr '\n' ' ')
-      {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} $PIXELDIRS
+      {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} $PIXELDIRS >> {{ BUILD_LOG }} 2>&1
     fi
     
     # start DOS+AOS patching process
     {{ DOS_INIT }}
+    
     {% if sub_model is defined %}
-    lunch lineage_{{ sub_model }}${brf_suffix}-user && echo lunch success
+    lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
     {% else %}
-    lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
+    lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
     {% endif %}
     {% if android_version_int | int >= 15 %}mka blueprint_tools >> {{ BUILD_LOG }} 2>&1{% endif %}
+    
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
-    awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk
+    awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk >> {{ BUILD_LOG }} 2>&1
   register: patchout
   args:
     executable: /bin/bash
@@ -84,16 +86,16 @@
     {{ DOS_INIT }}
     
     {% if sub_model is defined %}
-    lunch lineage_{{ sub_model }}${brf_suffix}-user && echo lunch success
+    lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
     {% else %}
-    lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
+    lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
     {% endif %}
 
     export AXP_DEVICE="{{ common_target_model | d(target_model) }}"
     export AXP_DEVICEVENDOR="{{ target_model_vendor | lower }}"
     export AXP_LOW_STORAGE="{{ remove_space_reservation | d('no') }}"
     
-    vendor/axp/axp.sh
+    vendor/axp/axp.sh >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
@@ -103,7 +105,7 @@
       {{ DOS_INIT }}
       resetEnv >> {{ BUILD_LOG }} 2>&1
       # apply
-      {{ SRCPATH }}/vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/common/{{ android_shortversion }}
+      {{ SRCPATH }}/vendor/extendrom/tools/apply_patches.sh {{ SRCPATH }}/vendor/axp/patches/common/{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1
       [ $? -ne 0 ] && exit 6
       # commit
       CHANGED=$(find -L vendor/axp/patches/common/{{ android_shortversion }} -type f -name '*.patch' -exec grep -H project {} \; | tr ' ' '#' | cut -d '#' -f2 | sort -u | tr '\n' ' ')
