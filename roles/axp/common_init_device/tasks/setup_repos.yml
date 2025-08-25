@@ -79,7 +79,11 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
-
+    if [ "$PWD" !=  "/tmp/cdevice" ];then
+      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
+      exit 99
+    fi
+    
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
     else
@@ -136,7 +140,11 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
-
+    if [ "$PWD" !=  "/tmp/cdevice" ];then
+      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
+      exit 99
+    fi
+    
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
     else
@@ -168,7 +176,11 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
-
+    if [ "$PWD" !=  "/tmp/cdevice" ];then
+      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
+      exit 99
+    fi
+    
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
     else
@@ -264,7 +276,11 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
-
+    if [ "$PWD" !=  "/tmp/cdevice" ];then
+      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
+      exit 99
+    fi
+    
     if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
         GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
     else
@@ -274,11 +290,6 @@
 
     CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
     REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
-
-    if [ "$PWD" !=  "/tmp/cdevice" ];then
-      echo "ERROR: path is unexpected: $PWD" >> {{ BUILD_LOG }}
-      exit 99
-    fi
     
     if [ "$CURHASH" != "$REMHASH" ]; then
       echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
