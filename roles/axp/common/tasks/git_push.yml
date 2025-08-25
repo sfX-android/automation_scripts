@@ -238,7 +238,19 @@
     croot
     mv .repo/local_manifests/axp.xml ${REPRMANIFEST}
     echo "[GIT] fully completed!" >> {{ BUILD_LOG }}
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
 
+- name: "Push APP versions"
+  ansible.builtin.shell: |
+    export LC_ALL=C
+    export PATH="~/.local/bin:$PATH"
+    {{ DOS_INIT }}
+    
+    # tag name
+    TAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
+    
     echo "[VERSIONING] create list of APK versions..." >> {{ BUILD_LOG }}
     for erapp in {{ extendrom_package_list | d(extendrom_package_list_default) }}; do
         for app in $(find vendor/extendrom/prebuilt out/target/product/{{ sub_model | d(target_model) }} -type f -name "${erapp}*.apk"); do
@@ -251,7 +263,16 @@
 
     echo "[VERSIONING] create version file from template..." >> {{ BUILD_LOG }}
     awk '/\|-\|-\|/ { print; system("cat out/allapps.versions"); next }1' external/axp_versioning/template.md > temp_file && mv temp_file external/axp_versioning/{{ sub_model | d(target_model) }}.md
+
+    # set device name
+    sed 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+
+    # set release date
+    sed 's/%%RELDATE%%/$(date +%F) - or later/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
     
+    # set manifest
+    sed "s#%%MANIFEST%%#{{ git_repo_local_manifests | regex_replace('git@','https://') }}/$TAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
+  
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning
     git add -A .  >> /dev/null 2>> {{ BUILD_LOG }}
@@ -259,10 +280,10 @@
     TE=0
     git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
     if [ $TE -eq 0 ];then
-      git push --set-upstream origin $TAG >> {{ BUILD_LOG }} 2>&1
+      git push --set-upstream $(git remote show | head -n1) $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[VERSIONING] [GIT] pushed new tag: $TAG" >> {{ BUILD_LOG }}
     else
-      git push --force --set-upstream origin $TAG >> {{ BUILD_LOG }} 2>&1
+      git push --force --set-upstream $(git remote show | head -n1) $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[VERSIONING] [GIT] FORCE pushed new tag: $TAG" >> {{ BUILD_LOG }}
     fi
     echo "[VERSIONING] All DONE!"  
