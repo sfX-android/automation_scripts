@@ -14,8 +14,9 @@ git_axpos_org_name: "AXP.OS"
 commit_push: True
 # just push changes after patching, skip build
 just_git_push: False
+git_axpos_org_private_host: "code.binbash.rocks"
 # private git URI (incl org) for creating/updating repos for AXP.OS
-git_axpos_org_private: "ssh://git@code.binbash.rocks:22443/{{ git_axpos_org_name }}"
+git_axpos_org_private: "ssh://git@{{ git_axpos_org_private_host }}:22443/{{ git_axpos_org_name }}"
 # list of private repos within the AXP.OS org
 # reasons for listing them here are e.g. they get rejected on github, containing proprietary stuff or sim.
 # comma separated list:
