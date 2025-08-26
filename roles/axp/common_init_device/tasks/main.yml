@@ -1,6 +1,10 @@
 ---
 
-- include_tasks: loop.yml
+- block:
+
+    - include_tasks: setup_manifest.yml
+    - include_tasks: loop.yml
+
   when: axp_switchMR_all_devices is undefined
   
 - block:
