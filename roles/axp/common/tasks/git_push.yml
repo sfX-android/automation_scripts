@@ -251,6 +251,7 @@
     
     # tag name
     TAG="{{ build_id }}"
+    MTAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
     CDIR=$PWD
     LTAG=FETCH_HEAD
 
@@ -284,7 +285,7 @@
     sed -i "s/%%RELDATE%%/$(date +%F) - or later/g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
     
     # set manifest
-    sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('git@','') | regex_replace(':','/') }}/tree/$TAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('git@','') | regex_replace(':','/') }}/tree/$MTAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
   
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning
