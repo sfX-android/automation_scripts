@@ -39,3 +39,15 @@ axp_git_push_vendor_include: "vendor_oneplus_sm8150-common|vendor_oneplus_hotdog
 
  # re-testing effect of hibernation on bat life
 axp_defconfig_device: "CONFIG_HIBERNATION=y CONFIG_DEBUG_FS=n"
+
+# website info
+hugo_encryption: "FBEv2"
+hugo_firmware: "included"
+hugo_relockable: "no"
+hugo_state: "stable"
+hugo_supportlevel: "team"
+hugo_isab: "yes"
+hugo_kb_link: "guacamolehotdog"
+#hugo_custom_installguide_path: 
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-hotdog-axp-os-20-0.4625525/"
+hugo_first_releasedate: "2023-07-23"
