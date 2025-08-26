@@ -30,12 +30,6 @@
     axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
     device_tree: "{{ device_repo }}"
 
-#- include_tasks: setup_kernel.yml
-#  vars:
-#    target_model: "{{ target_model }}"
-#    axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
-#    axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
-
-- include_tasks: create_semaphore_task.yml
+- include_tasks: setup_semaphore.yml
   vars:
     semaphore_aos_template_name: "AOS {{ git_repo_local_manifests_branch | upper | regex_replace('AXP-','') }} {{ axp_type }}: {{ target_model_full }} ({{ target_model }})"
