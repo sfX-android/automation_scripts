@@ -1,12 +1,18 @@
 ---
 
-build_id: "switch_major_release"
+build_id: "init_device"
 target_model: "{{ build_id }}"
+telegram_notifications: False
+
+init_device_website_repo: "ssh://git@code.binbash.rocks:22443/AXP.OS/axpos-org.git"
+init_device_website_branch: "hugo"
+
+########### generate-4-ALL vars
+
 parse_roles_subdir: axp  # roles/xxx to parse
 generate_fairphone_factory_image: false
 skip_dl_cve_checker: True
 model_exclusions: "common|j5y17lte|klte|h815|g4"
-telegram_notifications: False
 
 ############ semaphore
 
