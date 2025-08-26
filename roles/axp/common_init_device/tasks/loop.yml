@@ -19,6 +19,7 @@
       axp_switchMR_target_branch: {{ git_repo_local_manifests_branch }}
       all_device_repos: {{ all_device_repos }}
 
+- include_tasks: setup_ansible.yml
 - include_tasks: setup_manifest.yml
 
 - name: "Include device tasks for each push target"
