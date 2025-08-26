@@ -91,7 +91,7 @@
     git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>/dev/null || true
     git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
     git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
-    git checkout origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
+    git checkout --track origin/$axp_release 2>/dev/null || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1
     git remote -v >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
@@ -214,7 +214,8 @@
     {% endraw %}
 
     else
-      
+    
+        echo "[GIT] adding CI/CD to PUBLIC repo" >> {{ BUILD_LOG }}
     {% raw %}
         workflowpath=".github"
         if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
@@ -223,7 +224,6 @@
             rm $workflowpath/workflows/sync.yml
           fi
           
-          echo "[GIT] adding CI/CD to PUBLIC repo" >> {{ BUILD_LOG }}
           cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
           name: "Sync with upstream"
     
