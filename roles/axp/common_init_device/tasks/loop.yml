@@ -5,7 +5,11 @@
 - name: Set combined device + kernel list
   set_fact:
     all_device_repos: >-
-      {{ (axp_git_push_device_include.split('|') + axp_git_push_vendor_include.split('|') +  target_kernel_dir | regex_replace('/','_') ) | unique }}
+      {{ (
+          axp_git_push_device_include.split('|') + 
+          axp_git_push_vendor_include.split('|') + 
+          [target_kernel_dir | regex_replace('/', '_')]
+      )| unique }}
 
 - name: DEBUG
   ansible.builtin.debug:
