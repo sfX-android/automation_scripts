@@ -278,6 +278,25 @@
     echo "[VERSIONING] create version file from template..." >> {{ BUILD_LOG }}
     awk '/\|-\|-\|/ { print; system("cat out/allapps.versions"); next }1' external/axp_versioning/template.md > temp_file && mv temp_file external/axp_versioning/{{ sub_model | d(target_model) }}.md
 
+    # add changelog: AOSmium
+    sed -i -E 's#(AOSmium)#[\1](https://code.binbash.rocks/AXP.OS/app_aosmium/commits/branch/main)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: Aurora Store
+    sed -i -E 's#(Aurora Store)#[\1](https://gitlab.com/AuroraOSS/AuroraStore/blob/HEAD/CHANGELOG)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: Etar
+    sed -i -E 's#(Etar)#[\1](https://github.com/Etar-Group/Etar-Calendar/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: F-Droid
+    sed -i -E 's#(F-Droid)#[\1](https://gitlab.com/fdroid/fdroidclient/-/blob/HEAD/CHANGELOG.md)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: Fossify Gallery
+    sed -i -E 's#(Gallery)#[\1](https://github.com/FossifyOrg/Gallery/blob/master/CHANGELOG.md)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: Google Play Store
+    sed -i -E 's#(Google Play Store)#[\1](https://codeberg.org/AXP-OS/packages_apps_phonesky/releases/)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: Magisk
+    sed -i -E 's#(Magisk)#[\1](https://github.com/topjohnwu/Magisk/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: Neo Launcher
+    sed -i -E 's#(Neo Launcher)#[\1](https://github.com/NeoApplications/Neo-Launcher/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: microG
+    sed -i -E 's#(microG Services)#[\1](https://github.com/microg/GmsCore/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+
     # set device name
     sed -i 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
 
