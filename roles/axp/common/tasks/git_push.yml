@@ -255,7 +255,7 @@
     LTAG=FETCH_HEAD
 
     cd external/axp_versioning
-    git fetch --tags
+    git fetch --tags --all
     git tag | grep "$TAG" || LTAG=$(git tag | head -n1)
     
     if [ ! -z "$LTAG" ];then
