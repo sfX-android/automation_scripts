@@ -25,7 +25,10 @@
   ansible.builtin.shell: "./update_firmware.sh"
   environment:
     DOWNLOAD_URL: "{{ vendor_firmware_download_url }}"
-    DOWNLOAD_MD5: "{{ vendor_firmware_download_md5 }}"
+    DOWNLOAD_MD5: "{{ vendor_firmware_download_md5 | d('undefined') }}"
+    DOWNLOAD_SHA1: "{{ vendor_firmware_download_sha1 | d('undefined') }}"
+    DOWNLOAD_SHA256: "{{ vendor_firmware_download_sha256 | d('undefined') }}"
+    DOWNLOAD_SHA512: "{{ vendor_firmware_download_sha512 | d('undefined') }}"
     TARGET_VENDOR: "{{ target_model_vendor | lower }}"
     TARGET_MODEL: "{{ target_model | lower }}"
   args:
