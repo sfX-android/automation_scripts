@@ -296,6 +296,8 @@
     sed -i -E 's#(Neo Launcher)#[\1](https://github.com/NeoApplications/Neo-Launcher/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
     # add changelog: microG
     sed -i -E 's#(microG Services)#[\1](https://github.com/microg/GmsCore/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    # add changelog: OpenEUICC
+    sed -i -E 's#(OpenEUICC)#[\1](https://gitea.angry.im/PeterCxy/OpenEUICC/commits/branch/master)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
 
     # set device name
     sed -i 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
