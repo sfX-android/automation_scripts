@@ -80,4 +80,6 @@
           args:
               executable: /bin/bash
 
-  when: commit_push | bool
+  when:
+      - commit_push | bool
+      -  not skip_dl_git_cli_tools | d(True) | bool
