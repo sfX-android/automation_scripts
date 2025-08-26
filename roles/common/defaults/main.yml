@@ -14,6 +14,10 @@ semaphore_lock_dir: "{{ semaphore_work_dir }}/run"
 # overwrite in semaphore env/inventory if needed
 ansible_home_dir: "{{ semaphore_work_dir }}"
 
+# this repo here
+automation_repo: "git@github.com:sfX-android/automation_scripts"
+automation_repo_branch: ansible
+
 # ensure we have a normalized & clean version tag (e.g. removing slashes from a git tag etc)
 parsed_target_version: "{{ git_repo_main_branch | regex_replace('.*/','') | regex_replace('^v','') }}"
 normalized_target_version: "{{ parsed_target_version | regex_replace('(\\d+)\\.(\\d+)(.*)','\\1.\\2') }}"
