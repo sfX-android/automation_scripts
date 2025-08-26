@@ -3,6 +3,8 @@
 - ansible.builtin.set_fact:
     init_device_temp_path: /tmp/init_manifest
 
+- block:
+
 - name: "Setup manifest: Start clean"
   ansible.builtin.file:
       path: "{{ init_device_temp_path }}"
@@ -14,6 +16,10 @@
     dest: "{{ init_device_temp_path }}"
     version: "{{ git_repo_local_manifests_branch }}"
   timeout: 180
+
+  
+  when: dsakjsakldjalskdj is defined
+  
 
 - name: "Setup manifest: add header"
   ansible.builtin.lineinfile:
