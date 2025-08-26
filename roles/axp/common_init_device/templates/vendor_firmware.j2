@@ -1,7 +1,5 @@
 # source file for {{ sub_model | d(target_model) }}
 # used by update_firmware.sh to auto-include firmware on Ansible run
 #
-# DOWNLOAD_INFO: {{ vendor_firmware_download_url_info }}"
+# check {{ automation_repo }}/roles/axp/{{ sub_model | d(target_model) }}/vars/main.yml for source details 
 ########################################################################################################################################################################
-export DOWNLOAD_URL="{{ vendor_firmware_download_url }}"
-export DOWNLOAD_MD5="{{ vendor_firmware_download_md5 }}"
