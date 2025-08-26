@@ -49,12 +49,7 @@
       executable: /bin/bash
   when: info_added.changed
 
-- fail:
-    msg: boooooo
-
-
 - name: "Setup website: End clean"
   ansible.builtin.file:
       path: "{{ init_device_temp_path }}"
       state: absent
-
