@@ -38,15 +38,6 @@
       state: present
   register: info_added
 
-- name: "Setup manifest: add new line"
-  ansible.builtin.lineinfile:
-      path: "{{ init_device_temp_path }}/axp.xml"
-      search_string: 'uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace("/","_") }}'
-      line: "\n"
-      insertafter: "<!-- uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace('/','_') }} (see above) -->"
-      state: present
-  when: info_added.changed
-
 - name: "Setup manifest: add all defined repos"
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/axp.xml"
