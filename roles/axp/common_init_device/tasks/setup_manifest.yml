@@ -24,7 +24,7 @@
 - name: "Setup manifest: add header"
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/axp.xml"
-      search_string: '{{ target_model_full }} \({{ sub_model | d(target_model) }}\)'
+      search_string: "{{ target_model_full }} \({{ sub_model | d(target_model) }}\)"
       line: "\t<!-- {{ target_model_full }} ({{ sub_model | d(target_model) }}) -->"
       insertbefore: '<!\-\- END OF DEVICE REPOS \-\->'
       state: present
@@ -52,13 +52,21 @@
   ansible.builtin.shell: |
       echo "[MANIFEST] starting git commit process" >> {{ BUILD_LOG }}
       source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}
-      
+    
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
           git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
           git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "{{ sub_model | d(target_model) }}: added/updated manifest" >> {{ BUILD_LOG }} 2>&1
           echo "[MANIFEST] git commit done" >> {{ BUILD_LOG }}
-          push_req=$(( push_req + 1))
+
+          CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
+          REMHASH=$(git log --pretty=oneline --decorate | grep "origin/{{ git_repo_local_manifests_branch }}" |cut -d ' ' -f1)
+            
+          if [ "$CURHASH" != "$REMHASH" ]; then
+              echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
+          else
+              echo "[GIT] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
+          fi
       else
            echo "[MANIFEST] git commit skipped (no changes)" >> {{ BUILD_LOG }}
       fi
