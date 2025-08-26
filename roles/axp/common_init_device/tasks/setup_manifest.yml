@@ -18,8 +18,8 @@
 - name: "Setup manifest: add block"
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/axp.xml"
-      regexp: '.*{{ target_model_full | regex_escape() }} ({{ sub_model | d(target_model) | regex_escape() }}).*'
-      line: "\t<!-- {{ target_model_full }} ({{ sub_model | d(target_model) }}) -->\n\t<!-- uses {{ target_model_common_tree }} - {{ target_kernel_dir | regex_replace('/','_') }} (see above) -->\n"
+      regexp: "<!-- {{ target_model_full | regex_escape() }} ({{ sub_model | d(target_model) | regex_escape() }})"
+      line: "\t<!-- {{ target_model_full }} ({{ sub_model | d(target_model) }}) -->\n\t<!-- uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace('/','_') }} (see above) -->\n"
       insertbefore: '<!-- END OF DEVICE REPOS -->'
       state: present
 
@@ -27,7 +27,7 @@
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/axp.xml"
       regexp: 'name="\w+_{{ device_repo }}"'
-      line: '\t{% if device_repo is search("vendor_.*") %}<project path="{{ device_repo | regex_replace("_","/") }}" name="proprietary_{{ device_repo }}" remote="axp.os-private" />{% else %}<project path="{{ device_repo | regex_replace("_","/") }}" name="android_{{ device_repo }}" remote="axp.os" />{% endif %}'
+      line: "\t{% if device_repo is search('vendor_.*') %}<project path=\"{{ device_repo | regex_replace('_','/') }}\" name=\"proprietary_{{ device_repo }}\" remote=\"axp.os-private\" />{% else %}<project path=\"{{ device_repo | regex_replace('_','/') }}\" name=\"android_{{ device_repo }}\" remote=\"axp.os\" />{% endif %}"
       insertafter: '<!-- {{ target_model_full | regex_escape() }} ({{ sub_model | d(target_model) | regex_escape() }}) -->'
       state: present
   loop: "{{ all_device_repos }}"
