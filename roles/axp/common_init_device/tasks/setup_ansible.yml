@@ -17,7 +17,7 @@
 
 - name: "Setup ansible: add header"
   ansible.builtin.lineinfile:
-      path: "{{ init_device_temp_path }}/axp.xml"
+      path: "{{ init_device_temp_path }}/roles/axp/{{ sub_model | d(target_model) }}/vars/main.yml"
       regexp: "android_shortversion:.*"
       line: "android_shortversion: {{ git_repo_local_manifests_branch | regex_replace('axp-','') }}"
       state: present
