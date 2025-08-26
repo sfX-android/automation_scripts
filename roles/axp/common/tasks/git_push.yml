@@ -260,6 +260,7 @@
     
     if [ ! -z "$LTAG" ];then
         git checkout $LTAG >> {{ BUILD_LOG }} 2>&1
+        git checkout FETCH_HEAD template.md >> {{ BUILD_LOG }} 2>&1
     fi
     cd $CDIR
     
