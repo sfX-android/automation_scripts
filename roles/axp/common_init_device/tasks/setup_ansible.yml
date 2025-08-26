@@ -15,7 +15,7 @@
     version: "{{ automation_repo_branch }}"
   timeout: 180
 
-- name: "Setup ansible: add header"
+- name: "Setup ansible: add/update android version"
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/roles/axp/{{ sub_model | d(target_model) }}/vars/main.yml"
       regexp: "android_shortversion:.*"
@@ -39,7 +39,7 @@
             
           if [ "$CURHASH" != "$REMHASH" ]; then
               echo "[GIT][ANSIBLE] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-              #git push origin {{ automation_repo_branch }} >> {{ BUILD_LOG }} 2>&1
+              git push origin {{ automation_repo_branch }} >> {{ BUILD_LOG }} 2>&1
           else
               echo "[GIT][ANSIBLE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
           fi
@@ -50,9 +50,6 @@
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
   when: info_added.changed
-
-- fail:
-    msg: booo
     
 - name: "Setup ansible: End clean"
   ansible.builtin.file:
