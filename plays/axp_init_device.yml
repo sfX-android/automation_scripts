@@ -1,6 +1,6 @@
 ---
 
-- name: "Switch Android Major Release"
+- name: "AXP.OS: init a new or existing device"
   hosts: buildserver
   gather_facts: true
           
