@@ -37,9 +37,6 @@
       insertafter: '<!-- {{ target_model_full | regex_escape() }} \({{ sub_model | d(target_model) | regex_escape() }}\) -->'
       state: present
 
-- fail:
-    msg: boo
-    
 - name: "Setup manifest: add all defined repos"
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/axp.xml"
@@ -52,7 +49,11 @@
     loop_var: device_repo 
 
 
-    
+
+
+- fail:
+    msg: boo
+        
 - name: "Setup manifest: End clean"
   ansible.builtin.file:
       path: "{{ init_device_temp_path }}"
