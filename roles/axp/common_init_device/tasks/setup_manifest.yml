@@ -43,7 +43,7 @@
       path: "{{ init_device_temp_path }}/axp.xml"
       search_string: 'uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace("/","_") }}'
       line: "\n"
-      insertafter: '<!-- uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace('/','_') }} (see above) -->'
+      insertafter: "<!-- uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace('/','_') }} (see above) -->"
       state: present
   when: info_added.changed
 
