@@ -15,12 +15,20 @@
     version: "{{ git_repo_local_manifests_branch }}"
   timeout: 180
 
-- name: "Setup manifest: add block"
+- name: "Setup manifest: add header"
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/axp.xml"
-      regexp: "<!-- {{ target_model_full | regex_escape() }} ({{ sub_model | d(target_model) | regex_escape() }})"
-      line: "\t<!-- {{ target_model_full }} ({{ sub_model | d(target_model) }}) -->\n\t<!-- uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace('/','_') }} (see above) -->\n"
+      regexp: '<!-- {{ target_model_full | regex_escape() }} ({{ sub_model | d(target_model) | regex_escape() }}) -->'
+      line: "\t<!-- {{ target_model_full }} ({{ sub_model | d(target_model) }}) -->"
       insertbefore: '<!-- END OF DEVICE REPOS -->'
+      state: present
+
+- name: "Setup manifest: add info"
+  ansible.builtin.lineinfile:
+      path: "{{ init_device_temp_path }}/axp.xml"
+      regexp: '<!-- {{ target_model_full | regex_escape() }} ({{ sub_model | d(target_model) | regex_escape() }}) -->'
+      line: "\t<!-- uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace('/','_') }} (see above) -->\n"
+      insertafter: '<!-- {{ target_model_full | regex_escape() }} ({{ sub_model | d(target_model) | regex_escape() }}) -->'
       state: present
 
 - name: "Setup manifest: add all defined repos"
