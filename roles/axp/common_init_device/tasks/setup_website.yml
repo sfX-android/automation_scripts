@@ -17,7 +17,7 @@
 
 - name: "Setup website: add/update android version"
   ansible.builtin.template:
-      source: hugo_params.j2
+      src: hugo_params.j2
       dest: "{{ init_device_temp_path }}/params/device_{{ sub_model | d(target_model) }}.params"
   register: info_added
 
