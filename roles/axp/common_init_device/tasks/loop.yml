@@ -2,10 +2,10 @@
 
 - include_vars: "../../{{ target_model }}/vars/main.yml"
 
-- name: Set combined device list
+- name: Set combined device + kernel list
   set_fact:
     all_device_repos: >-
-      {{ (axp_git_push_device_include.split('|') + axp_git_push_vendor_include.split('|')) | unique }}
+      {{ (axp_git_push_device_include.split('|') + axp_git_push_vendor_include.split('|')) +  target_kernel_dir | regex_replace('/','_') | unique }}
 
 - name: DEBUG
   ansible.builtin.debug:
@@ -26,11 +26,11 @@
     axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
     device_tree: "{{ device_repo }}"
 
-- include_tasks: setup_kernel.yml
-  vars:
-    target_model: "{{ target_model }}"
-    axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
-    axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
+#- include_tasks: setup_kernel.yml
+#  vars:
+#    target_model: "{{ target_model }}"
+#    axp_switchMR_upstream_branch: "{{ los_version_gitbranch }}"
+#    axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
 
 - include_tasks: create_semaphore_task.yml
   vars:
