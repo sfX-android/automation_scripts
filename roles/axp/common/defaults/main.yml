@@ -77,6 +77,8 @@ axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
 #axp_build_eng: false
 # should we verify all build images via the created vbmeta.img?
 vbmeta_verify: True
+# verified boot
+axp_enable_avb: 'true'
 # directories to be cleaned on a clean build
 axp_clean_paths:
     - "{{ SRCPATH }}/kernel" 
