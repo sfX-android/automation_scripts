@@ -48,8 +48,23 @@
   loop_control:
     loop_var: device_repo 
 
-
-
+- name: "Setup manifest: add & push changes"
+  ansible.builtin.shell: |
+      echo "[MANIFEST] starting git commit process" >> {{ BUILD_LOG }}
+      source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}
+      
+      CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+      if [ $CMTL -gt 0 ];then
+          git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "{{ sub_model | d(target_model) }}: added/updated manifest" >> {{ BUILD_LOG }} 2>&1
+          echo "[MANIFEST] git commit done" >> {{ BUILD_LOG }}
+          push_req=$(( push_req + 1))
+      else
+           echo "[MANIFEST] git commit skipped (no changes)" >> {{ BUILD_LOG }}
+      fi
+  args:
+      chdir: "{{ init_device_temp_path }}"
+      executable: /bin/bash
 
 - fail:
     msg: boo
