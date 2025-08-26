@@ -283,7 +283,7 @@
     sed -i "s/%%RELDATE%%/$(date +%F) - or later/g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
     
     # set manifest
-    sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('git@','') }}/tregitTAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('git@','') | regex_replace(':','/') }}/tree/$TAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
   
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning
