@@ -32,7 +32,7 @@
 - name: "Setup manifest: add info"
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/axp.xml"
-      regexp: '{{ target_model_full | regex_escape() }} \({{ sub_model | d(target_model) | regex_escape() }}\)'
+      regexp: '{{ target_model_full | regex_escape() }} ({{ sub_model | d(target_model) | regex_escape() }})'
       line: "\t<!-- uses {{ target_model_common_tree }} / {{ target_kernel_dir | regex_replace('/','_') }} (see above) -->\n"
       insertafter: '{{ target_model_full | regex_escape() }} \({{ sub_model | d(target_model) | regex_escape() }}\)'
       state: present
