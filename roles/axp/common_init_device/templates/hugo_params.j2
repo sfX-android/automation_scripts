@@ -3,7 +3,7 @@
 # device specs for {{ sub_model | d(target_model) }}
 ###############################################################################
 export HUGO_VENDOR="{{ target_model_vendor }}"
-export HUGO_NAME="{{ target_model_name }}"
+export HUGO_NAME="{{ target_model_full }}"
 export HUGO_CODENAME="{{ sub_model | d(target_model) }}"
 export HUGO_ANDROID="{{ git_repo_local_manifests_branch | regex_replace('axp-a','') }}"
 export HUGO_ENCRYPTION="{{ hugo_encryption }}"
