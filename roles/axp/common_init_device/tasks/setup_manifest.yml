@@ -24,7 +24,7 @@
 - name: "Setup manifest: add header"
   ansible.builtin.lineinfile:
       path: "{{ init_device_temp_path }}/axp.xml"
-      search_string: "{{ target_model_full }} \({{ sub_model | d(target_model) }}\)"
+      search_string: "{{ target_model_full }} ({{ sub_model | d(target_model) }})"
       line: "\t<!-- {{ target_model_full }} ({{ sub_model | d(target_model) }}) -->"
       insertbefore: '<!\-\- END OF DEVICE REPOS \-\->'
       state: present
