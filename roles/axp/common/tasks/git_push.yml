@@ -241,7 +241,6 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  when: sjsjsjsj is defined
 
 - name: "Push APP versions"
   ansible.builtin.shell: |
