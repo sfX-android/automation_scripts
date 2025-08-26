@@ -250,7 +250,18 @@
     {{ DOS_INIT }}
     
     # tag name
-    TAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
+    TAG="{{ build_id }}"
+    CDIR=$PWD
+    LTAG=FETCH_HEAD
+
+    cd external/axp_versioning
+    git fetch --tags
+    git tag | grep "$TAG" || LTAG=$(git tag | head -n1)
+    
+    if [ ! -z "$LTAG" ];then
+        git checkout $LTAG >> {{ BUILD_LOG }} 2>&1
+    fi
+    cd $CDIR
     
     echo "[VERSIONING] create list of APK versions..." >> {{ BUILD_LOG }}
     for erapp in {{ extendrom_package_list | d(extendrom_package_list_default) }}; do
@@ -278,6 +289,7 @@
     cd external/axp_versioning
     git add -A .  >> /dev/null 2>> {{ BUILD_LOG }}
     git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "add app versions for {{ build_id }}"  >> /dev/null 2>> {{ BUILD_LOG }}
+
     TE=0
     git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
     if [ $TE -eq 0 ];then
