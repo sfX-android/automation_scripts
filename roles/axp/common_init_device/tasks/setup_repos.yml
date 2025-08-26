@@ -43,7 +43,7 @@
             -H 'accept: application/json' \
             -H 'Content-Type: application/json' \
             -d  '{
-                  "description": "Mirror of: https://github.com/'$GHORG/$reponame' (requires a login)",
+                  "description": "Mirror of: https://github.com/'$GHORG/$reponame'",
                   "has_issues": true,
                   "external_tracker": {
                     "external_tracker_format": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues/{index}",
@@ -182,6 +182,9 @@
       workflowpath=".gitea"
       if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
           mkdir -p $workflowpath/workflows/ 2>/dev/null || true
+          if [ -f $workflowpath/workflows/sync.yml ];then
+            rm $workflowpath/workflows/sync.yml
+          fi
           
           echo "[GIT] adding CI/CD to PRIVATE repo" >> {{ BUILD_LOG }}
     {% raw %}
@@ -216,6 +219,10 @@
         workflowpath=".github"
         if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
           mkdir -p $workflowpath/workflows/ 2>/dev/null || true
+          if [ -f $workflowpath/workflows/sync.yml ];then
+            rm $workflowpath/workflows/sync.yml
+          fi
+          
           echo "[GIT] adding CI/CD to PUBLIC repo" >> {{ BUILD_LOG }}
           cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
           name: "Sync with upstream"
@@ -294,6 +301,8 @@
     else
       echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
     fi
+    
+    if [ "$reponame" == "android_device_oneplus_sm8150-common" ];then exit 99 ;fi
     
     echo -e "###########################################################"  >> {{ BUILD_LOG }}
     echo -e "# ENDED: {{ device_tree }}"  >> {{ BUILD_LOG }}
