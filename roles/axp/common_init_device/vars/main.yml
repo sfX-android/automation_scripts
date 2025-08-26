@@ -7,6 +7,8 @@ telegram_notifications: False
 init_device_website_repo: "ssh://git@code.binbash.rocks:22443/AXP.OS/axpos-org.git"
 init_device_website_branch: "hugo"
 
+init_device_vendorfirmware: "ssh://git@code.binbash.rocks:22443/AXP.OS/vendor_firmware.git"
+
 skip_dl_cve_checker: True
 skip_dl_git_cli_tools: True
 
