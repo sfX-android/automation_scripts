@@ -51,3 +51,7 @@ hugo_kb_link: "guacamolehotdog"
 #hugo_custom_installguide_path: 
 hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-hotdog-axp-os-20-0.4625525/"
 hugo_first_releasedate: "2023-07-23"
+
+# vendor/firmware info
+vendor_firmware_download_url: "https://gauss-otacostmanual-sg.allawnofs.com/remove-d88a4d0d4f8644d2e5deaa0bfcd57816/ota/23/03/29/43440ec0-4d18-4657-a6ff-8a203bdc939a.zip"
+vendor_firmware_download_md5: "3d15c9a772241e92cfb0c74acac2d739"
