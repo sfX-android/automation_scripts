@@ -27,7 +27,7 @@
   args:
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
-  when: hugo_relockable == "yes"
+  #when: hugo_relockable == "yes"
 
 - name: "Setup OTA verifier: add & push changes"
   ansible.builtin.shell: |
