@@ -1,5 +1,5 @@
 # source file for {{ sub_model | d(target_model) }}
 # used by update_firmware.sh to auto-include firmware on Ansible run
 #
-# check {{ automation_repo | regex_replace('git@','https://') | regex_replace(':','/') }}/roles/axp/{{ sub_model | d(target_model) }}/vars/main.yml for source details
+# check {{ automation_repo | regex_replace(':','/') | regex_replace('git@','https://') }}/blob/ansible/roles/axp/{{ sub_model | d(target_model) }}/vars/main.yml for source details
 ########################################################################################################################################################################
