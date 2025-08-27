@@ -17,10 +17,17 @@
 - name: "Setup OTA verifier: add/update OTA key"
   ansible.builtin.shell: |
     cp {{ keysdir }}/releasekey_OTA.pub {{ os_name }}/{{ sub_model | d(target_model) }}_AXP.OS_pubkey
+  args:
+      chdir: "{{ init_device_temp_path }}"
+      executable: /bin/bash
+
+- name: "Setup OTA verifier: add/update AVB key"
+  ansible.builtin.shell: |
     cp {{ keysdir }}/avb_pkmd.bin {{ os_name }}/{{ sub_model | d(target_model) }}_AXP.OS_avb_pkmd.bin
   args:
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
+  when: hugo_relockable == "yes"
 
 - name: "Setup OTA verifier: add & push changes"
   ansible.builtin.shell: |
