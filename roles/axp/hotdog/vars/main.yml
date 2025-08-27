@@ -31,19 +31,7 @@ axp_release_recovery: True
 
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: 'B9C105F3CB6FAFD3'
-hugo_axp_bootloader_id_pro: |
-   ```
-   BOOTLOADER minimal ID
-        B9C105F3
-
-   BOOTLOADER full ID:
-        B9C105F3CB6FAFD3
-        D15DD2EFE1501568
-        BD2C693DF0979572
-        D5AE290C72C401A8
-   ```
 axp_bootloader_id_slim: ''
-#hugo_axp_bootloader_id_slim: |
 
 # git push
 axp_git_push_device_include: "device_oneplus_hotdog|{{ target_model_common_tree }}"
@@ -59,10 +47,15 @@ hugo_relockable: "no"
 hugo_state: "stable"
 hugo_supportlevel: "team"
 hugo_isab: "yes"
-hugo_kb_link: "guacamolehotdog"
-#hugo_custom_installguide_path: 
 hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-hotdog-axp-os-20-0.4625525/"
 hugo_first_releasedate: "2023-07-23"
+hugo_kb_link: "guacamolehotdog"
+#hugo_custom_installguide_path: 
+#hugo_axp_bootloader_id_pro: |
+#   ```
+#   xxxxx
+#   ```
+#hugo_axp_bootloader_id_slim: |
 
 # vendor/firmware info
 vendor_firmware_download_url: "https://gauss-otacostmanual-sg.allawnofs.com/remove-d88a4d0d4f8644d2e5deaa0bfcd57816/ota/23/03/29/43440ec0-4d18-4657-a6ff-8a203bdc939a.zip"
