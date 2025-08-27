@@ -39,6 +39,7 @@
     TARGET_VENDOR: "{{ target_model_vendor | lower }}"
     TARGET_MODEL: "{{ target_model | lower }}"
     TMPDIR: "{{ android_build_path }}/.tmp"
+    ANDROIDVER: "{{ android_version_int }}"
   args:
     chdir: "{{ init_device_temp_path }}"
     executable: /bin/bash
