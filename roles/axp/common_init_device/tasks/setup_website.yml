@@ -21,6 +21,20 @@
       dest: "{{ init_device_temp_path }}/params/device_{{ sub_model | d(target_model) }}.params"
   register: info_added
 
+- name: "Setup website: add/update bootloader ID (pro)"
+  ansible.builtin.template:
+      src: hugo_bootloader_id.j2
+      dest: "{{ init_device_temp_path }}/content/devices/fp_{{ sub_model | d(target_model) }}_pro"
+  when: hugo_axp_bootloader_id_pro is defined
+  register: id_pro_added
+
+- name: "Setup website: add/update bootloader ID (slim)"
+  ansible.builtin.template:
+      src: hugo_bootloader_id.j2
+      dest: "{{ init_device_temp_path }}/content/devices/fp_{{ sub_model | d(target_model) }}_slim"
+  when: hugo_axp_bootloader_id_slim is defined
+  register: id_slim_added
+
 - name: "Setup website: add & push changes"
   ansible.builtin.shell: |
       echo "[GIT][WEBSITE] starting git commit process" >> {{ BUILD_LOG }}
@@ -47,7 +61,7 @@
   args:
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
-  when: info_added.changed
+  when: info_added.changed or id_pro_added.changed or id_slim_added.changed
 
 - name: "Setup website: End clean"
   ansible.builtin.file:
