@@ -55,7 +55,7 @@
             
           if [ "$CURHASH" != "$REMHASH" ]; then
               echo "[GIT][WEBSITE] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-              #git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
+              git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
           else
               echo "[GIT][WEBSITE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
           fi
@@ -66,9 +66,6 @@
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
   when: info_added.changed or id_pro_added.changed or id_slim_added.changed
-
-- fail:
-    msg: boooo
 
 - name: "Setup website: End clean"
   ansible.builtin.file:
