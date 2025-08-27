@@ -22,7 +22,9 @@
   register: info_added
 
 - name: "Setup firmware: Update..."
-  ansible.builtin.shell: "./update_firmware.sh >> {{ BUILD_LOG }} 2>&1"
+  ansible.builtin.shell: >
+          {% if vendor_firmware_persistent_path is defined %}PERSISTZIP="{{ vendor_firmware_persistent_path }}"{% endif %}
+          ./update_firmware.sh >> {{ BUILD_LOG }} 2>&1
   environment:
     DOWNLOAD_URL: "{{ vendor_firmware_download_url }}"
     DOWNLOAD_MD5: "{{ vendor_firmware_download_md5 | d('undefined') }}"
