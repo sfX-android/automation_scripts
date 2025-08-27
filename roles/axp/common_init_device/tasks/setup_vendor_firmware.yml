@@ -25,7 +25,7 @@
 
 - name: "Setup firmware: Update..."
   ansible.builtin.shell: |
-          source {{ BUILDHOME }}/.bashrc
+          export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
           {% if vendor_firmware_persistent_path is defined %}PERSISTZIP="{{ vendor_firmware_persistent_path }}"\ {% endif %}
             ./update_firmware.sh >> {{ BUILD_LOG }} 2>&1
   environment:
