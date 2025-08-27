@@ -31,7 +31,19 @@ axp_release_recovery: True
 
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: 'B9C105F3CB6FAFD3'
+hugo_axp_bootloader_id_pro: |
+   ```
+   BOOTLOADER minimal ID
+        B9C105F3
+
+   BOOTLOADER full ID:
+        B9C105F3CB6FAFD3
+        D15DD2EFE1501568
+        BD2C693DF0979572
+        D5AE290C72C401A8
+   ```
 axp_bootloader_id_slim: ''
+#hugo_axp_bootloader_id_slim: |
 
 # git push
 axp_git_push_device_include: "device_oneplus_hotdog|{{ target_model_common_tree }}"
