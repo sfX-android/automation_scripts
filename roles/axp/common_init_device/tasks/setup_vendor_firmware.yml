@@ -59,7 +59,7 @@
             
           if [ "$CURHASH" != "$REMHASH" ]; then
               echo "[GIT][FIRMWARE] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-              #git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
+              git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
           else
               echo "[GIT][FIRMWARE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
           fi
@@ -69,10 +69,6 @@
   args:
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
-  when: info_added.changed
-
-- fail:
-    msg: booooooooooooo
 
 - name: "Setup firmware: End clean"
   ansible.builtin.file:
