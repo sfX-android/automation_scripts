@@ -14,6 +14,7 @@
     dest: "{{ init_device_temp_path }}"
     version: "{{ git_repo_local_manifests_branch }}"
     depth: 1
+    single_branch: true
   timeout: 180
 
 - name: "Setup firmware: add/update 0SOURCE"
