@@ -27,7 +27,7 @@
   args:
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
-  #when: hugo_relockable == "yes"
+  when: hugo_relockable == "yes"
 
 - name: "Setup OTA verifier: add & push changes"
   ansible.builtin.shell: |
@@ -45,7 +45,7 @@
             
           if [ "$CURHASH" != "$REMHASH" ]; then
               echo "[GIT][OTAVERIFY] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-              #git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
+              git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
           else
               echo "[GIT][OTAVERIFY] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
           fi
@@ -55,10 +55,6 @@
   args:
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
-
-- fail:
-    msg: boooo
-
 
 - name: "Setup OTA verifier: End clean"
   ansible.builtin.file:
