@@ -63,6 +63,9 @@
       executable: /bin/bash
   when: info_added.changed or id_pro_added.changed or id_slim_added.changed
 
+- fail:
+    msg: boooo
+
 - name: "Setup website: End clean"
   ansible.builtin.file:
       path: "{{ init_device_temp_path }}"
