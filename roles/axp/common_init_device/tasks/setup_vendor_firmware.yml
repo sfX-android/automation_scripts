@@ -31,6 +31,7 @@
     DOWNLOAD_SHA512: "{{ vendor_firmware_download_sha512 | d('undefined') }}"
     TARGET_VENDOR: "{{ target_model_vendor | lower }}"
     TARGET_MODEL: "{{ target_model | lower }}"
+    TMPDIR: "{{ android_build_path }}/.tmp"
   args:
     chdir: "{{ init_device_temp_path }}"
     executable: /bin/bash
