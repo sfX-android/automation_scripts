@@ -1,7 +1,7 @@
 ---
 
 - ansible.builtin.set_fact:
-    init_device_temp_path: /tmp/init_firmware
+    init_device_temp_path: "{{ android_build_path }}/.tmp/init_firmware"
 
 - name: "Setup firmware: Start clean"
   ansible.builtin.file:
