@@ -27,7 +27,7 @@
   ansible.builtin.template:
       src: hugo_bootloader_id.j2
       dest: "{{ init_device_temp_path }}/content/devices/fp_{{ sub_model | d(target_model) }}_pro"
-  when: hugo_axp_bootloader_id_pro is defined
+  when: hugo_axp_bootloader_id_pro is defined and hugo_relockable == "yes"
   register: id_pro_added
 
 - name: "Setup website: add/update bootloader ID (slim)"
@@ -36,7 +36,7 @@
   ansible.builtin.template:
       src: hugo_bootloader_id.j2
       dest: "{{ init_device_temp_path }}/content/devices/fp_{{ sub_model | d(target_model) }}_slim"
-  when: hugo_axp_bootloader_id_slim is defined
+  when: hugo_axp_bootloader_id_slim is defined and hugo_relockable == "yes"
   register: id_slim_added
 
 - name: "Setup website: add & push changes"
@@ -55,7 +55,7 @@
             
           if [ "$CURHASH" != "$REMHASH" ]; then
               echo "[GIT][WEBSITE] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-              git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
+              #git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
           else
               echo "[GIT][WEBSITE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
           fi
