@@ -9,6 +9,8 @@ init_device_website_branch: "hugo"
 
 init_device_vendorfirmware: "ssh://git@code.binbash.rocks:22443/AXP.OS/vendor_firmware.git"
 
+init_device_otaverifier_repo: "git@github.com:sfX-android/update_verifier.git"
+
 skip_dl_cve_checker: True
 skip_dl_git_cli_tools: True
 
