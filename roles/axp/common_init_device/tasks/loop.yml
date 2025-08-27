@@ -19,7 +19,6 @@
       axp_switchMR_target_branch: {{ git_repo_local_manifests_branch }}
       all_device_repos: {{ all_device_repos }}
 
-- include_tasks: setup_vendor_firmware.yml
 - include_tasks: setup_otaverify.yml
 
 - name: "Include device tasks for each push target"
@@ -33,6 +32,7 @@
     axp_switchMR_target_branch: "{{ git_repo_local_manifests_branch }}"
     device_tree: "{{ device_repo }}"
 
+- include_tasks: setup_vendor_firmware.yml
 - include_tasks: setup_manifest.yml
 - include_tasks: setup_ansible.yml
 - include_tasks: setup_website.yml
