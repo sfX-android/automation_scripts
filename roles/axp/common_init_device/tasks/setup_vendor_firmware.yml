@@ -26,8 +26,8 @@
 - name: "Setup firmware: Update..."
   ansible.builtin.shell: |
           export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-          {% if vendor_firmware_persistent_path is defined %}PERSISTZIP="{{ vendor_firmware_persistent_path }}"\ {% endif %}
-            ./update_firmware.sh >> {{ BUILD_LOG }} 2>&1
+          {% if vendor_firmware_persistent_path is defined %}export PERSISTZIP="{{ vendor_firmware_persistent_path }}"{% endif %}
+          ./update_firmware.sh >> {{ BUILD_LOG }} 2>&1
   environment:
     DOWNLOAD_URL: "{{ vendor_firmware_download_url }}"
     DOWNLOAD_MD5: "{{ vendor_firmware_download_md5 | d('undefined') }}"
