@@ -58,5 +58,9 @@ hugo_kb_link: "guacamolehotdog"
 #hugo_axp_bootloader_id_slim: |
 
 # vendor/firmware info
+# download source: https://xdaforums.com/t/oneplus-7t-pro-rom-ota-oxygen-os-repo-of-oxygen-os-builds.4003455/
 vendor_firmware_download_url: "https://gauss-otacostmanual-sg.allawnofs.com/remove-d88a4d0d4f8644d2e5deaa0bfcd57816/ota/23/03/29/43440ec0-4d18-4657-a6ff-8a203bdc939a.zip"
-vendor_firmware_download_md5: "3d15c9a772241e92cfb0c74acac2d739"
+vendor_firmware_download_sha512: "0910df09c475d04ef8fa3b0b52cc24ad24c0bd10b8433bae550663e84f6ca9d830e204e8420d42771a832dad403a353362f1cfacedfd32b17b8b5cec6ef79ee3"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/HD1913_11.F.22.zip"
