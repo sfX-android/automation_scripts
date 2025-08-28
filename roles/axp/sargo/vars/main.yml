@@ -37,3 +37,48 @@ axp_bootloader_id_slim: 'AC2F6121652F3607'
 # git push
 axp_git_push_device_include: "device_google_sargo|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_sargo"
+
+# disable Wireguard patching (already part of the upstream kernel since >= A15)
+skip_wireguard: True
+
+# website info
+hugo_encryption: "ICE"
+hugo_firmware: "included"
+hugo_relockable: "yes"
+hugo_state: "stable"
+hugo_supportlevel: "community"
+hugo_isab: "no"
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-sargo-axp-os-20-0.4722274/"
+hugo_first_releasedate: "2025-03-01"
+hugo_kb_link: "sargo"
+#hugo_custom_installguide_path: 
+hugo_axp_bootloader_id_pro: |
+  ```
+  BOOTLOADER minimal ID
+        BB8B6D9E
+
+  BOOTLOADER full ID:
+        BB8B6D9E18C68E46
+        369A874E6ADDB573
+        41A349D9AC536C95
+        1A0560AB2F63B07F
+  ```
+hugo_axp_bootloader_id_slim: |
+  ```
+  BOOTLOADER minimal ID
+        AC2F6121
+
+  BOOTLOADER full ID:
+        AC2F6121652F3607
+        71EEB5510F6DB2D2
+        9CB444CE23F8A64E
+        9D1FDB7175432C32
+  ```
+
+# vendor/firmware info
+# download source: https://developers.google.com/android/ota#sargo
+vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/sargo-ota-sp2a.220505.008-2037245c.zip"
+vendor_firmware_download_sha256: "2037245c06c8e0912c098c347be7b49a707d7cacf9a663ad7e68c96ce75ea32b"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/sargo-ota-sp2a.220505.008-2037245c.zip"
