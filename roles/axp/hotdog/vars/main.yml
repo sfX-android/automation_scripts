@@ -29,6 +29,9 @@ target_model_device_tree_mk: common.mk
 # upload the recovery image
 axp_release_recovery: True
 
+# disable Wireguard patching (already part of the upstream kernel (>= A15)
+skip_wireguard: True
+
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: 'B9C105F3CB6FAFD3'
 axp_bootloader_id_slim: ''
