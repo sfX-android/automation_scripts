@@ -56,7 +56,17 @@ hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-sunfish
 hugo_first_releasedate: "2024-01-16"
 #hugo_kb_link: ""
 #hugo_custom_installguide_path: 
-#hugo_axp_bootloader_id_pro: |
+hugo_axp_bootloader_id_pro: |
+  ```
+  BOOTLOADER minimal ID
+        2357DB9E
+
+  BOOTLOADER full ID:
+        2357DB9EBF8090F9
+        908E9BBC0B353CC9
+        CA11015AC588001D
+        0AB9A80BD8AA5906
+  ```
 hugo_axp_bootloader_id_slim: |
   ```
   BOOTLOADER minimal ID
@@ -72,7 +82,7 @@ hugo_axp_bootloader_id_slim: |
 # vendor/firmware info
 # download source: https://xdaforums.com/t/oneplus-7t-pro-rom-ota-oxygen-os-repo-of-oxygen-os-builds.4003455/
 vendor_firmware_download_url: "https://archive.org/download/sunfish-tq3a.230805.001.s1/sunfish-ota-tq3a.230805.001.s1-965296b1.zip"
-vendor_firmware_download_sha512: ""
+vendor_firmware_download_sha512: "cbdf1aff26ede80276876a791e7e129b763835474ba835472ec84af5791e2316dd154d3c19d06aa64b86fdb0e0b0af8c8c573877be348e2c90d5bcd8a2807819"
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
 vendor_firmware_persistent_path: "{{ persistent_dir }}/sunfish-ota-tq3a.230805.001.s1-965296b1.zip"
