@@ -27,9 +27,6 @@ custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 # add OpenEUICC
 extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
-# disable Wireguard patching (already part of the upstream kernel)
-skip_wireguard: True
-
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: '27AA5BB1975D18B0'
 axp_bootloader_id_slim: ''
@@ -37,3 +34,46 @@ axp_bootloader_id_slim: ''
 # git push
 axp_git_push_device_include: "device_google_bluejay|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_bluejay"
+
+# disable Wireguard patching (already part of the upstream kernel)
+skip_wireguard: True
+
+# website info
+hugo_encryption: "FBEv1"  #https://github.com/LineageOS/android_device_google_gs101/blob/lineage-22.2/conf/fstab.gs101.in
+hugo_firmware: "included"
+hugo_relockable: "yes"
+hugo_state: "stable"
+hugo_supportlevel: "team"
+hugo_isab: "yes"
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-bluejay-axp-os-20-0.4663844/"
+hugo_first_releasedate: "2024-03-26"
+#hugo_kb_link: ""
+#hugo_custom_installguide_path: 
+#hugo_axp_bootloader_id_pro: |
+#  ```
+#
+#  ```
+hugo_axp_bootloader_id_slim: |
+  ```
+  BOOTLOADER minimal ID
+        27AA5BB1
+
+  BOOTLOADER full ID: 
+        27AA5BB1975D18B0
+        402E0F17B0DC1C94
+        13CA0F5ACF3C70AE
+        0711C05CDE94AAFB
+  ```
+# vendor/firmware info
+# download source: https://developers.google.com/android/ota#bluejay
+vendor_firmware_download_url: "https://archive.org/download/20250720_20250720_1751/OTA/13.0.0-TQ3A.230901.001-Sep%202023-1f1f0abe67a6f6f47287be6dafec2c12628de6a715b82ca7beddaf67ad22aca5/bluejay-ota-tq3a.230901.001-1f1f0abe.zip"
+vendor_firmware_download_sha256: "1f1f0abe67a6f6f47287be6dafec2c12628de6a715b82ca7beddaf67ad22aca5"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/bluejay-ota-tq3a.230901.001-1f1f0abe.zip"
+####### A15 prep:
+#vendor_firmware_download_url: "https://archive.org/download/20250720_20250720_1751/OTA/15.0.0-BP1A.250505.005-May%202025-728eab10ee8393a04503e2f79cfe441f7f287a6dda4ba207d0550632009f6904/bluejay-ota-bp1a.250505.005-728eab10.zip"
+#vendor_firmware_download_sha256: "728eab10ee8393a04503e2f79cfe441f7f287a6dda4ba207d0550632009f6904"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+#vendor_firmware_persistent_path: "{{ persistent_dir }}/bluejay-ota-bp1a.250505.005-728eab10.zip"
