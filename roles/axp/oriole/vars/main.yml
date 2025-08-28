@@ -28,9 +28,6 @@ custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 # add OpenEUICC
 extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
-# disable Wireguard patching (already part of the upstream kernel)
-skip_wireguard: True
-
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: ''
 axp_bootloader_id_slim: '42D46266F04BBF79'
@@ -38,3 +35,47 @@ axp_bootloader_id_slim: '42D46266F04BBF79'
 # git push
 axp_git_push_device_include: "device_google_oriole|device_google_raven|device_google_raviole|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_oriole"
+
+# disable Wireguard patching (already part of the upstream kernel)
+skip_wireguard: True
+
+# website info
+hugo_encryption: "FBEv1"  #https://github.com/LineageOS/android_device_google_gs101/blob/lineage-22.2/conf/fstab.gs101.in
+hugo_firmware: "included"
+hugo_relockable: "yes"
+hugo_state: "stable"
+hugo_supportlevel: "community"
+hugo_isab: "yes"
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-oriole-axp-os-20-0.4718167/"
+hugo_first_releasedate: "2025-02-08"
+#hugo_kb_link: ""
+#hugo_custom_installguide_path: 
+#hugo_axp_bootloader_id_pro: |
+#  ```
+#
+#  ```
+hugo_axp_bootloader_id_slim: |
+  ```
+  BOOTLOADER minimal ID
+        42D46266
+
+  BOOTLOADER full ID:
+        42D46266F04BBF79
+        709B79C9FEC8BD6C
+        515A525030E24BFF
+        C762747813879DC8
+  ```
+
+# vendor/firmware info
+# download source: https://developers.google.com/android/ota#oriole
+vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/oriole-ota-tq3a.230901.001-ea9d9bca.zip"
+vendor_firmware_download_sha256: "ea9d9bca6dfc031e2e7969b6e143005cd87531a95cf2b736cd57c1e37ec430e8"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/oriole-ota-tq3a.230901.001-ea9d9bca.zip"
+####### A15 prep:
+#vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/oriole-ota-bp1a.250505.005-0ac3ca61.zip"
+#vendor_firmware_download_sha256: "0ac3ca6175db1b86ed666aa2079a1f8ad41ea67a52e5a9b834c09bde6a6e5a5f"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+#vendor_firmware_persistent_path: "{{ persistent_dir }}/oriole-ota-bp1a.250505.005-0ac3ca61.zip"
