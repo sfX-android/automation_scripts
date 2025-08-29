@@ -28,7 +28,7 @@
 # dynamic sources
 - include_tasks: amnestytech.yml
 - include_tasks: clamav.yml
-- include_tasks: cybercure.yml
+#- include_tasks: cybercure.yml # disabled, atm (2025-08-29) any api call just give back the "ips" feed
 - include_tasks: eset.yml
 - include_tasks: malicious_hash.yml
 - include_tasks: malshare.yml
