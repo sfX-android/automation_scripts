@@ -32,6 +32,11 @@
       for r in $(grep -r remove .repo/local_manifests/axp.xml | cut -d '"' -f2 |grep -v android_ ; echo PrintRecommendationService);do
         sed -E "s# (\"${r/*\/}\")# //\1#g" build/make/target/product/generic/Android.bp -i >> {{ BUILD_LOG }} 2>&1
       done
+      # add AXP.OS BoardConfig globally!
+      # FIXME: this makes common device tree includes obsolete!
+      sed -i '/^INSTALLED_MISC_INFO_TARGET := $(PRODUCT_OUT)\/misc_info.txt$/a \
+      \n# we need to encorce-include AXPs own BoardConfig here now.\n# while using the device tree'"'"'s BoardConfig worked fine up to A13 this\n# does not work in all cases with A15 anymore.\ninclude vendor/axp/BoardConfigVendor.mk' \
+      build/core/Makefile
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
