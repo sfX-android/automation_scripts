@@ -109,7 +109,24 @@ semaphore_aos_template_survey_vars: >-
         "description": "vendor/firmware/<device>/0SOURCE must be set",
         "required": false,
         "type": ""
-      }
+      },
+      {
+        "name": "commit_push",
+        "title": "commit_push",
+        "required": true,
+        "type": "enum",
+        "values": [
+            {
+                "name": "yes",
+                "value": "True"
+            },
+            {
+                "name": "no",
+                "value": "False"
+            }
+        ],
+        "default_value": "True"
+    }
     ]
 
 # vaults
