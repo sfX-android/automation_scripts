@@ -115,8 +115,8 @@
       
       grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
         || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}    
-      grep -q "vendor/axp/BoardConfigVendor.mk" {{ target_model_device_tree_boardmk }} \
-        || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ target_model_device_tree_boardmk }}
+      #grep -q "vendor/axp/BoardConfigVendor.mk" {{ target_model_device_tree_boardmk }} \
+      #  || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ target_model_device_tree_boardmk }}
       
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
@@ -129,7 +129,6 @@
   args:
     executable: /bin/bash
     chdir: /tmp/cdevice
-  when: DISABLEDINCL is defined
     
 - name: "Setup repositories: LFS"
   ansible.builtin.shell: |
