@@ -129,6 +129,7 @@
   args:
     executable: /bin/bash
     chdir: /tmp/cdevice
+  when: DISABLEDINCL is defined
     
 - name: "Setup repositories: LFS"
   ansible.builtin.shell: |
