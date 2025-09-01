@@ -14,6 +14,10 @@
 #          name: "{{ ROM_FLAVOR }}/common"
 #          public: yes
 
+      - name: Show freezeday_app_repos
+        debug:
+          var: freezeday_app_repos
+
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: 
