@@ -64,7 +64,7 @@
                     
                   if [ "$CURHASH" != "$REMHASH" ]; then
                       echo "[GIT][BUILDAPPS] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-                      #git push origin {{ repo.branch }} >> {{ BUILD_LOG }} 2>&1
+                      git push origin {{ repo.branch }} >> {{ BUILD_LOG }} 2>&1
                   else
                       echo "[GIT][BUILDAPPS] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
                   fi
