@@ -12,7 +12,7 @@
 
         - name: "Build apps: fetch git repo"
           ansible.builtin.git:
-            repo: "{{ axp_git_org }}/{{ repo.name }}"
+            repo: "{{ freezeday_axp_git_org }}/{{ repo.name }}"
             dest: "{{ build_temp_path }}"
             version: "{{ repo.branch }}"
           timeout: 180
