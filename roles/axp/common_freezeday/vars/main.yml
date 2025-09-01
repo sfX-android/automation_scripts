@@ -7,8 +7,11 @@ debug_off: true
 skip_build_apps: False
 skip_build_apps_longrun: False
 
+# git
 git_api_uri: "https://code.binbash.rocks:8443/api/v1"
 freezeday_axp_git_org: "git@github.com:AXP-OS"
+git_author: AXP.OS
+git_mail: aosbot@axpos.org
 
 freezeday_app_repos:
   - name: packages_apps_LoveLaceAV
