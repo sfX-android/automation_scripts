@@ -10,9 +10,9 @@
       - import_role:
           name: common
 
-      - include_role:
-          name: "{{ ROM_FLAVOR }}/common"
-          public: yes
+#      - include_role:
+#          name: "{{ ROM_FLAVOR }}/common"
+#          public: yes
 
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
@@ -21,7 +21,7 @@
           - telegram_notifications | bool
 
       - import_role:
-          name: "{{ ROM_FLAVOR }}/common_freezeday"
+          name: "axp/common_freezeday"
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
