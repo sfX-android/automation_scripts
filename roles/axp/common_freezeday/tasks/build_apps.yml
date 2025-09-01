@@ -30,8 +30,8 @@
         
         - name: "Build apps: add & push changes"
           ansible.builtin.shell: |
+              set -e
               echo "[GIT][BUILDAPPS] starting git commit process" >> {{ BUILD_LOG }}
-              source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}
             
               CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
               if [ $CMTL -gt 0 ];then
