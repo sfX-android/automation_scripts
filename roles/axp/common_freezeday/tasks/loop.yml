@@ -6,5 +6,5 @@
   loop_control:
     loop_var: lp
   vars:
-    repo: "{{ item }}"
+    repo: "{{ lp }}"
 
