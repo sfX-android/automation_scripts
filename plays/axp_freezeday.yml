@@ -1,0 +1,51 @@
+---
+
+- name: "AXP.OS: introduce a new build run"
+  hosts: buildserver
+  gather_facts: true
+          
+  tasks:
+    - block:
+    
+      - import_role:
+          name: common
+
+      - include_role:
+          name: "{{ ROM_FLAVOR }}/common"
+          public: yes
+
+      - fail:
+          msg: "boo.. vault_tg_group_id_failing is undefined"
+        when: 
+          - vault_tg_group_id_failing is undefined
+          - telegram_notifications | bool
+
+      - import_role:
+          name: "{{ ROM_FLAVOR }}/common_freezeday"
+
+      - set_fact:
+          tg_group_id: "{{ vault_tg_group_id_failing }}"
+        when:
+          - telegram_notifications | bool
+
+      - include_role:
+          name: notify
+
+      # when any of the above fails notify always 
+      rescue:
+
+        - set_fact:
+            tg_group_id: "{{ vault_tg_group_id_failing }}"
+          when:
+            - telegram_notifications | bool
+
+        - include_role:
+            name: notify
+            
+        - fail:
+            msg: |
+              ERROR OCCURED:
+              
+              {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
+              
+              See above for details.
