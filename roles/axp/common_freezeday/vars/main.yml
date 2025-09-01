@@ -8,8 +8,10 @@ skip_build_apps: False
 skip_build_apps_longrun: False
 
 # git
-git_api_uri: "https://code.binbash.rocks:8443/api/v1"
-freezeday_axp_git_org: "git@github.com:AXP-OS"
+git_axpos_org_private_host: "code.binbash.rocks"
+git_axpos_org_name: "AXP.OS"
+freezeday_axp_git_org: "ssh://git@{{ git_axpos_org_private_host }}:22443/{{ git_axpos_org_name }}"
+
 git_author: AXP.OS
 git_mail: aosbot@axpos.org
 
