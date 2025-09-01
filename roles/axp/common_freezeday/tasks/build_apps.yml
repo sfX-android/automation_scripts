@@ -57,9 +57,7 @@
               else
                    echo "[GIT][BUILDAPPS] git commit skipped (no changes)" >> {{ BUILD_LOG }}
               fi
-
-              false
-              
+              sleep 1m             
           args:
               chdir: "{{ build_temp_path }}"
               executable: /bin/bash
