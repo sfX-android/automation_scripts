@@ -20,7 +20,7 @@
     #    var: ansible_facts
 
     - name: "Building"
-      shell: |
+      raw: |
          export BDEVICE=sunfish
          export DEVICE=$BDEVICE; source build/envsetup.sh; source ../../Scripts/init.sh ; lunch lineage_${DEVICE}-bp1a-user; export AXP_ADVANCED_DEBLOB=true
          source /home/droidme/build_sunfish_a15_axp.sh >> ~/LOG 2>&1
