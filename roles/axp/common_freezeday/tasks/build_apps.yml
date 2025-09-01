@@ -8,6 +8,10 @@
       path: "{{ build_temp_path }}"
       state: absent
 
+- name: "Build apps: currently processing"
+  ansible.builtin.debug:
+      msg: "{{ repo.name }}"
+
 - block:
 
         - name: "Build apps: fetch git repo"
