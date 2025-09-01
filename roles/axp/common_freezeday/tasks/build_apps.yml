@@ -12,8 +12,9 @@
 
         - name: "Build apps: fetch git repo"
           ansible.builtin.git:
-            repo: "{{ repo }}"
+            repo: "{{ repo.name }}"
             dest: "{{ build_temp_path }}"
+            version: "{{ repo.branch }}"
           timeout: 180
         
         - name: "Build apps: add/update trigger-build.txt"
