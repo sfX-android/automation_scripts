@@ -6,7 +6,7 @@
     method: GET
     headers:
         Content-Type: application/json
-        Authorization: "token {{ vault_gitea_api_ro_token }}"
+        Authorization: "token {{ vault_gitea_rw_token }}"
         accept: application/json
   loop: "{{ freezeday_app_repos }}"
   loop_control:
@@ -21,7 +21,7 @@
     method: POST
     headers:
         Content-Type: application/json
-        Authorization: "token {{ vault_gitea_api_ro_token }}"
+        Authorization: "token {{ vault_gitea_rw_token }}"
         accept: application/json
     body_format: json
     body: >-
@@ -39,7 +39,7 @@
     method: PUT
     headers:
         Content-Type: application/json
-        Authorization: "token {{ vault_gitea_api_ro_token }}"
+        Authorization: "token {{ vault_gitea_rw_token }}"
         accept: application/json
     body_format: json
     body: >-
