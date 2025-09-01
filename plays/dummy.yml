@@ -8,10 +8,3 @@
   tasks:
     - debug:
         msg: "dummy"
-
-    - name: "Building"
-      shell: >
-         source /home/droidme/build_sunfish_a15_axp.sh >> ~/LOG 2>&1
-      args:
-        executable: /bin/bash
-        chdir: "/usr/src/android/axp/Build/LineageOS-22.2"
