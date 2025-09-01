@@ -1,8 +1,17 @@
 ---
 
+- set_fact:
+    freezeday_singleapp: 
+      - name: "{{ freezeday_app_singlerepo | regex_replace('|.*','') }}"
+        branch: "{{ freezeday_app_singlerepo | regex_replace('.*|','') }}"    
+  when: freezeday_app_singlerepo is defined
+ 
+ - set_fact:
+    freezeday_list: "{% if freezeday_singleapp is defined %}{{ freezeday_singleapp }}{% else %}{{ freezeday_app_repos }}{% endif %}"
+
 - name: "Loop over freezeday_app_repos"
   include_tasks: build_apps.yml
-  loop: "{{ freezeday_app_repos }}"
+  loop: "{{ freezeday_list }}"
   loop_control:
     loop_var: lp
   vars:
