@@ -12,7 +12,7 @@
 
         - name: "Build apps: fetch git repo"
           ansible.builtin.git:
-            repo: "{{ repo.name }}"
+            repo: "{{ axp_git_org }}/{{ repo.name }}"
             dest: "{{ build_temp_path }}"
             version: "{{ repo.branch }}"
           timeout: 180
@@ -40,11 +40,11 @@
                   echo "[GIT][BUILDAPPS] git commit done" >> {{ BUILD_LOG }}
         
                   CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-                  REMHASH=$(git log --pretty=oneline --decorate | grep "origin/{{ git_repo_local_manifests_branch }}" |cut -d ' ' -f1)
+                  REMHASH=$(git log --pretty=oneline --decorate | grep "origin/{{ repo.branch }}" |cut -d ' ' -f1)
                     
                   if [ "$CURHASH" != "$REMHASH" ]; then
                       echo "[GIT][BUILDAPPS] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-                      git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
+                      git push origin {{ repo.branch }} >> {{ BUILD_LOG }} 2>&1
                   else
                       echo "[GIT][BUILDAPPS] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
                   fi
