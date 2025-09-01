@@ -71,7 +71,10 @@
               else
                    echo "[GIT][BUILDAPPS] git commit skipped (no changes)" >> {{ BUILD_LOG }}
               fi
-              sleep 10m             
+              
+              {% if freezeday_app_singlerepo == 'ALL' %}
+              sleep 5m
+              {% endif %}
           args:
               chdir: "{{ build_temp_path }}"
               executable: /bin/bash
