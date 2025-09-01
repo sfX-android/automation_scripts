@@ -64,14 +64,14 @@
                     
                   if [ "$CURHASH" != "$REMHASH" ]; then
                       echo "[GIT][BUILDAPPS] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-                      #git push origin {{ repo.branch }} >> {{ BUILD_LOG }} 2>&1
+                      git push origin {{ repo.branch }} >> {{ BUILD_LOG }} 2>&1
                   else
                       echo "[GIT][BUILDAPPS] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
                   fi
               else
                    echo "[GIT][BUILDAPPS] git commit skipped (no changes)" >> {{ BUILD_LOG }}
               fi
-              sleep 5m             
+              sleep 10m             
           args:
               chdir: "{{ build_temp_path }}"
               executable: /bin/bash
