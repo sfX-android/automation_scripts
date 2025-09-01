@@ -1,63 +1,146 @@
 ---
 
-- name: "Build apps: get all trigger-build.txt sha values"
-  ansible.builtin.uri:
-    url: "{{ git_api_uri }}/repos/{{ item.name }}/contents/trigger-build.txt?ref={{ item.branch }}"
-    method: GET
-    headers:
-        Content-Type: application/json
-        Authorization: "token {{ vault_gitea_rw_token }}"
-        accept: application/json
-  loop: "{{ freezeday_app_repos }}"
-  loop_control:
-      label: info
-  register: file
-  ignore_errors: true
-  no_log: "{{ debug_off | bool }}"
-   
-- name: "Build apps: create missing trigger"
-  ansible.builtin.uri:
-    url: "{{ git_api_uri }}/repos/{{ item.item.name }}/contents/trigger-build.txt"
-    method: POST
-    headers:
-        Content-Type: application/json
-        Authorization: "token {{ vault_gitea_rw_token }}"
-        accept: application/json
-    body_format: json
-    body: >-
-      {
-        "branch": "{{ item.item.branch }}",
-        "content": "{{ ansible_date_time.iso8601 | b64encode }}"
-      }
-    status_code: [ 201, 200 ]
-  loop: "{{ file.results }}"
-  when: item.json.sha is undefined
+- ansible.builtin.set_fact:
+    build_temp_path: "{{ android_build_path }}/.tmp/freeze_apps"
 
-- name: "Build apps: trigger a build"
-  ansible.builtin.uri:
-    url: "{{ git_api_uri }}/repos/{{ item.item.name }}/contents/trigger-build.txt"
-    method: PUT
-    headers:
-        Content-Type: application/json
-        Authorization: "token {{ vault_gitea_rw_token }}"
-        accept: application/json
-    body_format: json
-    body: >-
-      {
-        "branch": "{{ item.item.branch }}",
-        "content": "{{ ansible_date_time.iso8601 | b64encode }}",
-        "sha":"{{ item.json.sha }}"
-      }
-    status_code: [ 201, 200 ]
-  register: triggered
-  changed_when: triggered.status == 201
-  loop: "{{ file.results }}"
-  loop_control:
-    pause: 5m
-  no_log: "{{ debug_off | bool }}"
+- name: "Build apps: Start clean"
+  ansible.builtin.file:
+      path: "{{ build_temp_path }}"
+      state: absent
 
-- name: Result
-  ansible.builtin.debug:
-    msg: |
-      triggered: {{ item }}
-  loop: "{{ triggered.results }}"
+- block:
+
+        - name: "Build apps: fetch git repo"
+          ansible.builtin.git:
+            repo: "{{ repo }}"
+            dest: "{{ build_temp_path }}"
+          timeout: 180
+        
+        - name: "Build apps: add/update trigger-build.txt"
+          ansible.builtin.shell: |
+            if [ -f trigger-build.txt ];then
+              echo last_ansible_trigger_date="$(date +%F_%T)" > trigger-build.txt
+            else
+              sed -i 's/last_ansible_trigger_date=.*/last_ansible_trigger_date=$(date +%F_%T)/g' trigger-build.txt
+            fi
+          args:
+              chdir: "{{ build_temp_path }}"
+              executable: /bin/bash
+        
+        - name: "Build apps: add & push changes"
+          ansible.builtin.shell: |
+              echo "[GIT][BUILDAPPS] starting git commit process" >> {{ BUILD_LOG }}
+              source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}
+            
+              CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+              if [ $CMTL -gt 0 ];then
+                  git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+                  git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: added/updated build trigger" >> {{ BUILD_LOG }} 2>&1
+                  echo "[GIT][BUILDAPPS] git commit done" >> {{ BUILD_LOG }}
+        
+                  CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
+                  REMHASH=$(git log --pretty=oneline --decorate | grep "origin/{{ git_repo_local_manifests_branch }}" |cut -d ' ' -f1)
+                    
+                  if [ "$CURHASH" != "$REMHASH" ]; then
+                      echo "[GIT][BUILDAPPS] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
+                      git push origin {{ init_device_website_branch }} >> {{ BUILD_LOG }} 2>&1
+                  else
+                      echo "[GIT][BUILDAPPS] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
+                  fi
+              else
+                   echo "[GIT][BUILDAPPS] git commit skipped (no changes)" >> {{ BUILD_LOG }}
+              fi
+          args:
+              chdir: "{{ build_temp_path }}"
+              executable: /bin/bash
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    - name: "Build apps: get all trigger-build.txt sha values"
+      ansible.builtin.uri:
+        url: "{{ git_api_uri }}/repos/{{ item.name }}/contents/trigger-build.txt?ref={{ item.branch }}"
+        method: GET
+        headers:
+            Content-Type: application/json
+            Authorization: "token {{ vault_gitea_rw_token }}"
+            accept: application/json
+      loop: "{{ freezeday_app_repos }}"
+      loop_control:
+          label: info
+      register: file
+      ignore_errors: true
+      no_log: "{{ debug_off | bool }}"
+       
+    - name: "Build apps: create missing trigger"
+      ansible.builtin.uri:
+        url: "{{ git_api_uri }}/repos/{{ item.item.name }}/contents/trigger-build.txt"
+        method: POST
+        headers:
+            Content-Type: application/json
+            Authorization: "token {{ vault_gitea_rw_token }}"
+            accept: application/json
+        body_format: json
+        body: >-
+          {
+            "branch": "{{ item.item.branch }}",
+            "content": "{{ ansible_date_time.iso8601 | b64encode }}"
+          }
+        status_code: [ 201, 200 ]
+      loop: "{{ file.results }}"
+      when: item.json.sha is undefined
+    
+    - name: "Build apps: trigger a build"
+      ansible.builtin.uri:
+        url: "{{ git_api_uri }}/repos/{{ item.item.name }}/contents/trigger-build.txt"
+        method: PUT
+        headers:
+            Content-Type: application/json
+            Authorization: "token {{ vault_gitea_rw_token }}"
+            accept: application/json
+        body_format: json
+        body: >-
+          {
+            "branch": "{{ item.item.branch }}",
+            "content": "{{ ansible_date_time.iso8601 | b64encode }}",
+            "sha":"{{ item.json.sha }}"
+          }
+        status_code: [ 201, 200 ]
+      register: triggered
+      changed_when: triggered.status == 201
+      loop: "{{ file.results }}"
+      loop_control:
+        pause: 5m
+      no_log: "{{ debug_off | bool }}"
+    
+    - name: Result
+      ansible.builtin.debug:
+        msg: |
+          triggered: {{ item }}
+      loop: "{{ triggered.results }}"
+
+  rescue:
+
+        - name: "Build apps: End clean"
+          ansible.builtin.file:
+              path: "{{ build_temp_path }}"
+              state: absent
+
+        - name: "Build apps: failed"
+          ansible.builtin.fail:
+            msg: |
+              ERROR OCCURED:
+              
+              {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
+              
+              See above for details.
