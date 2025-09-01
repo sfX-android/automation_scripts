@@ -19,7 +19,7 @@
         
         - name: "Build apps: add/update trigger-build.txt"
           ansible.builtin.shell: |
-            if [ -f trigger-build.txt ];then
+            if [ ! -f trigger-build.txt ];then
               echo last_ansible_trigger_date="$(date +%F_%T)" > trigger-build.txt
             else
               sed -i 's/last_ansible_trigger_date=.*/last_ansible_trigger_date=$(date +%F_%T)/g' trigger-build.txt
