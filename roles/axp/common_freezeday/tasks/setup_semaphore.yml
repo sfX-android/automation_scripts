@@ -43,4 +43,4 @@
   when: 
     - semaphore_aos_template_name in sp_all_templates.json | map(attribute='name') | list
     - semaphore_aos_template_startversion in sp_all_templates.json | map(attribute='start_version') | list
-  no_log: true
+  #no_log: true
