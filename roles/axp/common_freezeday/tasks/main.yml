@@ -1,9 +1,9 @@
 ---
 
-- include_tasks: build_apps.yml
+- include_tasks: loop.yml
   when: not skip_build_apps
 
-- include_tasks: build_apps.yml
+- include_tasks: loop.yml
   vars:
     freezeday_app_repos: "{{ freezeday_app_repos_longrun }}"
   when: not skip_build_apps_longrun
