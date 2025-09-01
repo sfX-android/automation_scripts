@@ -1,0 +1,12 @@
+---
+
+- include_tasks: build_apps.yml
+  when: not skip_build_apps
+
+- include_tasks: build_apps.yml
+  vars:
+    freezeday_app_repos: "{{ freezeday_app_repos_longrun }}"
+  when: not skip_build_apps_longrun
+
+- include_tasks: setup_semaphore.yml
+  when: skip_setup_semaphore is undefined

@@ -1,0 +1,64 @@
+---
+
+build_id: "freezeday"
+target_model: "{{ build_id }}"
+telegram_notifications: False
+debug_off: true
+skip_build_apps: False
+skip_build_apps_longrun: False
+
+git_api_uri: "https://code.binbash.rocks:8443/api/v1"
+
+freezeday_app_repos:
+  - name: packages_apps_LoveLaceAV
+    branch: merge
+  - name: packages_apps_OpenEUICC
+    branch: main
+  - name: packages_apps_phonesky
+    branch: axp
+  - name: packages_apps_neo-launcher
+    branch: axp
+
+freezeday_app_repos_longrun:
+  - name: app_aosmium
+    branch: main
+
+############ semaphore
+
+semaphore_api_uri: "http://127.0.0.1:8153/api"
+
+# Variables used to create a new task template
+
+semaphore_aos_template_project_id: 6                     # Project "AXP.OS"
+semaphore_aos_template_template_id: 214                  # Template: -AOS- SET FREEZEDAY Build-ID
+semaphore_aos_template_inventory_id: 29                  # Inventory "axp_build_inventory"
+semaphore_aos_template_repo_id: 9                        # Repository "sfX-android/automation_scripts"
+semaphore_aos_template_vaultkey_id: 21                   # Key Store "vault_pw"
+semaphore_aos_template_view_id: 33                       # View: "AOS MISC"
+semaphore_aos_template_desc: "{{ template_desc | d('') }}" # Template Description
+semaphore_aos_template_playbook: "plays/axp_freezeday.yml" # playbook to attach to
+
+
+# survey vars
+semaphore_aos_template_survey_vars: >-
+    [
+      {
+          "values": [],
+          "name": "semaphore_aos_template_startversion",
+          "title": "Set build ID",
+          "description": "format: YYYY-MM.id",
+          "type": "",
+          "default_value": "2025-",
+          "required": true
+      }
+    ]
+
+
+# vaults
+semaphore_aos_template_vaults: >-
+    [{
+      "name": "main",
+      "vault_key_id": {{ semaphore_aos_template_vaultkey_id }},
+      "type": "password",
+      "script": null
+    }]
