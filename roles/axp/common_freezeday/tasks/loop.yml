@@ -2,8 +2,8 @@
 
 - set_fact:
     freezeday_singleapp: 
-      - name: "{{ freezeday_app_singlerepo | regex_replace('|.*','') }}"
-        branch: "{{ freezeday_app_singlerepo | regex_replace('.*|','') }}"    
+      - name: "{{ freezeday_app_singlerepo | regex_replace('%.*','') }}"
+        branch: "{{ freezeday_app_singlerepo | regex_replace('.*%','') }}"    
   when: freezeday_app_singlerepo is defined
  
 - set_fact:
