@@ -32,11 +32,13 @@
           ansible.builtin.shell: |
               set -e
               echo "[GIT][BUILDAPPS] starting git commit process" >> {{ BUILD_LOG }}
+              export GIT_AUTHOR="{{ git_author }}"
+              export GIT_MAIL="{{ git_mail }}"
             
               CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
               if [ $CMTL -gt 0 ];then
                   git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
-                  git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: added/updated build trigger" >> {{ BUILD_LOG }} 2>&1
+                  git commit {{ git_commit_args | d('') }} --author="${GIT_AUTHOR} <${GIT_MAIL}>" -m "ci: added/updated build trigger" >> {{ BUILD_LOG }} 2>&1
                   echo "[GIT][BUILDAPPS] git commit done" >> {{ BUILD_LOG }}
         
                   CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
