@@ -17,7 +17,7 @@
    
 - name: "Build apps: create missing trigger"
   ansible.builtin.uri:
-    url: "{{ git_api_uri }}/repos/{{ item.item.full_name }}/contents/trigger-build.txt"
+    url: "{{ git_api_uri }}/repos/{{ item.item.name }}/contents/trigger-build.txt"
     method: POST
     headers:
         Content-Type: application/json
@@ -26,7 +26,7 @@
     body_format: json
     body: >-
       {
-        "branch": "{{ package_branch }}",
+        "branch": "{{ item.item.branch }}",
         "content": "{{ ansible_date_time.iso8601 | b64encode }}"
       }
     status_code: [ 201, 200 ]
@@ -35,7 +35,7 @@
 
 - name: "Build apps: trigger a build"
   ansible.builtin.uri:
-    url: "{{ git_api_uri }}/repos/{{ item.item.full_name }}/contents/trigger-build.txt"
+    url: "{{ git_api_uri }}/repos/{{ item.item.name }}/contents/trigger-build.txt"
     method: PUT
     headers:
         Content-Type: application/json
@@ -44,7 +44,7 @@
     body_format: json
     body: >-
       {
-        "branch": "{{ package_branch }}",
+        "branch": "{{ item.item.branch }}",
         "content": "{{ ansible_date_time.iso8601 | b64encode }}",
         "sha":"{{ item.json.sha }}"
       }
