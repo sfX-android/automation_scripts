@@ -6,7 +6,7 @@
         branch: "{{ freezeday_app_singlerepo | regex_replace('.*|','') }}"    
   when: freezeday_app_singlerepo is defined
  
- - set_fact:
+- set_fact:
     freezeday_list: "{% if freezeday_singleapp is defined %}{{ freezeday_singleapp }}{% else %}{{ freezeday_app_repos }}{% endif %}"
 
 - name: "Loop over freezeday_app_repos"
