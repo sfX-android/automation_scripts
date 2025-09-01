@@ -1,0 +1,8 @@
+---
+
+- name: "Loop over freezeday_app_repos"
+  include_tasks: build_apps.yml
+  loop: "{{ freezeday_app_repos }}"
+  vars:
+    repo: "{{ item }}"
+
