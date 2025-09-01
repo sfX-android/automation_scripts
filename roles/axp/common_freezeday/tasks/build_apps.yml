@@ -33,7 +33,7 @@
                 nminor=${nver##*\.}
                 newminor=$(( nminor + 1))
                 newver="${nmajor}.${newminor}"
-                sed -i -E 's/(\s+versionName\s+)"(\w+\.\w+.*)"/\1${newver}/g'
+                sed -i -E 's/(\s+versionName\s+)"(\w+\.\w+.*)"/\1${newver}/g' app/build.gradle
             fi
             
             if [ ! -f trigger-build.txt ];then
