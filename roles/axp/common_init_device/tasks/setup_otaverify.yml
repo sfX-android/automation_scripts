@@ -1,7 +1,7 @@
 ---
 
 - ansible.builtin.set_fact:
-    init_device_temp_path: {{ android_build_path }}/.tmp/init_otaverify
+    init_device_temp_path: "{{ android_build_path }}/.tmp/init_otaverify"
 
 - name: "Setup OTA verifier: Start clean"
   ansible.builtin.file:
