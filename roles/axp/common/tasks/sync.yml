@@ -32,7 +32,7 @@
 
     - name: "Google Pixel: setup symlink to common kernel source"
       ansible.builtin.file:
-          src: "{{ git_pixel_kernel_dir }}"
+          src: "{{ git_pixel_kernel_dir }}/common"
           dest: "{{ SRCPATH }}/{{ target_kernel_dir }}"
           force: true
           state: link
