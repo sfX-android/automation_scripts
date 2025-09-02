@@ -33,7 +33,7 @@
         "playbook": "{{ semaphore_aos_template_playbook }}",
         "description": "{{ semaphore_aos_template_desc }}",
         "arguments": "[]",
-        "survey_vars": {{ semaphore_aos_template_survey_vars }},
+        "survey_vars": "[]",
         "start_version": "{{ semaphore_aos_template_startversion }}",
         "vaults": {{ semaphore_aos_template_vaults }},
         "type": "build",
