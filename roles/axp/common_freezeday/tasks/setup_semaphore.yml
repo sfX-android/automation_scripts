@@ -23,8 +23,7 @@
         Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
     body_format: json
     body: >-
-        {
-        "id": {{ semaphore_aos_template_template_id }},
+        { "id": {{ semaphore_aos_template_template_id }},
         "project_id": {{ semaphore_aos_template_project_id }},
         "name": "{{ semaphore_aos_template_name }}",
         "app": "ansible",
@@ -35,8 +34,7 @@
         "playbook": "{{ semaphore_aos_template_playbook }}",
         "type": "build",
         "vaults": {{ semaphore_aos_template_vaults }},
-        "start_version": "{{ semaphore_aos_template_startversion }}"
-        }
+        "start_version": "{{ semaphore_aos_template_startversion }}" }
     status_code: [ 201, 200, 204 ]
   register: tmplc
   changed_when: tmplc.status == 204
