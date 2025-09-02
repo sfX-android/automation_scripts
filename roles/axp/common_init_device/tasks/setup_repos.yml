@@ -101,7 +101,7 @@
         git remote -v >> {{ BUILD_LOG }} 2>&1
       args:
         executable: /bin/bash
-        chdir: {{ init_device_temp_path }}
+        chdir: "{{ init_device_temp_path }}"
     
     - name: "Setup repositories: include AXP.OS (common tree)"
       ansible.builtin.shell: |
@@ -134,7 +134,7 @@
         fi
       args:
         executable: /bin/bash
-        chdir: {{ init_device_temp_path }}
+        chdir: "{{ init_device_temp_path }}"
         
     - name: "Setup repositories: LFS"
       ansible.builtin.shell: |
@@ -166,7 +166,7 @@
         fi
       args:
         executable: /bin/bash
-        chdir: {{ init_device_temp_path }}
+        chdir: "{{ init_device_temp_path }}"
         
     - name: "Setup repositories: CI/CD"
       ansible.builtin.shell: |
@@ -270,7 +270,7 @@
         fi
       args:
         executable: /bin/bash
-        chdir: {{ init_device_temp_path }}
+        chdir: "{{ init_device_temp_path }}"
         
     - name: "Setup repositories: Git push"
       ansible.builtin.shell: |
@@ -314,7 +314,7 @@
         echo -e "###########################################################\n"  >> {{ BUILD_LOG }}
       args:
         executable: /bin/bash
-        chdir: {{ init_device_temp_path }}
+        chdir: "{{ init_device_temp_path }}"
     
     - name: "Setup repositories: End clean"
       ansible.builtin.file:
