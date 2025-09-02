@@ -40,6 +40,7 @@
   when:
     - git_pixel_kernel_manifest_branch is defined
     - target_model_vendor == "Google"
+    - android_version_int > 14
 
 - name: "Sync DOS"
   ansible.builtin.shell: |
