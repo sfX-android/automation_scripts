@@ -13,7 +13,7 @@
   no_log: true
 
 
-- name: "Setup semaphore: 1 update semaphore template (if required)"
+- name: "Setup semaphore: update semaphore template (if required)"
   connection: local
   ansible.builtin.uri:
     url: "{{ semaphore_api_uri }}/project/{{ semaphore_aos_template_project_id }}/templates/{{ semaphore_aos_template_template_id }}"
@@ -38,35 +38,4 @@
   changed_when: tmplc.status == 204
   when: 
     - semaphore_aos_template_name in sp_all_templates.json | map(attribute='name') | list
-
-- name: "Setup semaphore: update semaphore template (if required)"
-  connection: local
-  ansible.builtin.uri:
-    url: "{{ semaphore_api_uri }}/project/{{ semaphore_aos_template_project_id }}/templates/{{ semaphore_aos_template_template_id }}"
-    method: PUT
-    headers:
-        Content-Type: application/json
-        Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
-    body_format: json
-    body: >-
-        { "id": {{ semaphore_aos_template_template_id }},
-        "project_id": {{ semaphore_aos_template_project_id }},
-        "inventory_id": {{ semaphore_aos_template_inventory_id }},
-        "repository_id": {{ semaphore_aos_template_repo_id }},
-        "environment_id": {{ semaphore_aos_template_env_id }},
-        "view_id": {{ semaphore_aos_template_view_id }},
-        "name": "{{ semaphore_aos_template_name }}",
-        "app": "ansible",
-        "playbook": "{{ semaphore_aos_template_playbook }}",
-        "description": "{{ semaphore_aos_template_desc }}",
-        "arguments": "[]",
-        "start_version": "{{ semaphore_aos_template_startversion }}",
-        "vaults": {{ semaphore_aos_template_vaults }},
-        "type": "build",
-        "allow_override_args_in_task": false }
-    status_code: [ 201, 200, 204 ]
-  register: tmplc
-  changed_when: tmplc.status == 204
-  when: 
-    - semaphore_aos_template_name in sp_all_templates.json | map(attribute='name') | list
-  #no_log: true
+  no_log: true
