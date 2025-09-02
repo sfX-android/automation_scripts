@@ -4,8 +4,11 @@
 
     - name: "Google Pixel: prepare kernel manifest"
       ansible.builtin.file:
-          path: "{{ git_pixel_kernel_dir }}"
+          path: "{{ item }}"
           state: directory
+      loop:
+          - "{{ git_pixel_kernel_dir }}"
+ #         - "{{ SRCPATH }}/{{ target_kernel_dir }}"
     
     - name: "Google Pixel: sync kernel manifest"
       ansible.builtin.shell: |
@@ -26,6 +29,13 @@
       args:
         chdir: "{{ git_pixel_kernel_dir }}"
         executable: /bin/bash
+
+    - name: "Google Pixel: setup symlink to common kernel source"
+      ansible.builtin.file:
+          src: "{{ git_pixel_kernel_dir }}"
+          dest: "{{ SRCPATH }}/{{ target_kernel_dir }}"
+          force: true
+          state: link
 
   when:
     - git_pixel_kernel_manifest_branch is defined
