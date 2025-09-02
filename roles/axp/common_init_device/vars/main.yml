@@ -11,8 +11,17 @@ init_device_vendorfirmware: "ssh://git@code.binbash.rocks:22443/AXP.OS/vendor_fi
 
 init_device_otaverifier_repo: "git@github.com:sfX-android/update_verifier.git"
 
+######## defaults
+
 skip_dl_cve_checker: True
 skip_dl_git_cli_tools: True
+skip_setup_otaverify: False
+skip_setup_repos: False
+skip_setup_firmware: False
+skip_setup_manifest: False
+skip_setup_ansible: False
+skip_setup_website: False
+skip_setup_semaphore: False
 
 ########### generate-4-ALL vars
 
