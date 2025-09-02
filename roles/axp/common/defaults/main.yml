@@ -23,6 +23,8 @@ git_axpos_org_private: "ssh://git@{{ git_axpos_org_private_host }}:22443/{{ git_
 git_private_repos: "platform_prebuilts_tools,android_cts"
 # git / gpg signing key, defaults to empty (is set via Semaphore inventory)
 #axp_gpg_signing_key: "FE4B2FA2B225F0AB903AF4136740E645718A8E47"
+git_pixel_kernel_dir: "{{ android_build_path }}/kernel_google_common"
+git_pixel_kernel_repo: "https://android.googlesource.com/kernel/manifest"
 
 # the login name used in "tea login add" command, you will get the full command in the ansible error.
 # see: roles/axp/common/tasks/prep.yml for details
