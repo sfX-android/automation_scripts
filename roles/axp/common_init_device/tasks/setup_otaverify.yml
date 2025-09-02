@@ -15,6 +15,9 @@
             repo: "{{ init_device_otaverifier_repo }}"
             dest: "{{ init_device_temp_path }}"
           timeout: 180
+
+        - name: foo
+          ansible.builtin.shell: "hostname; ls -la {{ init_device_temp_path }}"
         
         - name: "Setup OTA verifier: add/update OTA key"
           ansible.builtin.shell: |
