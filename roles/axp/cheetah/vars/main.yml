@@ -65,14 +65,14 @@ hugo_axp_bootloader_id_pro: |
 
 # vendor/firmware info
 # download source: https://developers.google.com/android/ota#cheetah
-vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/cheetah-ota-tq3a.230901.001-6b881553.zip"
-vendor_firmware_download_sha256: "6b881553f012d582080642d660e1cf5c9e6fe41e9f1c6ab12ae87fab7894e307"
+#vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/cheetah-ota-tq3a.230901.001-6b881553.zip"
+#vendor_firmware_download_sha256: "6b881553f012d582080642d660e1cf5c9e6fe41e9f1c6ab12ae87fab7894e307"
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
-vendor_firmware_persistent_path: "{{ persistent_dir }}/cheetah-ota-tq3a.230901.001-6b881553.zip"
+#vendor_firmware_persistent_path: "{{ persistent_dir }}/cheetah-ota-tq3a.230901.001-6b881553.zip"
 ####### A15 prep:
-#vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/cheetah-ota-bp1a.250505.005.b1-29966098.zip"
-#vendor_firmware_download_sha256: "29966098f2f60bf571673a589d32ce6f516440f466830e926ca90e13211eade0"
+vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/cheetah-ota-bp1a.250505.005.b1-29966098.zip"
+vendor_firmware_download_sha256: "29966098f2f60bf571673a589d32ce6f516440f466830e926ca90e13211eade0"
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
-#vendor_firmware_persistent_path: "{{ persistent_dir }}/cheetah-ota-bp1a.250505.005.b1-29966098.zip"
+vendor_firmware_persistent_path: "{{ persistent_dir }}/cheetah-ota-bp1a.250505.005.b1-29966098.zip"
