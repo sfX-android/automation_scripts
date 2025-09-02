@@ -36,7 +36,8 @@ semaphore_api_uri: "http://127.0.0.1:8153/api"
 # Variables used to create a new task template
 
 semaphore_aos_template_project_id: 6                     # Project "AXP.OS"
-semaphore_aos_template_name: '-AOS- SET FREEZEDAY Build-ID'
+semaphore_aos_template_name: '-AOS- FREEZEDAY Build-ID'
+semaphore_aos_template_env_id: 0 #FIXME
 semaphore_aos_template_template_id: 214                  # Template: -AOS- SET FREEZEDAY Build-ID
 semaphore_aos_template_inventory_id: 29                  # Inventory "axp_build_inventory"
 semaphore_aos_template_repo_id: 9                        # Repository "sfX-android/automation_scripts"
