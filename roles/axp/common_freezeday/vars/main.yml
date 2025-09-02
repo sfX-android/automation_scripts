@@ -44,7 +44,7 @@ semaphore_aos_template_repo_id: 9                        # Repository "sfX-andro
 semaphore_aos_template_vaultkey_id: 21                   # Key Store "vault_pw"
 semaphore_aos_template_view_id: 33                       # View: "AOS MISC"
 semaphore_aos_template_desc: "{{ template_desc | d('') }}" # Template Description
-semaphore_aos_template_playbook: "plays/axp_freezeday.yml" # playbook to attach to
+semaphore_aos_template_playbook: "plays/dummy.yml"       # playbook to attach to
 
 
 # survey vars
