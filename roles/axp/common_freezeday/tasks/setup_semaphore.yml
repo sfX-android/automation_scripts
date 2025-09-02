@@ -34,7 +34,6 @@
         "view_id": {{ semaphore_aos_template_view_id }},
         "playbook": "{{ semaphore_aos_template_playbook }}",
         "type": "build",
-        "vaults": {{ semaphore_aos_template_vaults }},
         "start_version": "{{ semaphore_aos_template_startversion }}"
         }
     status_code: [ 201, 200, 204 ]
@@ -42,7 +41,8 @@
   changed_when: tmplc.status == 204
   when: 
     - semaphore_aos_template_name in sp_all_templates.json | map(attribute='name') | list
-  #no_log: true
+  no_log: true
+  #breaks on NEXT run: "vaults": {{ semaphore_aos_template_vaults }},
 
 - name: "Setup semaphore: run build id task"
   connection: local
@@ -64,4 +64,4 @@
   register: tmplc
   changed_when: tmplc.status == 201
   when: tmplc.changed
-  #no_log: true
+  no_log: true
