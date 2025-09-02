@@ -37,3 +37,41 @@ axp_bootloader_id_slim: ''
 # git push
 axp_git_push_device_include: "device_google_cheetah|device_google_pantah|{{ target_model_common_tree }}" 
 axp_git_push_vendor_include: "vendor_google_cheetah"
+
+# website info
+hugo_encryption: "FBEv2"
+hugo_firmware: "included"
+hugo_relockable: "no"
+hugo_state: "stable"
+hugo_supportlevel: "team"
+hugo_isab: "yes"
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-cheetah-axp-os-20-0.4668457/"
+hugo_first_releasedate: "2024-05-27"
+#hugo_kb_link: ""
+#hugo_custom_installguide_path: 
+hugo_axp_bootloader_id_pro: |
+   ```
+   BOOTLOADER minimal ID
+        6F32410F
+
+   BOOTLOADER full ID:
+        6F32410F17EF997F
+        1E2978C318FDFA64
+        27A01ABA881492E4
+        B58E949DEA01F4A7
+   ```
+#hugo_axp_bootloader_id_slim: |
+
+# vendor/firmware info
+# download source: https://developers.google.com/android/ota#cheetah
+vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/cheetah-ota-tq3a.230901.001-6b881553.zip"
+vendor_firmware_download_sha256: "6b881553f012d582080642d660e1cf5c9e6fe41e9f1c6ab12ae87fab7894e307"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/cheetah-ota-tq3a.230901.001-6b881553.zip"
+####### A15 prep:
+#vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/cheetah-ota-bp1a.250505.005.b1-29966098.zip"
+#vendor_firmware_download_sha256: "29966098f2f60bf571673a589d32ce6f516440f466830e926ca90e13211eade0"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+#vendor_firmware_persistent_path: "{{ persistent_dir }}/cheetah-ota-bp1a.250505.005.b1-29966098.zip"
