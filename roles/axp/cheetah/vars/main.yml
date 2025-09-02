@@ -42,12 +42,12 @@ axp_git_push_vendor_include: "vendor_google_cheetah"
 # website info
 hugo_encryption: "FBEv2"
 hugo_firmware: "included"
-hugo_relockable: "no"
+hugo_relockable: "yes"
 hugo_state: "stable"
 hugo_supportlevel: "team"
 hugo_isab: "yes"
 hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-cheetah-axp-os-20-0.4668457/"
-hugo_first_releasedate: "2024-05-27"
+hugo_first_releasedate: "2024-05-27 (A13)"
 #hugo_kb_link: ""
 #hugo_custom_installguide_path: 
 hugo_axp_bootloader_id_pro: |
