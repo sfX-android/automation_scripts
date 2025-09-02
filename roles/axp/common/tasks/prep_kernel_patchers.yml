@@ -47,7 +47,9 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    
+    cd {{ git_pixel_kernel_dir }}
+    (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1
+   
   args:
     executable: /bin/bash
   when:
