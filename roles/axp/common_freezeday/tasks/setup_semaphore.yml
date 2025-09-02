@@ -27,6 +27,7 @@
         "repository_id": {{ semaphore_aos_template_repo_id }},
         "environment_id": {{ semaphore_aos_template_env_id }},
         "view_id": {{ semaphore_aos_template_view_id }},
+        "template_id": {{ semaphore_aos_template_template_id }},
         "name": "{{ semaphore_aos_template_name }}",
         "app": "ansible",
         "playbook": "{{ semaphore_aos_template_playbook }}",
