@@ -25,6 +25,7 @@
     body: >-
         { "id": {{ semaphore_aos_template_template_id }},
         "project_id": {{ semaphore_aos_template_project_id }},
+        "app": "ansible",
         "start_version": "{{ semaphore_aos_template_startversion }}" }
     status_code: [ 201, 200, 204 ]
   register: tmplc
