@@ -8,7 +8,7 @@
           state: directory
       loop:
           - "{{ git_pixel_kernel_dir }}"
- #         - "{{ SRCPATH }}/{{ target_kernel_dir }}"
+          - "{{ SRCPATH }}/{{ target_kernel_dir }}"
     
     - name: "Google Pixel: sync kernel manifest"
       ansible.builtin.shell: |
