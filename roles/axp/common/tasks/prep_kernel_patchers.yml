@@ -41,7 +41,7 @@
   when:
     - git_pixel_kernel_manifest_branch is undefined
     - target_model_vendor != "Google"
-    - android_version_int < 14
+    - android_version_int | int < 14
 
 - name: "Setup CVE kernel patcher: reset"
   ansible.builtin.shell: |
@@ -55,7 +55,7 @@
   when:
     - git_pixel_kernel_manifest_branch is defined
     - target_model_vendor == "Google"
-    - android_version_int > 14
+    - android_version_int | int > 14
 
 - name: "Setup CVE kernel patcher: re-patch"
   ansible.builtin.shell: |
