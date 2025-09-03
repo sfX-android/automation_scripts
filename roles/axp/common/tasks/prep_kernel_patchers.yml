@@ -48,7 +48,7 @@
     {{ DOS_INIT }}
 
     cd {{ git_pixel_kernel_dir }}/common
-    (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1
+    (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true
    
   args:
     executable: /bin/bash
