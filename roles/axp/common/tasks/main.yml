@@ -59,6 +59,7 @@
       - include_tasks: patch_device_gs201.yml
         when: 
           - target_model == "cheetah"
+          - android_version_int | int < 15
 
   when:
     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
