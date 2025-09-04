@@ -393,16 +393,6 @@ SH_COMMON_BUILD_SNIPPET: |
     export AXP_LOWEND_DEVICE=True
     {% endif %}
 
-    ########################### PREPARE #########################
-
-    # set legacy python2 env - if needed
-    # 1. sudo apt-get install python2 virtualenv python2-pip-whl python2-setuptools-whl
-    # 2. mkdir -p ~/.venv/python2
-    # 3. virtualenv --python=$(which python2) ~/.venv/python2
-    case {{ android_shortversion }} in
-        a9|a10) source ~/.venv/python2/bin/activate ;;
-    esac
-
     ########################### BUILD #########################
 
     {% if git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" %}
@@ -506,6 +496,12 @@ SH_COMMON_BUILD_SNIPPET: |
         $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant LLNDK --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
         {%     endif %}
         {% endif %}
+
+        #### LEGACY PYTHON #########################
+        case {{ android_shortversion }} in
+          a9|a10) source ~/.venv/python2/bin/activate ;;
+        esac
+
         {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
         mka generate_verity_key
         {% endif %}
