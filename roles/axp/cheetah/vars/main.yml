@@ -16,8 +16,9 @@ extendrom_debug_path_size_crash_default: 200
 
 # kernel
 target_kernel_dir: kernel/google/gs201/private/gs-google
-pixel_kernel_buildcmd: "./build_pantah.sh --kernel_package=@//aosp"
-git_pixel_kernel_manifest_branch: "common-android14-6.1-{{ current_year }}-{{ current_month }}"
+pixel_kernel_buildcmd: "./build_pantah.sh --kernel_package=@//aosp --lto=full"
+#git_pixel_kernel_manifest_branch: "common-android14-6.1-{{ current_year }}-{{ current_month }}"
+git_pixel_kernel_manifest_branch: "15-qpr2"
 pixel_kernel_buildresult: "device/google/pantah-kernels/6.1"
 pixel_kernel_buildout: "out/pantah/dist"
 
