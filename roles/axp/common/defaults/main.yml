@@ -25,6 +25,7 @@ git_private_repos: "platform_prebuilts_tools,android_cts"
 #axp_gpg_signing_key: "FE4B2FA2B225F0AB903AF4136740E645718A8E47"
 git_pixel_kernel_dir: "{{ android_build_path }}/kernel_google_common"
 git_pixel_kernel_manifest: "https://android.googlesource.com/kernel/manifest"
+#git_pixel_kernel_manifest: https://github.com/GrapheneOS/kernel_manifest-pixel.git
 
 # the login name used in "tea login add" command, you will get the full command in the ansible error.
 # see: roles/axp/common/tasks/prep.yml for details
