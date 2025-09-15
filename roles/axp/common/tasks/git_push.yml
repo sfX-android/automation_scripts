@@ -252,18 +252,14 @@
     TAG="{{ build_id }}"
     MTAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
     CDIR=$PWD
-    LTAG=FETCH_HEAD
+    LTAG="$TAG"
 
     cd external/axp_versioning
     git fetch --tags --all
     git tag | grep "$TAG" || LTAG=$(git tag | head -n1)
     
     # base on the previous tag (for comparison) or an existing
-    if [ ! -z "$LTAG" ];then
-        git checkout $LTAG >> {{ BUILD_LOG }} 2>&1
-    else
-        git checkout $TAG >> {{ BUILD_LOG }} 2>&1
-    fi
+    git checkout $LTAG >> {{ BUILD_LOG }} 2>&1
 
     # always get the latest template
     git checkout FETCH_HEAD template.md >> {{ BUILD_LOG }} 2>&1
