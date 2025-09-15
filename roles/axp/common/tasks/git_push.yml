@@ -258,10 +258,15 @@
     git fetch --tags --all
     git tag | grep "$TAG" || LTAG=$(git tag | head -n1)
     
+    # base on the previous tag (for comparison) or an existing
     if [ ! -z "$LTAG" ];then
         git checkout $LTAG >> {{ BUILD_LOG }} 2>&1
-        git checkout FETCH_HEAD template.md >> {{ BUILD_LOG }} 2>&1
+    else
+        git checkout $TAG >> {{ BUILD_LOG }} 2>&1
     fi
+
+    # always get the latest template
+    git checkout FETCH_HEAD template.md >> {{ BUILD_LOG }} 2>&1
     cd $CDIR
     
     echo "[VERSIONING] create list of APK versions..." >> {{ BUILD_LOG }}
@@ -275,37 +280,37 @@
     echo -e "[VERSIONING] List created: \n$(cat out/allapps.versions)" >> {{ BUILD_LOG }}
 
     echo "[VERSIONING] create version file from template..." >> {{ BUILD_LOG }}
-    awk '/\|-\|-\|/ { print; system("cat out/allapps.versions"); next }1' external/axp_versioning/template.md > temp_file && mv temp_file external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    awk '/\|-\|-\|/ { print; system("cat out/allapps.versions"); next }1' external/axp_versioning/template.md > temp_file && mv temp_file external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
     # add changelog: AOSmium
-    sed -i -E 's#(AOSmium)#[\1](https://code.binbash.rocks/AXP.OS/app_aosmium/commits/branch/main)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(AOSmium)#[\1](https://code.binbash.rocks/AXP.OS/app_aosmium/commits/branch/main)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: Aurora Store
-    sed -i -E 's#(Aurora Store)#[\1](https://gitlab.com/AuroraOSS/AuroraStore/blob/HEAD/CHANGELOG)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(Aurora Store)#[\1](https://gitlab.com/AuroraOSS/AuroraStore/blob/HEAD/CHANGELOG)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: Etar
-    sed -i -E 's#(Etar)#[\1](https://github.com/Etar-Group/Etar-Calendar/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(Etar)#[\1](https://github.com/Etar-Group/Etar-Calendar/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: F-Droid
-    sed -i -E 's#(F-Droid)#[\1](https://gitlab.com/fdroid/fdroidclient/-/blob/HEAD/CHANGELOG.md)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(F-Droid)#[\1](https://gitlab.com/fdroid/fdroidclient/-/blob/HEAD/CHANGELOG.md)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: Fossify Gallery
-    sed -i -E 's#(Gallery)#[\1](https://github.com/FossifyOrg/Gallery/blob/master/CHANGELOG.md)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(Gallery)#[\1](https://github.com/FossifyOrg/Gallery/blob/master/CHANGELOG.md)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: Google Play Store
-    sed -i -E 's#(Google Play Store)#[\1](https://codeberg.org/AXP-OS/packages_apps_phonesky/releases/)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(Google Play Store)#[\1](https://codeberg.org/AXP-OS/packages_apps_phonesky/releases/)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: Magisk
-    sed -i -E 's#(Magisk)#[\1](https://github.com/topjohnwu/Magisk/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(Magisk)#[\1](https://github.com/topjohnwu/Magisk/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: Neo Launcher
-    sed -i -E 's#(Neo Launcher)#[\1](https://github.com/NeoApplications/Neo-Launcher/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(Neo Launcher)#[\1](https://github.com/NeoApplications/Neo-Launcher/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: microG
-    sed -i -E 's#(microG Services)#[\1](https://github.com/microg/GmsCore/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(microG Services)#[\1](https://github.com/microg/GmsCore/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     # add changelog: OpenEUICC
-    sed -i -E 's#(OpenEUICC)#[\1](https://gitea.angry.im/PeterCxy/OpenEUICC/commits/branch/master)#g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i -E 's#(OpenEUICC)#[\1](https://gitea.angry.im/PeterCxy/OpenEUICC/commits/branch/master)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
     # set device name
-    sed -i 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
     # set release date
-    sed -i "s/%%RELDATE%%/$(date +%F) - or later/g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i "s/%%RELDATE%%/$(date +%F) - or later/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     
     # set manifest
-    sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('git@','') | regex_replace(':','/') }}/tree/$MTAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}.md
+    sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('git@','') | regex_replace(':','/') }}/tree/$MTAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
   
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning
