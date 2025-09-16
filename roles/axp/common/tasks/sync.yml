@@ -26,6 +26,7 @@
         
         repo init {{ git_pixel_kernel_manifest }} -b {{ git_pixel_kernel_manifest_branch }}
         {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }}
+        git reset --hard FETCH_HEAD
       args:
         chdir: "{{ git_pixel_kernel_dir }}"
         executable: /bin/bash
