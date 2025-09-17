@@ -62,7 +62,7 @@
 #  mctrl_gpio_disable_ms
 - name: "g201 fixup (mctrl_gpio_disable_ms)"
   ansible.builtin.lineinfile:
-    path: {{ git_pixel_kernel_dir }}/aosp/android/abi_gki_aarch64_imx
+    path: "{{ git_pixel_kernel_dir }}/aosp/android/abi_gki_aarch64_imx"
     regexp: '^mctrl_gpio_disable_ms$'
     state: absent
   when:
