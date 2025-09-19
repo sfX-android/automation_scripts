@@ -8,14 +8,14 @@
   when:
     - clean_out != "true" or (override_clean_out != "true") or (skip_gpg_verify | bool)
 
+- name: "Prepare kernel patchers"
+  include_tasks: prep_kernel_patchers.yml
+  
 - name: "Disable wireguard handling by vendor/axp"
   ansible.builtin.file:
     path: "{{ SRCPATH }}/{{ target_kernel_dir }}/.wg.patched"
     state: touch
   when: skip_wireguard is defined and skip_wireguard | bool
-
-- name: "Prepare kernel patchers"
-  include_tasks: prep_kernel_patchers.yml
 
 - name: "Apply AXP.OS patches (common, >= A15)"
   ansible.builtin.shell: |
