@@ -220,7 +220,7 @@ sec_patch_pick_branch: "{{ los_version_gitbranch }}"
 #sec_month: "{{ '%02d' | format((current_month | int) + 1) }}"
 # set dynamic sec_patch_date_last:
 #sec_patch_date_last: "{{ current_year }}{{ sec_month }}"
-sec_patch_date_last: 202509
+sec_patch_date_last: 202510
 
 # either 01 or 05 according to if you patch the KERNEL as well (e.g. by roles/kernel_patcher)
 # see https://source.android.com/docs/security/bulletin/2025-01-01#Common-questions-and-answers
