@@ -13,7 +13,7 @@
     - name: "Google Pixel: sync kernel manifest"
       ansible.builtin.shell: |
         # add unstaged changes
-        cd aosp
+        cd {{ git_pixel_kernel_source }}
         CMT=0
         git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
         # check for uncommitted changes
@@ -28,7 +28,8 @@
         
         repo init {{ git_pixel_kernel_manifest }} -b {{ git_pixel_kernel_manifest_branch }}
         {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }}
-        cd aosp
+        
+        cd {{ git_pixel_kernel_source }}
         git reset --hard FETCH_HEAD
       args:
         chdir: "{{ git_pixel_kernel_dir }}"
@@ -36,7 +37,7 @@
 
     - name: "Google Pixel: setup symlink to common kernel source"
       ansible.builtin.file:
-          src: "{{ git_pixel_kernel_dir }}/aosp"
+          src: "{{ git_pixel_kernel_source }}"
           dest: "{{ SRCPATH }}/{{ target_kernel_dir }}"
           force: true
           state: link
