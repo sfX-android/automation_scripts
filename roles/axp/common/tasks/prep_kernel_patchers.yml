@@ -47,7 +47,7 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    cd {{ git_pixel_kernel_dir }}/aosp
+    cd {{ git_pixel_kernel_source }}
     (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true
    
   args:
@@ -62,7 +62,7 @@
 #  mctrl_gpio_disable_ms
 - name: "g201 fixup (mctrl_gpio_disable_ms)"
   ansible.builtin.lineinfile:
-    path: "{{ git_pixel_kernel_dir }}/aosp/android/abi_gki_aarch64_imx"
+    path: "{{ git_pixel_kernel_source }}/android/abi_gki_aarch64_imx"
     regexp: '^\s+mctrl_gpio_disable_ms$'
     state: absent
   when:
