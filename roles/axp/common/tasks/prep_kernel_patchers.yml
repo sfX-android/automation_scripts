@@ -81,5 +81,5 @@
     
   args:
     executable: /bin/bash
- 
+  when: thisISdisabled is defined 
   
