@@ -3,7 +3,6 @@
 - name: "Set CVE tag"
   ansible.builtin.set_fact:
     cve_tag: "{{ sec_patch_date_last | int - 1 }}"
-    
 
 - name: "Setup CVE kernel patcher"
   ansible.builtin.shell: |
@@ -24,37 +23,27 @@
     git status >> {{ BUILD_LOG }} 2>&1
     cd $CROOT
     
-    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
-    
+    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1    
   args:
     executable: /bin/bash
 
-
-- name: "Setup CVE kernel patcher: reset"
+- name: "Setup CVE kernel patcher: reset (<A14)"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
-
-    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1
- 
+    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1 
   args:
     executable: /bin/bash
   when:
-    - git_pixel_kernel_manifest_branch is undefined
-    - target_model_vendor != "Google"
     - android_version_int | int < 14
 
-- name: "Setup CVE kernel patcher: reset"
+- name: "Setup CVE kernel patcher: reset (>A14)"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
-
-    cd {{ git_pixel_kernel_source }}
-    (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true
-   
+    cd {{ git_pixel_kernel_source | d(target_kernel_dir) }}
+    (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true   
   args:
     executable: /bin/bash
   when:
-    - git_pixel_kernel_manifest_branch is defined
-    - target_model_vendor == "Google"
     - android_version_int | int > 14
 
 # fixes:
