@@ -62,6 +62,10 @@
 
       - block:
 
+          - name: debug2
+            debug:
+              var: axp_release_recovery
+
           - name: "RECOVERY: switch to stable"
             ansible.builtin.shell: >-
               {% if axp_type | d('') == "slim" %}
