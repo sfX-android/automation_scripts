@@ -18,9 +18,6 @@
   
   tasks:
     - block:
-      - name: debug
-        debug:
-          var: axp_release_recovery
 
       - import_role:
           name: common
@@ -60,33 +57,34 @@
         ansible.builtin.set_fact:
             sec_level_date: "{{ pprop.stdout }}"
 
-      - name: "RECOVERY: switch to stable"
-        ansible.builtin.shell: >-
+      - block:
+
+          - name: "RECOVERY: switch to stable"
+            ansible.builtin.shell: >-
               {% if axp_type | d('') == "slim" %}
               cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}* {{ rempath }}/recovery/
               {% else %}
               cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* {{ rempath }}/recovery/
               {% endif %}
-        when: axp_release_recovery
             
-      - name: "RECOVERY: verify IMG integrity"
-        ansible.builtin.shell: >-
+          - name: "RECOVERY: verify IMG integrity"
+            ansible.builtin.shell: >-
                 sha256sum --check {{ recovery_filename_no_ext }}*{{ target_model }}*.img.sha256
-        args:
-            chdir: "{{ rempath }}/recovery"
-        when: axp_release_recovery
+            args:
+              chdir: "{{ rempath }}/recovery"
       
-      - name: "RECOVERY: delete from unstable"
-        ansible.builtin.shell: >-
+          - name: "RECOVERY: delete from unstable"
+            ansible.builtin.shell: >-
               {% if axp_type | d('') == "slim" %}
               rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}
               {% else %}
               rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}
               {% endif %}
-        loop:
+            loop:
               - img
               - img.sha256
-        when: axp_release_recovery
+
+        when: not axp_release_recovery_skip
 
       # must have .stdout, so do not set_fact or vars it!
       - name: "Set ROMFILE"
@@ -170,4 +168,4 @@
               
               {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
               
-              See above for details.
+              Seaxp_release_recovery
