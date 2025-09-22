@@ -67,17 +67,17 @@
               {% else %}
               cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* {{ rempath }}/recovery/
               {% endif %}
-         when: axp_release_recovery
+        when: axp_release_recovery
             
-       - name: "RECOVERY: verify IMG integrity"
-         ansible.builtin.shell: >-
+      - name: "RECOVERY: verify IMG integrity"
+        ansible.builtin.shell: >-
                 sha256sum --check {{ recovery_filename_no_ext }}*{{ target_model }}*.img.sha256
-         args:
+        args:
             chdir: "{{ rempath }}/recovery"
-         when: axp_release_recovery
+        when: axp_release_recovery
       
-       - name: "RECOVERY: delete from unstable"
-         ansible.builtin.shell: >-
+      - name: "RECOVERY: delete from unstable"
+        ansible.builtin.shell: >-
               {% if axp_type | d('') == "slim" %}
               rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}
               {% else %}
@@ -86,7 +86,7 @@
             loop:
               - img
               - img.sha256
-         when: axp_release_recovery
+        when: axp_release_recovery
 
       # must have .stdout, so do not set_fact or vars it!
       - name: "Set ROMFILE"
