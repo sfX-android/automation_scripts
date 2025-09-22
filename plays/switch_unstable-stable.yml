@@ -83,7 +83,7 @@
               {% else %}
               rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}
               {% endif %}
-            loop:
+        loop:
               - img
               - img.sha256
         when: axp_release_recovery
