@@ -18,6 +18,9 @@
   
   tasks:
     - block:
+      - name: debug
+        debug:
+          var: axp_release_recovery
 
       - import_role:
           name: common
