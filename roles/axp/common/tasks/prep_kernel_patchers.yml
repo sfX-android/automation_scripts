@@ -39,7 +39,13 @@
 - name: "Setup CVE kernel patcher: reset (>A14)"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
-    cd {{ git_pixel_kernel_source | d(target_kernel_dir) }}
+
+    {% if git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" %}
+    cd {{ git_pixel_kernel_source }}
+    {% else %}
+    cd {{ target_kernel_dir }}
+    {% endif %}
+    
     (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true   
   args:
     executable: /bin/bash
