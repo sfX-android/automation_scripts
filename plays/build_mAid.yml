@@ -4,8 +4,8 @@
   hosts: buildmaidserver
   gather_facts: true
 
-  vars:
-    ansible_python_interpreter: /usr/bin/env python3
+#  vars:
+#    ansible_python_interpreter: /usr/bin/env python3
 
   pre_tasks:
     - set_fact:
