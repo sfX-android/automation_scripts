@@ -261,8 +261,9 @@
     # base on the previous tag (for comparison) or an existing
     git checkout $LTAG >> {{ BUILD_LOG }} 2>&1
 
-    # always get the latest template
+    # always get the latest template & readme
     git checkout FETCH_HEAD template.md >> {{ BUILD_LOG }} 2>&1
+    git checkout FETCH_HEAD README.md >> {{ BUILD_LOG }} 2>&1
     cd $CDIR
     
     echo "[VERSIONING] create list of APK versions..." >> {{ BUILD_LOG }}
