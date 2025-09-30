@@ -200,7 +200,7 @@ DOS_INIT: |
     if [ ! -L "$HOME/.local/bin/rename" ];then ln -s {{ SRCPATH }}/rename $HOME/.local/bin/rename; fi
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
-    {% if axp_gpg_signing_key is defined and axp_gpg_signing_key != '' %}
+    {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
     gpg --list-secret-keys >> {{ BUILD_LOG }} 2>&1 || true
     {% endif %}
     
