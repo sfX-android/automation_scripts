@@ -7,6 +7,16 @@
   register: hash
 
 - name: "Write hash {{ ROMFILE.stdout }}.sha256sum"
-  shell: "echo '{{ hash.stat.checksum }} {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha256sum"
+  shell: |
+    echo '{{ hash.stat.checksum }} {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha256sum
+    
+    {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
+      checksum="{{ ROMFILE.stdout }}.sha256sum"
+      {{ DOS_INIT }}
+      echo -e "GPG signing $checksum with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+      if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "$checksum"; then
+        mv -f "${checksum}.asc" "$checksum"
+      fi
+    {% endif %}
   args:
     chdir: "{{ ZIPDIR }}"
