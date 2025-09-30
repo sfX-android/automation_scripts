@@ -26,7 +26,7 @@ export DOS_REMOVE_AFTER_FULL=false #Removes the entire OUT directory
 
 export DOS_SIGNING_GPG="{{ BUILDHOME }}/.gnupg"
 export DOS_GPG_SIGNING=true
-export DOS_GPG_SIGNING_KEY="{{ axp_gpg_signing_key | d('') }}"
+export DOS_GPG_SIGNING_KEY="{{ release_gpg_signing_key | d('') }}"
 
 # Theme
 export DOS_THEME_50="FFCA28" #Amber 400
