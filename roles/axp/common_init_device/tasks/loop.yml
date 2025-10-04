@@ -1,7 +1,7 @@
 ---
 
 - include_vars: "../../{{ target_model }}/vars/main.yml"
-- include_vars: "../../common/tasks/axp-slim.vars.yml
+- include_vars: "../../common/tasks/axp-slim.vars.yml"
   #no_log: true
   when: (axp_type | d(ROM_FLAVOR)) == "slim"
 
