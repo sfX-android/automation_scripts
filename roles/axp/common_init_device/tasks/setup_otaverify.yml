@@ -33,7 +33,7 @@
         - name: "Setup OTA verifier: add/update AVB key"
           ansible.builtin.shell: |
             {% if axp_type | d(ROM_FLAVOR) == "slim" %}
-            cp {{ keysdir }}/avb_pkmd.bin {{ os_name }}-slim/{{ sub_model | d(target_model) }}_AXP.OS_avb_pkmd.bin
+            cp {{ keysdir }}/avb_pkmd.bin {{ os_name }}-slim/{{ sub_model | d(target_model) }}_AXP.OS-slim_avb_pkmd.bin
             {% else %}
             cp {{ keysdir }}/avb_pkmd.bin {{ os_name }}/{{ sub_model | d(target_model) }}_AXP.OS_avb_pkmd.bin
             {% endif %}
