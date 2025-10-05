@@ -21,7 +21,11 @@
         
         - name: "Setup OTA verifier: add/update OTA key"
           ansible.builtin.shell: |
+            {% if axp_type | d(ROM_FLAVOR) == "slim" %}
+            cp {{ keysdir }}/releasekey_OTA.pub {{ os_name }}-slim/{{ sub_model | d(target_model) }}_AXP.OS_pubkey
+            {% else %}
             cp {{ keysdir }}/releasekey_OTA.pub {{ os_name }}/{{ sub_model | d(target_model) }}_AXP.OS_pubkey
+            {% endif %}
           args:
               chdir: "{{ init_device_temp_path }}"
               executable: /bin/bash
