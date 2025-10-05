@@ -97,8 +97,10 @@
         git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>/dev/null || true
         git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
         git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
-        (grep -q undocumented .lfsconfig && rm .lfsconfig) || true
-        git lfs fetch --all
+
+        BROKENLFS=$(grep -c undocumented .lfsconfig || echo 0)
+        if [ $BROKENLFS -eq 0 ]; then git lfs fetch --all;fi
+
         git checkout --track origin/$axp_release >> {{ BUILD_LOG }} 2>&1 || (git checkout $axp_release >> {{ BUILD_LOG }} 2>&1 || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1)
         git remote -v >> {{ BUILD_LOG }} 2>&1
       args:
