@@ -311,7 +311,7 @@
   
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning
-    rm template.md
+    if [ -f template.md ]; then rm template.md; fi
     git add -A .  >> /dev/null 2>> {{ BUILD_LOG }}
     git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "add app versions for {{ build_id }}"  >> /dev/null 2>> {{ BUILD_LOG }}
 
