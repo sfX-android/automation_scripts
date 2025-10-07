@@ -55,9 +55,6 @@ hugo_first_releasedate: "2023-07-23"
 hugo_kb_link: "guacamolehotdog"
 #hugo_custom_installguide_path: 
 #hugo_axp_bootloader_id_pro: |
-#   ```
-#   xxxxx
-#   ```
 #hugo_axp_bootloader_id_slim: |
 
 # vendor/firmware info
