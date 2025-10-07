@@ -58,11 +58,7 @@ hugo_first_releasedate: "2025-02-08"
 #hugo_kb_link: ""
 #hugo_custom_installguide_path: 
 #hugo_axp_bootloader_id_pro: |
-#  ```
-#
-#  ```
 hugo_axp_bootloader_id_slim: |
-  ```
   BOOTLOADER minimal ID
         42D46266
 
@@ -71,7 +67,6 @@ hugo_axp_bootloader_id_slim: |
         709B79C9FEC8BD6C
         515A525030E24BFF
         C762747813879DC8
-  ```
 
 ###############################################################################################################################
 # vendor/firmware info
