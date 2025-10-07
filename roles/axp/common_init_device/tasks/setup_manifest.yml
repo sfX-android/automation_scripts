@@ -10,7 +10,7 @@
 
 - name: "Setup manifest: fetch AXP.OS manifest"
   ansible.builtin.git:
-    repo: "{{ git_repo_local_manifests }}"
+    repo: "{{ git_axpos_org_private }}/manifest"
     dest: "{{ init_device_temp_path }}"
     version: "{{ git_repo_local_manifests_branch }}"
   timeout: 180
