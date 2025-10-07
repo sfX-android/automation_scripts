@@ -88,7 +88,7 @@
               - img
               - img.sha256
 
-        when: not axp_release_recovery_skip
+        when: not axp_release_recovery_skip | bool
 
       # must have .stdout, so do not set_fact or vars it!
       - name: "Set ROMFILE"
