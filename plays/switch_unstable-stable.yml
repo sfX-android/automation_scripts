@@ -68,7 +68,7 @@
           {% else %}
           cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* {{ rempath }}/recovery/
           {% endif %}
-        when: not axp_release_recovery_skip
+        when: not axp_release_recovery_skip | bool
         
       - name: "RECOVERY: verify IMG integrity"
         ansible.builtin.shell: >-
