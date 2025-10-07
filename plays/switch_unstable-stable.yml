@@ -57,6 +57,10 @@
         ansible.builtin.set_fact:
             sec_level_date: "{{ pprop.stdout }}"
 
+      - name: Debug
+        ansible.builtin.debug:
+          var: axp_release_recovery_skip
+
       - block:
 
           - name: "RECOVERY: switch to stable"
