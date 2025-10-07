@@ -166,10 +166,7 @@
             GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
         fi
         echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
-        
-        if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
-          mkdir -p $workflowpath/workflows/ 2>/dev/null || true
-        
+              
         workflowpath=".gitea"
         if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
           mkdir -p $workflowpath/workflows/ 2>/dev/null || true
