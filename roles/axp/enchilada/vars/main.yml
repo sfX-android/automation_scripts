@@ -47,7 +47,6 @@ hugo_first_releasedate: "2025-01-23"
 hugo_kb_link: "enchiladafajita"
 #hugo_custom_installguide_path: 
 hugo_axp_bootloader_id_pro: |
-   ```
    BOOTLOADER minimal ID
         3026966C
 
@@ -56,9 +55,7 @@ hugo_axp_bootloader_id_pro: |
         2D1CF437BA2F38A0
         657F8DE88A1751E7
         B73D9BA0B28D6196
-   ```
 hugo_axp_bootloader_id_slim: |
-  ```
   BOOTLOADER minimal ID
         8EDD5AEB
 
@@ -67,7 +64,6 @@ hugo_axp_bootloader_id_slim: |
         5FA947A871985F71
         3A710980D2B7C6C7
         8259171B4B82282F
-   ```
 
 # vendor/firmware info (A11+)
 # download source: https://xdaforums.com/t/oneplus-6-rom-ota-oxygen-os-mirrors-for-official-oxygen-os-roms-and-ota-updates.3792244/
