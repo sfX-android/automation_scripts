@@ -34,7 +34,7 @@ git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
 #git_pixel_kernel_manifest: "https://android.googlesource.com/kernel/manifest"
 git_pixel_kernel_manifest: https://github.com/GrapheneOS/kernel_manifest-pixel.git
 #git_repo_local_manifests: "{{ axp_git_org }}/manifest"
-git_repo_local_manifests: "git@{{ git_axpos_org_public_host }}/manifest.git"
+git_repo_local_manifests: "git@{{ git_axpos_org_public_host }}/{{ git_axpos_org_name | regex_replace('.', '-') }}/manifest.git"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 
 # the login name used in "tea login add" command, you will get the full command in the ansible error.
