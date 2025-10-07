@@ -55,7 +55,6 @@ hugo_first_releasedate: "2024-05-27 (A13)"
 #hugo_kb_link: ""
 #hugo_custom_installguide_path: 
 hugo_axp_bootloader_id_pro: |
-   ```
    BOOTLOADER minimal ID
         6F32410F
 
@@ -64,7 +63,6 @@ hugo_axp_bootloader_id_pro: |
         1E2978C318FDFA64
         27A01ABA881492E4
         B58E949DEA01F4A7
-   ```
 #hugo_axp_bootloader_id_slim: |
 
 # vendor/firmware info
