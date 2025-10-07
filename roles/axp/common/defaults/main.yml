@@ -14,12 +14,15 @@ git_axpos_org_name: "AXP.OS"
 commit_push: True
 # just push changes after patching, skip build
 just_git_push: False
+# codeberg
+git_axpos_org_public_host: "codeberg.org"
+git_axpos_org_public: "ssh://git@{{ git_axpos_org_public_host }}/{{ git_axpos_org_name | regex_replace('.', '-') }}"
+# binbash
 git_axpos_org_private_host: "code.binbash.rocks"
 # private git URI (incl org) for creating/updating repos for AXP.OS
 git_axpos_org_private: "ssh://git@{{ git_axpos_org_private_host }}:22443/{{ git_axpos_org_name }}"
-# list of private repos within the AXP.OS org
-# reasons for listing them here are e.g. they get rejected on github, containing proprietary stuff or sim.
-# comma separated list:
+# comma separated list of private repos within the AXP.OS org.
+# reasons for listing them here are e.g. they get rejected on github, containing proprietary stuff or similiar.
 git_private_repos: "platform_prebuilts_tools,android_cts"
 # git / gpg signing key, defaults to empty (is set via Semaphore inventory)
 #release_gpg_signing_key: "FE4B2FA2B225F0AB903AF4136740E645718A8E47"
