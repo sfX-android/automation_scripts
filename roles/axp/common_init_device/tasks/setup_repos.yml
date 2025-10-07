@@ -24,55 +24,33 @@
         else
             GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
         fi
-        echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
         
-        if [ $private -eq 1 ];then
-            git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1 || create_req=1
-            echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> {{ init_device_temp_path }}" >> {{ BUILD_LOG }}
-        else
-            git clone {{ axp_git_org }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1 || create_req=1
-            echo "[GIT] cloned {{ axp_git_org }}/$reponame -> {{ init_device_temp_path }}" >> {{ BUILD_LOG }}
-        fi
+        git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1 || create_req=1
+        echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> {{ init_device_temp_path }}" >> {{ BUILD_LOG }}
     
         if [ $create_req -eq 1 ];then
-          echo "[GIT] repo {{ axp_git_org }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
-    
-          if [ $private -eq 1 ];then
-              echo "[GIT] Forking new PRIVATE repo: {{ git_axpos_org_private }}/$reponame from: github.com/$GHORG/$reponame" >> {{ BUILD_LOG }}
-              tea repo migrate --owner {{ git_axpos_org_name }} --name $reponame --lfs true --service git --clone-url https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
-    
-              # set description & issues
-              curl -sX 'PATCH' \
-                "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" \
-                -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
-                -H 'accept: application/json' \
-                -H 'Content-Type: application/json' \
-                -d  '{
-                      "description": "Mirror of: https://github.com/'$GHORG/$reponame'",
-                      "has_issues": true,
-                      "external_tracker": {
-                        "external_tracker_format": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues/{index}",
-                        "external_tracker_url": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues",
-                        "external_tracker_style": "alphanumeric"
-                        }
-                    }' >> {{ BUILD_LOG }} 2>&1       
-              git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1
-              echo "[GIT] $reponame repo created..." >> {{ BUILD_LOG }}
-          else
-              echo "[GIT] Create new PUBLIC repo: {{ axp_git_org }}/$reponame" >> {{ BUILD_LOG }}
-              gh repo fork $GHORG/$reponame --org AXP-OS --clone=false >> {{ BUILD_LOG }} 2>&1
-              # even though the command will wait until the fork is fully created give some extra time
-              sleep 5
-    
-              # Set description, public, disable issues and wiki
-              gh repo edit AXP-OS/${reponame} \
-               --description "forked from: https://github.com/$GHORG/$reponame" \
-               --accept-visibility-change-consequences \
-               --visibility public >> {{ BUILD_LOG }} 2>&1
-              
-              # finally clone the forked repo locally
-              git clone {{ axp_git_org }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1    
-          fi
+          echo "[GIT] repo {{ git_axpos_org_private }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
+          echo "[GIT] Forking new repo: {{ git_axpos_org_private }}/$reponame from: github.com/$GHORG/$reponame" >> {{ BUILD_LOG }}
+          tea repo migrate --owner {{ git_axpos_org_name }} --name $reponame --lfs true --service git --clone-url https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
+
+          # set description & issues
+          curl -sX 'PATCH' \
+            "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" \
+            -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/json' \
+            -d  '{
+                  "description": "Mirror of: https://github.com/'$GHORG/$reponame'",
+                  "has_issues": true,
+                  "external_tracker": {
+                    "external_tracker_format": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues/{index}",
+                    "external_tracker_url": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues",
+                    "external_tracker_style": "alphanumeric"
+                    }
+                }' >> {{ BUILD_LOG }} 2>&1       
+          git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT] {{ git_axpos_org_private }}/$reponame created..." >> {{ BUILD_LOG }}
         fi
       args:
         executable: /bin/bash
@@ -88,7 +66,7 @@
         else
             GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
         fi
-        echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
         
         echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
         git checkout origin/$upstream_branch  >> {{ BUILD_LOG }} 2>&1 \
@@ -145,28 +123,32 @@
         {{ DOS_INIT }}
         upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
         cd {{ init_device_temp_path }}
+        CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         
         if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
             GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
         else
             GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
         fi
-        echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
         
-        if [ $private -eq 1 ];then
-            echo "[GIT] setup LFS ..." >> {{ BUILD_LOG }}
-            for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
-              git lfs track \"*.${lf}\" >> {{ BUILD_LOG }} 2>&1
-            done
-            echo "[GIT] gitattributes:" >> {{ BUILD_LOG }} 
-            cat .gitattributes >> {{ BUILD_LOG }} || true
-            git add -A .  >> /dev/null 2>> {{ BUILD_LOG }}
-            for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
-              git lfs track \"*.${lf}\"
-            done
-            (git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-               && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}) \
-            || true
+        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+        if [ $CMTL -gt 0 ];then
+          git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
+            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
+        fi
+
+        echo "[GIT] LFS processing on >local< branch" >> {{ BUILD_LOG }}
+        export REMHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
+        echo "[GIT] overwrite REMHASH->$REMHASH" >> {{ BUILD_LOG }}
+        git checkout $CURHASH >> /dev/null 2>> {{ BUILD_LOG }}
+        for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
+          git lfs track \"*.${lf}\"
+        done
+        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+        if [ $CMTL -gt 0 ];then
+          git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
+            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
         fi
       args:
         executable: /bin/bash
@@ -183,20 +165,18 @@
         else
             GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
         fi
-        echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
         
         if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
           mkdir -p $workflowpath/workflows/ 2>/dev/null || true
         
-        if [ $private -eq 1 ];then
-          workflowpath=".gitea"
-          if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
-              mkdir -p $workflowpath/workflows/ 2>/dev/null || true
-              if [ -f $workflowpath/workflows/sync.yml ];then
-                rm $workflowpath/workflows/sync.yml
-              fi
-              
-              echo "[GIT] adding CI/CD to PRIVATE repo" >> {{ BUILD_LOG }}
+        workflowpath=".gitea"
+        if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
+          mkdir -p $workflowpath/workflows/ 2>/dev/null || true
+          if [ -f $workflowpath/workflows/sync.yml ];then
+            rm $workflowpath/workflows/sync.yml
+          fi
+          echo "[GIT] adding CI/CD to repo" >> {{ BUILD_LOG }}
         {% raw %}
               cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
               name: "Sync with upstream"
@@ -220,47 +200,7 @@
                       dryrun: false
                   secrets: inherit
         EOSYNC
-          fi
         {% endraw %}
-    
-        else
-        
-            echo "[GIT] adding CI/CD to PUBLIC repo" >> {{ BUILD_LOG }}
-        {% raw %}
-            workflowpath=".github"
-            if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
-              mkdir -p $workflowpath/workflows/ 2>/dev/null || true
-              if [ -f $workflowpath/workflows/sync.yml ];then
-                rm $workflowpath/workflows/sync.yml
-              fi
-              
-              cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
-              name: "Sync with upstream"
-        
-              on:
-                workflow_dispatch:
-                schedule:
-                  - cron: "$(( RANDOM % 60 )) $(( RANDOM % 24 )) * * *"
-        
-              # Sets permissions of the GITHUB_TOKEN to allow pushing via github token
-              permissions:
-                contents: write
-        
-              jobs:
-                sync-upstream:
-                  name: "Sync with upstream"
-                  uses: AXP-OS/.github/.github/workflows/sync_upstream.yml@main
-                  with:
-                      remote-repo: $GHORG/\${{ github.event.repository.name }}
-                      remote-branch: $upstream_branch
-                      local-repo: \${{ github.repository_owner }}/\${{ github.event.repository.name }}
-                      local-branch: "$(git branch --no-color --show-current)"
-                      dryrun: false
-                  secrets: inherit
-        EOSYNC
-          fi
-        {% endraw %}
-        fi
         
           git add -f $workflowpath/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
           CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
@@ -287,7 +227,7 @@
         else
             GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
         fi
-        echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
     
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
@@ -300,14 +240,10 @@
           git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
           sleep 10
-          if [ $private -eq 1 ];then
-            curl -siX PATCH -H "Content-Type: application/json" \
+          curl -siX PATCH -H "Content-Type: application/json" \
               -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
               -d '{"default_branch": "'$axp_release'"}'\
               "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame"
-          else
-            gh repo edit AXP-OS/${reponame} --default-branch $axp_release >> {{ BUILD_LOG }} 2>&1
-          fi
           echo "[GIT] default branch set to $axp_release!" >> {{ BUILD_LOG }}
         else
           echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
