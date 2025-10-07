@@ -57,7 +57,6 @@ hugo_first_releasedate: "2024-01-16"
 #hugo_kb_link: ""
 #hugo_custom_installguide_path: 
 hugo_axp_bootloader_id_pro: |
-  ```
   BOOTLOADER minimal ID
         2357DB9E
 
@@ -66,9 +65,7 @@ hugo_axp_bootloader_id_pro: |
         908E9BBC0B353CC9
         CA11015AC588001D
         0AB9A80BD8AA5906
-  ```
 hugo_axp_bootloader_id_slim: |
-  ```
   BOOTLOADER minimal ID
           B49112D3
   
@@ -77,7 +74,6 @@ hugo_axp_bootloader_id_slim: |
           AD3FC088B8977377
           4004899D7B181996
           15E6F074099EA3E0
-  ```
 
 # vendor/firmware info
 # download source: https://archive.org/details/sunfish-tq3a.230805.001.s1
