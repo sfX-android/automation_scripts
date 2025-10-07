@@ -66,16 +66,19 @@ hugo_axp_bootloader_id_slim: |
         C762747813879DC8
   ```
 
+###############################################################################################################################
 # vendor/firmware info
+###############################################################################################################################
+####### A13:
 # download source: https://developers.google.com/android/ota#oriole
-vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/oriole-ota-tq3a.230901.001-ea9d9bca.zip"
-vendor_firmware_download_sha256: "ea9d9bca6dfc031e2e7969b6e143005cd87531a95cf2b736cd57c1e37ec430e8"
+#vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/oriole-ota-tq3a.230901.001-ea9d9bca.zip"
+#vendor_firmware_download_sha256: "ea9d9bca6dfc031e2e7969b6e143005cd87531a95cf2b736cd57c1e37ec430e8"
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
-vendor_firmware_persistent_path: "{{ persistent_dir }}/oriole-ota-tq3a.230901.001-ea9d9bca.zip"
-####### A15 prep:
-#vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/oriole-ota-bp1a.250505.005-0ac3ca61.zip"
-#vendor_firmware_download_sha256: "0ac3ca6175db1b86ed666aa2079a1f8ad41ea67a52e5a9b834c09bde6a6e5a5f"
+#vendor_firmware_persistent_path: "{{ persistent_dir }}/oriole-ota-tq3a.230901.001-ea9d9bca.zip"
+####### A15:
+vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/oriole-ota-bp1a.250505.005-0ac3ca61.zip"
+vendor_firmware_download_sha256: "0ac3ca6175db1b86ed666aa2079a1f8ad41ea67a52e5a9b834c09bde6a6e5a5f"
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
-#vendor_firmware_persistent_path: "{{ persistent_dir }}/oriole-ota-bp1a.250505.005-0ac3ca61.zip"
+vendor_firmware_persistent_path: "{{ persistent_dir }}/oriole-ota-bp1a.250505.005-0ac3ca61.zip"
