@@ -59,7 +59,7 @@
 
       - name: Debug
         ansible.builtin.debug:
-          var: axp_release_recovery_skip
+          msg: "axp_release_recovery_skip = >{{axp_release_recovery_skip}}<"
 
       - name: "RECOVERY: switch to stable"
         ansible.builtin.shell: >-
