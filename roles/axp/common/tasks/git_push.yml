@@ -100,7 +100,7 @@
       # see: https://github.com/cli/cli/issues/2241#issuecomment-1402316546
       # requires to auth/login first: 
       # $> gh auth login
-      # $> tea login add (see common/defaults/main.yml for details)
+        # $> tea login add (see common/defaults/main.yml for details)
       git remote remove up 2>> /dev/null || true
       git fetch --unshallow >> /dev/null 2>&1 || true
       # first check if this is a problematic repo
@@ -120,11 +120,14 @@
         echo "[GIT] repo does not exist within the org yet! Creating..." >> {{ BUILD_LOG }}
         git remote remove up 2>> /dev/null || true
         if [ -z "$prepo" ];then
-          gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)"
-          gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain'
+          #gh repo create AXP-OS/${reponame} --public --source=. --remote=up --disable-issues --disable-wiki --team bots --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)"
+          #gh api -X PUT "/orgs/AXP-OS/teams/bots/repos/AXP-OS/${reponame}" -f 'permission=maintain'
+          git checkout $REMHASH
+          tea repos create --login {{ git_axpos_org_public_login }} --name ${reponame} --owner {{ git_axpos_org_name | regex_replace('.', '-') }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT] repo created..." >> {{ BUILD_LOG }}
         else
           git checkout $REMHASH
-          tea repos create --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" --login {{ gitea_login_name }} >> {{ BUILD_LOG }} 2>&1
+          tea repos create --login {{ git_axpos_org_private_login }} --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] repo created..." >> {{ BUILD_LOG }}
           for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
             git lfs track \"*.${lf}\"
@@ -215,7 +218,7 @@
       # change manifest line to point to AXP.OS org, ensures private org for proprietary
       croot
       if [ -z "$prepo" ];then
-        echo "[GIT] setting manifest for $reponame to AXP.OS >github<" >> {{ BUILD_LOG }}
+        echo "[GIT] setting manifest for $reponame to AXP.OS >{{ git_axpos_org_public_host }}<" >> {{ BUILD_LOG }}
         sed -i -E 's|(name=".*")\s+(path="'$localpath'")\s+remote="([[:graph:]]+)" |name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
       else
         echo "[GIT] setting manifest for $reponame to AXP.OS >bbr<" >> {{ BUILD_LOG }}
@@ -230,7 +233,7 @@
     cd .repo/local_manifests/
     cp -a {{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh . || true
     git remote remove up 2>> /dev/null || true
-    git remote add up git@github.com:AXP-OS/manifest.git
+    git remote add up {{ git_axpos_org_private }}/manifest.git
     git add -A || true
     git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "added/changed $TAG"
     git tag -a "$TAG" -m "axp.os: tagged on $TAG" 2>> /dev/null || (git tag -d "$TAG"; git push up --delete "$TAG" 2>> /dev/null || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
