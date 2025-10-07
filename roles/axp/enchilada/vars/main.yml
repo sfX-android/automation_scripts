@@ -34,3 +34,45 @@ axp_bootloader_id_slim: '8EDD5AEB8F28BC9B'
 # git push
 axp_git_push_device_include: "device_oneplus_enchilada|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_oneplus_sdm845-common|vendor_oneplus_enchilada"
+
+# website info
+hugo_encryption: "FBEv1"
+hugo_firmware: "included"
+hugo_relockable: "yes"
+hugo_state: "!! ALPHA !!"
+hugo_supportlevel: "community"
+hugo_isab: "yes"
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-enchilada-axp-os-20-0.4711844/"
+hugo_first_releasedate: "2025-01-23"
+hugo_kb_link: "enchiladafajita"
+#hugo_custom_installguide_path: 
+hugo_axp_bootloader_id_pro: |
+   ```
+   BOOTLOADER minimal ID
+        3026966C
+
+   BOOTLOADER full ID:
+        3026966C854EB5EB
+        2D1CF437BA2F38A0
+        657F8DE88A1751E7
+        B73D9BA0B28D6196
+   ```
+hugo_axp_bootloader_id_slim: |
+  ```
+  BOOTLOADER minimal ID
+        8EDD5AEB
+
+  BOOTLOADER full ID:
+        8EDD5AEB8F28BC9B
+        5FA947A871985F71
+        3A710980D2B7C6C7
+        8259171B4B82282F
+```
+
+# vendor/firmware info (A11+)
+# download source: https://xdaforums.com/t/oneplus-6-rom-ota-oxygen-os-mirrors-for-official-oxygen-os-roms-and-ota-updates.3792244/
+vendor_firmware_download_url: "https://ava4.androidfilehost.com/dl/Z6AZvSwYv9ZBmYpuVjExmw/1759927918/7161016148664850007/OnePlus6Oxygen_22.J.62_OTA_0620_all_2111252336_14afec75dd6fa.zip"
+vendor_firmware_download_sha512: "f50120baee98a0b0b098db039eda985fcc8a30306bd1aac801de591ffff70a6f606cdf92606ae4d9c8f796fc185ba5cb3089fb97a480071334e928e025dfe954"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/OnePlus6Oxygen_22.J.62_OTA_0620_all_2111252336_14afec75dd6fa.zip"
