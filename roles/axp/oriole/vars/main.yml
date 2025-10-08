@@ -40,7 +40,7 @@ axp_bootloader_id_pro: ''
 axp_bootloader_id_slim: '42D46266F04BBF79'
 
 # git push
-axp_git_push_device_include: "device_google_oriole|device_google_raven|device_google_raviole|{{ target_model_common_tree }}"
+axp_git_push_device_include: "device_google_oriole|device_google_raven|device_google_raviole|device_google_gs-common|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_oriole"
 
 # disable Wireguard patching (already part of the upstream kernel)
