@@ -43,6 +43,7 @@
             -d  '{
                   "description": "Mirror of: https://github.com/'$GHORG/$reponame'",
                   "has_issues": true,
+                  "default_branch": "{{ axp_switchMR_upstream_branch }}",
                   "external_tracker": {
                     "external_tracker_format": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues/{index}",
                     "external_tracker_url": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues",
@@ -103,8 +104,6 @@
           
           grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
             || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}    
-          #grep -q "vendor/axp/BoardConfigVendor.mk" {{ target_model_device_tree_boardmk }} \
-          #  || echo -e '\n# even though we include vendor/axp/config/common.mk we need to include AXPs own BoardConfig\n# (after the above definitions & includes), too so we we can make use of the conditions within\ninclude vendor/axp/BoardConfigVendor.mk' >> {{ target_model_device_tree_boardmk }}
           
           CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
           if [ $CMTL -gt 0 ];then
@@ -131,25 +130,19 @@
             GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
         fi
         echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
-        
-        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-        if [ $CMTL -gt 0 ];then
-          git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
-        fi
 
-        echo "[GIT] LFS processing on >local< branch" >> {{ BUILD_LOG }}
-        export REMHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-        echo "[GIT] overwrite REMHASH->$REMHASH" >> {{ BUILD_LOG }}
-        git checkout $CURHASH >> /dev/null 2>> {{ BUILD_LOG }}
-        for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
-          git lfs track \"*.${lf}\"
+        for work in $axp_release $upstream_branch; do
+            git checkout $work
+            for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
+              git lfs track \"*.${lf}\"
+            done
+        
+            CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+            if [ $CMTL -gt 0 ];then
+              git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
+                && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
+            fi
         done
-        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-        if [ $CMTL -gt 0 ];then
-          git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
-        fi
       args:
         executable: /bin/bash
         chdir: "{{ init_device_temp_path }}"
@@ -167,47 +160,48 @@
         fi
         echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
               
+        git checkout $axp_release
+
         workflowpath=".gitea"
         if [ ! -f $workflowpath/workflows/sync_upstream.yml ];then
-          mkdir -p $workflowpath/workflows/ 2>/dev/null || true
-          if [ -f $workflowpath/workflows/sync.yml ];then
-            rm $workflowpath/workflows/sync.yml
-          fi
-          echo "[GIT] adding CI/CD to repo" >> {{ BUILD_LOG }}
+              mkdir -p $workflowpath/workflows/ 2>/dev/null || true
+              if [ -f $workflowpath/workflows/sync.yml ];then rm $workflowpath/workflows/sync.yml; fi
+              
+              echo "[GIT] adding CI/CD to repo (branch: $axp_release)" >> {{ BUILD_LOG }}
         {% raw %}
-              cat <<EOSYNC > $workflowpath/workflows/sync_upstream.yml
+              cat > $workflowpath/workflows/sync_upstream.yml <<EOSYNC
+        name: "Sync with upstream"
+    
+        on:
+            workflow_dispatch:
+            schedule:
+              - cron: "$(( RANDOM % 60 )) $(( RANDOM % 24 )) * * *"
+    
+        jobs:
+            sync-upstream:
               name: "Sync with upstream"
-        
-              on:
-                workflow_dispatch:
-                schedule:
-                  - cron: "$(( RANDOM % 60 )) $(( RANDOM % 24 )) * * *"
-        
-              jobs:
-                sync-upstream:
-                  name: "Sync with upstream"
-                  runs-on: docker-node-latest
-                  uses: https://codeberg.org/AXP-OS/actions/.gitea/workflows/sync_upstream.yaml@main
-                  with:
-                      remote-server: github.com
-                      remote-repo: $GHORG/\${{ github.event.repository.name }}
-                      remote-branch: $upstream_branch
-                      local-repo: \${{ github.repository_owner }}/\${{ github.event.repository.name }}
-                      local-branch: "$(git branch --no-color --show-current)"
-                      dryrun: false
-                  secrets: inherit
+              runs-on: docker-node-latest
+              uses: https://codeberg.org/AXP-OS/actions/.gitea/workflows/sync_upstream.yaml@main
+              with:
+                  remote-server: github.com
+                  remote-repo: $GHORG/\${{ github.event.repository.name }}
+                  remote-branch: $upstream_branch
+                  local-repo: \${{ github.repository_owner }}/\${{ github.event.repository.name }}
+                  local-branch: "$(git branch --no-color --show-current)"
+                  dryrun: false
+              secrets: inherit
         EOSYNC
         {% endraw %}
-        
-          git add -f $workflowpath/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
-          CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-          if [ $CMTL -gt 0 ];then
-              git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync" >> {{ BUILD_LOG }} 2>&1
-              push_req=$(( push_req + 1))
-              echo "[GIT] git commit added for ci/cd" >> {{ BUILD_LOG }}
-          fi
+              git add -f $workflowpath/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
+              CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+              if [ $CMTL -gt 0 ];then
+                  git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync" >> {{ BUILD_LOG }} 2>&1
+                  push_req=$(( push_req + 1))
+                  echo "[GIT] git commit added for ci/cd" >> {{ BUILD_LOG }}
+                  git show >> {{ BUILD_LOG }}
+              fi
         else
-          echo "Skipped adding CI/CD sync to device tree." >> {{ BUILD_LOG }} 2>&1
+          echo "Skipped adding CI/CD sync to device tree (already configured)." >> {{ BUILD_LOG }} 2>&1
         fi
       args:
         executable: /bin/bash
@@ -218,14 +212,8 @@
         {{ DOS_INIT }}
         upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
         cd {{ init_device_temp_path }}
-        
-        if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
-            GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
-        else
-            GHORG=LineageOS; reponame=android_{{ device_tree }}; private=0
-        fi
-        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
-    
+
+        git checkout $upstream_branch
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
         
@@ -233,19 +221,34 @@
           git lfs fetch up
           git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
           echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-          git push origin up/$upstream_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
+
+          git push origin $upstream_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] Pushed $reponame / $upstream_branch!" >> {{ BUILD_LOG }} 2>&1
+        else
+          echo "Skipped pushing $upstream_branch (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+        fi
+
+        git checkout $axp_release
+        CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
+        REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
+
+        if [ "$CURHASH" != "$REMHASH" ]; then
+          git lfs fetch up
+          git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
+          echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
+          
           git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
-          sleep 10
-          curl -siX PATCH -H "Content-Type: application/json" \
+        else
+          echo "Skipped pushing $axp_release (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+        fi
+        
+        sleep 10              
+        curl -siX PATCH -H "Content-Type: application/json" \
               -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
               -d '{"default_branch": "'$axp_release'"}'\
               "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame"
-          echo "[GIT] default branch set to $axp_release!" >> {{ BUILD_LOG }}
-        else
-          echo "Skipped pushing $reponame (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
-        fi
+        echo "[GIT] default branch set to $axp_release!" >> {{ BUILD_LOG }}
             
         echo -e "###########################################################"  >> {{ BUILD_LOG }}
         echo -e "# ENDED: {{ device_tree }}"  >> {{ BUILD_LOG }}
