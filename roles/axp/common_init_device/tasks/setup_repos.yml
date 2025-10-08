@@ -70,13 +70,13 @@
         echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
         
         echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
-        git checkout origin/$upstream_branch  >> {{ BUILD_LOG }} 2>&1 \
-          || (git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch up >> {{ BUILD_LOG }} 2>&1 && git checkout up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1)
+        git checkout --track origin/$upstream_branch  >> {{ BUILD_LOG }} 2>&1 \
+          || (git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1 && git fetch up >> {{ BUILD_LOG }} 2>&1 && git checkout -b "$upstream_branch" up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1)
     
         git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>/dev/null || true
         git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
-        git checkout up/$upstream_branch >> {{ BUILD_LOG }} 2>&1
-
+        git checkout "$upstream_branch" >> {{ BUILD_LOG }} 2>&1
+        
         BROKENLFS=$(grep -c undocumented .lfsconfig || echo 0)
         if [ $BROKENLFS -eq 0 ]; then git lfs fetch --all;fi
 
@@ -132,9 +132,9 @@
         echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
 
         for work in $axp_release $upstream_branch; do
-            git checkout $work
+            git checkout $work >> {{ BUILD_LOG }}
             for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
-              git lfs track \"*.${lf}\"
+              git lfs track \"*.${lf}\" >> {{ BUILD_LOG }} 
             done
         
             CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
