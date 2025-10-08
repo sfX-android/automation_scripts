@@ -40,7 +40,7 @@ axp_bootloader_id_pro: '6F32410F17EF997F'
 axp_bootloader_id_slim: ''
 
 # git push
-axp_git_push_device_include: "device_google_cheetah|device_google_pantah|{{ target_model_common_tree }}" 
+axp_git_push_device_include: "device_google_cheetah|device_google_pantah|device_google_gs-common|{{ target_model_common_tree }}" 
 axp_git_push_vendor_include: "vendor_google_cheetah"
 
 # website info
