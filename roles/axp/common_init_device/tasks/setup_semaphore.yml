@@ -12,6 +12,22 @@
   register: sp_all_templates
   no_log: true
 
+- name: "Setup semaphore: get current semaphore variable groups"
+  connection: local
+  ansible.builtin.uri:
+    url: "{{ semaphore_api_uri }}/project/{{ semaphore_aos_template_project_id }}/environment"
+    method: GET
+    headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
+  register: sp_all_envs
+  no_log: true
+
+- name: "Extract environment ID for given name"
+  ansible.builtin.set_fact:
+    semaphore_aos_template_env_id: >-
+      {{ sp_all_envs.json | selectattr('name', 'equalto', semaphore_aos_template_env_name) | map(attribute='id') | first }}
+
 - name: "Setup semaphore: create semaphore template"
   connection: local
   ansible.builtin.uri:
@@ -25,7 +41,7 @@
         { "project_id": {{ semaphore_aos_template_project_id }},
         "inventory_id": {{ semaphore_aos_template_inventory_id }},
         "repository_id": {{ semaphore_aos_template_repo_id }},
-        "environment_id": {{ semaphore_aos_template_env_id }},
+        "environment_id": {{ semaphore_aos_template_env_name }},
         "view_id": {{ semaphore_aos_template_view_id }},
         "name": "{{ semaphore_aos_template_name }}",
         "app": "ansible",
