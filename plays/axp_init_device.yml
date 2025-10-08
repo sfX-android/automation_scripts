@@ -7,8 +7,9 @@
   tasks:
     - block:
     
-      - import_role:
+      - include_role:
           name: common
+          public: yes
 
       - include_role:
           name: "{{ ROM_FLAVOR }}/common"
