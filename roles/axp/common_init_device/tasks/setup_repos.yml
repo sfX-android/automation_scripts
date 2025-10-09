@@ -256,8 +256,8 @@
         sleep 10              
         curl -siX PATCH -H "Content-Type: application/json" \
               -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
-              -d '{"default_branch": "'$axp_release'"}'\
-              "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame"
+              -d '{"default_branch": "{{ axp_switchMR_target_branch }}"}' \
+              "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] default branch in $reponame set to $axp_release!" >> {{ BUILD_LOG }}
             
         echo -e "###########################################################"  >> {{ BUILD_LOG }}
