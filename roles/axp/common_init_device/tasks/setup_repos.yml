@@ -27,12 +27,12 @@
         echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
         
         git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1 || create_req=1
-        echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> {{ init_device_temp_path }}" >> {{ BUILD_LOG }}
+        if [ $create_req -eq 0 ];then echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> {{ init_device_temp_path }}" >> {{ BUILD_LOG }}; fi
     
         if [ $create_req -eq 1 ];then
           echo "[GIT] repo {{ git_axpos_org_private }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
           echo "[GIT] Forking new repo: {{ git_axpos_org_private }}/$reponame from: github.com/$GHORG/$reponame" >> {{ BUILD_LOG }}
-          tea repo migrate --owner {{ git_axpos_org_name }} --name $reponame --lfs true --service git --clone-url https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
+          tea repo migrate --login {{ git_axpos_org_private_login }} --owner {{ git_axpos_org_name }} --name $reponame --lfs true --service git --clone-url https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
 
           # set description & issues
           curl -sX 'PATCH' \
