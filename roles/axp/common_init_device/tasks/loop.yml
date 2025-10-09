@@ -37,7 +37,6 @@
     device_tree: "{{ device_repo }}"
   when:
     - not skip_setup_repos
-    - not (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google")
 
 - include_tasks: setup_vendor_firmware.yml
   when: not skip_setup_firmware
