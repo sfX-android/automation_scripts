@@ -214,7 +214,13 @@
     - name: "Setup repositories: Git push"
       ansible.builtin.shell: |
         {{ DOS_INIT }}
-        upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0; reponame="{{ device_tree }}"
+        upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+
+        if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
+            reponame=proprietary_{{ device_tree }}; private=1
+        else
+            reponame=android_{{ device_tree }}; private=0
+        fi
         cd {{ init_device_temp_path }}
 
         ####### UPSTREAM HANDLING #########
