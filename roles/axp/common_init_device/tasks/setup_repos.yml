@@ -82,7 +82,13 @@
         fi
         
         BROKENLFS=$(grep -c undocumented .lfsconfig || echo 0)
-        if [ $BROKENLFS -eq 0 ]; then git lfs fetch --all;fi
+        if [ $BROKENLFS -eq 0 ]; then
+            git lfs fetch --all
+        else
+            rm .lfsconfig
+            git add -A .lfsconfig  >> /dev/null 2>> {{ BUILD_LOG }} \
+                && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove broken lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}
+        fi
 
         git checkout --track origin/$axp_release >> {{ BUILD_LOG }} 2>&1 || (git checkout $axp_release >> {{ BUILD_LOG }} 2>&1 || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1)
         git remote -v >> {{ BUILD_LOG }} 2>&1
@@ -225,12 +231,12 @@
 
         ####### UPSTREAM HANDLING #########
         git checkout $upstream_branch
-        git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
-        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-        if [ $CMTL -gt 0 ];then
-            git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
-        fi
+        #git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
+        #CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+        #if [ $CMTL -gt 0 ];then
+        #    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
+        #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
+        #fi
         git lfs fetch up  >> {{ BUILD_LOG }} 2>&1
         
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
@@ -246,12 +252,12 @@
 
         ####### AXP HANDLING #########
         git checkout $axp_release
-        git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
-        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-        if [ $CMTL -gt 0 ];then
-            git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
-        fi
+        #git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
+        #CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+        #if [ $CMTL -gt 0 ];then
+        #    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
+        #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
+        #fi
         git lfs fetch origin  >> {{ BUILD_LOG }} 2>&1
 
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
