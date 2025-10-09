@@ -290,6 +290,25 @@
           path: "{{ init_device_temp_path }}"
           state: absent
 
+    - name: "Setup repositories: run activate-mirror action"
+      connection: local
+      ansible.builtin.uri:
+        url: "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/{{ git_axpos_actions_workflow_repo }}/actions/workflows/{{ git_axpos_actions_workflow_id }}/dispatches"
+        method: POST
+        headers:
+            Content-Type: application/json
+            Authorization: "Bearer {{ vault_axp_private_repo_token_rw }}"
+        body_format: json
+        body: >-
+            { "inputs": {
+                "repooverride": "{{ device_tree }}"
+                }
+             }
+        status_code: [ 201, 200 ]
+      #register: amirr
+      #changed_when: amirr.status == 201
+      #no_log: true
+
   rescue:
 
     #- name: "Setup repositories: End clean"
