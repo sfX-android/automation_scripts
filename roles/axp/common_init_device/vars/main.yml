@@ -11,6 +11,9 @@ init_device_vendorfirmware: "ssh://git@code.binbash.rocks:22443/AXP.OS/vendor_fi
 
 init_device_otaverifier_repo: "git@github.com:sfX-android/update_verifier.git"
 
+ git_axpos_actions_workflow_repo: actions
+ git_axpos_actions_workflow_id: activate_mirror.yaml
+
 ######## defaults
 
 skip_dl_cve_checker: True
