@@ -36,7 +36,7 @@
 
           # set description & issues
           curl -sX 'PATCH' \
-            "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" \
+            "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" \
             -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
             -H 'accept: application/json' \
             -H 'Content-Type: application/json' \
@@ -263,7 +263,7 @@
         curl -siX PATCH -H "Content-Type: application/json" \
               -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
               -d '{"default_branch": "{{ axp_switchMR_target_branch }}"}' \
-              "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" >> {{ BUILD_LOG }} 2>&1
+              "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" >> {{ BUILD_LOG }} 2>&1
         echo "[GIT] default branch in $reponame set to $axp_release!" >> {{ BUILD_LOG }}
             
         echo -e "###########################################################"  >> {{ BUILD_LOG }}
