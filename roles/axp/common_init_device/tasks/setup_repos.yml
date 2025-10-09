@@ -214,31 +214,33 @@
     - name: "Setup repositories: Git push"
       ansible.builtin.shell: |
         {{ DOS_INIT }}
-        upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+        upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0; reponame="{{ device_tree }}"
         cd {{ init_device_temp_path }}
 
+        ####### UPSTREAM HANDLING #########
         git checkout $upstream_branch
         git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
         git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
             && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
-        git lfs fetch up
+        git lfs fetch up  >> {{ BUILD_LOG }} 2>&1
         
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-        REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
+        REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$upstream_branch" |cut -d ' ' -f1)
         
         if [ "$CURHASH" != "$REMHASH" ]; then
           echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
           git push --force origin $upstream_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] Pushed $reponame / $upstream_branch!" >> {{ BUILD_LOG }} 2>&1
         else
-          echo "Skipped pushing $upstream_branch (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+          echo "Skipped pushing $reponame / $upstream_branch (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
         fi
 
+        ####### AXP HANDLING #########
         git checkout $axp_release
         git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
         git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
             && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
-        git lfs fetch origin
+        git lfs fetch origin  >> {{ BUILD_LOG }} 2>&1
 
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
@@ -248,7 +250,7 @@
           git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
         else
-          echo "Skipped pushing $axp_release (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+          echo "Skipped pushing $reponame / $axp_release (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
         fi
         
         sleep 10              
@@ -256,10 +258,10 @@
               -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
               -d '{"default_branch": "'$axp_release'"}'\
               "https://{{ git_axpos_org_private_host }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame"
-        echo "[GIT] default branch set to $axp_release!" >> {{ BUILD_LOG }}
+        echo "[GIT] default branch in $reponame set to $axp_release!" >> {{ BUILD_LOG }}
             
         echo -e "###########################################################"  >> {{ BUILD_LOG }}
-        echo -e "# ENDED: {{ device_tree }}"  >> {{ BUILD_LOG }}
+        echo -e "# ENDED: $reponame"  >> {{ BUILD_LOG }}
         echo -e "###########################################################\n"  >> {{ BUILD_LOG }}
       args:
         executable: /bin/bash
