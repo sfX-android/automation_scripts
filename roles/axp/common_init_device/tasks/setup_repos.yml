@@ -71,7 +71,8 @@
         
         echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
         create_br=0
-        git checkout --track origin/$upstream_branch  >> {{ BUILD_LOG }} 2>&1 || create_br=1
+        git fetch origin $upstream_branch  >> {{ BUILD_LOG }} 2>&1 || true
+        git checkout $upstream_branch  >> {{ BUILD_LOG }} 2>&1 || create_br=1
         git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
         git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
 
