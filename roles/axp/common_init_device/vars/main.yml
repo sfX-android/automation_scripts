@@ -15,10 +15,12 @@ init_device_otaverifier_repo: "git@github.com:sfX-android/update_verifier.git"
 
 git_axpos_actions_workflow_repo: actions
 git_axpos_actions_workflow_id: activate_mirror.yaml
+git_axpos_actions_workflow_repo_branch: main
 
 git_axpos_website_workflow_repo: axpos-org
 git_axpos_website_workflow_id: pages.yaml
 git_axpos_website_workflow_force: False
+git_axpos_website_workflow_repo_branch: hugo
 
 ######## defaults
 

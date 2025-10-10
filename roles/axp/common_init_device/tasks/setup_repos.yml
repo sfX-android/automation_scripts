@@ -306,7 +306,8 @@
         body: >-
             { "inputs": {
                 "repooverride": "{{ device_tree }}"
-                }
+              },
+              "ref": "{{ git_axpos_actions_workflow_repo_branch }}"
              }
         status_code: [ 201, 200 ]
       #register: amirr
