@@ -83,7 +83,7 @@
           },
           "ref": "{{ git_axpos_website_workflow_repo_branch }}"
          }
-    status_code: [ 201, 200 ]
+    status_code: 204
   #register: amirr
   #changed_when: amirr.status == 201
   #no_log: true
