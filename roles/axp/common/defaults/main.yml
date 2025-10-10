@@ -408,7 +408,7 @@ SH_COMMON_BUILD_SNIPPET: |
 
     ########################### BUILD #########################
 
-    {% if git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" %}
+    {% if git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true") %}
     ###### BUILD GOOGLE PIXEL KERNEL
     cd {{ git_pixel_kernel_dir }}
     {{ pixel_kernel_buildcmd }} >> {{ BUILD_LOG }} 2>&1
