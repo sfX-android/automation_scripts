@@ -141,7 +141,7 @@ parselogerr:
       expect: ''
     
 # allow to (manually) set selinux permissive
-axp_allow_permissive: True
+axp_allow_permissive: False
 
 # kernel patching
 divest_unsupported_device: false    # should be overwritten in a device's vars/main.yml if needed
