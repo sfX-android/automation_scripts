@@ -11,8 +11,14 @@ init_device_vendorfirmware: "ssh://git@code.binbash.rocks:22443/AXP.OS/vendor_fi
 
 init_device_otaverifier_repo: "git@github.com:sfX-android/update_verifier.git"
 
- git_axpos_actions_workflow_repo: actions
- git_axpos_actions_workflow_id: activate_mirror.yaml
+####### gitea action workflow triggering
+
+git_axpos_actions_workflow_repo: actions
+git_axpos_actions_workflow_id: activate_mirror.yaml
+
+git_axpos_website_workflow_repo: axpos-org
+git_axpos_website_workflow_id: pages.yaml
+git_axpos_website_workflow_force: False
 
 ######## defaults
 
