@@ -111,7 +111,11 @@
         
         if [ "{{ target_model_common_tree }}" == "{{ device_tree }}" ];then
           echo "[GIT] checking AXP.OS common tree include.." >> {{ BUILD_LOG }}
-          
+          if [ ! -f {{ target_model_device_tree_mk }} ]; then
+              echo "[GIT] ERROR: MISSING COMMON MK! CHECK/SET target_model_device_tree_mk"
+              exit 4
+          fi
+
           grep -q "vendor/axp/config/common.mk" {{ target_model_device_tree_mk }} \
             || echo -e '\n# enable AXP.OS vendor\n$(call inherit-product, vendor/axp/config/common.mk)' >> {{ target_model_device_tree_mk }}    
           
