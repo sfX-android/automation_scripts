@@ -305,9 +305,9 @@
         body_format: json
         body: >-
             { "inputs": {
-                "repooverride": "{{ device_tree }}"
+                "repooverride": "{{ 'proprietary_' + device_tree if device_tree is match('^vendor_.*') else 'android_' + device_tree }}"
               },
-              "ref": "{{ 'proprietary_' + device_tree if device_tree is match('^vendor_.*') else 'android_' + device_tree }}"
+              "ref": "{{ git_axpos_actions_workflow_repo_branch }}"
              }
         status_code: 204
       #register: amirr
