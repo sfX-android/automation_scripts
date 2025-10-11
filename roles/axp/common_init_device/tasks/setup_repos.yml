@@ -307,12 +307,16 @@
             { "inputs": {
                 "repooverride": "{{ device_tree }}"
               },
-              "ref": "{{ git_axpos_actions_workflow_repo_branch }}"
+              "ref": "{{ 'proprietary_' + device_tree if device_tree is match('^vendor_.*') else 'android_' + device_tree }}"
              }
         status_code: 204
       #register: amirr
       #changed_when: amirr.status == 201
       #no_log: true
+
+    - name: Wait for activate finish
+      ansible.builtin.pause:
+        minutes: 5
 
   rescue:
 
