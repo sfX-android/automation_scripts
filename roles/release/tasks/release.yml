@@ -86,6 +86,7 @@
           axp_recovery_name: "{{ ROMFILE.stdout | regex_replace('-SLIM-', '-SLIM-RECOVERY-') | regex_replace('.zip', '.img') }}"
           axp_recovery_name_boot: "{{ ROMFILE.stdout | regex_replace('-SLIM-', '-SLIM-BOOT-') | regex_replace('.zip', '.img') }}"
           axp_recovery_name_vboot: "{{ ROMFILE.stdout | regex_replace('-SLIM-', '-SLIM-VENDOR_BOOT-') | regex_replace('.zip', '.img') }}"
+          axp_recovery_name_dtbo: "{{ ROMFILE.stdout | regex_replace('-SLIM-', '-SLIM-DTBO-') | regex_replace('.zip', '.img') }}"
       when: axp_type | d('') == "slim"
 
     - name: "Prep AXP.OS recovery vars (non-slim)"
@@ -94,6 +95,7 @@
           axp_recovery_name: "{{ ROMFILE.stdout | regex_replace('-dos-', '-RECOVERY-') | regex_replace('.zip', '.img') }}"
           axp_recovery_name_boot: "{{ ROMFILE.stdout | regex_replace('-dos-', '-BOOT-') | regex_replace('.zip', '.img') }}"
           axp_recovery_name_vboot: "{{ ROMFILE.stdout | regex_replace('-dos-', '-VENDOR_BOOT-') | regex_replace('.zip', '.img') }}"
+          axp_recovery_name_dtbo: "{{ ROMFILE.stdout | regex_replace('-dos-', '-DTBO-') | regex_replace('.zip', '.img') }}"
       when: axp_type | d('') != "slim"
           
     - name: "Release AXP.OS RECOVERY for {{ BDEVICE }}"
@@ -101,6 +103,7 @@
           ZIPF=$(zipinfo -1 {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }})
           has_recovery=$(echo "$ZIPF"| grep -c recovery)
           has_vendorboot=$(echo "$ZIPF"| grep -c vendor_boot)
+          has_dtbo=$(echo "$ZIPF"| grep -c dtbo)
 
           {% if unstable_build | d(False) | bool %}
           {%     if axp_type | d('') == "slim" %}
@@ -124,23 +127,41 @@
             rm recovery.img
             {% endif %}
             
-            sha256sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha256
-            scp {{ axp_recovery_name }}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
-            mv {{ axp_recovery_name }}* {{ axp_finalzip_dir }}/
+            sha512sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha512
+            tobesigned="$tobesigned {{ axp_recovery_name }}"
           elif [ $has_vendorboot -eq 1 ];then
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} vendor_boot.img > {{ axp_recovery_name_vboot }}
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name_boot }}
-            sha256sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha256
-            sha256sum {{ axp_recovery_name_vboot }} > {{ axp_recovery_name_vboot }}.sha256
-            scp {{ axp_recovery_name_boot }}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
-            scp {{ axp_recovery_name_vboot }}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
-            mv {{ axp_recovery_name_boot }}* {{ axp_recovery_name_vboot }}* {{ axp_finalzip_dir }}/
+            sha512sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha512
+            sha512sum {{ axp_recovery_name_vboot }} > {{ axp_recovery_name_vboot }}.sha512
+            tobesigned="$tobesigned {{ axp_recovery_name_boot }} {{ axp_recovery_name_vboot }}"
           else
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name_boot }}
-            sha256sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha256
-            scp {{ axp_recovery_name_boot }}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/
-            mv  {{ axp_recovery_name_boot }}* {{ axp_finalzip_dir }}/
+            sha512sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha512
+            tobesigned="$tobesigned {{ axp_recovery_name_boot }}"
           fi
+
+          if [ $has_dtbo -eq 1 ];then
+            unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} dtbo.img > {{ axp_recovery_name_dtbo }}
+            sha512sum {{ axp_recovery_name_dtbo }} > {{ axp_recovery_name_dtbo }}.sha512
+            tobesigned="$tobesigned {{ axp_recovery_name_dtbo }}"
+          fi
+
+          {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
+          for checksum in $tobesigned;do
+            echo -e "GPG signing ${checksum}.sha512 with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+            if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${checksum}.sha512"; then
+              mv -f "${checksum}.asc" "${checksum}.sha512" >> {{ BUILD_LOG }} 2>&1
+            fi
+            scp ${checksum}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/ >> {{ BUILD_LOG }} 2>&1
+            mv ${checksum}* {{ axp_finalzip_dir }}/ >> {{ BUILD_LOG }} 2>&1
+          done
+          {% else %}
+          for f in $tobesigned;do
+            scp ${f}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/ >> {{ BUILD_LOG }} 2>&1
+            mv ${f}* {{ axp_finalzip_dir }}/ >> {{ BUILD_LOG }} 2>&1
+          done
+          {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
 
   when:
