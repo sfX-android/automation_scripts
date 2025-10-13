@@ -30,6 +30,9 @@ skip_wireguard: True
 # disable advanced avb handling
 #axp_enable_avb: 'false'
 
+# this is a low-end device (optimize for performance, increase storage, lower avb hashsums)
+axp_lowend_device: True
+
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: '88F1461CFC869B86'
 axp_bootloader_id_slim: ''
