@@ -33,6 +33,7 @@ skip_setup_manifest: False
 skip_setup_ansible: False
 skip_setup_website: False
 skip_setup_semaphore: False
+skip_mirror_activation: False
 
 ########### generate-4-ALL vars
 
