@@ -124,6 +124,10 @@ axp_bootloader_id: >-
 # the android testkey sha1 (https://github.com/LineageOS/android_build/tree/lineage-22.2/target/product/security)
 android_signing_testkey: cdbb77177f731920bbe0a0f94f84d9038ae0617d
 
+# disable/enable low-end device (optimize for performance, increase storage, lower avb hashsums)
+# override in device vars if required
+axp_lowend_device: False
+
 # common search strings used to parse the log after building.
 # when overriding these, copy the WHOLE part of this to a device vars yml.
 # a default override exists if a device has "axp_lowend_device: True" set (see axp_lowend_device.vars.yml).
