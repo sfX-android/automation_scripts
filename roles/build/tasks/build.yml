@@ -45,7 +45,12 @@
       reset_git: {{ reset_git | d("N/A") }} | override_reset_git: {{ override_reset_git | d("N/A") }}
       release_build: {{ release_build | d("N/A") }} | override_release_build: {{ override_release_build | d("N/A") }}
       commit_push: {{ commit_push }}
-      
+
+      custom_build_command: {{ custom_build_command | d('N/A') }}
+      vendor_firmware_super_img: {{ vendor_firmware_super_img }}
+      update_vendor_firmware: {{ update_vendor_firmware }}
+      generate_factory_image: {{ generate_factory_image }}
+
       #
 
 - name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
