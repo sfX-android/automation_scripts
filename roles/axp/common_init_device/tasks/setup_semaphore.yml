@@ -41,7 +41,7 @@
         { "project_id": {{ semaphore_aos_template_project_id }},
         "inventory_id": {{ semaphore_aos_template_inventory_id }},
         "repository_id": {{ semaphore_aos_template_repo_id }},
-        "environment_id": {{ semaphore_aos_template_env_name }},
+        "environment_id": {{ semaphore_aos_template_env_id | int }},
         "view_id": {{ semaphore_aos_template_view_id }},
         "name": "{{ semaphore_aos_template_name }}",
         "app": "ansible",
