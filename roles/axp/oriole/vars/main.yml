@@ -84,3 +84,4 @@ vendor_firmware_download_sha256: "0ac3ca6175db1b86ed666aa2079a1f8ad41ea67a52e5a9
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
 vendor_firmware_persistent_path: "{{ persistent_dir }}/oriole-ota-bp1a.250505.005-0ac3ca61.zip"
+

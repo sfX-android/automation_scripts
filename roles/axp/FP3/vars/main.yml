@@ -55,3 +55,36 @@ parselogerr:
       expect_cnt: 2
     - search: 'Successfully verified sha1 hashtree of.*vendor' # FP3 fails to boot when touching this
       expect_cnt: 1
+
+# website info
+hugo_encryption: "FBEv1"
+hugo_firmware: "included"
+hugo_relockable: "yes"
+hugo_state: "stable"
+hugo_supportlevel: "community"
+hugo_isab: "yes"
+hugo_xda_link: "https://xdaforums.com/TBD"
+hugo_first_releasedate: "2025-04-06"
+hugo_kb_link: "fp3"
+#hugo_custom_installguide_path: 
+#hugo_axp_bootloader_id_pro: |
+hugo_axp_bootloader_id_slim: |
+    BOOTLOADER minimal ID
+        2F554EFA
+
+    BOOTLOADER full ID:
+        2F554EFA46B4B4A9
+        E2F86CD9D695018B
+        667B67D29F9B5EBC
+        4D09EC6750C3AEEC
+
+# vendor/firmware info
+# source: https://support.fairphone.com/hc/en-us/articles/18896094650513-How-to-manually-install-Android-on-your-Fairphone#01HB8ZZ1BMMQNSNMFT3YXDBXA0
+#
+vendor_firmware_super_img: True   # factory contains super image
+vendor_fairphone_factory_version: FP3-6.A.039.4-gms-2f612659
+vendor_firmware_download_url: "https://android-builds.fairphone.com/FP3/A13/{{ vendor_fairphone_factory_version }}-user-fastbootimage.zip"
+vendor_firmware_download_sha256: "456b1b328a36ba016a5d790196cb5cdc0ce4042d4f19e8b4c655677cd47f918d"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ vendor_fairphone_factory_version }}.zip"

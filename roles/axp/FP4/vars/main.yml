@@ -43,3 +43,35 @@ axp_bootloader_id_slim: '272DE00712A447F3'
 # git push
 axp_git_push_device_include: "{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_fairphone_FP4"
+
+# website info
+hugo_encryption: "FBEv2"
+hugo_firmware: "included"
+hugo_relockable: "yes"
+hugo_state: "stable"
+hugo_supportlevel: "community"
+hugo_isab: "yes"
+hugo_xda_link: "https://xdaforums.com/t/rom-a-13-official-hardened-fp4-axp-os-20-0.4741001/"
+hugo_first_releasedate: "2025-05-30"
+hugo_kb_link: "fp4"
+#hugo_custom_installguide_path: 
+#hugo_axp_bootloader_id_pro: |
+hugo_axp_bootloader_id_slim: |
+    BOOTLOADER minimal ID
+        272DE007
+
+    BOOTLOADER full ID:
+        272DE00712A447F3
+        4AC484EB5E9A1A28
+        3217A7174855F2EE
+        1A4E16C591592826
+
+# vendor/firmware info
+# source: https://support.fairphone.com/hc/en-us/articles/18896094650513-Install-Fairphone-OS-manually#01HB8ZZ1BMMQNSNMFT3YXDBXA0
+#
+vendor_fairphone_factory_version: FP4-TP31-factory
+vendor_firmware_download_url: "https://android-builds.fairphone.com/FP4/A13/{{ vendor_fairphone_factory_version }}.zip"
+vendor_firmware_download_sha256: "7404233c93f281948134d114247a7dc4cd31466a64ea91f71c76df0f1aad6535"
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ vendor_fairphone_factory_version }}.zip"

@@ -29,6 +29,7 @@ skip_dl_git_cli_tools: True
 skip_setup_otaverify: False
 skip_setup_repos: False
 skip_setup_firmware: False
+skip_setup_firmware_fetch: False
 skip_setup_manifest: False
 skip_setup_ansible: False
 skip_setup_website: False
@@ -38,7 +39,7 @@ skip_mirror_activation: False
 ########### generate-4-ALL vars
 
 parse_roles_subdir: axp  # roles/xxx to parse
-generate_fairphone_factory_image: false
+generate_factory_image: false
 model_exclusions: "common|j5y17lte|klte|h815|g4"
 
 ############ semaphore
@@ -62,56 +63,98 @@ semaphore_aos_template_survey_vars: >-
         "name": "override_clean_basic",
         "title": "clean ZIPs (true* | false)?",
         "required": false,
-        "type": "",
-        "description": "true | false"
+        "type": "enum",
+        "description": "",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "True"
       },
       {
         "name": "override_clean_out",
         "title": "clean build (true* | false)?",
         "required": false,
-        "type": "",
-        "description": "true | false"
+        "type": "enum",
+        "description": "",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "True"
       },
       {
         "name": "override_reset_git",
         "title": "reset all projects & resync (true* | false)?",
         "required": false,
-        "type": "",
-        "description": "true | false"
+        "type": "enum",
+        "description": "",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "True"
       },
       {
         "name": "override_release_build",
         "title": "release the build (true* | false)?",
         "required": false,
-        "type": "",
-        "description": "true | false"
+        "type": "enum",
+        "description": "",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "True"
       },
       {
         "name": "debug_build",
         "title": "private notify (true* | false)?",
         "required": false,
-        "type": "",
-        "description": "true | false"
+        "type": "enum",
+        "description": "true | false",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "True"
       },
       {
         "name": "axp_build_eng",
         "title": "Engineering Build (true | false*)?",
         "description": "will create a debug eng build",
         "required": false,
-        "type": ""
-      },
-      {
-        "name": "unstable_build",
-        "title": "unstable build (true* | false)?",
-        "required": false,
-        "type": "",
-        "description": "true | false"
-      },
-      {
-        "name": "download_fairphone_firmware",
-        "title": "Download & Update firmware (yes|no*)?",
         "type": "enum",
-        "description": "vendor/firmware/<device>/0SOURCE must be set",
         "values": [
           {
             "name": "yes",
@@ -125,11 +168,57 @@ semaphore_aos_template_survey_vars: >-
         "default_value": "False"
       },
       {
-        "name": "generate_pixel_factory_image",
-        "title": "Generate factory image (Pixel devices)?",
-        "description": "vendor/firmware/<device>/0SOURCE must be set",
+        "name": "unstable_build",
+        "title": "unstable build (true* | false)?",
         "required": false,
-        "type": ""
+        "type": "enum",
+        "description": "true | false",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "True"
+      },
+      {
+        "name": "update_vendor_firmware",
+        "title": "Download & Update firmware (yes|no*)?",
+        "type": "enum",
+        "description": "vendor_firmware_download_url etc must be set",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "False"
+      },
+      {
+        "name": "generate_factory_image",
+        "title": "Generate a fastboot flashable factory image?",
+        "description": "device vars must be set properly",
+        "required": false,
+        "type": "enum",
+        "values": [
+          {
+            "name": "yes",
+            "value": "True"
+          },
+          {
+            "name": "no",
+            "value": "False"
+          }
+        ],
+        "default_value": "False"
       },
       {
         "name": "commit_push",

@@ -233,42 +233,22 @@ DOS_INIT: |
         unset AXP_ADVANCED_DEBLOB
     fi
 
-# we do not want to generate a fastboot factory image by default (override in semaphore if needed)
-generate_pixel_factory_image: False
-generate_fairphone_factory_image: False
+# we do not want to generate a fastboot factory image by roles/common/defaults/main.yml
+# override "generate_factory_image" in semaphore if needed
+generate_factory_image: False
 
 # get & upload a recovery image
 axp_release_recovery: False
 
-# default base domain  n, for fairphone factory zips
-fairphone_factoryzip_domain: "https://fairphone-android-builds.ams3.digitaloceanspaces.com"
+# should we start the vendor firmware updater? should be overwritten in SEMAPHORE if required
+update_vendor_firmware: False
 
-# download & upload latest firmware
-SH_COMMON_FAIRPHONE_DL_FIRMWARE: |
-    # get factory image
-    # containing the official Fairphone images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
-    VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
-    FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
-    source vendor/firmware/{{ target_model }}/0SOURCE >> {{ BUILD_LOG }} 2>&1
-    if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
-    if [ -f "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" ];then
-        echo "Using previously downloaded factory image: ${FACTORYFULLNAME}.zip" | tee -a {{ BUILD_LOG }}
-    else
-        echo "${FACTORYFULLNAME}.zip not found in: {{ persistent_dir }}, downloading.." | tee -a {{ BUILD_LOG }}
-        wget -q {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O {{ persistent_dir }}/${FACTORYFULLNAME}.zip || (wget {{ fairphone_factoryzip_domain }}/{{ target_model }}/{{ android_shortversion | upper() }}/${FACTORYFULLNAME}.zip -O {{ persistent_dir }}/${FACTORYFULLNAME}.zip; exit 9)
-    fi
-    cp "{{ persistent_dir }}/${FACTORYFULLNAME}.zip" out/{{ target_model }}-factory.zip 
-    
-    export FACZIP="$PWD/out/{{ target_model }}-factory.zip"
-    export ANDROIDSHORTVERSION="{{ android_shortversion }}"
-    export CODEN="{{ target_model }}"
-    
-    cd vendor/firmware/{{ target_model }}
-    ./update.sh >> {{ BUILD_LOG }} 2>&1
+# does factory zip contains super image? should be overwritten in device vars if required
+vendor_firmware_super_img: False
 
 # enable the following in a device's vars file with:
 # custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
-# and set "generate_fairphone_factory_image: True" to actually generate it (in semaphore)
+# and set "generate_factory_image: True" to actually generate it (in semaphore)
 SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         {% if axp_build_eng | bool %}
         #mka sepolicy
@@ -276,7 +256,7 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         {% else %}
         buildDevice {{ target_model }} || f_detect_kerr
         {% endif %}
-        {% if generate_fairphone_factory_image | bool %}
+        {% if generate_factory_image | bool %}
 
         # cleanup
         if [ -f {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip ];then rm -vf {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip;fi
@@ -345,8 +325,8 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         {% endif %}
 
 # enable the following in a device's vars file with:
-#custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
-#generate_pixel_factory_image: True (in semaphore)
+# custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+# generate_factory_image: True (in semaphore)
 SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% if axp_build_eng | bool %}
     #mka sepolicy
@@ -354,7 +334,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% else %}
     buildDevice {{ target_model }} || f_detect_kerr
     {% endif %}
-     {% if generate_pixel_factory_image | bool %}
+     {% if generate_factory_image | bool %}
     
     # this will create a fastboot flashable factory image
     # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
