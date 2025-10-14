@@ -30,7 +30,8 @@ pixel_kernel_buildout: "out/raviole/dist"
 target_model_common_tree: device_google_gs101
 
 # allow creating factory image
-custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+custom_build_command: |
+      {{ SH_COMMON_PIXEL_CREATE_FACTORY }}
 
 # add OpenEUICC
 extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
