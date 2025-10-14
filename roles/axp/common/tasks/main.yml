@@ -35,6 +35,10 @@
 - include_tasks: clean.yml
   when: axp_skip_common_tasks is undefined
 
+# download latest firmware, taken from vendor/firmware/*/0SOURCE
+- include_tasks: firmware_update.yml
+  when: update_vendor_firmware
+
 - block:
 
       - include_tasks: sync.yml
