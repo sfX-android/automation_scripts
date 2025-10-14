@@ -338,26 +338,30 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% else %}
     buildDevice {{ target_model }} || f_detect_kerr
     {% endif %}
-     {% if generate_factory_image | bool %}
+    {% if generate_factory_image | bool %}
     
-    # this will create a fastboot flashable factory image
-    # containing the official Google images + AXP.OS based on vendor/firmware/{{ target_model }}/0SOURCE
+    if [ -f "{{ vendor_factory_persistent_path }}" ];then
+        echo "Using previously downloaded factory image: {{ vendor_factory_version }}.zip" | tee -a {{ BUILD_LOG }}
+    else
+        echo "{{ vendor_factory_version }}.zip not found in: {{ persistent_dir }}, downloading.." | tee -a {{ BUILD_LOG }}
+        wget -q {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} >> {{ BUILD_LOG }} 2>&1 \
+          || (wget {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} >> {{ BUILD_LOG }} 2>&1 ; exit 9)
+    fi
+    
     VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
     FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
-    source vendor/firmware/{{ target_model }}/0SOURCE
-    if [ -f out/{{ target_model }}-factory.zip ];then rm out/{{ target_model }}-factory.zip;fi
-    if [ -f "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" ];then
-        echo "Using previously downloaded factory image: {{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip"
-        cp "{{ persistent_dir }}/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip" out/{{ target_model }}-factory.zip 
-    else
-        echo "{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip not found in: {{ persistent_dir }}, downloading.."
-        wget -q https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip || (wget https://dl.google.com/dl/android/aosp/{{ target_model }}-${FACTORYID}-factory-${FACTORYIDHASH}.zip -O out/{{ target_model }}-factory.zip ; exit 9)
-    fi
+    FACTORYID="{{ vendor_factory_id }}"
+
+    export FACZIP="{{ vendor_factory_persistent_path }}"
+    export ANDROIDSHORTVERSION="{{ android_shortversion }}"
+    export CODEN="{{ target_model }}"
+
     cd out/target/product/{{ target_model }}
     if [ -d factory ];then rm -rf factory;fi
-    if [ -f {{ os_name }}-${VERSION}-factory.zip ];then rm {{ os_name }}-${VERSION}-factory.zip;fi
-    unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -x "*/image-{{ target_model }}-*.zip" -d factory
+
+    unzip {{ vendor_factory_persistent_path }} -x "*/image-{{ target_model }}-*.zip" -d factory
     cd factory/{{ target_model }}-${FACTORYID}
+
     cp ../../${FZIP}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip     
     cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
     for f in flash-base.sh flash-all.sh;do
@@ -368,6 +372,14 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     zip -r ../${FZIP}-factory.zip {{ target_model }}-${FACTORYID}
     cd ..
     sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512
+    
+    {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
+    echo -e "GPG signing ${FZIP}-factory.zip.sha512 with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+    if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${FZIP}-factory.zip.sha512"; then
+        mv -f "${FZIP}-factory.zip.asc" "${FZIP}-factory.zip.sha512" >> {{ BUILD_LOG }} 2>&1
+    fi
+    {% endif %}
+
     mv ${FZIP}-factory.zip* {{ ZIPDIR }}/target_files/
     FZIPINF="\n\tand the FACTORY zip here: {{ ZIPDIR }}/target_files/${FZIP}-factory.zip\n"
     cd {{ SRCPATH }}
