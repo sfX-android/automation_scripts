@@ -59,7 +59,7 @@
   when: target_model_vendor == "Fairphone"
 
 - include_role:
-    name: common_init_device
+    name: axp/common_init_device
     tasks_from: setup_vendor_firmware.yml
   vars:
     vendor_firmware_aosp_path: "{{ SRCPATH }}/vendor/firmware"
