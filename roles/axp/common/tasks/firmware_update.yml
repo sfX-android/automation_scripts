@@ -63,4 +63,5 @@
     tasks_from: setup_vendor_firmware.yml
   vars:
     vendor_firmware_aosp_path: "{{ SRCPATH }}/vendor/firmware"
+    skip_setup_firmware_fetch: True
   when: target_model_vendor != "Fairphone"
