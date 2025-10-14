@@ -1,0 +1,22 @@
+---
+
+# override global defaults if a device has "axp_lowend_device: True" set (see axp_lowend_device.vars.yml).
+
+# common search strings used to parse the log after building.
+# when overriding these, copy the WHOLE part of this to a device vars yml.
+# search: regex string to search for (using: "grep -oE")
+# expect: a (non-regex!) string expected as a result
+# (usally you search for something you do NOT want to see in the log and expect an empty result then)
+parselogerr:
+    - search: 'key .*/testkey.*.pem' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
+      expect: ''
+    - search: '{{ android_signing_testkey_sha1 }}' # ALWAYS COPY THIS! sha1 of testkey we NEVER EVER want something signed with a testkey
+      expect: ''
+    - search: 'Algorithm:.*SHA(1|256)_RSA(1024|2048)' # ALWAYS COPY THIS! AVB (if enabled) should never use a weak key (at least "SHA512_4096")
+      expect: ''
+    - search: "{{ axp_bootloader_id }}" # ALWAYS COPY THIS! Check the device's bootloader ID (if AVB / vbmeta_verify is on)
+      expect_cnt: 1
+    - search: 'Hash Algorithm:.*sha512' # fail if vbmeta hash algo found (info_image) but not sha1 or sha256
+      expect: ''
+    - search: 'Successfully verified sha512 hash of' # fail if vbmeta verify found (verify_image) but not sha1 or sha256
+      expect: ''
