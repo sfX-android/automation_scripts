@@ -15,7 +15,7 @@
 - name: "Setup semaphore: get current semaphore variable groups"
   connection: local
   ansible.builtin.uri:
-    url: "{{ semaphore_api_uri }}/project/{{ semaphore_aos_template_project_id }}/environment"
+    url: "{{ semaphore_api_uri }}/project/{{ semaphore_aos_template_project_id }}/environment?sort=name&order=desc"
     method: GET
     headers:
         Content-Type: application/json
