@@ -24,8 +24,7 @@
           + (
               [target_kernel_dir | regex_replace('/', '_')]
               if not (git_pixel_kernel_manifest_branch is defined
-                      and target_model_vendor == "Google"
-                      and 'kernel' in device_tree)
+                      and target_model_vendor == "Google")
               else []
             )
         ) | unique
