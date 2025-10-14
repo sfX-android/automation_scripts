@@ -64,5 +64,4 @@
   vars:
     vendor_firmware_aosp_path: "{{ SRCPATH }}/vendor/firmware"
     skip_setup_firmware_fetch: True
-    BUILD_LOG: "{{ BUILD_LOG }}"
   when: target_model_vendor != "Fairphone"
