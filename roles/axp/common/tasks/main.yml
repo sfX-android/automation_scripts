@@ -68,7 +68,7 @@
           - android_version_int | int < 15
 
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git | bool ) or (override_sync | bool)
 
 - include_tasks: commit_kernel.yml
   when: axp_skip_common_tasks is undefined
