@@ -5,21 +5,21 @@
 - include_tasks: prep.yml
 - include_tasks: ../../common/tasks/sync.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
 
 - include_tasks: patch_a9.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
     - android_shortversion == "pie" or android_shortversion == "16.0" or android_shortversion == "a9"
 
 - include_tasks: patch_a10.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
     - android_shortversion == "q" or android_shortversion == "17.1" or android_shortversion == "a10"
 
 - include_tasks: patch_a12.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
     - android_shortversion == "s" or android_shortversion == "19.1" or android_shortversion == "a12"
 
 - include_tasks: copy.yml

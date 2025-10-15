@@ -39,7 +39,7 @@
        chdir: "{{ DOSPATH }}"
 
   when:
-     - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+     - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
      - dosdir.stat.isdir is defined
 
 - name: Prepare DOS build
@@ -74,7 +74,7 @@
            rm -rf $WHAT ".repo/projects/${WHAT}.git" ".repo/projects/${WHAT}.git" .repo/project-objects/platform/$WHAT  >> {{ BUILD_LOG }} 2>&1 || true
         done
      when: 
-        - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+        - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
    
    - name: "Specific AXP.OS -full- cleanup"
      shell: |
@@ -86,6 +86,6 @@
        - { path: "vendor/extendrom", file: "EXTENDROM_PATCHER_DONE" }
        - { path: "./", file: ".wg.patched", extra: "-maxdepth 1" }
      when:
-        - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+        - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
 
   when: dosdir.stat.isdir is defined

@@ -127,7 +127,7 @@
         msg: "Failed, stopping NOW!"
 
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
     - pick_queries is defined and (pick_queries | length > 0)
 
 # bump security patch date
@@ -175,5 +175,5 @@
       when: spcm.changed
 
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
     - (spres.changed or force_secpatchdate)

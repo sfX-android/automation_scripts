@@ -5,7 +5,7 @@
 
 - include_tasks: ../../common/tasks/sync.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
 
 # can be removed once this is fixed:
 # https://review.lineageos.org/c/LineageOS/android_external_webp/+/376568

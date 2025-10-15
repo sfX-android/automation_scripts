@@ -85,7 +85,7 @@
 
 - include_tasks: ../roles/common/tasks/reset.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool)
 
 - name: "Cleanup patch indicators"
   file:
@@ -104,4 +104,4 @@
     path: "{{ SRCPATH }}/.repo/local_manifests"
     state: absent
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)

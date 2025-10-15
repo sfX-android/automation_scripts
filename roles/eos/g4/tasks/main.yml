@@ -4,11 +4,11 @@
 - include_tasks: ../../common/tasks/clean.yml
 - include_tasks: ../../common/tasks/sync.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true") or (override_sync == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
 
 - include_tasks: patch_a9.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool)
     - android_shortversion == "pie" or android_shortversion == "v1-pie" or android_shortversion == "a9"
 
 #- name: "register custom patch date for pie"
@@ -19,7 +19,7 @@
 
 - include_tasks: patch_a12.yml
   when:
-    - (override_reset_git == "undef" and reset_git == "true") or (override_reset_git == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool)
     - android_shortversion == "s" or android_shortversion == "v1-s" or android_shortversion == "a12"
 
 - include_tasks: copy.yml
