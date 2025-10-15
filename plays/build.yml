@@ -68,14 +68,17 @@
         when: 
           - ROM_FLAVOR == "SHRP" or ROM_FLAVOR == "TWRP"
 
-      - import_role:
+      - include_role:
           name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
+          public: yes
 
-      - import_role:
+      - include_role:
           name: build
+          public: yes
 
-      - import_role:
+      - include_role:
           name: release
+          public: yes
         when:
           - (override_release_build == "undef" and release_build == "true") or (override_release_build == "true")
           - not build_bootimage_only | d(False)
@@ -101,7 +104,7 @@
           path: "{{ semaphore_runfile }}"
           state: absent
 
-      - import_role:
+      - include_role:
           name: post
 
       # when any of the above fails notify always 
