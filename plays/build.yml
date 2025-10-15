@@ -76,7 +76,7 @@
           name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
           public: yes
 
-      - name: ""debugFACT"
+      - name: "debugFACT"
         debug:
           var: SH_COMMON_PIXEL_CREATE_FACTORY
 
