@@ -138,6 +138,8 @@
     # get build vars (requires a lunch before!)
     export AXP_TARGET_ARCH=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH  2>/dev/null)
     export AXP_KERNEL_CONF=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG  2>/dev/null)
+    echo "AXP_KERNEL_CONF: $AXP_KERNEL_CONF"
+    build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG
     
     # FIXME: legacy handling, should be merged here
     vendor/axp/axp.sh >> {{ BUILD_LOG }} 2>&1
