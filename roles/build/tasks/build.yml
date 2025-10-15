@@ -51,7 +51,15 @@
       update_vendor_firmware: {{ update_vendor_firmware }}
       generate_factory_image: {{ generate_factory_image }}
 
+      axp_bootloader_id_pro: {{ axp_bootloader_id_pro | d('N/A') }}
+      axp_bootloader_id_slim: {{ axp_bootloader_id_slim | d('N/A') }}
+
       #
+
+- fail:
+    msg: debug
+
+
 
 - name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
   shell: >
