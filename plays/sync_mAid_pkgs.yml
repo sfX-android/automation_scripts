@@ -45,11 +45,11 @@
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
-        when: debug_build is not defined or (debug_build is defined and debug_build == "false")
+        when: debug_build is not defined or (debug_build is defined and not debug_build | bool)
 
       - set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
-        when: debug_build is defined and debug_build == "true"
+        when: debug_build is defined and debug_build | bool
 
       - include_role:
           name: notify

@@ -39,13 +39,13 @@
       - ansible.builtin.set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
         when:
-          - debug_build is not defined or (debug_build is defined and debug_build == "false")
+          - debug_build is not defined or (debug_build is defined and not debug_build | bool)
           - telegram_notifications | bool
 
       - ansible.builtin.set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
         when:
-          - debug_build is defined and debug_build == "true"
+          - debug_build is defined and debug_build | bool
           - telegram_notifications | bool
 
       - ansible.builtin.include_role:
