@@ -340,12 +340,12 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% endif %}
     {% if generate_factory_image %}
 
-    echo "Creating FACTORY ZIP!" | tee -a {{ BUILD_LOG }}
+    echo "Creating FACTORY ZIP!" >> {{ BUILD_LOG }}
     
     if [ -f "{{ vendor_factory_persistent_path }}" ];then
-        echo "Using previously downloaded factory image: {{ vendor_factory_version }}.zip" | tee -a {{ BUILD_LOG }}
+        echo "Using previously downloaded factory image: {{ vendor_factory_version }}.zip" >> {{ BUILD_LOG }}
     else
-        echo "{{ vendor_factory_version }}.zip not found in: {{ persistent_dir }}, downloading.." | tee -a {{ BUILD_LOG }}
+        echo "{{ vendor_factory_version }}.zip not found in: {{ persistent_dir }}, downloading.." >> {{ BUILD_LOG }}
         wget -q {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} >> {{ BUILD_LOG }} 2>&1 \
           || (wget {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} >> {{ BUILD_LOG }} 2>&1 ; exit 9)
     fi
@@ -377,8 +377,9 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     
     {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
     echo -e "GPG signing ${FZIP}-factory.zip.sha512 with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+    if [ -f "${FZIP}-factory.zip.sha512.asc" ]; then rm ${FZIP}-factory.zip.sha512.asc; fi
     if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${FZIP}-factory.zip.sha512"; then
-        mv -f "${FZIP}-factory.zip.asc" "${FZIP}-factory.zip.sha512" >> {{ BUILD_LOG }} 2>&1
+        mv -f "${FZIP}-factory.zip.sha512.asc" "${FZIP}-factory.zip.sha512" >> {{ BUILD_LOG }} 2>&1
     fi
     {% endif %}
 
