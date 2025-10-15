@@ -151,7 +151,7 @@ SH_GRAPHENE_BUILD: |
       
       source build/envsetup.sh
       
-      {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS == "true" %}
+      {% if DOWNLOAD_BLOBS is defined and  DOWNLOAD_BLOBS | bool %}
       # fetch & extract blobs
       yarn install --ignore-engines --cwd vendor/adevtool/
       
@@ -172,7 +172,7 @@ SH_GRAPHENE_BUILD: |
       esac
       
       # extendrom
-      {% if use_extendrom is defined and use_extendrom == "true" %}
+      {% if use_extendrom is defined and use_extendrom | bool %}
       sed -i "s#user-keys#keys/{{ target_model }}#g" vendor/extendrom/repo/packages.txt
       export ENABLE_EXTENDROM={{ use_extendrom }}
       export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
@@ -200,7 +200,7 @@ SH_GRAPHENE_BUILD: |
       # The kernel needs to be built in advance, since it uses a separate build system.
       # Prebuilts are provided for all the officially supported devices, so this step is optional.
       # https://grapheneos.org/build#kernel-6th-generation-pixels
-      {% if BUILD_GOS_KERNEL is defined and BUILD_GOS_KERNEL == "true" %}
+      {% if BUILD_GOS_KERNEL is defined and BUILD_GOS_KERNEL | bool %}
       mkdir android/kernel/{{ target_model }}
       cd android/kernel/{{ target_model }}
       repo init -u https://github.com/GrapheneOS/kernel_{{ target_model }}-manifest.git -b {{ GOS_KERNEL_BRANCH }}

@@ -8,6 +8,6 @@
 
 - include_tasks: ../../common/tasks/patch.yml
   when: 
-    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (force_patch is defined and force_patch == "true")
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (force_patch is defined and force_patch | bool)
 
 - include_tasks: ../../common/tasks/copy.yml

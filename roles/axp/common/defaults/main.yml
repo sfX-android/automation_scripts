@@ -518,7 +518,7 @@ SH_COMMON_BUILD_SNIPPET: |
           a9|a10) source ~/.venv/python2/bin/activate ;;
         esac
 
-        {% if (override_clean_out == "undef" and clean_out == "true") or (override_clean_out == "true") %}
+        {% if (override_clean_out == "undef" and clean_out | bool) or (override_clean_out | bool) %}
         mka generate_verity_key
         {% endif %}
         {% if axp_build_recovery_only is defined and axp_build_recovery_only %}

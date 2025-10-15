@@ -137,4 +137,4 @@
         - resetres.rc != 0    # any other error code
       no_log: "{{ nolog_gitreset | d(true) }}"
   when: 
-    - (override_clean_incompat == "undef" and clean_incompat == "true") or (override_clean_incompat == "true")
+    - (override_clean_incompat == "undef" and clean_incompat | bool) or (override_clean_incompat | bool)

@@ -21,7 +21,7 @@
     keysdir: '/home/androidsource/do-not-touch/KEYS/{{ ROM_FLAVOR }}-{{ android_shortversion }}_{{ target_model }}_rooted'
     rempath: "/home/nightlies/roms/e-os/a10_rooted/{{ target_model }}"
   connection: local
-  when: PREROOT_BOOT == "true"
+  when: PREROOT_BOOT | bool
 
 - set_fact:
     device_cl: |-
