@@ -54,6 +54,7 @@
       axp_bootloader_id_pro: {{ axp_bootloader_id_pro | d('N/A') }}
       axp_bootloader_id_slim: {{ axp_bootloader_id_slim | d('N/A') }}
 
+      SH_COMMON_PIXEL_CREATE_FACTORY: {{SH_COMMON_PIXEL_CREATE_FACTORY | d('N/A')}}
       #
 
 - fail:
