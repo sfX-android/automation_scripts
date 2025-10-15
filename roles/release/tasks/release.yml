@@ -4,7 +4,7 @@
   block:
 
     - name: "Prep folders"
-      become: yes
+      become: true
       ansible.builtin.file:
         path: "{{ item }}"
         owner: "{{ release_path_owner }}"
@@ -17,7 +17,7 @@
         - "{{ rempath }}/tests"
       delegate_to: "{{ groups.downloadserver[0] }}"
       
-    - name: "Release OS for {{ BDEVICE }}"
+    - name: "Release OS zip for {{ BDEVICE }}"
       ansible.builtin.shell: |-
         {% if axp_build_eng | bool %}
           if [ '{{ item }}' == '{{ ROMFILE.stdout }}.prop' ];then exit;fi
@@ -40,6 +40,28 @@
         - "{{ ROMFILE.stdout }}"
         - "{{ ROMFILE.stdout }}.sha*sum"
         - "{{ ROMFILE.stdout }}.prop"
+
+    - name: "Release FACTORY zip for {{ BDEVICE }}"
+      ansible.builtin.shell: |-
+        {% if axp_build_eng | bool %}
+          LOCP="{{ SRCPATH }}/out/target/product/{{ sub_model | d(target_model) }}"
+        {% else%}
+          LOCP="{{ ZIPDIR }}/target_files"
+        {% endif %}
+
+        FZIP="{{ ZIPDIR }}/{{ ROMFILE.stdout }}"
+
+        {% if unstable_build | d(False) | bool %}
+        {%   if axp_type | d('') == "slim" %}
+                scp $LOCP/$FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/factory/') }}
+        {%   else %}
+                scp $LOCP/$FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/factory/') }}
+        {%   endif %}
+        {% else %}
+              scp $LOCP/$FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}/factory/
+        {% endif %}
+      delegate_to: "{{ groups.buildserver[0] }}"
+      when: generate_factory_image
 
     - name: "Correct ZIP timestamp for {{ BDEVICE }} to fix recurring OTA offering"
       ansible.builtin.file:

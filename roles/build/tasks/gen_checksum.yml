@@ -1,22 +1,32 @@
 ---
 
-- name: "Generate hash for {{ ROMFILE.stdout }}"
-  stat:
-    path: "{{ ZIPDIR }}/{{ ROMFILE.stdout }}"
-    checksum_algorithm: sha256
-  register: hash
+- name: "Check hash existence"
+  ansible.builtin.stat:
+    path: "{{ ROMFILE.stdout }}.sha512sum"
+  register: hashreq
+  no_log: true
+  
+- block:
 
-- name: "Write hash {{ ROMFILE.stdout }}.sha256sum"
-  shell: |
-    echo '{{ hash.stat.checksum }} {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha256sum
-    
-    {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
-      checksum="{{ ROMFILE.stdout }}.sha256sum"
-      {{ DOS_INIT }}
-      echo -e "GPG signing $checksum with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
-      if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "$checksum"; then
-        mv -f "${checksum}.asc" "$checksum"
-      fi
-    {% endif %}
-  args:
-    chdir: "{{ ZIPDIR }}"
+    - name: "Generate hash for {{ ROMFILE.stdout }}"
+      stat:
+        path: "{{ ZIPDIR }}/{{ ROMFILE.stdout }}"
+        checksum_algorithm: sha512
+      register: hash
+      
+    - name: "Write hash {{ ROMFILE.stdout }}.sha512sum"
+      shell: |
+        echo '{{ hash.stat.checksum }} {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha512sum
+        
+        {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
+          checksum="{{ ROMFILE.stdout }}.sha512sum"
+          {{ DOS_INIT }}
+          echo "GPG signing $checksum with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+          if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "$checksum" >> {{ BUILD_LOG }} 2>&1; then
+            mv -vf "${checksum}.asc" "$checksum" >> {{ BUILD_LOG }} 2>&1
+          fi
+        {% endif %}
+      args:
+        chdir: "{{ ZIPDIR }}"
+
+  when: not hashreq.stat.exists
