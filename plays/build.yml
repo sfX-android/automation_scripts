@@ -60,7 +60,7 @@
 
       - name: "debug"
         debug:
-          msg: "{{ SH_COMMON_PIXEL_CREATE_FACTORY}}"
+          var: "{{ SH_COMMON_PIXEL_CREATE_FACTORY}}"
 
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
@@ -78,7 +78,7 @@
 
       - name: "debug"
         debug:
-          msg: "{{ SH_COMMON_PIXEL_CREATE_FACTORY}}"
+          var: "{{ SH_COMMON_PIXEL_CREATE_FACTORY}}"
 
       - include_role:
           name: build
