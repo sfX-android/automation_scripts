@@ -93,4 +93,4 @@ vendor_factory_hash: 9fc37bcc
 vendor_factory_download_sha256: "9fc37bccc63a243d046f459d22cfbf0dd0ea26336f356c9dd3fe0525093316c1"
 vendor_factory_version: "oriole-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
 vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
-vendor_factory_persistent_path: "{{ persistent_dir }}/{{ vendor_factory_name }}.zip"
+vendor_factory_persistent_path: "{{ persistent_dir }}/{{ vendor_factory_version }}.zip"
