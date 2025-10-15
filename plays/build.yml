@@ -58,6 +58,10 @@
           public: yes
         when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
 
+      - name: "debug"
+        debug:
+          msg: "{{ SH_COMMON_PIXEL_CREATE_FACTORY}}"
+
       - fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: 
@@ -71,6 +75,10 @@
       - include_role:
           name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
           public: yes
+
+      - name: "debug"
+        debug:
+          msg: "{{ SH_COMMON_PIXEL_CREATE_FACTORY}}"
 
       - include_role:
           name: build
