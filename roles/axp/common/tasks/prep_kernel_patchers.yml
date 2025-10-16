@@ -46,6 +46,7 @@
     cd {{ target_kernel_dir }}
     {% endif %}
     
+    if [ -f .defconf.patched ];then rm -v .defconf.patched;fi
     (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true   
   args:
     executable: /bin/bash
