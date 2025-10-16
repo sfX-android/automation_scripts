@@ -14,13 +14,16 @@ extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
-# kernel
+# path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/google/gs201/private/gs-google
+
+# GrapheneOS based kernel build (KLEAF)
+# check build cmd and matching codename at: https://grapheneos.org/build
 pixel_kernel_buildcmd: "./build_pantah.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
-###git_pixel_kernel_manifest_branch: "common-android14-6.1-{{ current_year }}-{{ current_month }}"
 git_pixel_kernel_manifest_branch: "15-qpr2"
 pixel_kernel_buildresult: "device/google/pantah-kernels/6.1"
 pixel_kernel_buildout: "out/pantah/dist"
+pixel_kernel_defconfig: "{{ target_kernel_dir }}/arch/arm64/configs/gki_defconfig"
 
 # path to the common tree, if none exists the device tree
 # required e.g. for git, vendor/axp, release handling etc
@@ -65,16 +68,31 @@ hugo_axp_bootloader_id_pro: |
         B58E949DEA01F4A7
 #hugo_axp_bootloader_id_slim: |
 
+###############################################################################################################################
 # vendor/firmware info
+###############################################################################################################################
+
+####### A13:
 # download source: https://developers.google.com/android/ota#cheetah
 #vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/cheetah-ota-tq3a.230901.001-6b881553.zip"
 #vendor_firmware_download_sha256: "6b881553f012d582080642d660e1cf5c9e6fe41e9f1c6ab12ae87fab7894e307"
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
 #vendor_firmware_persistent_path: "{{ persistent_dir }}/cheetah-ota-tq3a.230901.001-6b881553.zip"
-####### A15 prep:
-vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/cheetah-ota-bp1a.250505.005.b1-29966098.zip"
-vendor_firmware_download_sha256: "29966098f2f60bf571673a589d32ce6f516440f466830e926ca90e13211eade0"
-# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
-# in any case the hash sum will be verified though.
-vendor_firmware_persistent_path: "{{ persistent_dir }}/cheetah-ota-bp1a.250505.005.b1-29966098.zip"
+
+####### A15:
+# Firmware image source: https://developers.google.com/android/ota#cheetah
+vendor_firmware_version: cheetah-ota-bp1a.250505.005.b1-29966098
+vendor_firmware_download_sha256: 29966098f2f60bf571673a589d32ce6f516440f466830e926ca90e13211eade0
+#
+vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_firmware_version }}.zip"
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ vendor_firmware_version }}.zip"
+
+# Factory image source: https://developers.google.com/android/images#cheetah
+vendor_factory_id: bp1a.250505.005.b1
+vendor_factory_hash: c7b1354d
+vendor_factory_download_sha256: c7b1354d87f6e478c1d2d982dbc296f1b589d6797575639085c0a3ea4c1da974
+#
+vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
+vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
+vendor_factory_persistent_path: "{{ persistent_dir }}/{{ vendor_factory_version }}.zip"

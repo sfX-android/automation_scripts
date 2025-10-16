@@ -83,15 +83,17 @@ hugo_axp_bootloader_id_slim: |
 
 ####### A15:
 # Firmware image source: https://developers.google.com/android/ota#oriole
-vendor_firmware_version: "oriole-ota-bp1a.250505.005-0ac3ca61"
-vendor_firmware_download_sha256: "0ac3ca6175db1b86ed666aa2079a1f8ad41ea67a52e5a9b834c09bde6a6e5a5f"
+vendor_firmware_version: oriole-ota-bp1a.250505.005-0ac3ca61
+vendor_firmware_download_sha256: 0ac3ca6175db1b86ed666aa2079a1f8ad41ea67a52e5a9b834c09bde6a6e5a5f
+#
 vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_firmware_version }}.zip"
 vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ vendor_firmware_version }}.zip"
 
 # Factory image source: https://developers.google.com/android/images#oriole
 vendor_factory_id: bp1a.250505.005
 vendor_factory_hash: 9fc37bcc
-vendor_factory_download_sha256: "9fc37bccc63a243d046f459d22cfbf0dd0ea26336f356c9dd3fe0525093316c1"
-vendor_factory_version: "oriole-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
+vendor_factory_download_sha256: 9fc37bccc63a243d046f459d22cfbf0dd0ea26336f356c9dd3fe0525093316c1
+#
+vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
 vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
 vendor_factory_persistent_path: "{{ persistent_dir }}/{{ vendor_factory_version }}.zip"
