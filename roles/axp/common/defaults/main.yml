@@ -155,6 +155,9 @@ axp_allow_permissive: False
 divest_unsupported_device: false    # should be overwritten in a device's vars/main.yml if needed
 unsupported_device_kernel_patch: true    # enable kernel patching by default, overwrite in semaphore if needed
 
+# translated common tree file path
+target_model_common_tree_path: "{{ target_model_common_tree | regex_replace('/','_') }}"
+
 # regular makefile name within a device tree, required e.g. for switch_major_release
 target_model_device_tree_mk: device.mk
 

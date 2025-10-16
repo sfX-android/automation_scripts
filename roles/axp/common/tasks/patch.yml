@@ -135,11 +135,14 @@
     export AXP_LOW_STORAGE="{{ remove_space_reservation | d('no') }}"
     export AXP_TARGET_VERSION={{ android_version_int }}
 
+    {% if pixel_kernel_defconfig is defined %}
+    export AXP_KERNEL_CONF="{{ pixel_kernel_defconfig }}"
+    {% else %}
     # get build vars (requires a lunch before!)
     export AXP_TARGET_ARCH=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH  2>/dev/null)
-    export AXP_KERNEL_CONF=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG  2>/dev/null)
-    echo "AXP_KERNEL_CONF: $AXP_KERNEL_CONF"
-    build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG
+    export AXP_KERNEL_CONF_FILE=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG  2>/dev/null)
+    export AXP_KERNEL_CONF="$AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF_FILE"
+    {% endif %}
     
     # FIXME: legacy handling, should be merged here
     vendor/axp/axp.sh >> {{ BUILD_LOG }} 2>&1
@@ -147,20 +150,26 @@
     # patch kernel defconfig
     if [ ! -f "$AXP_KERNEL_PATH/.defconf.patched" ];then
         for cf in $AXP_DEFCONFIG_GLOBALS; do
-          grep -q "^$cf=y" $AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF || echo -e "\n$cf=y" >> $AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF
-          cd $AXP_KERNEL_PATH
-          git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "defconfig: applied: $cf"
+          grep -q "^$cf=y" $AXP_KERNEL_CONF || echo -e "\n$cf=y" >> $AXP_KERNEL_CONF
           echo "[AXP] .. kernel globals defconfig $cf has been set"
-          cd $CPWD
         done
         for cfd in $AXP_DEFCONFIG_DEVICE; do
-          grep -q "^$cfd" $AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF || echo -e "\n$cfd" >> $AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF
-          cd $AXP_KERNEL_PATH
-          git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "defconfig: applied $cfd"
+          grep -q "^$cfd" $AXP_KERNEL_CONF || echo -e "\n$cfd" >> $AXP_KERNEL_CONF
           echo "[AXP] .. kernel device specific defconfig $cfd has been set"
-          cd $CPWD
         done
         touch $AXP_KERNEL_PATH/.defconf.patched
+        
+        {% if pixel_kernel_defconfig is defined %}
+        cp $AXP_KERNEL_CONF {{ target_model_common_tree_path }}/
+        cd {{ target_model_common_tree_path }}/
+        {% else %}
+        cd $AXP_KERNEL_PATH
+        {% endif %}
+
+        git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "defconfig: applied:
+    
+    $AXP_KERNEL_CONF $AXP_DEFCONFIG_DEVICE"
+    
     else
         echo "[AXP] .. kernel defconfig is already patched (patch indicator exists)"
     fi
