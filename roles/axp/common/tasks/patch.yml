@@ -136,7 +136,7 @@
     export AXP_TARGET_VERSION={{ android_version_int }}
 
     {% if pixel_kernel_defconfig is defined %}
-    export AXP_KERNEL_CONF="{{ pixel_kernel_defconfig }}"
+    export AXP_KERNEL_CONF="{{ git_pixel_kernel_dir }}/{{ pixel_kernel_defconfig }}"
     {% else %}
     # get build vars (requires a lunch before!)
     export AXP_TARGET_ARCH=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH  2>/dev/null)
