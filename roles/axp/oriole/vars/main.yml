@@ -24,7 +24,7 @@ pixel_kernel_buildcmd: "./build_raviole.sh --config=no_download_gki --config=no_
 git_pixel_kernel_manifest_branch: "15-qpr2"
 pixel_kernel_buildresult: "device/google/raviole-kernels/6.1"
 pixel_kernel_buildout: "out/raviole/dist"
-pixel_kernel_defconfig: "private/devices/google/raviole/raviole_defconfig"
+pixel_kernel_defconfig: "{{ target_kernel_dir }}/arch/arm64/configs/gki_defconfig"
 
 # path to the common tree, if none exists the device tree
 # required e.g. for git, vendor/axp, release handling etc

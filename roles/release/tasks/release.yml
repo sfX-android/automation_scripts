@@ -49,16 +49,16 @@
           LOCP="{{ ZIPDIR }}/target_files"
         {% endif %}
 
-        FZIP="{{ ZIPDIR }}/{{ ROMFILE.stdout }}"
+        FZIP="$LOCP/{{ ROMFILE.stdout | regex_replace('.zip','-factory.zip')}}"
 
         {% if unstable_build | d(False) | bool %}
         {%   if axp_type | d('') == "slim" %}
-                scp $LOCP/$FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/factory/') }}
+                scp $FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/factory/') }}
         {%   else %}
-                scp $LOCP/$FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/factory/') }}
+                scp $FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/factory/') }}
         {%   endif %}
         {% else %}
-              scp $LOCP/$FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}/factory/
+              scp $FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}/factory/
         {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
       when: generate_factory_image
