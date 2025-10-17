@@ -38,6 +38,10 @@ git_pixel_kernel_manifest: https://github.com/GrapheneOS/kernel_manifest-pixel.g
 git_repo_local_manifests: "{{ git_axpos_org_public }}/manifest"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 
+# set kernel default for pixel vs. non-pixel
+pixel_kernel_gki: >-
+    {% if target_model_vendor == "Google" and android_version_int | int > 14 %}True{% else %}False{% endif %}
+
 # the login name used in "tea login add" command, you will get the full command in the ansible error.
 # see: roles/axp/common/tasks/prep.yml for details
 # DEPRECATED: use git_axpos_org_private_login
