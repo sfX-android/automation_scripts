@@ -19,6 +19,7 @@
          git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1
        fi
        git reset --hard origin/{{ axp_main_branch | d('axp') }} >> {{ BUILD_LOG }} 2>&1
+       git remote set-url origin {{ axp_git_repo }}
        git pull
        git submodule status >> {{ BUILD_LOG }} 2>&1 
        git submodule deinit -f .

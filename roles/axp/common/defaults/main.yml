@@ -1,7 +1,7 @@
 ---
 
 # git stuff
-axp_git_org: "git@github.com:AXP-OS"
+axp_git_org: "git@codeberg.org/AXP-OS"
 axp_git_repo: "{{ axp_git_org }}/build.git"
 axp_main_branch: axp
 # main LOS manifest
