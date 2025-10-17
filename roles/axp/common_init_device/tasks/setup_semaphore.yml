@@ -31,7 +31,7 @@
 - name: "Extract autorun parent ID for given name"
   ansible.builtin.set_fact:
     semaphore_aos_template_parent_id: >-
-      {{ sp_all_templates.json | selectattr('name', 'equalto', semaphore_aos_template_parent_name | map(attribute='id') | first }}
+      {{ sp_all_templates.json | selectattr('name', 'equalto', semaphore_aos_template_parent_name) | map(attribute='id') | first }}
 
 - name: "Set arguments based on axp_type"
   ansible.builtin.set_fact:
