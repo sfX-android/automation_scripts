@@ -20,11 +20,12 @@ target_kernel_dir: kernel/google/gs201/private/gs-google
 
 # GrapheneOS based kernel build (KLEAF)
 # check build cmd and matching codename at: https://grapheneos.org/build
-pixel_kernel_buildcmd: "./build_raviole.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
+pixel_kernel_codename: raviole
+pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
 git_pixel_kernel_manifest_branch: "15-qpr2"
-pixel_kernel_buildresult: "device/google/raviole-kernels/6.1"
-pixel_kernel_buildout: "out/raviole/dist"
-pixel_kernel_defconfig: "{{ target_kernel_dir }}/arch/arm64/configs/gki_defconfig"
+pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
+pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
+pixel_kernel_defconfig: "{{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename }}/{{ pixel_kernel_codename }}_defconfig"
 
 # path to the common tree, if none exists the device tree
 # required e.g. for git, vendor/axp, release handling etc
@@ -41,7 +42,7 @@ axp_bootloader_id_pro: ''
 axp_bootloader_id_slim: '42D46266F04BBF79'
 
 # git push
-axp_git_push_device_include: "device_google_oriole|device_google_raven|device_google_raviole|device_google_gs-common|{{ target_model_common_tree }}"
+axp_git_push_device_include: "device_google_oriole|device_google_raven|device_google_raviole|device_google_gs-common|device_google_gs201|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_oriole"
 
 # disable Wireguard patching (already part of the upstream kernel)
