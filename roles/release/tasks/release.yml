@@ -173,7 +173,7 @@
           for checksum in $tobesigned;do
             echo -e "GPG signing ${checksum}.sha512 with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
             if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${checksum}.sha512"; then
-              mv -f "${checksum}.asc" "${checksum}.sha512" >> {{ BUILD_LOG }} 2>&1
+              mv -fv "${checksum}.sha512.asc" "${checksum}.sha512" >> {{ BUILD_LOG }} 2>&1
             fi
             scp ${checksum}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/ >> {{ BUILD_LOG }} 2>&1
             mv ${checksum}* {{ axp_finalzip_dir }}/ >> {{ BUILD_LOG }} 2>&1
