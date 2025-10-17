@@ -125,6 +125,7 @@ export DOS_HOSTS_BLOCKING_LIST="https://raw.githubusercontent.com/hagezi/dns-blo
 export EXTENDROM_PATCHER_RESET=false  # never reset before applying custom patches (as this will break DOS changes)
 export EXTENDROM_SIGSPOOF_RESET=false  # never reset framework base before applying er signature spoof support
 export AXP_DEFCONFIG_GLOBALS="{{ axp_defconfig_globals | default('CONFIG_NET CONFIG_INET CONFIG_NET_UDP_TUNNEL CONFIG_CRYPTO_ALGAPI CONFIG_WIREGUARD') }}" # add to kernel defconfig
+export AXP_DEFCONF_HARDENING={{ pixel_kernel_gki | lower() }}
 export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC by default
 export DOS_MICROG_SUPPORT="{{ axp_microg_support | default('false') }}" #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
 
