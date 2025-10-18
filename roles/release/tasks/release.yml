@@ -53,12 +53,12 @@
 
         {% if unstable_build | d(False) | bool %}
         {%   if axp_type | d('') == "slim" %}
-                scp $FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/factory/') }}
+                scp ${FZIP}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')-slim/.*', '\1-unstable/factory/') }}
         {%   else %}
-                scp $FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/factory/') }}
+                scp ${FZIP}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath | regex_replace('(/' + ROM_FLAVOR + ')/.*', '\1-unstable/factory/') }}
         {%   endif %}
         {% else %}
-              scp $FZIP {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}/factory/
+              scp ${FZIP}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}/factory/
         {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
       when: generate_factory_image
@@ -171,7 +171,7 @@
 
           {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
           for checksum in $tobesigned;do
-            echo -e "GPG signing ${checksum}.sha512 with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+            echo "GPG signing ${checksum}.sha512 with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
             if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${checksum}.sha512"; then
               mv -fv "${checksum}.sha512.asc" "${checksum}.sha512" >> {{ BUILD_LOG }} 2>&1
             fi
