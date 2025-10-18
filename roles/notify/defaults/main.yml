@@ -32,7 +32,7 @@ tg_success: |
         {{ ota_hint | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         {% endif %}
         
-        ***SHA256:***
+        ***SHA512:***
         {{ hash.stat.checksum | d(hashfile.stdout) | d("no hash found") }}
         
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
