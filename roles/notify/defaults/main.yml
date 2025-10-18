@@ -34,6 +34,10 @@ tg_success: |
         
         ***SHA512:***
         {{ hash.stat.checksum | d(hashfile.stdout) | d("no hash found") }}
+
+        {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
+        ***GPG: {{ release_gpg_signing_key }}*** {{ release_gpg_signing_keys_and_mirror | d('') }}
+        {% endif %}
         
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
