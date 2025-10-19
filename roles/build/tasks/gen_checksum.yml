@@ -3,17 +3,12 @@
 - name: "Check hash existence"
   ansible.builtin.stat:
     path: "{{ ZIPDIR }}/{{ ROMFILE.stdout }}.sha512sum"
+    checksum_algorithm: sha512
   register: hashreq
   no_log: true
   
 - block:
-
-    - name: "Generate hash for {{ ROMFILE.stdout }}"
-      ansible.builtin.stat:
-        path: "{{ ZIPDIR }}/{{ ROMFILE.stdout }}"
-        checksum_algorithm: sha512
-      register: hash
-      
+    
     - name: "Write hash {{ ROMFILE.stdout }}.sha512sum"
       ansible.builtin.shell: |
         echo '{{ hash.stat.checksum }} {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha512sum
@@ -30,3 +25,9 @@
         chdir: "{{ ZIPDIR }}"
 
   when: not hashreq.stat.exists
+
+- name: "Generate hash for {{ ROMFILE.stdout }}"
+  ansible.builtin.stat:
+     path: "{{ ZIPDIR }}/{{ ROMFILE.stdout }}"
+     checksum_algorithm: sha512
+  register: hash
