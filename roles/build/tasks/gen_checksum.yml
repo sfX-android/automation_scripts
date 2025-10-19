@@ -2,20 +2,20 @@
 
 - name: "Check hash existence"
   ansible.builtin.stat:
-    path: "{{ ROMFILE.stdout }}.sha512sum"
+    path: "{{ ZIPDIR }}/{{ ROMFILE.stdout }}.sha512sum"
   register: hashreq
   no_log: true
   
 - block:
 
     - name: "Generate hash for {{ ROMFILE.stdout }}"
-      stat:
+      ansible.builtin.stat:
         path: "{{ ZIPDIR }}/{{ ROMFILE.stdout }}"
         checksum_algorithm: sha512
       register: hash
       
     - name: "Write hash {{ ROMFILE.stdout }}.sha512sum"
-      shell: |
+      ansible.builtin.shell: |
         echo '{{ hash.stat.checksum }} {{ ROMFILE.stdout }}' > {{ ROMFILE.stdout }}.sha512sum
         
         {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
