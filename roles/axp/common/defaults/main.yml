@@ -44,6 +44,12 @@ git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 pixel_kernel_gki: >-
     {% if target_model_vendor == "Google" and android_version_int | int > 14 %}True{% else %}False{% endif %}
 
+# CONFIG_LOCALVERSION cannot be easily managed anymore with KLEAF.
+# instead we will modify the stamp config which empties it otherwise. there are (maybe) better ways to achieve
+# this but I was not able to find any and this seems to work:
+pixel_kernel_defconfig: >-
+    {% if pixel_kernel_gki | bool %}{{ git_pixel_kernel_dir }}/build/kernel/kleaf/impl/stamp.bzl{% endif %}
+
 # the login name used in "tea login add" command, you will get the full command in the ansible error.
 # see: roles/axp/common/tasks/prep.yml for details
 # DEPRECATED: use git_axpos_org_private_login
