@@ -353,7 +353,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% else %}
     buildDevice {{ target_model }} || f_detect_kerr
     {% endif %}
-    {% if generate_factory_image %}
+    {% if generate_factory_image | bool %}
 
     echo "Creating FACTORY ZIP!" >> {{ BUILD_LOG }}
     
