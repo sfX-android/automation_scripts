@@ -61,7 +61,7 @@
               scp ${FZIP}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}/factory/
         {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
-      when: generate_factory_image
+      when: generate_factory_image | bool
 
     - name: "Correct ZIP timestamp for {{ BDEVICE }} to fix recurring OTA offering"
       ansible.builtin.file:
