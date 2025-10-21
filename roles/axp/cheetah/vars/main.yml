@@ -20,7 +20,7 @@ target_kernel_dir: kernel/google/gs201/private/gs-google
 # GrapheneOS based kernel build (KLEAF)
 # check build cmd and matching codename at: https://grapheneos.org/build
 pixel_kernel_codename: pantah
-pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full --nokleaf_localversion"
+pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
 git_pixel_kernel_manifest_branch: "15-qpr2"
 pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
 pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
