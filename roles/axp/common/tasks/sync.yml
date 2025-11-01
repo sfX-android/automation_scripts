@@ -85,6 +85,9 @@
       KERN_REL_DIR=$(grep string_value {{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_KERNEL_{{ target_model | upper() }}_DIR.textproto | cut -d '"' -f2 | tr -d " " | tail -n1)
       echo "KERN_REL_DIR: >{{ SRCPATH }}/$KERN_REL_DIR<" >> {{ BUILD_LOG }}
       ln -vsf grapheneos "{{ SRCPATH }}/$KERN_REL_DIR"
+      
+      # FIXME: dirty hack as GOS does not contain a boot.img but we haven't build any yet (but we need to mka before we can build)
+      if [ ! -f "{{ SRCPATH }}/$KERN_REL_DIR/boot.img" ];then touch {{ SRCPATH }}/$KERN_REL_DIR/boot.img; fi
   when:
     - git_pixel_kernel_manifest_branch is defined
     - target_model_vendor == "Google"
