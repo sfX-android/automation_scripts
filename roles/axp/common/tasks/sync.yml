@@ -82,7 +82,7 @@
 
 - name: "Google Pixel: Setup GrapheneOS link"
   ansible.builtin.shell: |
-      KERN_REL_DIR=$(grep string_value {{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_KERNEL_{{ target_model | upper() }}_DIR.textproto | cut -d '"' -f2 | tr -d " " | tail -n1)
+      KERN_REL_DIR=$(grep string_value "{{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_KERNEL_{{ target_model | upper() }}_DIR.textproto" | cut -d '"' -f2 | tr -d " " | tail -n1)
       echo "KERN_REL_DIR: >{{ SRCPATH }}/$KERN_REL_DIR<" >> {{ BUILD_LOG }}
       ln -vsf grapheneos "{{ SRCPATH }}/$KERN_REL_DIR"
       # FIXME: dirty hack as GOS does not contain a boot.img but we haven't build any yet (but we need to mka before we can build)
