@@ -86,7 +86,6 @@
       echo "KERN_REL_DIR: >{{ SRCPATH }}/$KERN_REL_DIR<" >> {{ BUILD_LOG }}
       ln -vsf grapheneos "{{ SRCPATH }}/$KERN_REL_DIR"
 
-      # FIXME: dirty hack as GOS does not contain a boot.img but we haven't build any yet (but we need to mka before we can build)
       if [ ! -f "{{ SRCPATH }}/$KERN_REL_DIR/boot.img" ];then
           touch "{{ SRCPATH }}/$KERN_REL_DIR/boot.img"
       fi
