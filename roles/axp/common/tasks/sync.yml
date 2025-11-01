@@ -41,13 +41,6 @@
           dest: "{{ SRCPATH }}/{{ target_kernel_dir }}"
           force: true
           state: link
-
-    - name: "Google Pixel: Setup GrapheneOS link"
-      ansible.builtin.shell: |
-          KERN_REL_DIR=$(grep string_value {{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_KERNEL_{{ target_model | upper() }}_DIR.textproto | cut -d '"' -f2 | tr -d " " | tail -n1)
-          echo "KERN_REL_DIR: >{{ SRCPATH }}/$KERN_REL_DIR<" >> {{ BUILD_LOG }}
-          ln -vsf grapheneos "{{ SRCPATH }}/$KERN_REL_DIR" 
-
   when:
     - git_pixel_kernel_manifest_branch is defined
     - target_model_vendor == "Google"
@@ -86,6 +79,16 @@
 
 - name: "AXP.OS: sync LOS base & local manifests"
   include_tasks: ../../../common/tasks/sync.yml
+
+- name: "Google Pixel: Setup GrapheneOS link"
+  ansible.builtin.shell: |
+      KERN_REL_DIR=$(grep string_value {{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_KERNEL_{{ target_model | upper() }}_DIR.textproto | cut -d '"' -f2 | tr -d " " | tail -n1)
+      echo "KERN_REL_DIR: >{{ SRCPATH }}/$KERN_REL_DIR<" >> {{ BUILD_LOG }}
+      ln -vsf grapheneos "{{ SRCPATH }}/$KERN_REL_DIR"
+  when:
+    - git_pixel_kernel_manifest_branch is defined
+    - target_model_vendor == "Google"
+    - android_version_int | int > 14
 
 - name: "activate special recovery manifest if needed"
   ansible.builtin.shell: |
