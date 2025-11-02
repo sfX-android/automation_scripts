@@ -87,9 +87,9 @@
       ln -vsf grapheneos "{{ SRCPATH }}/$KERN_REL_DIR"
 
       #FIXME: dirty hack as GOS does not contain a boot.img
-      if [ ! -f "{{ SRCPATH }}/$KERN_REL_DIR/boot.img" ];then
-          touch "{{ SRCPATH }}/$KERN_REL_DIR/boot.img"
-      fi
+      #if [ ! -f "{{ SRCPATH }}/$KERN_REL_DIR/boot.img" ];then
+      #    touch "{{ SRCPATH }}/$KERN_REL_DIR/boot.img"
+      #fi
   when:
     - git_pixel_kernel_manifest_branch is defined
     - target_model_vendor == "Google"
