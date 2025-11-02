@@ -93,7 +93,7 @@
   when:
     - git_pixel_kernel_manifest_branch is defined
     - pixel_kernel_gki | bool
-    - pixel_kernel_gos | bool | d(False)
+    - pixel_kernel_gos | d(False) | bool
 
 - name: "activate special recovery manifest if needed"
   ansible.builtin.shell: |
