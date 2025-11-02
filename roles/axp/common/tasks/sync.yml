@@ -87,13 +87,13 @@
       ln -vsf grapheneos "{{ SRCPATH }}/$KERN_REL_DIR"
 
       #FIXME: dirty hack as GOS does not contain a boot.img
-      #if [ ! -f "{{ SRCPATH }}/$KERN_REL_DIR/boot.img" ];then
-      #    touch "{{ SRCPATH }}/$KERN_REL_DIR/boot.img"
-      #fi
+      if [ ! -f "{{ SRCPATH }}/$KERN_REL_DIR/boot.img" ];then
+          touch "{{ SRCPATH }}/$KERN_REL_DIR/boot.img"
+      fi
   when:
     - git_pixel_kernel_manifest_branch is defined
-    - target_model_vendor == "Google"
-    - android_version_int | int > 14
+    - pixel_kernel_gki | bool
+    - pixel_kernel_gos | bool | d(False)
 
 - name: "activate special recovery manifest if needed"
   ansible.builtin.shell: |
