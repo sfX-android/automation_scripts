@@ -31,14 +31,23 @@ git_private_repos: "platform_prebuilts_tools,android_cts"
 #release_gpg_signing_key: "FE4B2FA2B225F0AB903AF4136740E645718A8E47"
 release_gpg_signing_keys_links: >-
     \([key](https://axpos.org/axpos_signing.key), [mirror1](https://codeberg.org/AXP-OS/axpos-org/src/branch/hugo/static/axpos_signing.key), [mirror2](https://leech.binbash.rocks:8008/axp/axpos_signing.key), [mirror3](https://keyserver.ubuntu.com/pks/lookup?search=FE4B2FA2B225F0AB903AF4136740E645718A8E47&fingerprint=on&op=index), [mirror4](https://keys.openpgp.org/search?q=FE4B2FA2B225F0AB903AF4136740E645718A8E47)\)
-git_pixel_kernel_dir: "{{ android_build_path }}/kernel_google_common"
+
+# pixel kernels (graphene)
+#git_pixel_kernel_dir: "{{ android_build_path }}/kernel_google_common"
+#git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
+#git_pixel_kernel_manifest: https://github.com/GrapheneOS/kernel_manifest-pixel.git
+#git_repo_local_manifests: "{{ git_axpos_org_public }}/manifest"
+#git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
+
+# pixel kernels (google)
+git_pixel_kernel_dir: "{{ android_build_path }}/google_kernel_source"
 git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
-#git_pixel_kernel_manifest: "https://android.googlesource.com/kernel/manifest"
-git_pixel_kernel_manifest: https://github.com/GrapheneOS/kernel_manifest-pixel.git
+git_pixel_kernel_manifest: "https://android.googlesource.com/kernel/manifest"
 #git_repo_local_manifests: "{{ axp_git_org }}/manifest"
 #git_repo_local_manifests: "git@{{ git_axpos_org_public_host }}/{{ git_axpos_org_name | regex_replace('\\.', '-') }}/manifest.git"
 git_repo_local_manifests: "{{ git_axpos_org_public }}/manifest"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
+
 
 # set kernel default for pixel vs. non-pixel
 pixel_kernel_gki: >-
