@@ -48,7 +48,7 @@ axp_git_push_vendor_include: "vendor_samsung_universal7870-common|vendor_samsung
 axp_defconfig_device: "CONFIG_ARM64_SW_TTBR0_PAN=n"
 
 # deblobbing audiofx breaks video recording due to the removal of libLifevibes_lvverx.so + libLifevibes_lvvetx.so
-dos_deblobber_remove_audiofx: 'false'
+axp_deblobber_remove_audiofx: 'false'
 
 # disable hardened malloc. likely related to the increased key size of the AXP signature
 # > I:comment is 3915 bytes; signature is 3897 bytes from end
