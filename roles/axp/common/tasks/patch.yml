@@ -41,6 +41,9 @@
       else
           echo "[AXP] .. kernel is already patched for wireguard (patch indicator exists)"
       fi
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
   when: skip_wireguard is undefined or not skip_wireguard | bool
 
 - name: "Apply AXP.OS patches (common, >= A15)"
