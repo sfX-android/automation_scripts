@@ -26,6 +26,7 @@ git_pixel_kernel_manifest_branch: "android-gs-pantah-6.1-android15-qpr2" # googl
 pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
 pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
 #pixel_kernel_defconfig: "{{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename }}/{{ pixel_kernel_codename }}_defconfig"
+#pixel_kernel_gos: True
 
 # path to the common tree, if none exists the device tree
 # required e.g. for git, vendor/axp, release handling etc
