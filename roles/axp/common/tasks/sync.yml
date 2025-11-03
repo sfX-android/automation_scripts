@@ -111,7 +111,7 @@
 
 - name: "Fix syntax issue in repopick on A10"
   ansible.builtin.lineinfile:
-    path: vendor/lineage/build/tools/repopick.py
+    path: "{{ SRCPATH }}/vendor/lineage/build/tools/repopick.py"
     regexp: '(local_branches = re.split\()(.*)'
     line: '\1r\2'
     backrefs: yes
