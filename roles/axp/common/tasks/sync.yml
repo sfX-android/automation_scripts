@@ -108,3 +108,11 @@
 # (needs to be done in DOS more early then for others)
 - name: "AXP.OS: ensure the keys dir is set correctly"
   include_tasks: ../../../common/tasks/set_keys.yml
+
+- name: "Fix syntax issue in repopick on A10"
+  ansible.builtin.lineinfile:
+    path: vendor/lineage/build/tools/repopick.py
+    regexp: '(local_branches = re.split\()(.*)'
+    line: '\1r\2'
+    backrefs: yes
+  when: android_version_int | int == 10
