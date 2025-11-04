@@ -72,7 +72,7 @@
         
       - name: "RECOVERY: verify IMG integrity"
         ansible.builtin.shell: >-
-            sha256sum --check {{ recovery_filename_no_ext }}*{{ target_model }}*.img.sha512
+            sha512sum --check {{ recovery_filename_no_ext }}*{{ target_model }}*.img.sha512
         args:
           chdir: "{{ rempath }}/recovery"
         when: axp_release_recovery_skip == "False"
