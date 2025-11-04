@@ -80,13 +80,16 @@
       - name: "RECOVERY: delete from unstable"
         ansible.builtin.shell: >-
           {% if axp_type | d('') == "slim" %}
-          rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}
+          DEL="{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}"
           {% else %}
-          rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}
+          DEL="rm -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}"
           {% endif %}
+
+          if [ -f  "$DEL" ];then rm -v "$DEL"; fi
         loop:
           - img
           - img.sha256
+          - img.sha512
         when: axp_release_recovery_skip == "False"
 
       # must have .stdout, so do not set_fact or vars it!
