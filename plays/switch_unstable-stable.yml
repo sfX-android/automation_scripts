@@ -78,7 +78,7 @@
         when: axp_release_recovery_skip == "False"
   
       - name: "RECOVERY: delete from unstable"
-        ansible.builtin.shell: >-
+        ansible.builtin.shell: |
           {% if axp_type | d('') == "slim" %}
           DEL="{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}"
           {% else %}
