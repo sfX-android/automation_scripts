@@ -111,7 +111,6 @@
         loop:
           - zip
           - zip.sha512sum
-          - zip.sha256sum
           - zip.prop
 
       - name: "OS: verify ZIP integrity"
@@ -126,7 +125,6 @@
         loop:
           - zip
           - zip.sha512sum
-          - zip.sha256sum
           - zip.prop
   
       - name: "Identify unstable build date"
