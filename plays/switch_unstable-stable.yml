@@ -99,8 +99,8 @@
         register: ROMFILE
         
       - name: "OS: Get HASH (for notification)"
-        ansible.builtin.shell: >-
-            cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha512sum" | cut -d ' ' -f1
+        ansible.builtin.stat: >-
+            cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha512sum" | grep zip | cut -d ' ' -f1
         register: hashfile
         
       - name: "OS: switch to stable"
