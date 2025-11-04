@@ -99,7 +99,7 @@
         register: ROMFILE
         
       - name: "OS: Get HASH (for notification)"
-        ansible.builtin.stat: >-
+        ansible.builtin.shell: >-
             cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha512sum" | grep zip | cut -d ' ' -f1
         register: hashfile
         
