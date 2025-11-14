@@ -5,7 +5,7 @@ target_model_name: "Pixel 7 Pro"
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
 # android version
-android_shortversion: a15
+android_shortversion: a13
 
 # boot debugger path & config
 extendrom_debug_path_default: /mnt/vendor/persist
@@ -19,14 +19,14 @@ target_kernel_dir: kernel/google/gs201/private/gs-google
 
 # GrapheneOS based kernel build (KLEAF)
 # check build cmd and matching codename at: https://grapheneos.org/build
-pixel_kernel_codename: pantah
-pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
-#git_pixel_kernel_manifest_branch: "15-qpr2" # graphene
-git_pixel_kernel_manifest_branch: "android-gs-pantah-6.1-android15-qpr2" # google
-pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
-pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
-#pixel_kernel_defconfig: "{{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename }}/{{ pixel_kernel_codename }}_defconfig"
-#pixel_kernel_gos: True
+#pixel_kernel_codename: pantah
+#pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
+####git_pixel_kernel_manifest_branch: "15-qpr2" # graphene
+#git_pixel_kernel_manifest_branch: "android-gs-pantah-6.1-android15-qpr2" # google
+#pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
+#pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
+###pixel_kernel_defconfig: "{{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename }}/{{ pixel_kernel_codename }}_defconfig"
+###pixel_kernel_gos: True
 
 # path to the common tree, if none exists the device tree
 # required e.g. for git, vendor/axp, release handling etc
