@@ -1,7 +1,7 @@
 ---
 
 # git stuff
-axp_git_org: "git@codeberg.org:AXP-OS"
+axp_git_org: "git@git.disroot.org:AXP.OS"
 axp_git_repo: "{{ axp_git_org }}/build.git"
 axp_main_branch: axp
 # main LOS manifest
@@ -12,11 +12,19 @@ git_axpos_org_name: "AXP.OS"
 commit_push: True
 # just push changes after patching, skip build
 just_git_push: False
+
 # codeberg
 # tea login add --name NNNN --ssh-key XXXXX --url https://codeberg.org --token XXXXX
-git_axpos_org_public_login: codeberg    # --name NNNN
-git_axpos_org_public_host: "codeberg.org"
-git_axpos_org_public: "ssh://git@{{ git_axpos_org_public_host }}/{{ git_axpos_org_name | regex_replace('\\.', '-') }}"
+#git_axpos_org_public_login: codeberg    # --name NNNN
+#git_axpos_org_public_host: "codeberg.org"
+#git_axpos_org_public: "ssh://git@{{ git_axpos_org_public_host }}/{{ git_axpos_org_name | regex_replace('\\.', '-') }}"
+
+# disroot
+# tea login add --name NNNN --ssh-key XXXXX --url https://git.disroot.org --token XXXXX
+git_axpos_org_public_login: disrootorg    # --name NNNN
+git_axpos_org_public_host: "git.disroot.org"
+git_axpos_org_public: "ssh://git@{{ git_axpos_org_public_host }}/{{ git_axpos_org_name }}"
+
 # binbash
 # tea login add --name NNNN --ssh-key XXXXX --url https://code.binbash.rocks --token XXXXX
 git_axpos_org_private_login: axpos    # --name NNNN
