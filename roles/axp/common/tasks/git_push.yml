@@ -313,8 +313,8 @@
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning || exit 44
     if [ -f template.md ]; then rm template.md; fi
-    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }}
-    git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "add app versions for {{ build_id }}"  >> /dev/null 2>> {{ BUILD_LOG }} || echo "nothing to commit"
+    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} || echo "nothing to add" >> {{ BUILD_LOG }}
+    git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "add app versions for {{ build_id }}"  >> /dev/null 2>> {{ BUILD_LOG }} || echo "nothing to commit" >> {{ BUILD_LOG }}
 
     TE=0
     git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
