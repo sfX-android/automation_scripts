@@ -5,7 +5,8 @@
 - name: "Add device vars"
   template:
     src: "axp.vars.j2"
-    dest: "{{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}"
+    dest: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
+    #dest: "{{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}"
 
 - block:
     - name: "Add global override vars (slim)"
@@ -15,7 +16,8 @@
 
     - name: "Include slim vars overrides"
       ansible.builtin.lineinfile:
-        path: "{{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}"
+        #path: "{{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}"
+        path: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
         line: "source {{ BUILDHOME }}/.divested.vars.slim"
         insertafter: EOF
         state: present
