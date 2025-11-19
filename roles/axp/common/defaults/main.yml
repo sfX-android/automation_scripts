@@ -197,6 +197,7 @@ target_model_device_tree_boardmk: BoardConfigCommon.mk
 
 # extendrom stuff
 use_extendrom: "true"
+extendrom_skip_dl: 'false'
 extendrom_package_list_common: "AOSmium_webview64 additional_repos.xml AuroraStore F-Droid noeSpeakNG noDefaultBrowserWebView Etar_ER FossifyGallery_FD"
 extendrom_package_list_default: "{{ extendrom_package_list_common }} GsfProxy_GH Magisk MicrogGmsCore_GH Phonesky_AXP-OS {% if android_version_int | int > 14 %}AOSLauncher{% else %}NeoLauncher-latest{% endif %}"
 extendrom_fdroid_repos: "axpos.xml molly.xml nailyk.xml threema.xml futo_org.xml cromite.xml ironfox.xml izzysoft.xml"
@@ -503,95 +504,98 @@ SH_COMMON_BUILD_SNIPPET: |
         else
             echo "OK: kernel was build successfully!"
         fi
+
     {% else %}
-        # regular build process
 
-        # extendrom flags
-        export ENABLE_EXTENDROM={{ use_extendrom }}
-        export EXTENDROM_PACKAGES="{{ extendrom_package_list | d(extendrom_package_list_default) }}"
-        export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
-        {% if extendrom_packages_skip_dl is defined %}export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}{% endif %}
-        export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
-        #export MAGISK_TARGET_ARCH=
-        export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
-        export EXTENDROM_DEBUG_PATH={{ extendrom_debug_path |d (extendrom_debug_path_default) }}
-        export EXTENDROM_DEBUG_PATH_SIZE_FULL={{ extendrom_debug_path_size_full | d(extendrom_debug_path_size_full_default) }}
-        export EXTENDROM_DEBUG_PATH_SIZE_KERNEL={{ extendrom_debug_path_size_kernel | d(extendrom_debug_path_size_kernel_default) }}
-        export EXTENDROM_DEBUG_PATH_SIZE_SELINUX={{ extendrom_debug_path_size_selinux | d(extendrom_debug_path_size_selinux_default) }}
-        export EXTENDROM_DEBUG_PATH_SIZE_CRASH={{ extendrom_debug_path_size_crash | d(extendrom_debug_path_size_crash_default) }}
-        export EXTENDROM_SIGNATURE_SPOOFING={{ extendrom_signature_spoofing }}
-        export EXTENDROM_PATCHER_RESET={{ extendrom_patcher_reset }}
-        export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
-        export EXTENDROM_ALLOW_ANY_CALL_RECORDING={{ extendrom_allow_any_call_recording }}
-        export EXTENDROM_INTERCEPT_INSTALLSRC={{ extendrom_intercept_installsrc | d('false') }}
-        # execute extendrom
-        $PWD/vendor/extendrom/er.sh
+    # regular build process
 
-        echo "[GIT] checking kernel changes in {{ target_kernel_dir }}"
-        # add unstaged changes
-        CMT=0
-        cd {{ target_kernel_dir }}
-        git add -A || CMT=1
-        # check for uncommitted changes
-        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-        # commit if required
-        if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
-           git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
-           echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
-        fi
-        git status
-        croot
-        
-        # build
-        resetEnv
-        {% if android_version_int | int >= 15 %}
-        {%     if (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool) %}
-        # as we patch bionic/libc ABI reference updates are required
-        $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant APEX --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
-        $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant LLNDK --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
-        {%     endif %}
-        {% endif %}
+    # extendrom flags
+    export ENABLE_EXTENDROM={{ use_extendrom }}
+    export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_skip_dl }}
+    export EXTENDROM_PACKAGES="{{ extendrom_package_list | d(extendrom_package_list_default) }}"
+    export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
+    {% if extendrom_packages_skip_dl is defined %}export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}{% endif %}
+    export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
+    #export MAGISK_TARGET_ARCH=
+    export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
+    export EXTENDROM_DEBUG_PATH={{ extendrom_debug_path |d (extendrom_debug_path_default) }}
+    export EXTENDROM_DEBUG_PATH_SIZE_FULL={{ extendrom_debug_path_size_full | d(extendrom_debug_path_size_full_default) }}
+    export EXTENDROM_DEBUG_PATH_SIZE_KERNEL={{ extendrom_debug_path_size_kernel | d(extendrom_debug_path_size_kernel_default) }}
+    export EXTENDROM_DEBUG_PATH_SIZE_SELINUX={{ extendrom_debug_path_size_selinux | d(extendrom_debug_path_size_selinux_default) }}
+    export EXTENDROM_DEBUG_PATH_SIZE_CRASH={{ extendrom_debug_path_size_crash | d(extendrom_debug_path_size_crash_default) }}
+    export EXTENDROM_SIGNATURE_SPOOFING={{ extendrom_signature_spoofing }}
+    export EXTENDROM_PATCHER_RESET={{ extendrom_patcher_reset }}
+    export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
+    export EXTENDROM_ALLOW_ANY_CALL_RECORDING={{ extendrom_allow_any_call_recording }}
+    export EXTENDROM_INTERCEPT_INSTALLSRC={{ extendrom_intercept_installsrc | d('false') }}
+    # execute extendrom
+    $PWD/vendor/extendrom/er.sh
 
-        #### LEGACY PYTHON #########################
-        case {{ android_shortversion }} in
-          a9|a10) source ~/.venv/python2/bin/activate ;;
-        esac
+    echo "[GIT] checking kernel changes in {{ target_kernel_dir }}"
+    # add unstaged changes
+    CMT=0
+    cd {{ target_kernel_dir }}
+    git add -A || CMT=1
+    # check for uncommitted changes
+    CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+    # commit if required
+    if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+        git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
+        echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
+    fi
+    git status
+    croot
+    
+    # build
+    resetEnv
+    {% if android_version_int | int >= 15 %}
+    {%     if (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool) %}
+    # as we patch bionic/libc ABI reference updates are required
+    $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant APEX --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
+    $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant LLNDK --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
+    {%     endif %}
+    {% endif %}
 
-        {% if (override_clean_out == "undef" and clean_out | bool) or (override_clean_out | bool) %}
-        mka generate_verity_key
-        {% endif %}
-        {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
-        mka recoveryimage || f_detect_kerr
-        if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
-        mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
-        {% elif custom_build_command is defined %}
-        # custom_build_command defined!
-        # generate_factory_image: {{ generate_factory_image }}
-        {{ custom_build_command }}
-        {% elif axp_build_eng | bool %}
-        # axp_build_eng set!
-        #mka sepolicy
-        buildDeviceDebug {{ target_model }} || f_detect_kerr
-        {% else %}
-        buildDevice {{ target_model }} || f_detect_kerr
-        {% endif %}
-        {% if vbmeta_verify %}
-        # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
-        FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
-        echo -e "\nBOOTLOADER minimal ID"
-        echo -e "\t${FPID:0:8}\n"
-        echo -e "BOOTLOADER full ID:"
-        echo -e "\t${FPID:0:16}"
-        echo -e "\t${FPID:16:16}"
-        echo -e "\t${FPID:32:16}"
-        echo -e "\t${FPID:48:16}\n"
-        out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null || true
-        out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null \
-            || (out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files*/IMAGES/vbmeta.img;\
-                out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files*/IMAGES/vbmeta.img)
-        {% endif %}
+    #### LEGACY PYTHON #########################
+    case {{ android_shortversion }} in
+        a9|a10) source ~/.venv/python2/bin/activate ;;
+    esac
 
-        echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}${FZIPINF}"
+    {% if (override_clean_out == "undef" and clean_out | bool) or (override_clean_out | bool) %}
+    mka generate_verity_key
+    {% endif %}
+    {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
+    mka recoveryimage || f_detect_kerr
+    if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
+    mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
+    {% elif custom_build_command is defined %}
+    # custom_build_command defined!
+    # generate_factory_image: {{ generate_factory_image }}
+    {{ custom_build_command }}
+    {% elif axp_build_eng | bool %}
+    # axp_build_eng set!
+    #mka sepolicy
+    buildDeviceDebug {{ target_model }} || f_detect_kerr
+    {% else %}
+    buildDevice {{ target_model }} || f_detect_kerr
+    {% endif %}
+    {% if vbmeta_verify %}
+    # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
+    FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
+    echo -e "\nBOOTLOADER minimal ID"
+    echo -e "\t${FPID:0:8}\n"
+    echo -e "BOOTLOADER full ID:"
+    echo -e "\t${FPID:0:16}"
+    echo -e "\t${FPID:16:16}"
+    echo -e "\t${FPID:32:16}"
+    echo -e "\t${FPID:48:16}\n"
+    out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null || true
+    out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null \
+        || (out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files*/IMAGES/vbmeta.img;\
+            out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files*/IMAGES/vbmeta.img)
+    {% endif %}
+
+    echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}${FZIPINF}"
         
     {% endif %}
 
