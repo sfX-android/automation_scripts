@@ -37,10 +37,15 @@
       ansible.builtin.debug:
         var: just_git_push
 
+    # download_fairphone_firmware is DEPRECATED!
     - name: "DEBUG: download_fairphone_firmware"
       ansible.builtin.debug:
         var: download_fairphone_firmware
-          
+
+    - name: "DEBUG: update_vendor_firmware"
+      ansible.builtin.debug:
+        var: update_vendor_firmware
+
     - name: "Import pre common role"
       ansible.builtin.import_role:
         name: pre   
