@@ -9,7 +9,7 @@
 
     which lpunpack || build_req=1
 
-    if [ $lpunpack -eq 1 ];then
+    if [ $? -eq 1 ];then
       {% if sub_model is defined %}
       lunch lineage_{{ sub_model }}${brf_suffix}-user && echo lunch success
       {% else %}
