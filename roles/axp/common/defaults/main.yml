@@ -491,6 +491,14 @@ SH_COMMON_BUILD_SNIPPET: |
         set +e
         resetEnv
         vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L {{ BUILD_LOG }}
+        just_cve_excl=$(vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L {{ BUILD_LOG }} 2>&1 | grep "PROBLEMATIC_CVES:" | cut -d ':' -f2-)
+
+        if [ -n "$just_cve_excl" ];then
+            echo -e "\ndirty test: revert CVE's and re-test like:"
+            echo "cd {{ target_kernel_dir }} && for p in $just_cve_excl ; do patch -p1 -R < '$DOS_PATCHES_LINUX_CVES/$p';done; croot; time $0 | tee ~/LOG"
+            echo -e "\nIf you encounter another error do:\ncat ~/LOG >> {{ BUILD_LOG }}"
+            echo "vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L {{ BUILD_LOG }}"
+        fi
         exit 5
     }
 
