@@ -6,6 +6,10 @@
 
 - include_tasks: prep.yml
 - include_vars: "../../{{ target_model }}/vars/main.yml"
+
+- include_vars: axp_lowend_device.vars.yml
+  when: axp_lowend_device
+  
 - include_tasks: set_env_vars.yml
 - include_tasks: init.yml
 
