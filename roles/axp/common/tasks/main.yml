@@ -36,10 +36,6 @@
 - include_tasks: clean.yml
   when: axp_skip_common_tasks is undefined
 
-# download latest firmware, taken from vendor/firmware/*/0SOURCE
-- include_tasks: firmware_update.yml
-  when: update_vendor_firmware or download_fairphone_firmware | bool
-
 - block:
 
       - include_tasks: sync.yml
@@ -47,7 +43,7 @@
 
       # download latest firmware, taken from vendor/firmware/*/0SOURCE
       - include_tasks: firmware_update.yml
-        when: update_vendor_firmware
+        when: update_vendor_firmware or download_fairphone_firmware | bool
 
       # apply ASB patches if needed
       # currently LOS supports ASB patches up to and including: Android 13
