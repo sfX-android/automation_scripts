@@ -9,7 +9,7 @@
 
 - include_vars: axp_lowend_device.vars.yml
   when: axp_lowend_device
-  
+
 - include_tasks: set_env_vars.yml
 - include_tasks: init.yml
 
@@ -38,7 +38,7 @@
 
 # download latest firmware, taken from vendor/firmware/*/0SOURCE
 - include_tasks: firmware_update.yml
-  when: update_vendor_firmware
+  when: update_vendor_firmware or download_fairphone_firmware | bool
 
 - block:
 

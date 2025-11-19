@@ -280,6 +280,9 @@ axp_release_recovery: False
 # should we start the vendor firmware updater? should be overwritten in SEMAPHORE if required
 update_vendor_firmware: False
 
+# override in semaphore, DEPRECATED, use update_vendor_firmware instead
+download_fairphone_firmware: False
+
 # does factory zip contains super image? should be overwritten in device vars if required
 vendor_firmware_super_img: False
 
