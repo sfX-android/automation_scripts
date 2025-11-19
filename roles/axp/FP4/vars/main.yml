@@ -66,12 +66,21 @@ hugo_axp_bootloader_id_slim: |
         3217A7174855F2EE
         1A4E16C591592826
 
+#################################################################################################################################
 # vendor/firmware info
 # source: https://support.fairphone.com/hc/en-us/articles/18896094650513-Install-Fairphone-OS-manually#01HB8ZZ1BMMQNSNMFT3YXDBXA0
-#
+
+# A13:
 vendor_fairphone_factory_version: FP4-TP31-factory
 vendor_firmware_download_url: "https://android-builds.fairphone.com/FP4/A13/{{ vendor_fairphone_factory_version }}.zip"
 vendor_firmware_download_sha256: "7404233c93f281948134d114247a7dc4cd31466a64ea91f71c76df0f1aad6535"
+
+# A15:
+#vendor_fairphone_factory_version: FP4.QREL.15.14.3.20250923075848.user-factory
+#vendor_firmware_download_url: "https://android-builds.fairphone.com/FP4/A15/{{ vendor_fairphone_factory_version }}.zip"
+#vendor_firmware_download_sha256: "9976328f7994b11ccf0b4bf42f75bcdf68cede11bdedadb8e9f5c17c3498dee3"
+
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
 vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ vendor_fairphone_factory_version }}.zip"
+#################################################################################################################################
