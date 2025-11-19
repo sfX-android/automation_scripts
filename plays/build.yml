@@ -5,21 +5,23 @@
   gather_facts: true
 
   pre_tasks:
-    - debug:
+    - name: "Show Semaphore vars"
+      ansible.builtin.debug:
         msg: "{{ semaphore_vars }}"
 
-    - name: ensure semaphore run dir
+    - name: "Prep semaphore run dir"
       connection: local
-      file:
+      ansible.builtin.file:
         path: "{{ semaphore_lock_dir }}"
         state: directory
           
-    - set_fact:
+    - name: "Set Semaphore run file"
+      ansible.builtin.set_fact:
         semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ build_id }}.ansible_running"
 
-    - name: "set semaphore running indicator"
+    - name: "Setup semaphore running indicator"
       connection: local
-      copy:
+      ansible.builtin.copy:
         dest: "{{ semaphore_runfile }}"
         content: |
           date="{{ ansible_date_time.iso8601 }}"
@@ -27,112 +29,116 @@
           target={{ target_model }}
           role="{{ ROM_FLAVOR }}/{{ target_model }}"
 
-    - name: DEBUG-pre
+    - name: "DEBUG: axp_type"
       ansible.builtin.debug:
         var: axp_type
 
-    - name: DEBUG-pre2
+    - name: "DEBUG: just_git_push"
       ansible.builtin.debug:
         var: just_git_push
 
-    - name: DEBUG-pre3
+    - name: "DEBUG: download_fairphone_firmware"
       ansible.builtin.debug:
         var: download_fairphone_firmware
           
-    - import_role:
-        name: pre        
+    - name: "Import pre common role"
+      ansible.builtin.import_role:
+        name: pre   
           
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
     
-      - import_role:
+      - name: "Import global common role"
+        ansible.builtin.import_role:
           name: common
 
-      - name: DEBUG
-        ansible.builtin.debug:
-          var: axp_type
-
-      - include_role:
+      - name: "Get ROM_FLAVOR common - default vars"
+        ansible.builtin.include_role:
           name: "{{ ROM_FLAVOR }}/common"
           public: yes
         when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
 
-      - fail:
+      - name: "Check Telegram notification requirement"
+        ansible.builtin.fail:
           msg: "boo.. vault_tg_group_id_failing is undefined"
         when: 
           - vault_tg_group_id_failing is undefined
           - telegram_notifications | bool
 
-      - include_vars: "../roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
+      - name: "Include custom recovery vars"
+        ansible.builtin.include_vars: "../roles/{{ ROM_FLAVOR }}/all/vars/{{ target_model }}.yml"
         when: 
           - ROM_FLAVOR == "SHRP" or ROM_FLAVOR == "TWRP"
 
-      - include_role:
+      - name: "Run ROM_FLAVOR device tasks"
+        ansible.builtin.include_role:
           name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
           public: yes
 
-      - include_vars: "../roles/{{ ROM_FLAVOR }}/common/tasks/axp_lowend_device.vars.yml"
-        when:
-          - axp_lowend_device
-          - ROM_FLAVOR == "axp"
-
-      - include_role:
+      - name: "Run build role"
+        ansible.builtin.include_role:
           name: build
           public: yes
 
-      - include_role:
+      - name: "Run release role"
+        ansible.builtin.include_role:
           name: release
           public: yes
         when:
           - (override_release_build == "undef" and release_build | bool) or (override_release_build | bool)
           - not build_bootimage_only | d(False)
 
-      - set_fact:
+      - name: "Set notification var (no debug build)"
+        ansible.builtin.set_fact:
           tg_group_id: "{{ vault_tg_group_id_automation }}"
         when:
           - debug_build is not defined or (debug_build is defined and not debug_build | bool)
           - telegram_notifications | bool
 
-      - set_fact:
+      - name: "Set notification var (debug build)"
+        ansible.builtin.set_fact:
           tg_group_id: "{{ vault_tg_group_id_failing }}"
         when:
           - debug_build is defined and debug_build | bool
           - telegram_notifications | bool
 
-      - include_role:
+      - name: "Run notification role"
+        ansible.builtin.include_role:
           name: notify
 
-      - name: "remove semaphore running indicator"
+      - name: "Remove semaphore running indicator"
         connection: local
-        file:
+        ansible.builtin.file:
           path: "{{ semaphore_runfile }}"
           state: absent
 
-      - include_role:
+      - name: "Run Post tasks"
+        ansible.builtin.include_role:
           name: post
 
       # when any of the above fails notify always 
       rescue:
 
-        - set_fact:
+        - ansible.builtin.set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
           when:
             - telegram_notifications | bool
 
-        - include_role:
+        - ansible.builtin.include_role:
             name: notify
 
-        - name: "remove semaphore running indicator"
+        - name: "Remove semaphore running indicator"
           connection: local
-          file:
+          ansible.builtin.file:
             path: "{{ semaphore_runfile }}"
             state: absent
 
-        - import_role:
+        - ansible.builtin.import_role:
             name: post
             
-        - fail:
+        - name: "Fail Message"
+          ansible.builtin.fail:
             msg: |
               ERROR OCCURED:
               
