@@ -11,9 +11,9 @@
 
     if [ $build_req -eq 1 ];then
       {% if sub_model is defined %}
-      lunch lineage_{{ sub_model }}${brf_suffix}-user && echo lunch success
+      lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
       {% else %}
-      lunch lineage_{{ target_model }}${brf_suffix}-user && echo lunch success
+      lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
       {% endif %}
       resetEnv >> {{ BUILD_LOG }} 2>&1
       
@@ -26,7 +26,7 @@
       # revert build workaround
       mv hmall.Androidbp external/hardened_malloc/Android.bp
     else
-      echo "skipping lpunpack build (binary exists already)"
+      echo "skipping lpunpack build (binary exists already)" | tee -a {{ BUILD_LOG }}
     fi
   args:
     executable: /bin/bash
@@ -51,6 +51,11 @@
     export ANDROIDSHORTVERSION="{{ android_shortversion }}"
     export CODEN="{{ target_model }}"
     
+    {% if sub_model is defined %}
+    lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+    {% else %}
+    lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+    {% endif %}
     cd vendor/firmware/{{ target_model }}
     ./update.sh >> {{ BUILD_LOG }} 2>&1
   args:
