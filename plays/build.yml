@@ -72,7 +72,7 @@
           name: "roles/{{ ROM_FLAVOR }}/{{ target_model }}"
           public: yes
 
-      - include_vars: "{{ ROM_FLAVOR }}/common/tasks/axp_lowend_device.vars.yml"
+      - include_vars: "../roles/{{ ROM_FLAVOR }}/common/tasks/axp_lowend_device.vars.yml"
         when:
           - axp_lowend_device
           - ROM_FLAVOR == "axp"
