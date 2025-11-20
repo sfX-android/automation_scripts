@@ -31,6 +31,22 @@ skip_wireguard: True
 KEYS_SIZE: 4096
 KEYS_HASHTYPE: sha256
 axp_avb_algorithm: SHA256_RSA4096
+axp_avb_hashtree_algorithm: sha1
+
+# set expected results accordingly to the AVB setup
+parselogerr:
+  - search: 'key .*/testkey.*.pem' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
+    expect: ''
+  - search: '{{ android_signing_testkey }}' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
+    expect: ''
+  - search: 'Algorithm:.*{{ axp_avb_algorithm }}' # AVB only: the AVB key algo should be axp_avb_algorithm
+    expect_cnt: 1
+  - search: "{{ axp_bootloader_id }}" # AVB only: Check the device's bootloader ID (if AVB / vbmeta_verify is on)
+    expect_cnt: 1
+  - search: 'Hash Algorithm:.*sha(1|512)' # AVB only: fail if vbmeta hash algo found (info_image) but not the expected KEYS_HASHTYPE
+    expect: ''
+  - search: 'Successfully verified sha(256|512) hash of' # AVB only: fail if vbmeta verify found (verify_image) but not the expected axp_avb_hashtree_algorithm
+    expect: ''
 
 # this is a low-end device (optimize for performance, increase storage, lower avb hashsums)
 axp_lowend_device: True
