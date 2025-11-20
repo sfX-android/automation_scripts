@@ -27,8 +27,10 @@ axp_release_recovery: True
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
 
-# disable advanced avb handling
-#axp_enable_avb: 'false'
+# decrease key sizes for AVB (signing key, hashtree's)
+KEYS_SIZE: 4096
+KEYS_HASHTYPE: sha256
+axp_avb_algorithm: SHA256_RSA4096
 
 # this is a low-end device (optimize for performance, increase storage, lower avb hashsums)
 axp_lowend_device: True

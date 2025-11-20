@@ -119,10 +119,13 @@ axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
 # if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
 # moved to global common
 #axp_build_eng: false
-# should we verify all build images via the created vbmeta.img?
-vbmeta_verify: True
-# verified boot
-axp_enable_avb: 'true'
+
+# AVB
+vbmeta_verify: True # verify all build images via the created vbmeta.img?
+axp_enable_avb: 'true' # AXP_ENABLE_AVB which enforces enabling(!) AVB
+axp_enable_avb_handling: 'true' # sets AXP_ENABLE_AVB_HANDLING which applies all AXP.OS configs like increasing key sizes etc
+axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
+
 # directories to be cleaned on a clean build
 axp_clean_paths:
     - "{{ SRCPATH }}/kernel" 
