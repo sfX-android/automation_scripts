@@ -43,7 +43,7 @@
 
       # download latest firmware, taken from vendor/firmware/*/0SOURCE
       - include_tasks: firmware_update.yml
-        when: update_vendor_firmware or download_fairphone_firmware | bool
+        when: update_vendor_firmware | bool or download_fairphone_firmware | bool
 
       # apply ASB patches if needed
       # currently LOS supports ASB patches up to and including: Android 13
