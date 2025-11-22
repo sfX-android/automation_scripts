@@ -8,7 +8,7 @@
 
 - name: "Cleanup old build log"
   file:
-    path: "build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+    path: "{{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
     state: absent
 
 - name: "Cleanup old build log (ansible host)"
