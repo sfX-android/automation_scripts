@@ -21,6 +21,11 @@ target_kernel_dir: kernel/oneplus/msm8998
 # required e.g. for git, vendor/axp, release handling etc
 target_model_common_tree: device_oneplus_msm8998-common
 
+# the common tree or if there is none the device main makefile,
+# usually named device.mk or common.mk. used in e.g. switch_major_release role.
+# defaults to "device.mk"
+target_model_device_tree_mk: common.mk
+
 # upload the recovery image
 axp_release_recovery: True
 
