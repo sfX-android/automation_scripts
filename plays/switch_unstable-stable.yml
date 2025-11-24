@@ -82,7 +82,7 @@
           {% if axp_type | d('') == "slim" %}
           DEL=$(ls "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}")
           {% else %}
-          DEL=$(ls "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}"
+          DEL=$(ls "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}")
           {% endif %}
 
           if [ -f "$DEL" ];then rm -v "$DEL"; fi
