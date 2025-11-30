@@ -157,10 +157,12 @@ axp_lowend_device: False
 # AVB
 vbmeta_verify: True # verify all build images via the created vbmeta.img?
 axp_enable_avb: 'true' # AXP_ENABLE_AVB which enforces enabling(!) AVB
-axp_enable_avb_handling: 'true' # sets AXP_ENABLE_AVB_HANDLING which applies all AXP.OS configs like increasing key sizes etc
+#axp_enable_avb_handling: 'true' # axp_enable_avb_handling is deprecated. sets AXP_ENABLE_AVB_HANDLING which applies all AXP.OS configs like increasing key sizes etc
 axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
 axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
-axp_avb_version: default # AVB v1.x or later. If set to "1" in the device vars the vendor/axp/BoardConfig_AVB1.mk will be used instead of the default one
+axp_avb_version: 2 # AVB v1 or v2, override in the device vars where required
+axp_avb_buildarg: >-
+    {% if axp_avb_version == 1 %}verity{% endif %}
 
 # common search strings used to parse the log after building.
 # when overriding these, copy the WHOLE part of this to a device vars yml.
@@ -562,7 +564,7 @@ SH_COMMON_BUILD_SNIPPET: |
     croot
     
     # build
-    resetEnv
+    #resetEnv
     {% if android_version_int | int >= 15 %}
     {%     if (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool) %}
     # as we patch bionic/libc ABI reference updates are required
@@ -590,14 +592,14 @@ SH_COMMON_BUILD_SNIPPET: |
     {% elif axp_build_eng | bool %}
     # axp_build_eng set!
     #mka sepolicy
-    buildDeviceDebug {{ target_model }} || f_detect_kerr
+    buildDeviceDebug {{ target_model }} {{ axp_avb_buildarg }} || f_detect_kerr
     {% else %}
-    buildDevice {{ target_model }} || f_detect_kerr
+    buildDevice {{ target_model }} {{ axp_avb_buildarg }} || f_detect_kerr
     {% endif %}
-    {% if vbmeta_verify %}
+    {% if vbmeta_verify and axp_avb_version == 2 %}
     # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
     FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
-    echo -e "\nBOOTLOADER minimal ID"
+    echo -e "\nBOOTLOADER minimal ID (AVB 2)"
     echo -e "\t${FPID:0:8}\n"
     echo -e "BOOTLOADER full ID:"
     echo -e "\t${FPID:0:16}"
@@ -608,10 +610,21 @@ SH_COMMON_BUILD_SNIPPET: |
     out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null \
         || (out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files*/IMAGES/vbmeta.img;\
             out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files*/IMAGES/vbmeta.img)
+    {% elif axp_avb_version == 1 %}
+    FPID=$(cat user-keys/verity.x509.der | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
+    echo -e "\nBOOTLOADER minimal ID (AVB 1)"
+    echo -e "\t${FPID:0:8}\n"
+    echo -e "BOOTLOADER full ID:"
+    echo -e "\t${FPID:0:16}"
+    echo -e "\t${FPID:16:16}"
+    echo -e "\t${FPID:32:16}"
+    echo -e "\t${FPID:48:16}\n"
+    #unzip -o {{ ZIPDIR }}
+    #boot_signer -verify boot.img | recovery.img
+    #verity_verifier vendor.img -mincrypt user-keys/verity_key
     {% endif %}
 
     echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}${FZIPINF}"
-        
     {% endif %}
 
 ##############################################################################################

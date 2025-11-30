@@ -32,12 +32,8 @@ axp_release_recovery: True
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
 
-# decrease key sizes for AVB (signing key, hashtree's)
-KEYS_SIZE: 4096
-KEYS_HASHTYPE: sha256
-axp_avb_algorithm: SHA256_RSA4096
-axp_avb_hashtree_algorithm: sha1
-axp_avb_version: 1  # set AVB v1.x
+# set AVB v1.0
+axp_avb_version: 1
 
 # set expected results accordingly to the AVB setup
 parselogerr:
