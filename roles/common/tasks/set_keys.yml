@@ -45,5 +45,6 @@
       USER_NAME: "{{ KEYS_USER }}"
       KSIZE: "{{ KEYS_SIZE }}"
       HASHTYPE: "{{ KEYS_HASHTYPE }}"
+      AVB_VERSION: "{{ AVB_VERSION }}"
 
   when: sign_build is defined and (sign_build == "true" or sign_build)

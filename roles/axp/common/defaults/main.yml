@@ -147,14 +147,15 @@ axp_bootloader_id_slim: 'You should find your build here'
 axp_bootloader_id: >-
     {% if axp_type | d(ROM_FLAVOR) == "slim" %}{{ axp_bootloader_id_slim }}{% else %}{{ axp_bootloader_id_pro }}{% endif %}
 
-# the android testkey sha1 (https://github.com/LineageOS/android_build/tree/lineage-22.2/target/product/security)
+# android testkey hashes (https://github.com/LineageOS/android_build/tree/lineage-22.2/target/product/security)
 android_signing_testkey: cdbb77177f731920bbe0a0f94f84d9038ae0617d
+android_signing_testkey_verity: e8eb784d2f4d54917a7bb33bdbe76967e4d1e433
 
 # disable/enable low-end device (optimize for performance, increase storage, lower avb hashsums)
 # override in device vars if required
 axp_lowend_device: False
 
-# AVB
+# AVB / Verified Boot
 vbmeta_verify: True # verify all build images via the created vbmeta.img?
 axp_enable_avb: 'true' # AXP_ENABLE_AVB which enforces enabling(!) AVB
 #axp_enable_avb_handling: 'true' # axp_enable_avb_handling is deprecated. sets AXP_ENABLE_AVB_HANDLING which applies all AXP.OS configs like increasing key sizes etc
@@ -174,6 +175,8 @@ parselogerr:
     - search: 'key .*/testkey.*.pem' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
       expect: ''
     - search: '{{ android_signing_testkey }}' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
+      expect: ''
+    - search: '{{ android_signing_testkey_verity }}' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
       expect: ''
     - search: 'Algorithm:.*{{ axp_avb_algorithm }}' # AVB only: the AVB key algo should be axp_avb_algorithm
       expect_cnt: 1
@@ -524,7 +527,6 @@ SH_COMMON_BUILD_SNIPPET: |
         fi
 
     {% else %}
-
     # regular build process
 
     # extendrom flags
@@ -565,38 +567,39 @@ SH_COMMON_BUILD_SNIPPET: |
     
     # build
     #resetEnv
-    {% if android_version_int | int >= 15 %}
-    {%     if (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool) %}
+    {%   if android_version_int | int >= 15   %}
+    {%      if (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)   %}
     # as we patch bionic/libc ABI reference updates are required
     $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant APEX --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
     $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant LLNDK --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
-    {%     endif %}
-    {% endif %}
+    {%      endif      %}
+    {%   endif   %}
 
     #### LEGACY PYTHON #########################
     case {{ android_shortversion }} in
         a9|a10) source ~/.venv/python2/bin/activate ;;
     esac
 
-    {% if (override_clean_out == "undef" and clean_out | bool) or (override_clean_out | bool) %}
+    {%   if (override_clean_out == "undef" and clean_out | bool) or (override_clean_out | bool)   %}
     mka generate_verity_key
-    {% endif %}
-    {% if axp_build_recovery_only is defined and axp_build_recovery_only %}
+    
+    {%   endif   %}
+    {%   if axp_build_recovery_only is defined and axp_build_recovery_only   %}
     mka recoveryimage || f_detect_kerr
     if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
     mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
-    {% elif custom_build_command is defined %}
+    {%   elif custom_build_command is defined   %}
     # custom_build_command defined!
     # generate_factory_image: {{ generate_factory_image }}
     {{ custom_build_command }}
-    {% elif axp_build_eng | bool %}
+    {%   elif axp_build_eng | bool   %}
     # axp_build_eng set!
     #mka sepolicy
     buildDeviceDebug {{ target_model }} {{ axp_avb_buildarg }} || f_detect_kerr
-    {% else %}
+    {%   else %}
     buildDevice {{ target_model }} {{ axp_avb_buildarg }} || f_detect_kerr
-    {% endif %}
-    {% if vbmeta_verify and axp_avb_version == 2 %}
+    {%   endif   %}
+    {%   axp_avb_version == 2   %}
     # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
     FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
     echo -e "\nBOOTLOADER minimal ID (AVB 2)"
@@ -606,11 +609,15 @@ SH_COMMON_BUILD_SNIPPET: |
     echo -e "\t${FPID:16:16}"
     echo -e "\t${FPID:32:16}"
     echo -e "\t${FPID:48:16}\n"
+
+    {%      if vbmeta_verify      %}
+    echo "[AVB2-VERIFY] ... checking verified boot chain"
     out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null || true
     out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/vbmeta.img 2> /dev/null \
         || (out/host/linux-x86/bin/avbtool info_image --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files*/IMAGES/vbmeta.img;\
             out/host/linux-x86/bin/avbtool verify_image --follow_chain_partitions --image out/target/product/{{ target_model }}/obj/PACKAGING/target_files_intermediates/lineage_{{ target_model }}-target_files*/IMAGES/vbmeta.img)
-    {% elif axp_avb_version == 1 %}
+    {%      endif      %}
+    {%   elif axp_avb_version == 1 %}
     FPID=$(cat user-keys/verity.x509.der | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
     echo -e "\nBOOTLOADER minimal ID (AVB 1)"
     echo -e "\t${FPID:0:8}\n"
@@ -619,10 +626,26 @@ SH_COMMON_BUILD_SNIPPET: |
     echo -e "\t${FPID:16:16}"
     echo -e "\t${FPID:32:16}"
     echo -e "\t${FPID:48:16}\n"
-    #unzip -o {{ ZIPDIR }}
-    #boot_signer -verify boot.img | recovery.img
-    #verity_verifier vendor.img -mincrypt user-keys/verity_key
-    {% endif %}
+
+    TDIR=out/avbtest
+    AVB_PARTS="boot.img recovery.img system.img vendor.img"
+
+    if [ -d "$TDIR" ];then rm -rf $TDIR;fi
+    mkdir $TDIR
+    unzip -oj {{ ZIPDIR }}/fastboot/{{ os_name }}-{{ los_version }}-{{ BUILDIDENT }}-*{{ target_model }}-fastboot.zip $AVB_PARTS -d $TDIR
+
+    for p in boot.img recovery.img;do
+        echo -n "[AVB1-VERIFY] .. testing $p: "
+        boot_signer -verify $TDIR/$p
+    done
+    echo "[AVB1-VERIFY] testing vendor and system partitions"
+    for IMG in system vendor;do
+        echo -n "[AVB1-VERIFY] ... testing $IMG: "
+        verity_verifier $TDIR/${IMG}.img -mincrypt user-keys/verity_key 2> {{ BUILD_LOG }}
+    done
+    {%   else   %}
+    echo "[AVB-VERIFY] SKIPPING AVB verification: axp_avb_version is neither 1 nor 2, i.e. DISABLED?!"
+    {%   endif   %}
 
     echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}${FZIPINF}"
     {% endif %}
