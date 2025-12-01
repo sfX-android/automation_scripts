@@ -40,15 +40,6 @@
 
       - include_tasks: sync.yml
       - include_tasks: adjust_DOS_options.yml
-
-      - name: "Generate verity tools"
-        ansible.builtin.shell: |
-          {{ DOS_INIT }}
-          lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
-          mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
-        args:
-          chdir: "{{ SRCPATH }}"
-          executable: /bin/bash
           
       # download latest firmware, taken from vendor/firmware/*/0SOURCE
       - include_tasks: firmware_update.yml
@@ -64,6 +55,15 @@
       # AXP.OS patches
       - include_tasks: patch.yml
 
+      - name: "Generate verity tools"
+        ansible.builtin.shell: |
+          {{ DOS_INIT }}
+          lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+          mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
+        args:
+          chdir: "{{ SRCPATH }}"
+          executable: /bin/bash
+          
       #- fail:
       #    msg: YEEEEEEeeeeeeeeeeeeeHa..
           
