@@ -128,6 +128,7 @@ KEYS_CN: "{{ ROM_FLAVOR }}"
 KEYS_USER: "sfX-bot"
 KEYS_SIZE: 4096
 KEYS_HASHTYPE: sha256
+AVB_VERSION: 2
 
 # skip generating a ZIP checksum
 skip_gen_checksum: false
