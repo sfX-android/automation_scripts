@@ -41,6 +41,14 @@
       - include_tasks: sync.yml
       - include_tasks: adjust_DOS_options.yml
 
+      - name: "Generate verity tools"
+        ansible.builtin.shell: |
+          {{ DOS_INIT }}
+          lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+          mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
+        args:
+          chdir: "{{ SRCPATH }}"
+          
       # download latest firmware, taken from vendor/firmware/*/0SOURCE
       - include_tasks: firmware_update.yml
         when: update_vendor_firmware | bool or download_fairphone_firmware | bool
@@ -63,14 +71,6 @@
         when: 
           - target_model == "cheetah"
           - android_version_int | int < 15
-
-      - name: "Generate verity tools"
-        ansible.builtin.shell: |
-          {{ DOS_INIT }}
-          lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
-          mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
-        args:
-          chdir: "{{ SRCPATH }}"
 
   when:
     - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
