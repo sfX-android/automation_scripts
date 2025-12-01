@@ -605,7 +605,7 @@ SH_COMMON_BUILD_SNIPPET: |
     {%   else %}
     buildDevice {{ target_model }} {{ axp_avb_buildarg }} || f_detect_kerr
     {%   endif   %}
-    {%   axp_avb_version == 2   %}
+    {%   if axp_avb_version == 2   %}
     # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
     FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
     echo -e "\nBOOTLOADER minimal ID (AVB 2)"
