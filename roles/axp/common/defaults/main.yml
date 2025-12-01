@@ -164,6 +164,7 @@ axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of
 axp_avb_version: 2 # AVB v1 or v2, override in the device vars where required
 axp_avb_buildarg: >-
     {% if axp_avb_version == 1 %}verity{% endif %}
+AVB_VERSION: "{{ axp_avb_version }}"
 
 # common search strings used to parse the log after building.
 # when overriding these, copy the WHOLE part of this to a device vars yml.
