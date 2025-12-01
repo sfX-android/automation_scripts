@@ -27,6 +27,12 @@ axp_release_recovery: True
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
 
+# set AVB v1.0
+axp_avb_version: 1
+
+# cheeseburger will always fail verifying the boot.img if the expire date is set to the default (30 years)
+KEYS_CERT_DAYS_VERITY: 3650
+
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: '2AC928E13BB0B460'
 axp_bootloader_id_slim: ''

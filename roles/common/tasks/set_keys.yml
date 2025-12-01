@@ -40,6 +40,10 @@
       chdir: "{{ SRCPATH }}"
       executable: /bin/bash
     environment:
+      CERT_DAYS_VERITY: "{{ KEYS_CERT_DAYS_VERITY }}"
+      CERT_C: "{{ KEYS_CERT_C }}"
+      CERT_O: "{{ KEYS_CERT_O }}"
+      CERT_OU: "{{ KEYS_CERT_OU }}"
       CERT_CN: "{{ KEYS_CN }}"
       KEYS_DIR: "{{ SRC_KEYSDIR }}"
       USER_NAME: "{{ KEYS_USER }}"

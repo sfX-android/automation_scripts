@@ -3,6 +3,6 @@
 - include_tasks: ../../common/tasks/setvars.yml
 - include_tasks: copy.yml
 
-- include_tasks: patch.yml
-  when:
-    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
+#- include_tasks: patch.yml
+#  when:
+#    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
