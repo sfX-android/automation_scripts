@@ -48,6 +48,7 @@
           mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
         args:
           chdir: "{{ SRCPATH }}"
+          executable: /bin/bash
           
       # download latest firmware, taken from vendor/firmware/*/0SOURCE
       - include_tasks: firmware_update.yml
