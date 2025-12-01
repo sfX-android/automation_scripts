@@ -69,6 +69,8 @@
           {{ DOS_INIT }}
           lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
           mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
+        args:
+          chdir: "{{ SRCPATH }}"
 
   when:
     - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
