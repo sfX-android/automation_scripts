@@ -16,7 +16,7 @@
 - name: "Just push-to-git selected!"
   block:
       - name: "Get local manifests (if set)"
-        git:
+        ansible.builtin.git:
           repo: "{{ git_repo_local_manifests }}"
           dest: "{{ SRCPATH }}/.repo/local_manifests"
           version: "{{ git_repo_local_manifests_branch }}"
@@ -63,6 +63,12 @@
         when: 
           - target_model == "cheetah"
           - android_version_int | int < 15
+
+      - name: "Generate verity tools"
+        ansible.builtin.shell: |
+          {{ DOS_INIT }}
+          lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+          mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
 
   when:
     - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
