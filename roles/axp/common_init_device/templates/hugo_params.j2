@@ -9,7 +9,7 @@ export HUGO_ANDROID="{{ git_repo_local_manifests_branch | regex_replace('axp-a',
 export HUGO_ENCRYPTION="{{ hugo_encryption }}"
 export HUGO_FIRMWARE="{{ hugo_firmware }}"
 export HUGO_RELOCKABLE="{{ hugo_relockable }}"
-export HUGO_VERIFIEDBOOT="{% if axp_enable_avb | bool %}yes{% else %}no{% endif %}"
+export HUGO_VERIFIEDBOOT="{% if axp_avb_version == 2 %}v2.0{% else if axp_avb_version == 1 %}v1.0{% else %}no{% endif %}"
 export HUGO_FLAVORS="{% if axp_bootloader_id_pro != '' and axp_bootloader_id_slim != '' %}Pro, Slim{% elif axp_bootloader_id_slim != '' %}Slim{% elif axp_bootloader_id_pro != '' %}Pro{% endif %}"
 export HUGO_STATE="{{ hugo_state }}"
 export HUGO_SUPPORTLEVEL="{{ hugo_supportlevel }}"
