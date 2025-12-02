@@ -320,14 +320,14 @@
     git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
     if [ $TE -eq 0 ];then
       echo "[VERSIONING] [GIT] will push else new tag: $TAG" >> {{ BUILD_LOG }}
-      git push --set-upstream $(git remote show | head -n1) $TAG >> {{ BUILD_LOG }} 2>&1
+      git push --set-upstream {{ git_axpos_org_private_manifestremote }} $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[VERSIONING] [GIT] pushed new tag: $TAG" >> {{ BUILD_LOG }}
     else
       echo "[VERSIONING] [GIT] will force push a new tag: $TAG" >> {{ BUILD_LOG }}
       git tag -d "$TAG" >> {{ BUILD_LOG }} 2>&1 || true
-      git push $(git remote show | head -n1) --delete "$TAG" >> {{ BUILD_LOG }} 2>&1 || true
+      git push{{ git_axpos_org_private_manifestremote }} --delete "$TAG" >> {{ BUILD_LOG }} 2>&1 || true
       git tag -a "$TAG" -m "axp.os: tagged {{ sub_model | d(target_model) }} on $TAG" >> {{ BUILD_LOG }} 2>&1
-      git push --force --set-upstream $(git remote show | head -n1) $TAG >> {{ BUILD_LOG }} 2>&1
+      git push --force --set-upstream {{ git_axpos_org_private_manifestremote }} $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[VERSIONING] [GIT] FORCE pushed new tag: $TAG" >> {{ BUILD_LOG }}
     fi
     echo "[VERSIONING] All DONE!"  
