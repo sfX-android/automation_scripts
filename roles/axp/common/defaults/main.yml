@@ -662,6 +662,9 @@ SH_COMMON_BUILD_SNIPPET: |
         echo -e "\n[AVB1-VERIFY] ERROR: No VERITY partition tests available, AVB_PARTS_VERITY: >$AVB_PARTS_VERITY<?!"
         exit 3
     fi
+    {%   else   %}
+    echo "[AVB-VERIFY] SKIPPING AVB verification: axp_avb_version is neither 1 nor 2, i.e. DISABLED?!"
+    {%   endif   %}
 
     echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}${FZIPINF}"
     {% endif %}
