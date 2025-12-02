@@ -601,6 +601,10 @@ SH_COMMON_BUILD_SNIPPET: |
     {%   else %}
     buildDevice {{ target_model }} {{ axp_avb_buildarg }} || f_detect_kerr
     {%   endif   %}
+
+    # enforce fail detect on verify
+    set -e
+
     {%   if axp_avb_version == 2   %}
     # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
     FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
@@ -638,12 +642,12 @@ SH_COMMON_BUILD_SNIPPET: |
 
     for p in boot.img recovery.img;do
         echo -n "[AVB1-VERIFY] .. testing $p: "
-        boot_signer -verify $TDIR/$p
+        boot_signer -verify $TDIR/$p 2> /dev/null
     done
     echo "[AVB1-VERIFY] testing vendor and system partitions"
     for IMG in system vendor;do
         echo -n "[AVB1-VERIFY] ... testing $IMG: "
-        verity_verifier $TDIR/${IMG}.img -mincrypt user-keys/verity_key 2> {{ BUILD_LOG }}
+        verity_verifier $TDIR/${IMG}.img -mincrypt user-keys/verity_key
     done
     {%   else   %}
     echo "[AVB-VERIFY] SKIPPING AVB verification: axp_avb_version is neither 1 nor 2, i.e. DISABLED?!"
