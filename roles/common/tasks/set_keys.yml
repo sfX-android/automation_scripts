@@ -35,7 +35,9 @@
       - not (build_bootimage_only is defined and build_bootimage_only)
 
   - name: "Ensure we actually have keys (i.e. generate them if needed)"
-    ansible.builtin.shell: >
+    ansible.builtin.shell: |
+        {{ DOS_INIT }}
+        lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
         external/buildtools/sign/sign_generate_keys.sh >> {{ BUILD_LOG }} 2>&1
     args:
       chdir: "{{ SRCPATH }}"
