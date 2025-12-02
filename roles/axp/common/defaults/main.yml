@@ -195,6 +195,9 @@ axp_allow_permissive: False
 divest_unsupported_device: false    # should be overwritten in a device's vars/main.yml if needed
 unsupported_device_kernel_patch: true    # enable kernel patching by default, overwrite in semaphore if needed
 
+# translated device tree path
+target_model_device_tree_path: "device/{{ target_model_vendor | lower }}/{{ target_model }}"
+
 # translated common tree file path
 target_model_common_tree_path: "{{ target_model_common_tree | regex_replace('_','/') }}"
 
@@ -634,24 +637,31 @@ SH_COMMON_BUILD_SNIPPET: |
     echo -e "\t${FPID:48:16}\n"
 
     TDIR=out/avbtest
-    AVB_PARTS="boot.img recovery.img system.img vendor.img"
+    AVB_PARTS_BOOT="boot.img" # AVB 1 is so old, we should not need to care about vendor/init boot parts here
+    if $(grep -qr BOARD_RECOVERYIMAGE_PARTITION_SIZE {{ target_model_common_tree }} {{ target_model_device_tree_path }} );then
+        AVB_PARTS_BOOT="$AVB_PARTS_BOOT recovery.img"
+    fi
+    AVB_PARTS_VERITY=$(grep --no-filename -r PRODUCT_.*_VERITY_PARTITION {{ target_model_common_tree }} {{ target_model_device_tree_path }}| tr -d ' ' | cut -d : -f 1 | sort -u | sed -E 's/PRODUCT_(\w+)_VERITY_PARTITION/\1.img/g' | tr [[:upper:]] [[:lower:]] | tr '\n' ' ' || echo "nopartsfound")
 
     if [ -d "$TDIR" ];then rm -rf $TDIR;fi
     mkdir $TDIR
-    unzip -oj {{ ZIPDIR }}/fastboot/{{ os_name }}-{{ los_version }}-{{ BUILDIDENT }}-*{{ target_model }}-fastboot.zip $AVB_PARTS -d $TDIR
+    unzip -oj {{ ZIPDIR }}/fastboot/{{ os_name }}-{{ los_version }}-{{ BUILDIDENT }}-*{{ target_model }}-fastboot.zip $AVB_PARTS_BOOT $AVB_PARTS_VERITY -d $TDIR
 
-    for p in boot.img recovery.img;do
+    echo -e "\n[AVB1-VERIFY] testing $AVB_PARTS_BOOT partitions"
+    for p in $AVB_PARTS_BOOT;do
         echo -n "[AVB1-VERIFY] .. testing $p: "
-        boot_signer -verify $TDIR/$p 2> /dev/null
+        boot_signer -verify $TDIR/${p}
     done
-    echo "[AVB1-VERIFY] testing vendor and system partitions"
-    for IMG in system vendor;do
-        echo -n "[AVB1-VERIFY] ... testing $IMG: "
-        verity_verifier $TDIR/${IMG}.img -mincrypt user-keys/verity_key
-    done
-    {%   else   %}
-    echo "[AVB-VERIFY] SKIPPING AVB verification: axp_avb_version is neither 1 nor 2, i.e. DISABLED?!"
-    {%   endif   %}
+    if [ "$AVB_PARTS_VERITY" != "nopartsfound" -a ! -z "$AVB_PARTS_VERITY" ];then
+        echo -e "\n[AVB1-VERIFY] testing $AVB_PARTS_VERITY partitions"
+        for v in $AVB_PARTS_VERITY;do
+            echo -n "[AVB1-VERIFY] ... testing $v: "
+            verity_verifier $TDIR/${v} -mincrypt user-keys/verity_key 2>&1 | grep -vi 'Footer magic is incorrect'
+        done
+    else
+        echo -e "\n[AVB1-VERIFY] ERROR: No VERITY partition tests available, AVB_PARTS_VERITY: >$AVB_PARTS_VERITY<?!"
+        exit 3
+    fi
 
     echo -e "\n\nSUCCESS:\nYou should find your build here:\n{{ ZIPDIR }}\n${ZIPINF}${FZIPINF}"
     {% endif %}
