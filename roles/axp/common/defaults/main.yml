@@ -638,10 +638,10 @@ SH_COMMON_BUILD_SNIPPET: |
 
     TDIR=out/avbtest
     AVB_PARTS_BOOT="boot.img" # AVB 1 is so old, we should not need to care about vendor/init boot parts here
-    if $(grep -qr BOARD_RECOVERYIMAGE_PARTITION_SIZE {{ target_model_common_tree }} {{ target_model_device_tree_path }} );then
+    if $(grep -qr BOARD_RECOVERYIMAGE_PARTITION_SIZE {{ target_model_common_tree_path }} {{ target_model_device_tree_path }} );then
         AVB_PARTS_BOOT="$AVB_PARTS_BOOT recovery.img"
     fi
-    AVB_PARTS_VERITY=$(grep --no-filename -r PRODUCT_.*_VERITY_PARTITION {{ target_model_common_tree }} {{ target_model_device_tree_path }}| tr -d ' ' | cut -d : -f 1 | sort -u | sed -E 's/PRODUCT_(\w+)_VERITY_PARTITION/\1.img/g' | tr [[:upper:]] [[:lower:]] | tr '\n' ' ' || echo "nopartsfound")
+    AVB_PARTS_VERITY=$(grep --no-filename -r PRODUCT_.*_VERITY_PARTITION {{ target_model_common_tree_path }} {{ target_model_device_tree_path }}| tr -d ' ' | cut -d : -f 1 | sort -u | sed -E 's/PRODUCT_(\w+)_VERITY_PARTITION/\1.img/g' | tr [[:upper:]] [[:lower:]] | tr '\n' ' ' || echo "nopartsfound")
 
     if [ -d "$TDIR" ];then rm -rf $TDIR;fi
     mkdir $TDIR
