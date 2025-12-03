@@ -233,7 +233,7 @@ extendrom_allow_any_call_recording: 'true'
 
 # Signing keys configuration
 KEYS_CN: "{{ os_name }}"
-#KEYS_CERT_DAYS_VERITY: 3650 # some devices do not like if the expire date is long time in the future!! (e.g. dumpling) set in device vars if the default of 30 years avoid booting!
+KEYS_CERT_DAYS_VERITY: 10950 # some devices do not like if the expire date is long time in the future!! (e.g. dumpling) set in device vars if the default of 30 years avoid booting!
 KEYS_CERT_C: DE
 KEYS_CERT_O: "The AXP.OS Project"
 KEYS_CN: "{{ target_model }}"
