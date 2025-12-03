@@ -256,7 +256,7 @@
     LTAG="$TAG"
 
     cd external/axp_versioning
-    git remote add up {{ git_axpos_org_private }}/axp_versioning
+    git remote add up {{ git_axpos_org_private }}/axp_versioning || true
     git fetch up --tags
     git tag | grep "$TAG" || LTAG=$(git tag | head -n1)
     
