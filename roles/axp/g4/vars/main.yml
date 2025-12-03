@@ -46,6 +46,7 @@ unsupported_device_kernel_patch: true
 
 # this is a low-end device (optimize for performance)
 axp_lowend_device: True
+axp_auto_encrypt: False
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/axp/{{ sub_model }})

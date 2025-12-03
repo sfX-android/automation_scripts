@@ -35,6 +35,7 @@ axp_enable_avb: 'false'
 
 # this is a low-end device (optimize for performance)
 axp_lowend_device: True
+axp_auto_encrypt: False
 
 # git push
 axp_git_push_device_include: "device_samsung_klte|{{ target_model_common_tree }}"

@@ -156,6 +156,9 @@ android_signing_testkey_verity: e8eb784d2f4d54917a7bb33bdbe76967e4d1e433
 # override in device vars if required
 axp_lowend_device: False
 
+# set force encryption (ICE, FDE, FBE), disable in device vars if required, will set AXP_AUTO_ENCRYPT
+axp_auto_encrypt: True
+
 # AVB / Verified Boot
 vbmeta_verify: True # verify all build images via the created vbmeta.img?
 axp_enable_avb: 'true' # AXP_ENABLE_AVB which enforces enabling(!) AVB
