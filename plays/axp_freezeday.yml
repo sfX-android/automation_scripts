@@ -1,7 +1,8 @@
 ---
 
 - name: "AXP.OS: introduce a new build run"
-  hosts: buildserver
+  #hosts: buildserver
+  hosts: localhost
   gather_facts: true
           
   tasks:
