@@ -53,7 +53,7 @@ parselogerr:
 axp_lowend_device: True
 
 # Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: '88F1461CFC869B86'
+axp_bootloader_id_pro: '8BBD5CAAEEF07AAD'
 axp_bootloader_id_slim: ''
 
 # git push
@@ -63,7 +63,7 @@ axp_git_push_vendor_include: "vendor_oneplus_msm8998-common|vendor_oneplus_dumpl
 # website info
 hugo_encryption: "ICE"
 hugo_firmware: "included"
-hugo_relockable: "yes (since 2025-12.1)"
+hugo_relockable: "yes (since 2025-12-03)"
 hugo_state: "stable"
 hugo_supportlevel: "community"
 hugo_isab: "no"
@@ -72,12 +72,12 @@ hugo_first_releasedate: "2025-08-05 (A13)"
 hugo_kb_link: "cheeseburgerdumpling"
 #hugo_custom_installguide_path: 
 hugo_axp_bootloader_id_pro: |
-  BOOTLOADER minimal ID
-        55016076
+  BOOTLOADER minimal ID (AVB 1)
+        8BBD5CAA
 
   BOOTLOADER full ID:
-        550160763963BDA3
-        FFF1DE451111351A
-        A48C968126A9A2C2
-        92565324A7082D91
+        8BBD5CAAEEF07AAD
+        285D20F4B0AC87ED
+        9F7F0F4C5D11A4E2
+        4F9DDF445E69828D
 #hugo_axp_bootloader_id_slim: |
