@@ -138,7 +138,7 @@
     {% else %}
     # get build vars (requires a lunch before!)
     export AXP_TARGET_ARCH=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH  2>/dev/null)
-    export AXP_KERNEL_CONF_FILE=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG  2>/dev/null)
+    export AXP_KERNEL_CONF_FILE=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG 2>/dev/null | cut -d " " -f 1)
     export AXP_KERNEL_CONF="$AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF_FILE"
     {% endif %}
     
