@@ -149,31 +149,31 @@
             rm recovery.img
             {% endif %}
             
-            sha512sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha512
+            sha512sum {{ axp_recovery_name }} > {{ axp_recovery_name }}.sha512sum
             tobesigned="$tobesigned {{ axp_recovery_name }}"
           elif [ $has_vendorboot -eq 1 ];then
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} vendor_boot.img > {{ axp_recovery_name_vboot }}
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name_boot }}
-            sha512sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha512
-            sha512sum {{ axp_recovery_name_vboot }} > {{ axp_recovery_name_vboot }}.sha512
+            sha512sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha512sum
+            sha512sum {{ axp_recovery_name_vboot }} > {{ axp_recovery_name_vboot }}.sha512sum
             tobesigned="$tobesigned {{ axp_recovery_name_boot }} {{ axp_recovery_name_vboot }}"
           else
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} boot.img > {{ axp_recovery_name_boot }}
-            sha512sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha512
+            sha512sum {{ axp_recovery_name_boot }} > {{ axp_recovery_name_boot }}.sha512sum
             tobesigned="$tobesigned {{ axp_recovery_name_boot }}"
           fi
 
           if [ $has_dtbo -eq 1 ];then
             unzip -p {{ axp_finalzip_dir }}/fastboot/{{ axp_fastboot_zip }} dtbo.img > {{ axp_recovery_name_dtbo }}
-            sha512sum {{ axp_recovery_name_dtbo }} > {{ axp_recovery_name_dtbo }}.sha512
+            sha512sum {{ axp_recovery_name_dtbo }} > {{ axp_recovery_name_dtbo }}.sha512sum
             tobesigned="$tobesigned {{ axp_recovery_name_dtbo }}"
           fi
 
           {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
           for checksum in $tobesigned;do
-            echo "GPG signing ${checksum}.sha512 with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
-            if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${checksum}.sha512"; then
-              mv -fv "${checksum}.sha512.asc" "${checksum}.sha512" >> {{ BUILD_LOG }} 2>&1
+            echo "GPG signing ${checksum}.sha512sum with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+            if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${checksum}.sha512sum"; then
+              mv -fv "${checksum}.sha512sum.asc" "${checksum}.sha512sum" >> {{ BUILD_LOG }} 2>&1
             fi
             scp ${checksum}* {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:${REMPATH}/ >> {{ BUILD_LOG }} 2>&1
             mv ${checksum}* {{ axp_finalzip_dir }}/ >> {{ BUILD_LOG }} 2>&1
