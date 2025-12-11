@@ -69,6 +69,7 @@ hugo_axp_bootloader_id_slim: |
 #################################################################################################################################
 # vendor/firmware info
 # source: https://support.fairphone.com/hc/en-us/articles/18896094650513-Install-Fairphone-OS-manually#01HB8ZZ1BMMQNSNMFT3YXDBXA0
+vendor_firmware_super_img: True   # factory contains super image
 
 # A13:
 vendor_fairphone_factory_version: FP4-TP31-factory
