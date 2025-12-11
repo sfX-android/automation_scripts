@@ -26,7 +26,40 @@
       dest: "{{ init_device_temp_path }}/{{ sub_model | d(target_model) }}/0SOURCE"
   register: info_added
 
-- name: "Setup firmware: Update..."
+- name: "Setup firmware: build lpunpack"
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    
+    echo "Factory contains super image(s), building lpunpack ..." | tee -a {{ BUILD_LOG }}
+    build_req=0
+
+    which lpunpack || build_req=1
+
+    if [ $build_req -eq 1 ];then
+      {% if sub_model is defined %}
+      lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+      {% else %}
+      lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+      {% endif %}
+      resetEnv >> {{ BUILD_LOG }} 2>&1
+      
+      # quick workaround for unrecognized property "product_variables.device_has_arm_mte"
+      mv external/hardened_malloc/Android.bp hmall.Androidbp
+      
+      export ALLOW_MISSING_DEPENDENCIES=true
+      m -j{{ max_processes }} lpunpack >> {{ BUILD_LOG }} 2>&1
+
+      # revert build workaround
+      mv hmall.Androidbp external/hardened_malloc/Android.bp
+    else
+      echo "skipping lpunpack build (binary exists already)" | tee -a {{ BUILD_LOG }}
+    fi
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  when: vendor_firmware_super_img
+
+- name: "Setup firmware: Update ... (non-fairphone)"
   ansible.builtin.shell: |
           export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
           
@@ -46,6 +79,38 @@
   args:
     chdir: "{{ init_device_temp_path }}"
     executable: /bin/bash
+  when: target_model_vendor != "Fairphone"
+
+- name: "Setup firmware: Update ... (fairphone)"
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+
+    echo "Fairphone factory image handling ..." | tee -a {{ BUILD_LOG }}
+
+    if [ -f "{{ vendor_firmware_persistent_path }}" ];then
+        echo "Using previously downloaded factory image: {{ vendor_fairphone_factory_version }}.zip" | tee -a {{ BUILD_LOG }}
+    else
+        echo "{{ vendor_fairphone_factory_version }}.zip not found in: {{ persistent_dir }}, downloading.." | tee -a {{ BUILD_LOG }}
+        wget -q {{ vendor_firmware_download_url }} -O {{ vendor_firmware_persistent_path }} >> {{ BUILD_LOG }} 2>&1 \
+          || (wget {{ vendor_firmware_download_url }} -O {{ vendor_firmware_persistent_path }} >> {{ BUILD_LOG }} 2>&1 ; exit 9)
+    fi
+
+    {% if sub_model is defined %}
+    lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+    {% else %}
+    lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+    {% endif %}
+    cd vendor/firmware/{{ target_model }}
+    ./update.sh >> {{ BUILD_LOG }} 2>&1
+  environment:
+    FACZIP: "{{ vendor_firmware_persistent_path }}"
+    FACTORYID: "{{ vendor_fairphone_factory_version }}"
+    ANDROIDSHORTVERSION: "{{ android_shortversion }}"
+    CODEN: "{{ target_model }}"
+  args:
+    executable: /bin/bash
+    chdir: "{{ SRCPATH }}"
+  when: target_model_vendor == "Fairphone"
 
 - name: "Setup firmware: add & push changes"
   ansible.builtin.shell: |
@@ -68,7 +133,7 @@
               echo "[GIT][FIRMWARE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
           fi
       else
-           echo "[GIT][FIRMWARE] git commit skipped (no changes)" >> {{ BUILD_LOG }}
+          echo "[GIT][FIRMWARE] git commit skipped (no changes)" >> {{ BUILD_LOG }}
       fi
   args:
       chdir: "{{ init_device_temp_path }}"
