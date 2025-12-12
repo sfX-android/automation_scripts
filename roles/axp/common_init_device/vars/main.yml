@@ -11,7 +11,7 @@ init_device_vendorfirmware: "ssh://git@code.binbash.rocks:22443/AXP.OS/vendor_fi
 
 init_device_otaverifier_repo: "git@github.com:sfX-android/update_verifier.git"
 
-android_version: "{{ git_repo_local_manifests_branch | regex_replace('axp-a','') }}"
+android_version: "{{ git_repo_local_manifests_branch | regex_replace('axp-a', '') }}"
 
 ####### gitea action workflow triggering
 

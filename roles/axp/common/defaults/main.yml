@@ -277,7 +277,7 @@ DOS_INIT: |
     {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
     gpg --list-secret-keys >> {{ BUILD_LOG }} 2>&1 || true
     {% endif %}
-    
+
     cd {{ SRCPATH }}
     source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
     source {{ DOSPATH }}/Scripts/init.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing init: success" >> {{ BUILD_LOG }}
@@ -520,7 +520,7 @@ SH_COMMON_BUILD_SNIPPET: |
 
         if [ -n "$just_cve_excl" ];then
             echo -e "\ndirty test: revert CVE's and re-test like:"
-            echo -e "\tcd {{ target_kernel_dir }} && for p in $just_cve_excl; do patch -p1 -R < \$DOS_PATCHES_LINUX_CVES/\$p;done; croot; time $0 | tee ~/LOG"
+            echo -e "\tcd {{ target_kernel_dir }} && for p in $just_cve_excl; do patch -p1 -R < \$DOS_PATCHES_LINUX_CVES/\$p;done; croot; time ~/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh | tee ~/LOG"
             echo -e "\nIf you then encounter another error do:\n\tcat ~/LOG >> {{ BUILD_LOG }}"
             echo -e "\tvendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L {{ BUILD_LOG }}"
         fi
