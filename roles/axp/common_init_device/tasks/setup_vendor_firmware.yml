@@ -15,6 +15,7 @@
     repo: "{{ init_device_vendorfirmware }}"
     dest: "{{ init_device_temp_path }}"
     version: "{{ git_repo_local_manifests_branch }}"
+    remote: "{{ init_device_remotename | d('origin') }}"
     depth: 1
     single_branch: true
   timeout: 180
