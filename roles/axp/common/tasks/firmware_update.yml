@@ -7,3 +7,4 @@
     vendor_firmware_aosp_path: "{{ SRCPATH }}/vendor/firmware"
     build_log_init: "{{ BUILD_LOG }}"
     skip_setup_firmware_fetch: True
+    skip_setup_firmware_clean: True
