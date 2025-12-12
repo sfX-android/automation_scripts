@@ -8,3 +8,4 @@
     build_log_init: "{{ BUILD_LOG }}"
     skip_setup_firmware_fetch: True
     skip_setup_firmware_clean: True
+    init_device_remotename: "axp.os-private" # comes from manifest, we have no var atm
