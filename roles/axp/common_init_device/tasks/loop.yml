@@ -5,6 +5,11 @@
   #no_log: true
   when: (axp_type | d(ROM_FLAVOR)) == "slim"
 
+- name: "(Re)Set build log"
+  ansible.builtin.set_fact:
+      BUILD_LOG: >-
+        {% if build_log_init is defined %}{{ build_log_init }}{% else %}{{ BUILD_LOG }}{% endif %}
+
 - name: Set unfiltered combined device + kernel list
   set_fact:
     all_device_repos: >-
