@@ -32,6 +32,7 @@ skip_setup_otaverify: False
 skip_setup_repos: False
 skip_setup_firmware: False
 skip_setup_firmware_fetch: False
+skip_setup_firmware_clean: False
 skip_setup_manifest: False
 skip_setup_ansible: False
 skip_setup_website: False
