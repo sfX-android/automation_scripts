@@ -7,6 +7,9 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 # android version
 android_shortversion: a10
 
+# temp pin asb level to august atm
+sec_patch_date_last: level
+
 # boot debugger path & config
 extendrom_debug_path_default: /cache
 extendrom_debug_path_size_full_default: 500 
