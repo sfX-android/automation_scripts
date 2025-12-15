@@ -257,7 +257,8 @@ sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
 sec_patch_topics_a10:
     - "{{ range(202303, 202313) }}"
     - "{{ range(202401, 202413) }}"
-    - "{{ range(202501, sec_patch_date_last | int) }}"
+    - "{{ range(202501, 202509) }}" # no backport available since August!
+    # - "{{ range(202501, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 11 / R
@@ -278,24 +279,25 @@ sec_patch_topics_a12:
 
 ##############################################################################################
 # ASB patches for: Android 13 / T
-# Last merged upstream (LOS): still supported (https://review.lineageos.org/q/topic:T_asb_2025-XX)
-#
-# A13 and later are still supported by LOS so when being being patient you get them
+# Last merged upstream (LOS): (https://review.lineageos.org/q/topic:T_asb_2025-08)
+##############################################################################################
+sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
+sec_patch_topics_a13:
+    - "{{ range(202509, sec_patch_date_last | int) }}"
+
+##############################################################################################
+# A14 and later are still supported by LOS so when being being patient you get them
 # automatically without doing anything once they are merged.
 # if you can't wait, set sec_patch_unmerged: True (default now)
-##############################################################################################
-sec_patch_topics_a13:
-    - "{{ current_year }}{{ current_month }}"
-sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
 
-sec_patch_topics_a14: ''
 sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
+sec_patch_topics_a14: ''
 
-sec_patch_topics_a15: ''
 sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
+sec_patch_topics_a15: ''
 
-sec_patch_topics_a16: ''
 sec_patch_date_last_a16: "{{ sec_patch_date_last }}"
+sec_patch_topics_a16: ''
 
 ##############################################################################################
 # NOT-YET-MERGED ASB patches for any Android version
