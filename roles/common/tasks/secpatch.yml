@@ -62,14 +62,16 @@
     - pick_queries is defined and (pick_queries | length > 0)
   block:
 
-    - name: "SECURITY PATCH MERGE: create repopick lists by year (required to find path names)"
+    - name: "SECURITY PATCH MERGE: cch names)"
       # "yes y | " at the beginng is required to auto-continue when the changes are > 200
+      # "sort -b --key=5,5" sorts based on the path name within the output so we ensure "android/" (i.e. the manifest changes) get handled FIRST later
       ansible.builtin.shell: >
           yes y | /usr/bin/env python3 external/buildtools/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ item.value }}'
-          | grep --color=never https | col | dos2unix
-          | sed 's/\*Manifest Change\*/android/'
+            | grep --color=never https | col | dos2unix
+            | sed 's/\*Manifest Change\*/android/'
           {% if secpatch_exclusionlist_eos is defined and secpatch_exclusionlist_eos != '' %}| grep -iEv '{{ secpatch_exclusionlist_eos }}'{% endif %}
           {% if secpatch_exclusionlist_los is defined and secpatch_exclusionlist_los != '' %}| grep -iEv '{{ secpatch_exclusionlist_los }}'{% endif %}
+            | sort -b --key=5,5
           ; exit ${PIPESTATUS[1]}
       args:
           chdir: "{{ SRCPATH }}"
@@ -134,7 +136,7 @@
           chdir: "{{ SRCPATH }}"
       register: spres
       loop: "{{ picklist.results | selectattr('changed', 'eq', True)
-                | sort(attribute='item.key', reverse=true)
+                | sort(attribute='item.key')
                 | map(attribute='stdout_lines')
                 | flatten }}"
       when: picklist.changed
