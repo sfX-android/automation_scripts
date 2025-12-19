@@ -6,7 +6,9 @@
 #    dest: "{{ semaphore_work_dir }}"
 #    state: link
 
-- block:
+- name: "Prepare common tasks"
+  when: android_shortversion is defined
+  block:
 
       - name: "Ensure no compat bin links exist"
         ansible.builtin.file:
@@ -40,4 +42,13 @@
           state: link
         when: not skip_build_log_symlink | d(False)
 
-  when: android_shortversion is defined
+      - name: "Cleanup old build log"
+        file:
+          path: "{{ BUILD_LOG }}"
+          state: absent
+
+      - name: "Cleanup old build log (ansible host)"
+        connection: local
+        file:
+          path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
+          state: absent
