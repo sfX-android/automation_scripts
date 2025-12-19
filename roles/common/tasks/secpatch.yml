@@ -55,21 +55,25 @@
         item: (sec_patch_topicname ~ (item|string)|regex_replace('(^.{4})(.{2})', '\1-\2') ~ ' ' ~ secpatch_common_exclusions)
       }) }}
   loop: "{{ flattened_sec_patch_topics }}"
-  
-- block:
+
+- name: "SECURITY PATCH MERGE: apply"
+  when:
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
+    - pick_queries is defined and (pick_queries | length > 0)
+  block:
 
     - name: "SECURITY PATCH MERGE: create repopick lists by year (required to find path names)"
       # "yes y | " at the beginng is required to auto-continue when the changes are > 200
       ansible.builtin.shell: >
-        yes y | /usr/bin/env python3 external/buildtools/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ item.value }}'
-        | grep --color=never https | col | dos2unix
-        | sed 's/\*Manifest Change\*/android/'
-        {% if secpatch_exclusionlist_eos is defined and secpatch_exclusionlist_eos != '' %}| grep -iEv '{{ secpatch_exclusionlist_eos }}'{% endif %}
-        {% if secpatch_exclusionlist_los is defined and secpatch_exclusionlist_los != '' %}| grep -iEv '{{ secpatch_exclusionlist_los }}'{% endif %}
-        ; exit ${PIPESTATUS[1]}
+          yes y | /usr/bin/env python3 external/buildtools/cherrypicker.py -R los -B {{ sec_patch_pick_branch }} -Q '{{ item.value }}'
+          | grep --color=never https | col | dos2unix
+          | sed 's/\*Manifest Change\*/android/'
+          {% if secpatch_exclusionlist_eos is defined and secpatch_exclusionlist_eos != '' %}| grep -iEv '{{ secpatch_exclusionlist_eos }}'{% endif %}
+          {% if secpatch_exclusionlist_los is defined and secpatch_exclusionlist_los != '' %}| grep -iEv '{{ secpatch_exclusionlist_los }}'{% endif %}
+          ; exit ${PIPESTATUS[1]}
       args:
-        chdir: "{{ SRCPATH }}"
-        executable: /bin/bash
+          chdir: "{{ SRCPATH }}"
+          executable: /bin/bash
       register: picklist
       loop: "{{ pick_queries | dict2items }}"
       loop_control:
@@ -85,60 +89,69 @@
 
     - name: "SECURITY PATCH MERGE: apply security patches in ASB order"
       ansible.builtin.shell: |
-        if [ -f CHERRYPICK.FAILED ]; then echo "Previous cherry-picked failed!! Skipping...." >> {{ BUILD_LOG }}; exit 3; fi
-        unset id order batch
-        cmd="{{ cherry | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }}"
+          if [ -f CHERRYPICK.FAILED ]; then echo "[SECPATCH]: ERROR - previous cherry-picked failed (this should cause a build error)!" >> {{ BUILD_LOG }}; exit 3; fi
+          unset id order batch
+          cmd="{{ cherry | regex_replace('-f ',' ') | regex_replace('external/dng/sdk','external/dng_sdk') }}"
 
-        # set static order if required
-        for batch in {{ secpatch_static_dependencies }};do
-          id="${batch/:*}"
-          chk=$(echo "$cmd" | grep -c "$id")
-          if [ $chk -gt 0 ];then
-            deps=$(echo "${batch/*:}" | tr ',' ' ')
-            for cl in $deps;do
-              cmd=$(echo "$cmd" | sed "s/$cl//g")
-            done
-            cmd=$(echo "$cmd" | sed "s/$id/$deps $id/g")
-            echo "FORCED NEW PATCH ORDER for: $id ($deps $id)" >> {{ BUILD_LOG }}
+          # set static order if required
+          for batch in {{ secpatch_static_dependencies }};do
+              id="${batch/:*}"
+              chk=$(echo "$cmd" | grep -c "$id")
+              if [ $chk -gt 0 ];then
+                  deps=$(echo "${batch/*:}" | tr ',' ' ')
+                  for cl in $deps;do
+                      cmd=$(echo "$cmd" | sed "s/$cl//g")
+                  done
+                  cmd=$(echo "$cmd" | sed "s/$id/$deps $id/g")
+                  echo "[SECPATCH]: FORCED NEW PATCH ORDER for: $id ($deps $id)" >> {{ BUILD_LOG }}
+              fi
+          done
+
+          source build/envsetup.sh > /dev/null
+          echo -e "[SECPATCH]: patching ASB:\n$cmd" >> {{ BUILD_LOG }}
+          
+          $cmd -v >> {{ BUILD_LOG }} 2>&1 || $cmd -fv >> {{ BUILD_LOG }} || (touch CHERRYPICK.FAILED ;exit 123)
+
+          # if the manifest changed a re-sync is required
+          if [[ "$cmd" =~ "-P android " ]]; then
+              echo "[SECPATCH]: found a manifest patch"
+              resyncme=$(diff -U 0 android/default.xml .repo/manifests/default.xml\
+                          | grep "^@@\|path="\
+                          | awk '$1 == "+++" || $1 == "---" {next} /path=/ {sub(/.*path="/, ""); sub(/".*/, ""); print}'\
+                          | sort -u\
+                          | tr '\n' ' ')
+              if [ ! -z "$resyncme" ];then
+                  echo "[SECPATCH]: Manifest change detected!! re-syncing: $resyncme"
+                  cp -v android/default.xml .repo/manifests/default.xml
+                  {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} $resyncme >> {{ BUILD_LOG }} 2>&1 
+              else
+                  echo "[SECPATCH]: ERROR - resyncme is EMPTY but we identified a manifest patch!"
+                  exit 2
+              fi
           fi
-        done
-        
-        source build/envsetup.sh > /dev/null
-        echo -e "patching ASB:\n$cmd" >> {{ BUILD_LOG }}
-        
-        $cmd -v >> {{ BUILD_LOG }} 2>&1 || $cmd -fv >> {{ BUILD_LOG }} || (touch CHERRYPICK.FAILED ;exit 123)
       args:
-        executable: /bin/bash
-        chdir: "{{ SRCPATH }}"
+          executable: /bin/bash
+          chdir: "{{ SRCPATH }}"
       register: spres
       loop: "{{ picklist.results | selectattr('changed', 'eq', True)
-                | sort(attribute='item.key')
+                | sort(attribute='item.key', reverse=true)
                 | map(attribute='stdout_lines')
                 | flatten }}"
       when: picklist.changed
       loop_control:
         loop_var: cherry
 
-    - name: "SECURITY PATCH MERGE: update manifest"
-      ansible.builtin.copy:
-        remote_src: true
-        src: "{{ SRCPATH }}/android/default.xml"
-        dest: "{{ SRCPATH }}/.repo/manifests/default.xml"
-
-    - name: "SECURITY PATCH MERGE: re-sync (to grab new forks)!"
-      ansible.builtin.include_tasks: ../../../common/tasks/sync.yml
-    
   rescue:
-    - name: "Fail fast on failures" # fail immediately and not waiting for finishing full loops
+    - name: "SECURITY PATCH MERGE: Fail fast on failures" # fail immediately and not waiting for finishing loops
       ansible.builtin.fail:
-        msg: "Failed, stopping NOW!"
-
-  when:
-    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
-    - pick_queries is defined and (pick_queries | length > 0)
+          msg: "Failed, stopping NOW!"
 
 # bump security patch date
-- block:
+- name: "SECURITY PATCH MERGE: bump"
+  when:
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
+    - (spres.changed or force_secpatchdate)
+  block:
 
     - name: "SECURITY PATCH MERGE: bump security patch version string (A13 and older)"
       ansible.builtin.lineinfile:
@@ -174,13 +187,10 @@
           if [ $CMTL -gt 0 ];then
               git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
               git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "bump security patch date: {{ sec_patch_date_last_human }}"
-              echo "[GIT] bumped security patch date: {{ sec_patch_date_last_human }}" >> {{ BUILD_LOG }}
+              echo "[SECPATCH][GIT] bumped security patch date: {{ sec_patch_date_last_human }}" >> {{ BUILD_LOG }}
           fi
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
       when: spcm.changed
 
-  when:
-    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
-    - (spres.changed or force_secpatchdate)
