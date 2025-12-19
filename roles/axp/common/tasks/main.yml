@@ -14,44 +14,51 @@
 - include_tasks: init.yml
 
 - name: "Just push-to-git selected!"
-  block:
-      - name: "Get local manifests (if set)"
-        ansible.builtin.git:
-          repo: "{{ git_repo_local_manifests }}"
-          dest: "{{ SRCPATH }}/.repo/local_manifests"
-          version: "{{ git_repo_local_manifests_branch }}"
-          force: true
-        timeout: 180
-        when: git_repo_local_manifests is defined
-    
-      - include_tasks: git_push.yml
-      - debug:
-          msg: Stopping here as just_git_push=true
-      - meta: end_play
-
   when:
     - just_git_push
     - not early_push | d(False)
-  
-- include_tasks: clean.yml
+  block:
+    - name: "Get local manifests (if set)"
+      ansible.builtin.git:
+        repo: "{{ git_repo_local_manifests }}"
+        dest: "{{ SRCPATH }}/.repo/local_manifests"
+        version: "{{ git_repo_local_manifests_branch }}"
+        force: true
+      timeout: 180
+      when: git_repo_local_manifests is defined
+
+    - name: "Include git push"
+      ansible.builtin.include_tasks: git_push.yml
+
+    - name: "Debug"
+      ansible.builtin.debug:
+        msg: Stopping here as just_git_push=true
+
+    - name: "END PLAY"
+      ansible.builtin.meta: end_play
+
+- ansible.builtin.include_tasks: clean.yml
   when: axp_skip_common_tasks is undefined
 
-- block:
+- name: "Sync & adjust"
+  when:
+    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
+  block:
 
       - include_tasks: sync.yml
       - include_tasks: adjust_DOS_options.yml
-          
+
       # download latest firmware, taken from vendor/firmware/*/0SOURCE
       - include_tasks: firmware_update.yml
         when: update_vendor_firmware | bool or download_fairphone_firmware | bool
 
       # apply ASB patches if needed
-      # currently LOS supports ASB patches up to and including: Android 13
+      # currently LOS supports ASB patches up to and including: Android 14
       #- include_tasks: single_secpatch.yml
       - include_tasks: ../../common/tasks/secpatch.yml
         when: 
-          - (android_version_int | int < 13) or sec_patch_unmerged
-          
+          - (android_version_int | int < 14) or sec_patch_unmerged
+
       # AXP.OS patches
       - include_tasks: patch.yml
 
@@ -63,18 +70,15 @@
         args:
           chdir: "{{ SRCPATH }}"
           executable: /bin/bash
-          
+
       #- fail:
       #    msg: YEEEEEEeeeeeeeeeeeeeHa..
-          
+
       # special deblob workarounds
       - include_tasks: patch_device_gs201.yml
         when: 
           - target_model == "cheetah"
           - android_version_int | int < 15
-
-  when:
-    - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
 
 - include_tasks: commit_kernel.yml
   when: axp_skip_common_tasks is undefined

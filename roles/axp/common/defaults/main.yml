@@ -165,7 +165,7 @@ axp_enable_avb: 'true' # AXP_ENABLE_AVB which enforces enabling(!) AVB
 #axp_enable_avb_handling: 'true' # axp_enable_avb_handling is deprecated. sets AXP_ENABLE_AVB_HANDLING which applies all AXP.OS configs like increasing key sizes etc
 axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
 axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
-axp_avb_version: 2 # AVB v1 or v2, override in the device vars where required
+axp_avb_version: 2 # AVB v1 or v2, override in the device vars where required. to disable set it to 0.
 axp_avb_buildarg: >-
     {% if axp_avb_version == 1 %}verity{% endif %}
 AVB_VERSION: "{{ axp_avb_version }}"
@@ -640,26 +640,31 @@ SH_COMMON_BUILD_SNIPPET: |
     echo -e "\t${FPID:48:16}\n"
 
     TDIR=out/avbtest
-    AVB_PARTS_BOOT="boot.img" # AVB 1 is so old, we should not need to care about vendor/init boot parts here
-    if $(grep -qr BOARD_RECOVERYIMAGE_PARTITION_SIZE {{ target_model_common_tree_path }} {{ target_model_device_tree_path }} );then
-        AVB_PARTS_BOOT="$AVB_PARTS_BOOT recovery.img"
-    fi
-    AVB_PARTS_VERITY=$(grep --no-filename -r PRODUCT_.*_VERITY_PARTITION {{ target_model_common_tree_path }} {{ target_model_device_tree_path }}| tr -d ' ' | cut -d : -f 1 | sort -u | sed -E 's/PRODUCT_(\w+)_VERITY_PARTITION/\1.img/g' | tr [[:upper:]] [[:lower:]] | tr '\n' ' ' || echo "nopartsfound")
+    AVB_PARTS_VERITY=$(grep --no-filename -r PRODUCT_.*_VERITY_PARTITION {{ target_model_common_tree_path }} {{ target_model_device_tree_path }} \
+                        | tr -d ' ' | cut -d : -f 1 | sort -u | sed -E 's/PRODUCT_(\w+)_VERITY_PARTITION/\1.img/g' | tr [[:upper:]] [[:lower:]] | tr '\n' ' ' \
+                        || echo "nopartsfound")
 
     if [ -d "$TDIR" ];then rm -rf $TDIR;fi
     mkdir $TDIR
     unzip -oj {{ ZIPDIR }}/fastboot/{{ os_name }}-{{ los_version }}-{{ BUILDIDENT }}-*{{ target_model }}-fastboot.zip $AVB_PARTS_BOOT $AVB_PARTS_VERITY -d $TDIR
 
+    {%      if not skip_avb_boot_verify %}
+    AVB_PARTS_BOOT="boot.img" # AVB 1 is so old, we should not need to care about vendor/init boot parts here
+    if $(grep -qr BOARD_RECOVERYIMAGE_PARTITION_SIZE {{ target_model_common_tree_path }} {{ target_model_device_tree_path }} );then
+        AVB_PARTS_BOOT="$AVB_PARTS_BOOT recovery.img"
+    fi
     echo -e "\n[AVB1-VERIFY] testing $AVB_PARTS_BOOT partitions"
     for p in $AVB_PARTS_BOOT;do
         echo -n "[AVB1-VERIFY] .. testing $p: "
         boot_signer -verify $TDIR/${p}
     done
+    {%      endif %}
+
     if [ "$AVB_PARTS_VERITY" != "nopartsfound" -a ! -z "$AVB_PARTS_VERITY" ];then
         echo -e "\n[AVB1-VERIFY] testing $AVB_PARTS_VERITY partitions"
         for v in $AVB_PARTS_VERITY;do
             echo -n "[AVB1-VERIFY] ... testing $v: "
-            verity_verifier $TDIR/${v} -mincrypt user-keys/verity_key 2>&1 | grep -vi 'Footer magic is incorrect'
+            verity_verifier $TDIR/${v} -mincrypt user-keys/verity_key
         done
     else
         echo -e "\n[AVB1-VERIFY] ERROR: No VERITY partition tests available, AVB_PARTS_VERITY: >$AVB_PARTS_VERITY<?!"
