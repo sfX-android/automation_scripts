@@ -121,7 +121,8 @@
 
     - name: "SECURITY PATCH MERGE: update manifest"
       ansible.builtin.copy:
-        remote_src: "{{ SRCPATH }}/android/default.xml"
+        remote_src: true
+        src: "{{ SRCPATH }}/android/default.xml"
         dest: "{{ SRCPATH }}/.repo/manifests/default.xml"
 
     - name: "SECURITY PATCH MERGE: re-sync (to grab new forks)!"
