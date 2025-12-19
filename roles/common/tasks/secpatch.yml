@@ -62,7 +62,7 @@
     - pick_queries is defined and (pick_queries | length > 0)
   block:
 
-    - name: "SECURITY PATCH MERGE: cch names)"
+    - name: "SECURITY PATCH MERGE: create repopick lists by year (required to find path names)"
       # "yes y | " at the beginng is required to auto-continue when the changes are > 200
       # "sort -b --key=5,5" sorts based on the path name within the output so we ensure "android/" (i.e. the manifest changes) get handled FIRST later
       ansible.builtin.shell: >
@@ -116,18 +116,18 @@
 
           # if the manifest changed a re-sync is required
           if [[ "$cmd" =~ "-P android " ]]; then
-              echo "[SECPATCH]: found a manifest patch"
+              echo "[SECPATCH]: found a manifest patch" >> {{ BUILD_LOG }}
               resyncme=$(diff -U 0 android/default.xml .repo/manifests/default.xml\
                           | grep "^@@\|path="\
                           | awk '$1 == "+++" || $1 == "---" {next} /path=/ {sub(/.*path="/, ""); sub(/".*/, ""); print}'\
                           | sort -u\
                           | tr '\n' ' ')
               if [ ! -z "$resyncme" ];then
-                  echo "[SECPATCH]: Manifest change detected!! re-syncing: $resyncme"
+                  echo "[SECPATCH]: Manifest change detected!! re-syncing: $resyncme" >> {{ BUILD_LOG }}
                   cp -v android/default.xml .repo/manifests/default.xml
                   {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} $resyncme >> {{ BUILD_LOG }} 2>&1 
               else
-                  echo "[SECPATCH]: ERROR - resyncme is EMPTY but we identified a manifest patch!"
+                  echo "[SECPATCH]: ERROR - resyncme is EMPTY but we identified a manifest patch!" | tee -a {{ BUILD_LOG }}
                   exit 2
               fi
           fi
