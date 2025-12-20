@@ -63,12 +63,14 @@ axp_git_push_vendor_include: "vendor_oneplus_msm8998-common|vendor_oneplus_dumpl
 #################################################################################################################################
 ## Website info
 
-# COMMON block
+# REQUIRED: COMMON block
 hugo_firmware: "" # firmware included: included|manual
 hugo_isab: "" # A/B device: yes|no
 hugo_xda_link: "" # link to the AXP.OS XDA post for that device
 hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
 hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+
+## REQUIRED: one block of PRO / SLIM
 
 # PRO block
 android_version_pro: "" # Android version: 9,10,11,13,15
@@ -94,6 +96,7 @@ hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
 ## Firmware info
 # source: https://the-website-where-the-firmware-is-located
 
+# REQUIRED
 vendor_firmware_super_img: False   # factory zip contains super image: True|False
 vendor_factory_version: "" # optional helper, e.g. FP4.QREL.xxxx.user-factory
 vendor_firmware_download_url: "" # direct download link, might include vendor_factory_version as a variable
