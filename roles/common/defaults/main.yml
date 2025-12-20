@@ -193,10 +193,11 @@ skip_dl_cve_checker: False
 #   377775: affects Trebuchet (eOS)
 #   414554: A13: manifest change
 #   359421: Traceur
+#  4655011: a13: empty?!
 #secpatch_manifest_exclusions: '-"Manifest change" -"Track our own fork"'
 secpatch_common_exclusions: '-"Bump Security String"'
 #secpatch_los_exclusions: '338357|342095|414554'               # includes secpatch_common_exclusions
-secpatch_los_exclusions: '359421'
+secpatch_los_exclusions: '359421|4655011'
 secpatch_eos_exclusions: '324039|324040|324041|366137|377775' # includes secpatch_common_exclusions + secpatch_los_exclusions
 
 # define known relation chains
