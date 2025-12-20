@@ -279,11 +279,11 @@ sec_patch_topics_a12:
 
 ##############################################################################################
 # ASB patches for: Android 13 / T
-# Last merged upstream (LOS): (https://review.lineageos.org/q/topic:T_asb_2025-08)
+# Last merged upstream (LOS): (https://review.lineageos.org/q/topic:T_asb_2025-11)
 ##############################################################################################
 sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
 sec_patch_topics_a13:
-    - "{{ range(202509, sec_patch_date_last | int) }}"
+    - "{{ range(202512, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # A14 and later are still supported by LOS so when being being patient you get them
