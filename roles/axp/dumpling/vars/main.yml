@@ -35,19 +35,14 @@ skip_wireguard: True
 # set AVB v1.0
 axp_avb_version: 1
 
+# required for parselogerr: if axp_avb_version=1
+# the partitions signed by boot_signer:
+axp_avb_bootparts: "boot|recovery"
+axp_avb_bootparts_count: 2
+axp_avb_dmparts_count: 2 # (system.img + vendor.img)
+
 # dumpling will always fail verifying the boot.img if the expire date is set to the default (30 years)
 KEYS_CERT_DAYS_VERITY: 3650
-
-# set expected results accordingly to the AVB setup
-parselogerr:
-  - search: 'key .*/testkey.*.pem' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
-    expect: ''
-  - search: '{{ android_signing_testkey }}' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
-    expect: ''
-  - search: '{{ android_signing_testkey_verity }}' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
-    expect: ''
-  - search: 'signed by google test keys' # AVB v1 only: fail if signature test bails
-    expect: ''
 
 # this is a low-end device (optimize for performance, increase storage, lower avb hashsums)
 axp_lowend_device: True

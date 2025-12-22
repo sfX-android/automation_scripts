@@ -30,6 +30,12 @@ skip_wireguard: True
 # set AVB v1.0
 axp_avb_version: 1
 
+# required for parselogerr: if axp_avb_version=1
+# the partitions signed by boot_signer:
+axp_avb_bootparts: "boot|recovery"
+axp_avb_bootparts_count: 2
+axp_avb_dmparts_count: 2 # (system.img + vendor.img)
+
 # cheeseburger will always fail verifying the boot.img if the expire date is set to the default (30 years)
 KEYS_CERT_DAYS_VERITY: 3650
 
