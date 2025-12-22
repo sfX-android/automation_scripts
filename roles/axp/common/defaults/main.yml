@@ -648,13 +648,14 @@ SH_COMMON_BUILD_SNIPPET: |
 
     if [ -d "$TDIR" ];then rm -rf $TDIR;fi
     mkdir $TDIR
-    unzip -oj {{ ZIPDIR }}/fastboot/{{ os_name }}-{{ los_version }}-{{ BUILDIDENT }}-*{{ target_model }}-fastboot.zip $AVB_PARTS_BOOT $AVB_PARTS_VERITY -d $TDIR
+    unzip -oj {{ ZIPDIR }}/fastboot/{{ os_name }}-{{ los_version }}-{{ BUILDIDENT }}-*{{ target_model }}-fastboot.zip $AVB_PARTS_VERITY -d $TDIR
 
     {%      if not skip_avb_boot_verify %}
     AVB_PARTS_BOOT="boot.img" # AVB 1 is so old, we should not need to care about vendor/init boot parts here
     if $(grep -qr BOARD_RECOVERYIMAGE_PARTITION_SIZE {{ target_model_common_tree_path }} {{ target_model_device_tree_path }} );then
         AVB_PARTS_BOOT="$AVB_PARTS_BOOT recovery.img"
     fi
+    unzip -oj {{ ZIPDIR }}/fastboot/{{ os_name }}-{{ los_version }}-{{ BUILDIDENT }}-*{{ target_model }}-fastboot.zip $AVB_PARTS_BOOT -d $TDIR
     echo -e "\n[AVB1-VERIFY] testing $AVB_PARTS_BOOT partitions"
     for p in $AVB_PARTS_BOOT;do
         echo -n "[AVB1-VERIFY] .. testing $p: "
