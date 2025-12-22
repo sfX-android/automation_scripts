@@ -21,9 +21,6 @@ target_kernel_dir: kernel/google/msm-4.14
 # required e.g. for git, vendor/axp, release handling etc
 target_model_common_tree: device_google_sunfish
 
-# allow creating factory image
-custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
-
 # the common tree main makefile, usually named device.mk or common.mk
 # used in e.g. switch_major_release role.
 # defaults to "device.mk"
@@ -49,6 +46,8 @@ axp_git_push_device_include: "{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_sunfish"
 
 # website info
+hugo_avb_pro: "{{ axp_avb_version }}"
+hugo_avb_slim: "{{ axp_avb_version }}"
 hugo_encryption: "FBEv1"
 hugo_firmware: "included"
 hugo_relockable: "yes"
