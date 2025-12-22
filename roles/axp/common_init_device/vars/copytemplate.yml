@@ -45,6 +45,13 @@ target_model_common_tree: "" # e.g. device_oneplus_msm8998-common
 # some devices might fail verifying the boot.img if the expire date is set to the default (30 years)
 #KEYS_CERT_DAYS_VERITY: 3650
 
+# if axp_avb_version=1
+# (required for parselogerr)
+# the partitions signed by boot_signer:
+#axp_avb_bootparts: "boot|recovery"
+#axp_avb_bootparts_count: 2
+#axp_avb_dmparts_count: 2 # (system.img + vendor.img)
+
 # OPTIONAL OVERWRITE: this is a low-end device (optimize for performance, increase storage, lower avb hashsums)
 #axp_lowend_device: True
 

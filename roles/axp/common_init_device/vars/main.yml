@@ -239,7 +239,7 @@ semaphore_aos_template_survey_vars: >-
                 "value": "False"
             }
         ],
-        "default_value": "False"
+        "default_value": "True"
     }
     ]
 
