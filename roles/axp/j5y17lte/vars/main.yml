@@ -31,11 +31,13 @@ target_model_common_tree: device_samsung_universal7870-common
 divest_unsupported_device: true
 unsupported_device_kernel_patch: true
 
-# disable verified boot
-vbmeta_verify: false
-
 # set AVB v1.0 / Verity-only
 axp_avb_version: 1
+
+# no boot/recovery.img tests
+# 1) we cannot re-lock this device
+# 2) samsungs crappy boot.img handling conflicts with all standards, making verify tests fail anyways
+skip_avb_boot_verify: True
 
 # this is a low-end device (optimize for performance)
 axp_lowend_device: True
@@ -48,7 +50,8 @@ axp_git_push_device_include: "device_samsung_j5y17lte|{{ target_model_common_tre
 axp_git_push_vendor_include: "vendor_samsung_universal7870-common|vendor_samsung_j5y17lte"
 
 # CONFIG_ARM64_SW_TTBR0_PAN breaks boot!
-axp_defconfig_device: "CONFIG_ARM64_SW_TTBR0_PAN=n"
+# force-enable dm-verity
+axp_defconfig_device: "CONFIG_ARM64_SW_TTBR0_PAN=n CONFIG_DM_VERITY=y CONFIG_DM_VERITY_FEC=y CONFIG_CRYPTO_AES_ARM64_NEON_BLK=y"
 
 # deblobbing audiofx breaks video recording due to the removal of libLifevibes_lvverx.so + libLifevibes_lvvetx.so
 axp_deblobber_remove_audiofx: 'false'
@@ -60,6 +63,33 @@ axp_deblobber_remove_audiofx: 'false'
 # > libc++abi: terminating with uncaught exception of type std::bad_alloc: std::bad_alloc
 axp_graphene_malloc: >-
   {% if axp_build_recovery_only is defined and axp_build_recovery_only %}'false'{% else %}'true'{% endif %}
+
+# required for log parsing & website flavor info
+axp_bootloader_id_pro: A87D42D8B66CA9CC
+#axp_bootloader_id_slim:
+
+# website info
+hugo_encryption: "FBEv1"
+hugo_firmware: "manual"
+hugo_relockable: "no"
+hugo_state: "stable"
+hugo_supportlevel: "team"
+hugo_isab: "no"
+hugo_xda_link: "https://xdaforums.com/t/rom-a10-official-microg-hardened-j5y17lte-axp-os-17-1.4644557/"
+hugo_first_releasedate: "2024-06-20"
+hugo_kb_link: ""
+hugo_custom_installguide_path: "content/devices/custom_${HUGO_CODENAME}.guide"
+hugo_axp_bootloader_id_pro: |
+  BOOTLOADER minimal ID (AVB 1)
+        A87D42D8
+
+  BOOTLOADER full ID:
+        A87D42D8B66CA9CC
+        0D509BADFECACC79
+        521EED275F4677EA
+        0F5DB3688EA16A0C
+#hugo_axp_bootloader_id_slim: |
+
 
 # ASB patch date override, month+1:
 # (latest avail backport is from August 2025)

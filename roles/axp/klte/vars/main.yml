@@ -27,11 +27,13 @@ target_model_common_tree: device_samsung_klte-common
 # disable Wireguard patching (unsupported, bc kernel = v3.4)
 skip_wireguard: True
 
-# no verified boot:
-vbmeta_verify: false
+# set AVB v1.0 / Verity-only
+axp_avb_version: 1
 
-# disable AVB + verity
-axp_enable_avb: 'false'
+# no boot/recovery.img tests
+# 1) we cannot re-lock this device
+# 2) samsungs crappy boot.img handling conflicts with all standards, making verify tests fail anyways
+skip_avb_boot_verify: True
 
 # this is a low-end device (optimize for performance)
 axp_lowend_device: True
@@ -46,3 +48,21 @@ axp_defconfig_globals: ''
 
 # special testing area
 extendrom_intercept_installsrc: 'true'
+
+# required for log parsing & website flavor info
+axp_bootloader_id_pro: TBD
+axp_bootloader_id_slim: TBD
+
+# website info
+hugo_encryption: "FBEv1"
+hugo_firmware: "manual"
+hugo_relockable: "no"
+hugo_state: "stable"
+hugo_supportlevel: "community"
+hugo_isab: "no"
+hugo_xda_link: "https://xdaforums.com/t/rom-a11-official-microg-hardened-klte-axp-os-18-1.4703947/"
+hugo_first_releasedate: "2024-11-20"
+hugo_kb_link: "klte-and-maybe-hlte"
+hugo_custom_installguide_path: "content/devices/custom_${HUGO_CODENAME}.guide"
+#hugo_axp_bootloader_id_pro: |
+#hugo_axp_bootloader_id_slim: |
