@@ -46,9 +46,11 @@
         file:
           path: "{{ BUILD_LOG }}"
           state: absent
+        when: not keep_build_logs
 
       - name: "Cleanup old build log (ansible host)"
         connection: local
         file:
           path: "/tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log"
           state: absent
+        when: not keep_build_logs
