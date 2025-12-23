@@ -40,9 +40,21 @@ axp_avb_dmparts_count: 2 # (system.img + vendor.img)
 KEYS_CERT_DAYS_VERITY: 3650
 
 # Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: '2AC928E13BB0B460'
+axp_bootloader_id_pro: 'BDF32A89B41625A6'
 axp_bootloader_id_slim: ''
 
 # git push
 axp_git_push_device_include: "device_google_cheeseburger|{{ target_model_common_tree }}" 
 axp_git_push_vendor_include: "vendor_google_cheeseburger|vendor_oneplus_msm8998-common"
+
+hugo_axp_bootloader_id_pro: |
+    ```
+    BOOTLOADER minimal ID (AVB 1)
+        BDF32A89
+
+    BOOTLOADER full ID:
+        BDF32A89B41625A6
+        938CF5DAD467ADEF
+        F127D581E637C5C1
+        9F69D260B5242F4E
+    ```
