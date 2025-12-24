@@ -111,10 +111,10 @@ server_tmp_dir: /tmp
 axp_build_eng: false
 
 # build logging
-build_log_name: "build_{{ target_model }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
-build_log_name_noid: "build_{{ target_model }}_{{ ROM_FLAVOR }}"
+build_log_name: "build_{{ sub_model | d(target_model) }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
+build_log_name_noid: "build_{{ sub_model | d(target_model) }}_{{ ROM_FLAVOR }}"
 BUILD_LOG: "{{ BUILDHOME }}/{{ build_log_name }}"
-build_log_name_latest: "build_{{ target_model }}_{{ ROM_FLAVOR }}_latest.log"
+build_log_name_latest: "build_{{ sub_model| d(target_model) }}_{{ ROM_FLAVOR }}_latest.log"
 BUILD_LOG_LATEST: "{{ BUILDHOME }}/{{ build_log_name_latest }}"
 keep_build_logs: True    # if you override this in your env with >False< ANY previous build log will be deleted before building
 
