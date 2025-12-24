@@ -31,14 +31,14 @@ target_model_common_tree: device_lge_g4-common
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ sub_model }}/"
 post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_model }}"
 
-# set AVB v1.0
-axp_avb_version: 1
+# disable AVB
+axp_avb_version: 0
 
 # required for parselogerr: if axp_avb_version=1
 # the partitions signed by boot_signer:
-axp_avb_bootparts: "boot|recovery"
-axp_avb_bootparts_count: 2
-axp_avb_dmparts_count: 1 # (system.img)
+#axp_avb_bootparts: "boot|recovery"
+#axp_avb_bootparts_count: 2
+#axp_avb_dmparts_count: 1 # (system.img)
 
 # git push
 axp_git_push_device_include: "device_lge_g4|{{ target_model_common_tree }}"
