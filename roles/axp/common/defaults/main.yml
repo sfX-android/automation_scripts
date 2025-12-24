@@ -160,12 +160,14 @@ axp_lowend_device: False
 axp_auto_encrypt: True
 
 # AVB / Verified Boot
-vbmeta_verify: True # verify all build images via the created vbmeta.img?
-axp_enable_avb: 'true' # AXP_ENABLE_AVB which enforces enabling(!) AVB
+axp_avb_version: 2 # AVB v1 or v2, override in the device vars where required. to disable set it to 0.
+vbmeta_verify: True # DEPRECATED! handled by axp_avb_version + skip_avb_boot_verify. verify all build images via the created vbmeta.img?
+# enable/disable based on version set. sets AXP_ENABLE_AVB which enforces enabling(!) AVB
+axp_enable_avb: >-
+    {% if axp_avb_version == 0 %}'false'{% else %}'true'{% endif %}
 #axp_enable_avb_handling: 'true' # axp_enable_avb_handling is deprecated. sets AXP_ENABLE_AVB_HANDLING which applies all AXP.OS configs like increasing key sizes etc
 axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
 axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
-axp_avb_version: 2 # AVB v1 or v2, override in the device vars where required. to disable set it to 0.
 axp_avb_buildarg: >-
     {% if axp_avb_version == 1 %}verity{% endif %}
 AVB_VERSION: "{{ axp_avb_version }}"
