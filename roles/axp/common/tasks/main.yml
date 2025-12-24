@@ -68,7 +68,7 @@
       - name: "Generate verity tools"
         ansible.builtin.shell: |
           {{ DOS_INIT }}
-          lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+          lunch lineage_{{ sub_model| d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
           mka generate_verity_key >> {{ BUILD_LOG }} 2>&1 || mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
         args:
           chdir: "{{ SRCPATH }}"
