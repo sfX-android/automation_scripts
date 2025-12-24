@@ -493,9 +493,9 @@ SH_COMMON_BUILD_SNIPPET: |
     source vendor/firmware/{{ target_model }}/0SOURCE  >> {{ BUILD_LOG }} 2>&1 || true
             
     {% if axp_build_eng | bool %}
-    breakfast lineage_{{ target_model }}${brf_suffix}-eng >> {{ BUILD_LOG }} 2>&1
+    breakfast lineage_{{ sub_model | d(target_model) }}${brf_suffix}-eng >> {{ BUILD_LOG }} 2>&1
     {% else %}
-    breakfast lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+    breakfast lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
     {% endif %}
     
     # CCACHE
