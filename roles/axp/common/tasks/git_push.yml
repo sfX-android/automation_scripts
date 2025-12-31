@@ -257,7 +257,7 @@
 
     cd external/axp_versioning
     git remote add up {{ git_axpos_org_private }}/axp_versioning || true
-    git fetch up --tags
+    git fetch up --tags --force
     git tag | grep "$TAG" || LTAG=$(git tag | head -n1)
     
     # base on the previous tag (for comparison) or an existing
