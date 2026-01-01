@@ -27,8 +27,14 @@ target_model_common_tree: device_samsung_klte-common
 # disable Wireguard patching (unsupported, bc kernel = v3.4)
 skip_wireguard: True
 
-# set AVB v1.0 / Verity-only
-axp_avb_version: 1
+# disable AVB
+axp_avb_version: 0
+
+# required for parselogerr: if axp_avb_version=1
+# the partitions signed by boot_signer:
+#axp_avb_bootparts: "boot|recovery"
+#axp_avb_bootparts_count: 2
+#axp_avb_dmparts_count: 1 # (system.img)
 
 # no boot/recovery.img tests
 # 1) we cannot re-lock this device
