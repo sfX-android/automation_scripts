@@ -13,6 +13,9 @@
 - include_vars: axp_avb1_device.vars.yml
   when: axp_avb_version == 1
 
+- include_vars: axp_avb0_device.vars.yml
+  when: axp_avb_version == 0
+
 - include_tasks: set_env_vars.yml
 - include_tasks: init.yml
 
