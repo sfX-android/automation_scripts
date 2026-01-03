@@ -1,4 +1,4 @@
 ---
 
 # set expected results accordingly to the AVB setup
-parselogerr: ""
+parselogerr: []
