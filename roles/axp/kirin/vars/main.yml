@@ -31,8 +31,8 @@ axp_release_recovery: True
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
 
-# set AVB v1.0
-axp_avb_version: 1
+# AVB v1.0 is not supported anymore since A11
+axp_avb_version: 0
 
 # required for parselogerr: if axp_avb_version=1
 # the partitions signed by boot_signer:
