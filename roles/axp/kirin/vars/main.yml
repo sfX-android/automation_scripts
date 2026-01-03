@@ -31,15 +31,18 @@ axp_release_recovery: True
 # disable Wireguard patching (already part of the upstream kernel)
 skip_wireguard: True
 
-# disable vbmeta verify_image after build
-vbmeta_verify: false
+# set AVB v1.0
+axp_avb_version: 1
 
-# disable AVB + verity
-axp_enable_avb: 'false'
+# required for parselogerr: if axp_avb_version=1
+# the partitions signed by boot_signer:
+#axp_avb_bootparts: "boot|recovery"
+aaxp_avb_bootparts_count: 2
+axp_avb_dmparts_count: 2 # (system.img + vendor.img)
 
 # git push
 axp_git_push_device_include: "device_sony_kirin|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_sony_kirin|vendor_sony_nile-common"
 
 # TESTING
-axp_graphene_malloc: 'false'
+#axp_graphene_malloc: 'false'
