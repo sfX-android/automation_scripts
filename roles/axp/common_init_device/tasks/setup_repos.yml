@@ -84,7 +84,7 @@
         BROKENLFS=$(grep -c undocumented .lfsconfig || echo 0)
         if [ $BROKENLFS -eq 0 ]; then
             git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
-        all
+        else
             rm .lfsconfig
             git add -A .lfsconfig  >> /dev/null 2>> {{ BUILD_LOG }} \
                 && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove broken lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}
