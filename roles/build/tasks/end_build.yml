@@ -6,6 +6,10 @@
   when:
     - buildresult.rc is undefined or buildresult.rc != 0
 
+- name: "Debug: parselogerr"
+  ansible.builtin.debug:
+    var: parselogerr
+
 - name: "Check log for fail pattern"
   ansible.builtin.shell: |
       {% if item.expect_cnt is defined %}
