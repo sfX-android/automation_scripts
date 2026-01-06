@@ -205,7 +205,7 @@
   ansible.builtin.replace:
     path: "{{ SRCPATH }}/build/make/tools/releasetools/sign_target_files_apks.py"
     regexp: "misc_info\\['avb_avbtool'\\]"
-    replace: 'avbtool'
+    replace: "'avbtool'"
   when: 
       - android_version_int | int > 13
       - axp_avb_version == 0
