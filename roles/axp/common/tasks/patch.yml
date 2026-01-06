@@ -103,6 +103,8 @@
     resetEnv >> {{ BUILD_LOG }} 2>&1
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk >> {{ BUILD_LOG }} 2>&1
   register: patchout
+  environment:
+    KERNEL_PATH_CVE: "{{ target_kernel_dir | regex_replace('/','_') }}"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
