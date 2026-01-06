@@ -607,6 +607,7 @@ SH_COMMON_BUILD_SNIPPET: |
     {%   elif axp_build_eng | bool   %}
     # axp_build_eng set!
     #mka sepolicy
+    #mka selinux_policy (if A15)
     buildDeviceDebug {{ target_model }} {{ axp_avb_buildarg }} || f_detect_kerr
     {%   else %}
     buildDevice {{ target_model }} {{ axp_avb_buildarg }} || f_detect_kerr
