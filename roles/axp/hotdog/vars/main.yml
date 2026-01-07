@@ -58,14 +58,14 @@ hugo_kb_link: "guacamolehotdog"
 #hugo_axp_bootloader_id_pro: |
 hugo_axp_bootloader_id_slim: |
   BOOTLOADER minimal ID (AVB 2)
-     C72044EC
+    C72044EC
 
   BOOTLOADER full ID:
 
-     C72044ECCDD6ECE1
-     632EFA126E822DDC
-     FB787B9633851CF7
-     8BA3F02BFD2FE2E9
+    C72044ECCDD6ECE1
+    632EFA126E822DDC
+    FB787B9633851CF7
+    8BA3F02BFD2FE2E9
 
 # vendor/firmware info
 # download source: https://xdaforums.com/t/oneplus-7t-pro-rom-ota-oxygen-os-repo-of-oxygen-os-builds.4003455/

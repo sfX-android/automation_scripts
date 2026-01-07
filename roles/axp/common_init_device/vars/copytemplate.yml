@@ -3,40 +3,53 @@
 #################################################################################################################################
 ## Device info
 
-# REQUIRED: human readable model name
+#### REQUIRED:
+# human readable model name
 target_model_vendor: "" # e.g. OnePlus
 target_model_name: '' # e.g. '5T', always ensure single quotes here
+
+#### NEVER TOUCH THIS:
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# REQUIRED: android version
+#### REQUIRED:
+# target android version
 android_shortversion: "" # Android version in the format: <a><integer>, e.g. a13, a15, ..
 
-# REQUIRED: boot debugger path & config
+#### REQUIRED:
+# boot debugger mount point
 extendrom_debug_path_default: "" # path for boot_debug, check fstab, usually /mnt/vendor/persist, /metadata or /cache
+
+#### NEVER TOUCH THIS:
 extendrom_debug_path_size_full_default: 500 
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
-# REQUIRED: path to the kernel dir (req for e.g. wireguard)
+#### REQUIRED:
+# path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: "" # e.g. kernel/oneplus/msm8998
 
-# REQUIRED: path to the common tree, if none exists then the device tree.
+#### REQUIRED:
+# path to the common tree, if none exists then the device tree.
 # used e.g. for git, vendor/axp, release handling etc
 target_model_common_tree: "" # e.g. device_oneplus_msm8998-common
 
-# OPTIONAL: the common tree or if there is none the device main makefile,
+#### OPTIONAL:
+# the common tree or if there is none the device main makefile,
 # usually named device.mk or common.mk. used in e.g. switch_major_release role.
 # defaults to "device.mk"
 #target_model_device_tree_mk: common.mk
 
-# OPTIONAL OVERWRITE: do NOT upload the recovery image
+#### OPTIONAL OVERWRITE:
+# do NOT upload the recovery image
 #axp_release_recovery: False
 
-# OPTIONAL OVERWRITE: disable Wireguard patching (already part of the upstream kernel)
-#skip_wireguard: True  # if the kernel contains drivers/net/wireguard, set this to True
+#### OPTIONAL OVERWRITE:
+# disable Wireguard patching (already part of the upstream kernel)
+#skip_wireguard: True # if the kernel contains drivers/net/wireguard, set this to True
 
-# OPTIONAL OVERWRITE: default AVB / Verified Boot handling
+#### OPTIONAL OVERWRITE:
+# default AVB / Verified Boot handling
 #vbmeta_verify: True # verify all build images via the created vbmeta.img?
 #axp_enable_avb: 'true' # AXP_ENABLE_AVB which enforces enabling(!) AVB
 #axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
@@ -52,65 +65,77 @@ target_model_common_tree: "" # e.g. device_oneplus_msm8998-common
 #axp_avb_bootparts_count: 2
 #axp_avb_dmparts_count: 2 # (system.img + vendor.img)
 
-# OPTIONAL OVERWRITE: this is a low-end device (optimize for performance, increase storage, lower avb hashsums)
+#### OPTIONAL OVERWRITE:
+# this is a low-end device (optimize for performance, increase storage, lower avb hashsums)
 #axp_lowend_device: True
 
-# OPTIONAL OVERWRITE: set to False to skip force encryption (ICE, FDE, FBE)
+#### OPTIONAL OVERWRITE:
+# set to False to skip force encryption (ICE, FDE, FBE)
 #axp_auto_encrypt: False
 
+#### NEVER TOUCH THIS:
 # Bootloader ID (first line) for verifying build log
 #axp_bootloader_id_pro: ''
 #axp_bootloader_id_slim: ''
 
-# REQUIRED: git push project names related to this device
-# used for device init, reproducible builds, ci/cd
-axp_git_push_device_include: "device_oneplus_dumpling|{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "vendor_oneplus_msm8998-common|vendor_oneplus_dumpling"
+#### REQUIRED:
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+axp_git_push_device_include: "device_<VENDORNAME>_<DEVICETREE>|{{ target_model_common_tree }}"
+axp_git_push_vendor_include: "vendor_<VENDORNAME>_<COMMONTREE>|vendor_<VENDORNAME>_<DEVICETREE>"
 
 #################################################################################################################################
 ## Website info
 
-# REQUIRED: COMMON block
-hugo_firmware: "" # firmware included: included|manual
+#### REQUIRED:
+# COMMON block
+hugo_firmware: "" # firmware included: included|manual (device available in vendor/firmware?)
 hugo_isab: "" # A/B device: yes|no
+
+# NEVER TOUCH THIS:
 hugo_xda_link: "" # link to the AXP.OS XDA post for that device
 hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
 hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
 
-## REQUIRED: one block of PRO / SLIM
+#### REQUIRED:
+# one block, either PRO / SLIM depending on your request
 
 # PRO block
 android_version_pro: "" # Android version: 9,10,11,13,15
 hugo_encryption_pro: "" # device encryption supported: no|FDE|FBEv1|FBEv2
 hugo_relockable_pro: "" # bootloader re-lock supported: yes|no
-hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
-hugo_axp_bootloader_id_pro: | ``` ``` # if AVB: the bootloader id string (from build log)
-hugo_supportlevel_pro: ""  # i.e.: "team" | "community"
-hugo_first_releasedate_pro: "" # first public stable release date (YYYY-MM-DD)
-hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+# NEVER TOUCH THIS:
+#hugo_axp_bootloader_id_pro: | # if AVB: the bootloader id string (from build log)
+#hugo_supportlevel_pro: ""  # i.e.: "team" | "community"
+#hugo_first_releasedate_pro: "" # first public stable release date (YYYY-MM-DD)
+#hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
 
 # SLIM block
 android_version_slim: "" # Android version: 9,10,11,13,15
 hugo_encryption_slim: "" # device encryption supported: no|FDE|FBEv1|FBEv2
 hugo_relockable_slim: "" # bootloader re-lock supported: yes|no
-hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
-hugo_axp_bootloader_id_slim: | ``` ``` # if AVB: the bootloader id string (from build log)
-hugo_supportlevel_slim: "" # i.e.: "team" | "community"
-hugo_first_releasedate_slim: "" # first public stable release date (YYYY-MM-DD)
-hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+# NEVER TOUCH THIS:
+#hugo_axp_bootloader_id_slim: | # if AVB: the bootloader id string (from build log)
+#hugo_supportlevel_slim: "" # i.e.: "team" | "community"
+#hugo_first_releasedate_slim: "" # first public stable release date (YYYY-MM-DD)
+#hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
 
 #################################################################################################################################
 ## Firmware info
 # source: https://the-website-where-the-firmware-is-located
 
-# REQUIRED
+#### OPTIONAL:
 vendor_firmware_super_img: False   # factory zip contains super image: True|False
 vendor_factory_version: "" # optional helper, e.g. FP4.QREL.xxxx.user-factory
+
+# REQUIRED:
 vendor_firmware_download_url: "" # direct download link, might include vendor_factory_version as a variable
 vendor_firmware_download_sha512: "" # one of sha512, sha256 or md5 is required (in that order)
 #vendor_firmware_download_sha256: 
 #vendor_firmware_download_md5: 
 
+#### NEVER TOUCH THIS:
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though. persistent_dir is always a device specific path.
 vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"

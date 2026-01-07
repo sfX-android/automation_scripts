@@ -48,7 +48,6 @@ axp_git_push_device_include: "device_google_cheeseburger|{{ target_model_common_
 axp_git_push_vendor_include: "vendor_google_cheeseburger|vendor_oneplus_msm8998-common"
 
 hugo_axp_bootloader_id_pro: |
-    ```
     BOOTLOADER minimal ID (AVB 1)
         BDF32A89
 
@@ -57,4 +56,3 @@ hugo_axp_bootloader_id_pro: |
         938CF5DAD467ADEF
         F127D581E637C5C1
         9F69D260B5242F4E
-    ```
