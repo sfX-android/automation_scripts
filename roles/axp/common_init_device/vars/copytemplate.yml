@@ -86,7 +86,8 @@ target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_m
 # might be required when "axp_lowend_device: True" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
 #axp_auto_encrypt: False
 
-#### DEFINE-IF-YOU-CAN:
+#### OPTIONAL / DEFINE-IF-YOU-CAN:
+# requires more deep knowledge in how to identify, so you will likely want to just skip it
 # boot debugger mount point
 # path for boot_debug, must be identified within the device / common tree fstab:
 # - must be a writable partition
