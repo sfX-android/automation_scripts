@@ -3,7 +3,7 @@
 #################################################################################################################################
 ## Device info
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # human readable model name
 target_model_vendor: "" # e.g. OnePlus
 target_model_name: '' # e.g. '5T', always ensure single quotes here
@@ -11,7 +11,7 @@ target_model_name: '' # e.g. '5T', always ensure single quotes here
 #### NEVER TOUCH THIS:
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # AXP.OS might not offer the latest available Android version for your device (by design):
 # 1. check the current latest stable or planned Android version: https://axpos.org/docs/knowledge/requirements/#android-version
 # 2. find your device in the LineageOS wiki: https://wiki.lineageos.org/
@@ -22,12 +22,12 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 # (will be deprecated in favor of android_version_pro/slim soon but required atm)
 android_shortversion: ""
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # path to the kernel dir
 # e.g. "kernel/oneplus/msm8998"
 target_kernel_dir: ""
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # path to the common tree, if none exists then the device tree.
 # used e.g. for git, vendor/axp, release handling etc
 target_model_common_tree: "" # e.g. device_oneplus_msm8998-common
@@ -86,7 +86,7 @@ target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_m
 # might be required when "axp_lowend_device: True" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
 #axp_auto_encrypt: False
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # boot debugger mount point
 # path for boot_debug, must be identified within the device / common tree fstab:
 # - must be a writable partition
@@ -104,7 +104,7 @@ extendrom_debug_path_size_crash_default: 200
 #### NEVER TOUCH THIS:
 axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # all used VENDOR paths for this device, e.g. "vendor_google_crosshatch|vendor_google_blueline"
 axp_git_push_vendor_include: "vendor_<VENDORNAME>_<COMMONTREE>|vendor_<VENDORNAME>_<DEVICETREE>"
 
@@ -116,7 +116,7 @@ axp_git_push_vendor_include: "vendor_<VENDORNAME>_<COMMONTREE>|vendor_<VENDORNAM
 #################################################################################################################################
 ## Website info
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # COMMON block
 # do we include vendor firmware?
 # 1. open https://code.binbash.rocks/AXP.OS/vendor_firmware
@@ -127,7 +127,7 @@ axp_git_push_vendor_include: "vendor_<VENDORNAME>_<COMMONTREE>|vendor_<VENDORNAM
 # If steps 1-4 were successful set "included" otherwise "manual"
 hugo_firmware: ""
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # Is the device an A/B device (legacy or virtual)?
 # A/B? -> https://source.android.com/docs/core/ota/virtual_ab
 # How to identify:
@@ -149,7 +149,7 @@ hugo_xda_link: "" # link to the AXP.OS XDA post for that device
 hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
 hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # one block, either PRO / SLIM depending on your request
 
 # PRO block
@@ -189,7 +189,7 @@ hugo_relockable_slim: ''
 ## Firmware info
 ##
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # you need to find a reliable source for downloading the vendor's factory zip.
 # you can find some examples in the porting guide: https://axpos.org/docs/developer/port/#extract-and-push-vendorfirmware
 # (you do not need to follow that guide, just check out the examples there).
@@ -208,7 +208,7 @@ vendor_firmware_super_img: False
 #### NEVER TOUCH THIS:
 vendor_factory_version: "" # optional helper, e.g. FP4.QREL.xxxx.user-factory
 
-#### REQUIRED:
+#### DEFINE-IF-YOU-CAN:
 # direct download link to the OTA/factory zip of the vendor.
 # Examples: 
 # - https://github.com/sfX-android/automation_scripts/blob/284dc09e31e80282645d6d937d34496a860cc515/roles/axp/sargo/vars/main.yml#L80
