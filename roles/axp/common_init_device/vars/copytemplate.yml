@@ -12,12 +12,80 @@ target_model_name: '' # e.g. '5T', always ensure single quotes here
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
 #### REQUIRED:
-# target android version
-android_shortversion: "" # Android version in the format: <a><integer>, e.g. a13, a15, ..
+# target Android version in the format: <a><integer>, e.g. a13, a15, ..
+android_shortversion: ""
+
+#### REQUIRED:
+# path to the kernel dir
+# e.g. "kernel/oneplus/msm8998"
+target_kernel_dir: ""
+
+#### REQUIRED:
+# path to the common tree, if none exists then the device tree.
+# used e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: "" # e.g. device_oneplus_msm8998-common
+
+#### NEVER TOUCH THIS:
+target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model_name | lower() }}
+
+#### NEVER TOUCH THIS:
+# the common tree or if there is none the device main makefile,
+# usually named device.mk or common.mk. used in e.g. switch_major_release role.
+# defaults to "device.mk"
+#target_model_device_tree_mk: common.mk
+
+#### NEVER TOUCH THIS:
+# do NOT upload the recovery image
+#axp_release_recovery: False
+
+#### OPTIONAL OVERWRITE:
+# disable Wireguard patching (already part of the upstream kernel)
+# only if the kernel repo contains "drivers/net/wireguard", set this to True
+#skip_wireguard: True
+
+#### OPTIONAL OVERWRITE:
+# AVB version. Can be: 1|2|0 (if unset this defaults to 2).
+# Details: https://axpos.org/docs/knowledge/verifiedboot
+# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
+# if device supports only AVB v1 and the target Android version is 11 or later AVB should be disabled (as v1 is deprecated)!
+# (see also: https://axpos.org/docs/knowledge/verifiedboot/#details)
+# to disable AVB, set it to 0.
+# do not use any quotes here.
+#axp_avb_version: 1
+
+#### NEVER TOUCH THIS:
+# AVB v1 only (if axp_avb_version: 1)
+# the partitions signed by boot_signer:
+#axp_avb_bootparts: "boot|recovery"
+#axp_avb_bootparts_count: 2
+#axp_avb_dmparts_count: 2 # (e.g. system.img + vendor.img)
+
+#### NEVER TOUCH THIS:
+# some devices might fail verifying the boot.img if the expire date is set to the default (30 years)
+#KEYS_CERT_DAYS_VERITY: 3650
+
+#### NEVER TOUCH THIS:
+#axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
+#axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
+
+#### OPTIONAL OVERWRITE:
+# usually legacy devices like LG G4, klte and such while that always depends on the
+# target Android version. This will have drawbacks, details can be found here: 
+# https://axpos.org/docs/knowledge/techdetails/#what-changes-does-axp_lowend_device-make
+#axp_lowend_device: True
+
+#### OPTIONAL OVERWRITE:
+# set to False to skip force encryption,
+# might be required when "axp_lowend_device: True" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
+#axp_auto_encrypt: False
 
 #### REQUIRED:
 # boot debugger mount point
-extendrom_debug_path_default: "" # path for boot_debug, check fstab, usually /mnt/vendor/persist, /metadata or /cache
+# path for boot_debug, must be identified within the device / common tree fstab:
+# - must be a writable partition
+# - must be a mountable partition (ext2, ext4, f2fs, ..)
+# usually one of: /mnt/vendor/persist, /metadata or /cache
+extendrom_debug_path_default: ""
 
 #### NEVER TOUCH THIS:
 extendrom_debug_path_size_full_default: 500 
@@ -25,73 +93,47 @@ extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
-#### REQUIRED:
-# path to the kernel dir (req for e.g. wireguard)
-target_kernel_dir: "" # e.g. kernel/oneplus/msm8998
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+#### NEVER TOUCH THIS:
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
 
 #### REQUIRED:
-# path to the common tree, if none exists then the device tree.
-# used e.g. for git, vendor/axp, release handling etc
-target_model_common_tree: "" # e.g. device_oneplus_msm8998-common
-
-#### OPTIONAL:
-# the common tree or if there is none the device main makefile,
-# usually named device.mk or common.mk. used in e.g. switch_major_release role.
-# defaults to "device.mk"
-#target_model_device_tree_mk: common.mk
-
-#### OPTIONAL OVERWRITE:
-# do NOT upload the recovery image
-#axp_release_recovery: False
-
-#### OPTIONAL OVERWRITE:
-# disable Wireguard patching (already part of the upstream kernel)
-#skip_wireguard: True # if the kernel contains drivers/net/wireguard, set this to True
-
-#### OPTIONAL OVERWRITE:
-# default AVB / Verified Boot handling
-#vbmeta_verify: True # verify all build images via the created vbmeta.img?
-#axp_enable_avb: 'true' # AXP_ENABLE_AVB which enforces enabling(!) AVB
-#axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
-#axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
-#axp_avb_version: 2 # AVB v1 or v2, override in the device vars where required. to disable set it to 0.
-# some devices might fail verifying the boot.img if the expire date is set to the default (30 years)
-#KEYS_CERT_DAYS_VERITY: 3650
-
-# if axp_avb_version=1
-# (required for parselogerr)
-# the partitions signed by boot_signer:
-#axp_avb_bootparts: "boot|recovery"
-#axp_avb_bootparts_count: 2
-#axp_avb_dmparts_count: 2 # (system.img + vendor.img)
-
-#### OPTIONAL OVERWRITE:
-# this is a low-end device (optimize for performance, increase storage, lower avb hashsums)
-#axp_lowend_device: True
-
-#### OPTIONAL OVERWRITE:
-# set to False to skip force encryption (ICE, FDE, FBE)
-#axp_auto_encrypt: False
+# all used VENDOR paths for this device, e.g. "vendor_google_crosshatch|vendor_google_blueline"
+axp_git_push_vendor_include: "vendor_<VENDORNAME>_<COMMONTREE>|vendor_<VENDORNAME>_<DEVICETREE>"
 
 #### NEVER TOUCH THIS:
 # Bootloader ID (first line) for verifying build log
 #axp_bootloader_id_pro: ''
 #axp_bootloader_id_slim: ''
 
-#### REQUIRED:
-# git push project names related to this device. used for device init, reproducible builds, ci/cd
-axp_git_push_device_include: "device_<VENDORNAME>_<DEVICETREE>|{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "vendor_<VENDORNAME>_<COMMONTREE>|vendor_<VENDORNAME>_<DEVICETREE>"
-
 #################################################################################################################################
 ## Website info
 
 #### REQUIRED:
 # COMMON block
-hugo_firmware: "" # firmware included: included|manual (device available in vendor/firmware?)
-hugo_isab: "" # A/B device: yes|no
+# do we include vendor firmware?
+# see: https://axpos.org/docs/developer/contrib_bringup/#firmware-check
+# - if there is an AndroidBoardVendor.mk set "included" otherwise "manual"
+hugo_firmware: ""
 
-# NEVER TOUCH THIS:
+#### REQUIRED:
+# Is the device an A/B device (legacy or virtual)?
+# A/B? -> https://source.android.com/docs/core/ota/virtual_ab
+# How to identify:
+# - https://www.xda-developers.com/list-android-devices-seamless-updates/
+# - General Rules:
+#   Android 13+: (Virtual) A/B
+#   Android 11+: A/B
+#   Google Pixel: Every Google Pixel device ever released uses A/B partitions.
+#   Samsung: not before 2024 and even then need to be verified
+# - Manual Verification Method
+#   adb shell getprop ro.boot.slot_suffix
+#   -> if it returns _a or _b, it is an A/B device.
+#   -> if it returns nothing, it is an A-only device.
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: ''
+
+#### NEVER TOUCH THIS:
 hugo_xda_link: "" # link to the AXP.OS XDA post for that device
 hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
 hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
@@ -103,7 +145,7 @@ hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
 android_version_pro: "" # Android version: 9,10,11,13,15
 hugo_encryption_pro: "" # device encryption supported: no|FDE|FBEv1|FBEv2
 hugo_relockable_pro: "" # bootloader re-lock supported: yes|no
-# NEVER TOUCH THIS:
+#### NEVER TOUCH THIS:
 #hugo_axp_bootloader_id_pro: | # if AVB: the bootloader id string (from build log)
 #hugo_supportlevel_pro: ""  # i.e.: "team" | "community"
 #hugo_first_releasedate_pro: "" # first public stable release date (YYYY-MM-DD)
@@ -114,7 +156,7 @@ hugo_relockable_pro: "" # bootloader re-lock supported: yes|no
 android_version_slim: "" # Android version: 9,10,11,13,15
 hugo_encryption_slim: "" # device encryption supported: no|FDE|FBEv1|FBEv2
 hugo_relockable_slim: "" # bootloader re-lock supported: yes|no
-# NEVER TOUCH THIS:
+#### NEVER TOUCH THIS:
 #hugo_axp_bootloader_id_slim: | # if AVB: the bootloader id string (from build log)
 #hugo_supportlevel_slim: "" # i.e.: "team" | "community"
 #hugo_first_releasedate_slim: "" # first public stable release date (YYYY-MM-DD)
@@ -122,16 +164,42 @@ hugo_relockable_slim: "" # bootloader re-lock supported: yes|no
 #hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
 
 #################################################################################################################################
+##### OPTIONAL:
+## THE WHOLE FOLLOWING FIRMWARE INFO BLOCK DEPENDS ON: hugo_firmware (see above).
+## That means anything below is required ONLY if hugo_firmware: "included"
+
+#################################################################################################################################
 ## Firmware info
+##
+
+#### REQUIRED:
+# you need to find a reliable source for downloading the vendor's factory zip.
+# you can find some examples in the porting guide: https://axpos.org/docs/developer/port/#extract-and-push-vendorfirmware
+# (you do not need to follow that guide, just check out the examples there).
+# this is NOT a direct download link but e.g. the download page of the vendor, an XDA post, ...
+# so simply the page from where the actual download is linked
+# just change the URL, leave the '#' at start as it is:
 # source: https://the-website-where-the-firmware-is-located
 
 #### OPTIONAL:
-vendor_firmware_super_img: False   # factory zip contains super image: True|False
+# does the factory zip contain super image? Can be eiher: True|False
+# as it is optional it can be skipped, otherwise it requires extracting the factory zip
+# e.g. using https://github.com/rhythmcache/payload-dumper-rust and checking if there are any "super" images inside
+# do not use any quotes here:
+vendor_firmware_super_img: False
+
+#### NEVER TOUCH THIS:
 vendor_factory_version: "" # optional helper, e.g. FP4.QREL.xxxx.user-factory
 
-# REQUIRED:
-vendor_firmware_download_url: "" # direct download link, might include vendor_factory_version as a variable
-vendor_firmware_download_sha512: "" # one of sha512, sha256 or md5 is required (in that order)
+#### REQUIRED:
+# direct download link to the OTA/factory zip of the vendor.
+# Examples: 
+# - https://github.com/sfX-android/automation_scripts/blob/284dc09e31e80282645d6d937d34496a860cc515/roles/axp/sargo/vars/main.yml#L80
+# - https://github.com/sfX-android/automation_scripts/blob/284dc09e31e80282645d6d937d34496a860cc515/roles/axp/enchilada/vars/main.yml#L70
+vendor_firmware_download_url: ""
+# one of sha512 or sha256 is required (in that order) if there is none you have to download and generate it (sha512sum xxx.zip)
+# e.g.: https://github.com/sfX-android/automation_scripts/blob/284dc09e31e80282645d6d937d34496a860cc515/roles/axp/sargo/vars/main.yml#L81
+vendor_firmware_download_sha512: ""
 #vendor_firmware_download_sha256: 
 #vendor_firmware_download_md5: 
 
