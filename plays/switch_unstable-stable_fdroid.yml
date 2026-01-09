@@ -43,6 +43,7 @@
         
       - name: "F-Droid: switch"
         become: yes
+        become_user: "{{ fdroid_srv_user }}"
         ansible.builtin.shell: |
             app_and_version=$(echo "{{ app_name }}" | sed 's/%%/_{{ app_version }}/g')
             bash {{ fdroidpath }}/update_repo.sh {{ fdroid_switch_type }} "$app_and_version"
