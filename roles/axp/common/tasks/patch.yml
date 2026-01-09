@@ -69,7 +69,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  when: android_version_int | int > 14
+  when: android_version_int | int > 14 or target_model == "g4"
 
 - name: "Disable 3rd party firmware blobs"
   ansible.builtin.replace:
