@@ -102,10 +102,10 @@
     if [ -d /tmp/hardened_malloc ];then rm -rf /tmp/hardened_malloc; fi
     if [ -d /tmp/lge ];then rm -rf /tmp/lge; fi
     mv external/hardened_malloc /tmp
-    mv device/lge /tmp
+    mv device/lge/g4-common/sepolicy /tmp/lge
     mka blueprint_tools >> {{ BUILD_LOG }} 2>&1
     mv /tmp/hardened_malloc external/
-    mv /tmp/lge device/
+    mv /tmp/lge device/lge/g4-common/sepolicy
     {% endif %}
     
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
