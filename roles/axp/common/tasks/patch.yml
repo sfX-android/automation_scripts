@@ -92,7 +92,7 @@
     # start DOS+AOS patching process
     {{ DOS_INIT }}
 
-    lunch lineage_arm64${brf_suffix}-userdebug >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
+    lunch lineage_arm64${brf_suffix}-userdebug >> {{ BUILD_LOG }} 2>&1 && echo "lunching lineage bptarget succeeded" >> {{ BUILD_LOG }} 2>&1
 
     {% if android_version_int | int >= 15 or target_model == "g4" %}
     # FIXME: this is a dirty hack!
@@ -102,7 +102,7 @@
     mv /tmp/hardened_malloc external/
     {% endif %}
 
-    lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
+    lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo "lunching real device ({{ sub_model | d(target_model) }}) succeeded" >> {{ BUILD_LOG }} 2>&1
     
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
