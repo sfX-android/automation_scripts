@@ -113,6 +113,8 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
+  environment:
+      TERM: linux
 
 # overlay does not work on A11, wt.. ?!
 - name: "Logo: overlay workaround"
