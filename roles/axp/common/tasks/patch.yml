@@ -99,9 +99,9 @@
     {% endif %}
     {% if android_version_int | int >= 15 or target_model == "g4" %}
     if [ -d /tmp/hardened_malloc ];then rm -rf /tmp/hardened_malloc; fi
-    mv hardened_malloc /tmp
+    mv external/hardened_malloc /tmp
     mka blueprint_tools >> {{ BUILD_LOG }} 2>&1
-    mv /tmp/hardened_malloc .
+    mv /tmp/hardened_malloc external/
     {% endif %}
     
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
