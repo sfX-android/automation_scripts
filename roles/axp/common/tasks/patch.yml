@@ -98,10 +98,14 @@
     lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
     {% endif %}
     {% if android_version_int | int >= 15 or target_model == "g4" %}
+    # FIXME: this is a dirty hack!
     if [ -d /tmp/hardened_malloc ];then rm -rf /tmp/hardened_malloc; fi
+    if [ -d /tmp/lge ];then rm -rf /tmp/lge; fi
     mv external/hardened_malloc /tmp
+    mv device/lge /tmp
     mka blueprint_tools >> {{ BUILD_LOG }} 2>&1
     mv /tmp/hardened_malloc external/
+    mv /tmp/lge device/
     {% endif %}
     
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
