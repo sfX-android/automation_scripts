@@ -290,7 +290,7 @@ DOS_INIT: |
     {% if android_target_release != "0" %}export TARGET_RELEASE={{ android_target_release }} brf_suffix="-{{ android_target_release }}"{% endif %}
 
     # set advanced deblobbing on A15 and later
-    if [ {{ android_version_int }} -ge 15 ]||[ "{{ target_model }}" == "g4" ];then
+    if [ {{ android_version_int }} -ge 15 ];then
         export AXP_ADVANCED_DEBLOB=true
     else
         unset AXP_ADVANCED_DEBLOB
