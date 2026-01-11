@@ -69,7 +69,7 @@
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  when: android_version_int | int > 14 or target_model == "g4"
+  when: android_version_int | int > 14
 
 - name: "Disable 3rd party firmware blobs"
   ansible.builtin.replace:
@@ -94,7 +94,7 @@
 
     lunch lineage_arm64${brf_suffix}-userdebug >> {{ BUILD_LOG }} 2>&1 && echo "lunching lineage bptarget succeeded" >> {{ BUILD_LOG }} 2>&1
 
-    {% if android_version_int | int >= 15 or target_model == "g4" %}
+    {% if android_version_int | int >= 15 %}
     # FIXME: this is a dirty hack!
     if [ -d /tmp/hardened_malloc ];then rm -rf /tmp/hardened_malloc; fi
     mv -v external/hardened_malloc /tmp >> {{ BUILD_LOG }} 2>&1
