@@ -103,6 +103,8 @@
     {% endif %}
 
     lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo "lunching real device ({{ sub_model | d(target_model) }}) succeeded" >> {{ BUILD_LOG }} 2>&1
+
+    export KERNEL_PATH_CVE
     
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
