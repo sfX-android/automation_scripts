@@ -66,6 +66,8 @@ hugo_axp_bootloader_id_slim: |
         3217A7174855F2EE
         1A4E16C591592826
 
+hugo_patchlevel_slim: "Platform + Kernel<br/><i>(Firmware until 2025-11)</i>"
+
 #################################################################################################################################
 # vendor/firmware info
 # source: https://support.fairphone.com/hc/en-us/articles/18896094650513-Install-Fairphone-OS-manually#01HB8ZZ1BMMQNSNMFT3YXDBXA0
