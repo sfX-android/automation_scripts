@@ -103,8 +103,6 @@
     {% endif %}
 
     lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo "lunching real device ({{ sub_model | d(target_model) }}) succeeded" >> {{ BUILD_LOG }} 2>&1
-
-    export KERNEL_PATH_CVE
     
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
@@ -112,11 +110,10 @@
   register: patchout
   environment:
     KERNEL_PATH_CVE: "{{ target_kernel_dir | regex_replace('/','_') }}"
+    TERM: linux
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  environment:
-      TERM: linux
 
 # overlay does not work on A11, wt.. ?!
 - name: "Logo: overlay workaround"
