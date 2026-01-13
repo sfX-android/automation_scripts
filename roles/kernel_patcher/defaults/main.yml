@@ -46,7 +46,8 @@ sec_patch_date_last: "{{ current_year }}{{ sec_month }}"
 # all patches up to then are set properly already
 sec_patch_topics_kernel:
   - "{{ range(202412, 202413) }}"
-  - "{{ range(202501, sec_patch_date_last | int) }}"
+  - "{{ range(202501, 202513) }}"
+  - "{{ range(202601, sec_patch_date_last | int) }}"
 
 # set the max allowed commit date for the downloader (CVE_PATCHER_NOT_OLDER_THAN_DATE)
 # mainly to avoid false positives

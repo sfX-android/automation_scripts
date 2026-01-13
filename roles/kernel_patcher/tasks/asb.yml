@@ -16,6 +16,8 @@
           2026*) asb_uri="https://source.android.com/docs/security/bulletin/2026/{{ t }}" ;;
               *) asb_uri="https://source.android.com/docs/security/bulletin/{{ t }}" ;;
         esac
+        echo "processing bulletin {{ t }}" | tee -a {{ BUILD_LOG }}
+        echo "processing bulletin uri: $asb_uri" >> {{ BUILD_LOG }}
         ./android-bulletins-harvester -kernel -quiet -jsonk -url $asb_uri >> {{ BUILD_LOG }} 2>&1
     {% endfor %}
   args:
