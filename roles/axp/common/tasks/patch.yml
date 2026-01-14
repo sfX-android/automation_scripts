@@ -181,6 +181,9 @@
           echo "[AXP] .. kernel defconfig is already patched (patch indicator exists)" >> {{ BUILD_LOG }}
       fi
     {% endif %}
+
+    # set displayed build id shown in About phone info
+    sed -i "s/ro\.lineage\.version=\$(LINEAGE_VERSION)/ro.lineage.version={{ build_id }}-{{ axp_type | upper() }}/g" ../*/vendor/lineage
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
