@@ -97,11 +97,9 @@ github_cli_main_host: github.com
 
 # build vars
 os_name: "AXP.OS"
-#los_version: "{{ android_shortversion | replace('a13','20.0') | replace('a12','19.1') | replace('a11','18.1') | replace('a10','17.1') | replace('a9','16.0') }}"
-#git_repo_main_branch: "lineage-{{ los_version }}"
+# default flavor we build for
+axp_type: "pro"
 git_repo_main_branch: "{{ los_version_gitbranch }}"
-#DOSPATH: "/home/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
-#DOSPATH: "/ssd2/androidsource/do-not-touch/{{ ROM_FLAVOR }}"
 DOSPATH: "/ssd2/aos"
 # SRCPATH HAS TO be part of DOSPATH - this is a divestOS limitation and cannot be changed
 # If you need to use a different path for any reason you can use symlinks for the "LineageOS-XX" folders
@@ -113,13 +111,10 @@ ZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ sub_model | d(target_model) }}/"
 RELEASE_TYPE: >-
-    {%if axp_type is undefined %}dos{% else %}{{ axp_type | upper() }}{% endif %}
+    {%if axp_type == "pro" %}dos{% else %}{{ axp_type | upper() }}{% endif %}
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
-# if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
-# moved to global common
-#axp_build_eng: false
 
 # directories to be cleaned on a clean build
 axp_clean_paths:
@@ -311,6 +306,10 @@ download_fairphone_firmware: False
 
 # does factory zip contains super image? should be overwritten in device vars if required
 vendor_firmware_super_img: False
+
+# default patchlevels as hugo vars, override in device vars if required!
+hugo_patchlevel_pro: "Platform + Kernel"
+hugo_patchlevel_slim: "Platform + Kernel"
 
 # enable the following in a device's vars file with:
 # custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
@@ -688,9 +687,6 @@ SH_COMMON_BUILD_SNIPPET: |
 # overrides of: roles/common/defaults/main.yml
 ##############################################################################################
 ##############################################################################################
-
-# AXP.OS patches the kernel!
-sec_patch_level: '05'
 
 # we always need to change sec_patch_level as we patch the kernel
 force_secpatchdate: True

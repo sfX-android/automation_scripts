@@ -43,8 +43,18 @@
     - name: "END PLAY"
       ansible.builtin.meta: end_play
 
-- ansible.builtin.include_tasks: clean.yml
+- name: "Cleanup"
+  ansible.builtin.include_tasks: clean.yml
   when: axp_skip_common_tasks is undefined
+
+- name: "Get patch level based on axp_type"
+  ansible.builtin.set_fact:
+    axp_sec_patch_level_dyn: "{{ lookup('vars', 'hugo_patchlevel_' + axp_type) }}"
+
+- name: "Set patch level based on axp_type"
+  ansible.builtin.set_fact:
+    sec_patch_level: >-
+        {% if axp_sec_patch_level_dyn == "Platform + Kernel + Firmware" %}'05'{% else if axp_sec_patch_level_dyn == "Platform + Kernel" %}'03'{% else %}'01'{% endif %}
 
 - name: "Sync & adjust"
   when:

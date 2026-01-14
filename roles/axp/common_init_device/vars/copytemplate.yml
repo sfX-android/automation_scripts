@@ -185,7 +185,7 @@ hugo_relockable_slim: ''
 #hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
 # can be one of:
 #   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel" 
-#hugo_patchlevel_pro: ""
+#hugo_patchlevel_slim: ""
 
 #################################################################################################################################
 ##### OPTIONAL:
