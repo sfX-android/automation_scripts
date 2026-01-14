@@ -4,8 +4,9 @@
   ansible.builtin.shell: |
     # credits: DivestOS (https://git.disroot.org/AXP.OS/build/src/commit/25b87d3e9b9c64b3c0b7b47d36e883cf2b80d67a/Scripts/Common/Enable_Verity.sh)
     {{ DOS_INIT }}
-    lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo "lunching real device ({{ sub_model | d(target_model) }}) succeeded" >> {{ BUILD_LOG }} 2>&1
-    
+    lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 \
+      && echo "lunching device ({{ sub_model | d(target_model) }}) succeeded" >> {{ BUILD_LOG }} 2>&1
+
     umask 0022
     source "$DOS_SCRIPTS_COMMON/Shell.sh"
     cd "$DOS_BUILD_BASE"
@@ -67,6 +68,17 @@
     {% else %}
     enableVerity "{{target_model_device_tree_path}}" >> {{ BUILD_LOG }} 2>&1
     enableVerity "{{target_model_common_tree_path}}" >> {{ BUILD_LOG }} 2>&1
+    # Kernel Changes
+    [[ -d kernel/essential/msm8998 ]] && sed -i 's/slotselect/slotselect,verify/' kernel/essential/msm8998/arch/arm64/boot/dts/essential/msm8998-mata-lineage.dtsi &>/dev/null || true #/vendor
+    [[ -d kernel/google/marlin ]] && sed -i 's/wait,slotselect/wait,slotselect,verify/' kernel/google/marlin/arch/arm64/boot/dts/htc/msm8996-htc-common.dtsi &>/dev/null || true #/vendor
+    [[ -d kernel/moto/shamu ]] && sed -i 's/wait/wait,verify/g' kernel/moto/shamu/arch/arm/boot/dts/qcom/apq8084.dtsi &>/dev/null || true #/system
+    [[ -d kernel/oneplus/msm8996 ]] && sed -i 's/wait/wait,verify/g' kernel/oneplus/msm8996/arch/arm/boot/dts/qcom/15801/msm8996-mtp.dtsi &>/dev/null || true #/system
+    [[ -d kernel/oneplus/msm8998 ]] && sed -i 's/wait/wait,verify/g' kernel/oneplus/msm8998/arch/arm/boot/dts/qcom/cheeseburger.dtsi &>/dev/null || true #/system and /vendor
+    [[ -d kernel/oneplus/msm8998 ]] && sed -i 's/wait/wait,verify/g' kernel/oneplus/msm8998/arch/arm/boot/dts/qcom/dumpling.dtsi &>/dev/null || true #/system and /vendor
+    [[ -d kernel/samsung/exynos7870 ]] && sed -i 's/wait/wait,verify/g' kernel/samsung/exynos7870/arch/arm64/boot/dts/exynos7870-j5y17lte_common.dtsi &>/dev/null #/system
+    [[ -d kernel/zuk/msm8996 ]] && sed -i 's/wait/wait,verify/g' kernel/zuk/msm8996/arch/arm/boot/dts/qcom/zuk/common.dtsi &>/dev/null || true #/system and /vendor
+    sed -i 's/^\treturn VERITY_STATE_DISABLE;//' kernel/*/*/drivers/md/dm-android-verity.c &>/dev/null || true
+    #sed -i 's/#if 0/#if 1/' kernel/*/*/drivers/power/reset/msm-poweroff.c &>/dev/null || true #TODO: needs refinement
     {% endif %}
   args:
     executable: /bin/bash
