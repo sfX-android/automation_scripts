@@ -62,7 +62,7 @@
 
     {% if android_version_int | int >= 11 and axp_avb_version < 2 %}
     echo "SKIPPING enabling verity (Android {{ android_version_int }} does not support AVB v1.x anymore!)"
-    {% else if axp_avb_version >= 2 %}
+    {% elif axp_avb_version >= 2 %}
     enableAVB "{{target_model_device_tree_path}}" >> {{ BUILD_LOG }} 2>&1
     enableAVB "{{target_model_common_tree_path}}" >> {{ BUILD_LOG }} 2>&1
     {% else %}
