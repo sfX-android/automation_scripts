@@ -61,7 +61,7 @@
 - name: "Set patch level based on axp_type"
   ansible.builtin.set_fact:
     sec_patch_level: >-
-        {% if axp_sec_patch_level_dyn == "Platform + Kernel + Firmware" %}'05'{% else if axp_sec_patch_level_dyn == "Platform + Kernel" %}'03'{% else %}'01'{% endif %}
+        {% if axp_sec_patch_level_dyn == "Platform + Kernel + Firmware" %}'05'{% elif axp_sec_patch_level_dyn == "Platform + Kernel" %}'03'{% else %}'01'{% endif %}
 
 - name: "Sync & adjust"
   when:
