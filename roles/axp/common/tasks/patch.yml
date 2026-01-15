@@ -184,7 +184,8 @@
     
     cd $CPWD
     # set displayed build id shown in About phone info
-    sed -i "s/ro\.lineage\.version=\$(LINEAGE_VERSION)/ro.lineage.version={{ build_id }}-{{ axp_type | upper() }}/g" vendor/lineage
+    find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.version=\$(LINEAGE_VERSION)/ro.lineage.version={{ build_id }}-{{ axp_type | upper() }}/g" {} \;
+    echo "LineageOS version set to: {{ build_id }}-{{ axp_type | upper() }}" | tee -a {{ BUILD_LOG }} 
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
