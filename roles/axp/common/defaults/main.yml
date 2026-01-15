@@ -115,6 +115,7 @@ RELEASE_TYPE: >-
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
+axp_os_build_id: "{{ los_version }}-{{ build_id }}-{{ sub_model | d(target_model) }}-{{ axp_type | lower() }}"
 
 # directories to be cleaned on a clean build
 axp_clean_paths:
