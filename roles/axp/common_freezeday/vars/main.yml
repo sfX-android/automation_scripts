@@ -54,9 +54,9 @@ semaphore_aos_template_survey_vars: >-
           "values": [],
           "name": "semaphore_aos_template_startversion",
           "title": "Set build ID",
-          "description": "format: YYYY-MM.id",
+          "description": "format: YYYY.id",
           "type": "",
-          "default_value": "2025-",
+          "default_value": "2026.00",
           "required": true
       }
     ]
