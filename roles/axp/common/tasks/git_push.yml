@@ -256,9 +256,9 @@
     LTAG="$TAG"
 
     cd external/axp_versioning
-    git remote add up {{ git_axpos_org_private }}/axp_versioning || true
+    git remote add up {{ git_axpos_org_private }}/axp_versioning >> {{ BUILD_LOG }} 2>&1 || true
     git fetch up --tags --force
-    git tag | grep "$TAG" || LTAG=$(git tag | head -n1)
+    git tag | grep "$TAG" || LTAG=$(git tag | tail -n1)
     
     # base on the previous tag (for comparison) or an existing
     git checkout $LTAG >> {{ BUILD_LOG }} 2>&1
