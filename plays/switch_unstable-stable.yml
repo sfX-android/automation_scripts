@@ -87,7 +87,7 @@
           DEL=$(ls -1 {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }} | grep -v SLIM | tr '\n' ' ')
           {% endif %}
 
-          if [ -f "$DEL" ];then rm -v "$DEL"; fi
+          for f in $DEL;do test -f $f && rm -fv "$f"; done
         loop:
           - img
           - img.sha256sum
