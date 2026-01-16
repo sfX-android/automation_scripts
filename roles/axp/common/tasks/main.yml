@@ -56,7 +56,7 @@
 
 - name: "Get patch level based on axp_type"
   ansible.builtin.set_fact:
-    axp_sec_patch_level_dyn: "{{ lookup('vars', 'hugo_patchlevel_' + axp_type) }}"
+    axp_sec_patch_level_dyn: "{{ lookup('vars', 'hugo_patchlevel_' + axp_type | lower()) }}"
 
 - name: "Set patch level based on axp_type"
   ansible.builtin.set_fact:
