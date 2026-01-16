@@ -309,7 +309,7 @@
     sed -i "s/%%RELDATE%%/$(date +%F) - or later/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     
     # set manifest
-    sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('git@','') | regex_replace(':','/') }}/tree/$MTAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+    sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('.*git@','') | regex_replace(':','/') }}/src/tag/$MTAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
   
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning || exit 44
