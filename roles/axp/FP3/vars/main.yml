@@ -78,6 +78,8 @@ hugo_axp_bootloader_id_slim: |
         667B67D29F9B5EBC
         4D09EC6750C3AEEC
 
+hugo_patchlevel_slim: "Platform + Kernel<br/><i>(Firmware until 2025-08)</i>"
+
 # vendor/firmware info
 # source: https://support.fairphone.com/hc/en-us/articles/18896094650513-How-to-manually-install-Android-on-your-Fairphone#01HB8ZZ1BMMQNSNMFT3YXDBXA0
 #

@@ -12,7 +12,12 @@
     go get github.com/dukebarman/android-bulletins-harvester >> {{ BUILD_LOG }} 2>&1
     go build . >> {{ BUILD_LOG }} 2>&1
     {% for t in bull_range | split(' ') %}
-        ./android-bulletins-harvester -kernel -quiet -jsonk -url https://source.android.com/docs/security/bulletin/{{ t }} 2>> {{ BUILD_LOG }}
+        case "{{ t }}" in
+          2026*) asb_uri="https://source.android.com/docs/security/bulletin/2026/{{ t }}" ;;
+              *) asb_uri="https://source.android.com/docs/security/bulletin/{{ t }}" ;;
+        esac
+        echo "processing bulletin {{ t }}, uri: $asb_uri" >> {{ BUILD_LOG }}
+        ./android-bulletins-harvester -kernel -quiet -jsonk -url $asb_uri 2>> {{ BUILD_LOG }}
     {% endfor %}
   args:
     chdir: "{{ asb_harvester_path }}"

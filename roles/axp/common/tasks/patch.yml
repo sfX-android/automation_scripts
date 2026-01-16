@@ -91,13 +91,18 @@
     
     # start DOS+AOS patching process
     {{ DOS_INIT }}
-    
-    {% if sub_model is defined %}
-    lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
-    {% else %}
-    lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
+
+    lunch lineage_arm64${brf_suffix}-userdebug >> {{ BUILD_LOG }} 2>&1 && echo "lunching lineage bptarget succeeded" >> {{ BUILD_LOG }} 2>&1
+
+    {% if android_version_int | int >= 15 %}
+    # FIXME: this is a dirty hack!
+    if [ -d /tmp/hardened_malloc ];then rm -rf /tmp/hardened_malloc; fi
+    mv -v external/hardened_malloc /tmp >> {{ BUILD_LOG }} 2>&1
+    mka blueprint_tools >> {{ BUILD_LOG }} 2>&1
+    mv -v /tmp/hardened_malloc external/ >> {{ BUILD_LOG }} 2>&1
     {% endif %}
-    {% if android_version_int | int >= 15 %}mka blueprint_tools >> {{ BUILD_LOG }} 2>&1{% endif %}
+
+    lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo "lunching real device ({{ sub_model | d(target_model) }}) succeeded" >> {{ BUILD_LOG }} 2>&1
     
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
@@ -105,6 +110,7 @@
   register: patchout
   environment:
     KERNEL_PATH_CVE: "{{ target_kernel_dir | regex_replace('/','_') }}"
+    TERM: linux
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
@@ -175,6 +181,11 @@
           echo "[AXP] .. kernel defconfig is already patched (patch indicator exists)" >> {{ BUILD_LOG }}
       fi
     {% endif %}
+    
+    cd $CPWD
+    # set displayed build id shown in About phone info
+    find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.version=\$(LINEAGE_VERSION)/ro.lineage.version={{ axp_os_build_id }}/g" {} \;
+    echo "LineageOS version set to: {{ axp_os_build_id }}" | tee -a {{ BUILD_LOG }} 
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"

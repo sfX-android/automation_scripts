@@ -64,9 +64,11 @@
       - name: "RECOVERY: switch to stable"
         ansible.builtin.shell: >-
           {% if axp_type | d('') == "slim" %}
-          cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}* {{ rempath }}/recovery/
+          cp -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}* {{ rempath }}/recovery/
           {% else %}
-          cp {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* {{ rempath }}/recovery/
+          for i in $(ls {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* | grep -v SLIM);do
+            cp -v $i {{ rempath }}/recovery/
+          done
           {% endif %}
         when: axp_release_recovery_skip == "False"
         
@@ -80,16 +82,17 @@
       - name: "RECOVERY: delete from unstable"
         ansible.builtin.shell: |
           {% if axp_type | d('') == "slim" %}
-          DEL=$(ls "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }}")
+          DEL=$(ls {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }})
           {% else %}
-          DEL=$(ls "{{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }}")
+          DEL=$(ls -1 {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }} | grep -v SLIM | tr '\n' ' ')
           {% endif %}
 
-          if [ -f "$DEL" ];then rm -v "$DEL"; fi
+          for f in $DEL;do test -f $f && rm -fv "$f"; done
         loop:
           - img
-          - img.sha256
-          - img.sha512
+          - img.sha256sum
+          - img.sha512sum
+          - img-ODIN_RENAME-TO_recovery.tar.md5
         when: axp_release_recovery_skip == "False"
 
       # must have .stdout, so do not set_fact or vars it!

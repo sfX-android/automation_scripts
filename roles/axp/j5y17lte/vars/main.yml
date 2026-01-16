@@ -90,6 +90,7 @@ hugo_axp_bootloader_id_pro: |
         0F5DB3688EA16A0C
 #hugo_axp_bootloader_id_slim: |
 
+hugo_patchlevel_pro: "Kernel only<br/><i>(Platform until 2025-08)<i>"
 
 # ASB patch date override, month+1:
 # (latest avail backport is from August 2025)

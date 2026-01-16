@@ -74,5 +74,5 @@
 
 - include_tasks: setup_semaphore.yml
   vars:
-    semaphore_aos_template_name: "AOS {{ git_repo_local_manifests_branch | upper | regex_replace('AXP-','') }} {{ axp_type | regex_replace('slim','Slim') }}: {{ target_model_full }} ({{ target_model }})"
+    semaphore_aos_template_name: "AOS {{ git_repo_local_manifests_branch | upper | regex_replace('AXP-','') }} {{ axp_type | regex_replace('slim','Slim') | regex_replace('pro','Pro') }}: {{ target_model_full }} ({{ target_model }})"
   when: not skip_setup_semaphore

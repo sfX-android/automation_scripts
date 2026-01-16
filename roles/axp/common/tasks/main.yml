@@ -1,23 +1,30 @@
 ---
 
-- include_vars: axp-slim.vars.yml
-  #no_log: true
+- name: "Include: axp-slim.vars.yml"
+  ansible.builtin.include_vars: axp-slim.vars.yml
   when: (axp_type | d(ROM_FLAVOR)) == "slim"
 
-- include_tasks: prep.yml
-- include_vars: "../../{{ target_model }}/vars/main.yml"
+- name: "Include: prep.yml"
+  ansible.builtin.include_tasks: prep.yml
+- name: "Include: target_model vars"
+  ansible.builtin.include_vars: "../../{{ target_model }}/vars/main.yml"
 
-- include_vars: axp_lowend_device.vars.yml
+- name: "Include: axp_lowend_device.vars.yml"
+  ansible.builtin.include_vars: axp_lowend_device.vars.yml
   when: axp_lowend_device
 
-- include_vars: axp_avb1_device.vars.yml
+- name: "Include: axp_avb1_device.vars.yml"
+  ansible.builtin.include_vars: axp_avb1_device.vars.yml
   when: axp_avb_version == 1
 
-- include_vars: axp_avb0_device.vars.yml
+- name: "Include: axp_avb0_device.vars.yml"
+  ansible.builtin.include_vars: axp_avb0_device.vars.yml
   when: axp_avb_version == 0
 
-- include_tasks: set_env_vars.yml
-- include_tasks: init.yml
+- name: "Include: set_env_vars.yml"
+  ansible.builtin.include_tasks: set_env_vars.yml
+- name: "Include: init.yml"
+  ansible.builtin.include_tasks: init.yml
 
 - name: "Just push-to-git selected!"
   when:
@@ -43,58 +50,77 @@
     - name: "END PLAY"
       ansible.builtin.meta: end_play
 
-- ansible.builtin.include_tasks: clean.yml
+- name: "Cleanup"
+  ansible.builtin.include_tasks: clean.yml
   when: axp_skip_common_tasks is undefined
+
+- name: "Get patch level based on axp_type"
+  ansible.builtin.set_fact:
+    axp_sec_patch_level_dyn: "{{ lookup('vars', 'hugo_patchlevel_' + axp_type) }}"
+
+- name: "Set patch level based on axp_type"
+  ansible.builtin.set_fact:
+    sec_patch_level: >-
+        {% if axp_sec_patch_level_dyn == "Platform + Kernel + Firmware" %}05{% elif axp_sec_patch_level_dyn == "Platform + Kernel" %}03{% else %}01{% endif %}
 
 - name: "Sync & adjust"
   when:
     - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
   block:
 
-      - include_tasks: sync.yml
-      - include_tasks: adjust_DOS_options.yml
+    - name: "Include: sync.yml"
+      ansible.builtin.include_tasks: sync.yml
 
-      # download latest firmware, taken from vendor/firmware/*/0SOURCE
-      - include_tasks: firmware_update.yml
-        when: update_vendor_firmware | bool or download_fairphone_firmware | bool
+    - name: "Include: adjust_DOS_options.yml"
+      ansible.builtin.include_tasks: adjust_DOS_options.yml
 
-      # apply ASB patches if needed
-      # currently LOS supports ASB patches up to and including: Android 14
-      #- include_tasks: single_secpatch.yml
-      - include_tasks: ../../common/tasks/secpatch.yml
-        when: 
-          - (android_version_int | int < 14) or sec_patch_unmerged
+    # download latest firmware, taken from vendor/firmware/*/0SOURCE
+    - name: "Include: firmware_update.yml"
+      ansible.builtin.include_tasks: firmware_update.yml
+      when: update_vendor_firmware | bool or download_fairphone_firmware | bool
 
-      # AXP.OS patches
-      - include_tasks: patch.yml
+    # apply ASB patches if needed
+    # currently LOS supports ASB patches up to and including: Android 14
+    # - include_tasks: single_secpatch.yml
 
-      - name: "Generate verity tools"
-        ansible.builtin.shell: |
-          {{ DOS_INIT }}
-          lunch lineage_{{ sub_model| d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
-          mka generate_verity_key >> {{ BUILD_LOG }} 2>&1 || mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
-        args:
-          chdir: "{{ SRCPATH }}"
-          executable: /bin/bash
+    - name: "Include: secpatch.yml"
+      ansible.builtin.include_tasks: ../../common/tasks/secpatch.yml
+      when:
+        - (android_version_int | int < 14) or sec_patch_unmerged
 
-      #- fail:
-      #    msg: YEEEEEEeeeeeeeeeeeeeHa..
+    # AXP.OS patches
+    - name: "Include: patch.yml"
+      ansible.builtin.include_tasks: patch.yml
+    - name: "Include: avb.yml"
+      ansible.builtin.include_tasks: avb.yml
 
-      # special deblob workarounds
-      - include_tasks: patch_device_gs201.yml
-        when: 
-          - target_model == "cheetah"
-          - android_version_int | int < 15
+    - name: "Generate verity tools"
+      ansible.builtin.shell: |
+        {{ DOS_INIT }}
+        lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+        mka generate_verity_key >> {{ BUILD_LOG }} 2>&1 || mka generate_verity_key >> {{ BUILD_LOG }} 2>&1
+      changed_when: true
+      args:
+        chdir: "{{ SRCPATH }}"
+        executable: /bin/bash
 
-- include_tasks: commit_kernel.yml
+    # - fail:
+    #    msg: YEEEEEEeeeeeeeeeeeeeHa..
+
+    # special deblob workarounds
+    # FIXME: can be removed once all gs201 device have been ported to A15
+    - name: "Include: patch_device_gs201.yml"
+      ansible.builtin.include_tasks: patch_device_gs201.yml
+      when:
+        - target_model == "cheetah"
+        - android_version_int | int < 15
+
+- name: "Include: commit_kernel.yml"
+  ansible.builtin.include_tasks: commit_kernel.yml
   when: axp_skip_common_tasks is undefined
 
-- block:
-
-      - name: "Early git push to AXP.OS org"
-        include_tasks: git_push.yml
-
+- name: "Early git push to AXP.OS org"
+  ansible.builtin.include_tasks: git_push.yml
   when:
     - commit_push | bool
     - early_push | d(False)
-          
