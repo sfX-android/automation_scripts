@@ -1,64 +1,151 @@
 ---
+
+#################################################################################################################################
+## Device info
+
 # human readable model name
-target_model_vendor: "Google"
-target_model_name: 'Pixel 4a'
+target_model_vendor: "Google" # e.g. OnePlus
+target_model_name: 'Pixel 4a' # e.g. '5T', always ensure single quotes here
+
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a13
+# allow creating factory image
+custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 
-# boot debugger path & config
-extendrom_debug_path_default: /mnt/vendor/persist
-extendrom_debug_path_size_full_default: 500 
-extendrom_debug_path_size_kernel_default: 100
-extendrom_debug_path_size_selinux_default: 200
-extendrom_debug_path_size_crash_default: 200
+# AXP.OS might not offer the latest available Android version for your device (by design):
+# 1. check the current latest stable or planned Android version: https://axpos.org/docs/knowledge/requirements/#android-version
+# 2. find your device in the LineageOS wiki: https://wiki.lineageos.org/
+# 3. find "Current version" and "Previously supported versions" matching the AXP.OS one from step 1
+# (hint: the LineageOS version like 18.1, 20.0 is used later so make a note for you later)
+#
+# format: <a><integer>, e.g. a13, a15, ..
+# (will be deprecated in favor of android_version_pro/slim soon but required atm)
+#android_shortversion: "a15"
 
-# path to the kernel dir (req for e.g. wireguard)
-target_kernel_dir: kernel/google/msm-4.14
+# path to the kernel dir
+# e.g. "kernel/oneplus/msm8998"
+target_kernel_dir: "kernel/google/msm-4.14"
 
-# path to the common tree, if none exists the device tree
-# required e.g. for git, vendor/axp, release handling etc
-target_model_common_tree: device_google_sunfish
+# path to the common tree, if none exists then the device tree.
+# used e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: "device_google_sunfish" # e.g. device_oneplus_msm8998-common
 
-# the common tree main makefile, usually named device.mk or common.mk
-# used in e.g. switch_major_release role.
-# defaults to "device.mk"
-#target_model_common_tree_mk: common.mk
+target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model_name | lower() }}
 
 # the BoardConfig file within a device tree, required e.g. for switch_major_release
 # usually is one of: BoardConfigCommon, BoardConfig, BoardConfigLineage.
 # defaults to BoardConfigCommon
 target_model_device_tree_boardmk: BoardConfigLineage.mk
 
-# add OpenEUICC
+# the common tree or if there is none the device main makefile,
+# usually named device.mk or common.mk. used in e.g. switch_major_release role.
+# defaults to "device.mk"
+#target_model_device_tree_mk: common.mk
+
+# do NOT upload the recovery image
+#axp_release_recovery: False
+
+# disable Wireguard patching (already part of the upstream kernel)
+# only if the kernel repo contains "drivers/net/wireguard", set this to True
+#skip_wireguard: True
+
+# does the device support eSIMs (check e.g. here: https://esim.sm/en/compatible-devices)?
+# If YES, then enable the following line:
 extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
 
-# allow creating factory image
-custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+# AVB version. Can be: 1|2|0 (if unset this defaults to 2).
+# Details: https://axpos.org/docs/knowledge/verifiedboot
+# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
+# if device supports only AVB v1 and the target Android version is 11 or later AVB should be disabled (as v1 is deprecated)!
+# (see also: https://axpos.org/docs/knowledge/verifiedboot/#details)
+# to disable AVB, set it to 0.
+# do not use any quotes here.
+#axp_avb_version: 1
+
+# AVB v1 only (if axp_avb_version: 1)
+# the partitions signed by boot_signer:
+#axp_avb_bootparts: "boot|recovery"
+#axp_avb_bootparts_count: 2
+#axp_avb_dmparts_count: 2 # (e.g. system.img + vendor.img)
+
+# some devices might fail verifying the boot.img if the expire date is set to the default (30 years)
+#KEYS_CERT_DAYS_VERITY: 3650
+
+#axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
+#axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
+
+# usually legacy devices like LG G4, klte and such while that always depends on the
+# target Android version. This will have drawbacks, details can be found here: 
+# https://axpos.org/docs/knowledge/techdetails/#what-changes-does-axp_lowend_device-make
+#axp_lowend_device: True
+
+# set to False to skip force encryption,
+# might be required when "axp_lowend_device: True" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
+#axp_auto_encrypt: False
+
+# boot debugger mount point
+# path for boot_debug, must be identified within the device / common tree fstab:
+# - must be a writable partition
+# - must be a mountable partition (ext2, ext4, f2fs, ..)
+# usually one of: /mnt/vendor/persist, /metadata or /cache
+extendrom_debug_path_default: "/mnt/vendor/persist"
+extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_kernel_default: 100
+extendrom_debug_path_size_selinux_default: 200
+extendrom_debug_path_size_crash_default: 200
+
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+#### NEVER TOUCH THIS:
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
+
+# all used VENDOR paths for this device, e.g. "vendor_google_crosshatch|vendor_google_blueline"
+axp_git_push_vendor_include: "vendor_google_sunfish"
 
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: '2357DB9EBF8090F9'
 axp_bootloader_id_slim: 'B49112D3DD534A21'
 
-# git push
-axp_git_push_device_include: "{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "vendor_google_sunfish"
+#################################################################################################################################
+## Website info
 
-# website info
-hugo_avb_pro: "{{ axp_avb_version }}"
-hugo_avb_slim: "{{ axp_avb_version }}"
-hugo_encryption: "FBEv1"
-hugo_firmware: "included"
-hugo_relockable: "yes"
-hugo_state: "stable"
-hugo_supportlevel: "team"
-hugo_isab: "yes"
+# COMMON block
+# do we include vendor firmware?
+# 1. open https://code.binbash.rocks/AXP.OS/vendor_firmware
+# 2. select the correct `branch` _(must match the AXP.OS Android version, e.g. "axp-a15")_
+# 3. click the folder with the `codename` for your device
+# 4. If there is a folder with the device's codename (e.g. `enchilada`):
+#   - check the file `AndroidBoardVendor.mk`: It should contain several `$(call add-radio-file.....` lines
+# If steps 1-4 were successful set "included" otherwise "manual"
+hugo_firmware: included""
+
+# Is the device an A/B device (legacy or virtual)?
+# A/B? -> https://source.android.com/docs/core/ota/virtual_ab
+# How to identify:
+# - https://www.xda-developers.com/list-android-devices-seamless-updates/
+# - General Rules:
+#   Android 13+: (Virtual) A/B
+#   Android 11+: A/B
+#   Google Pixel: Every Google Pixel device ever released uses A/B partitions.
+#   Samsung: not before 2024 and even then need to be verified
+# - Manual Verification Method
+#   adb shell getprop ro.boot.slot_suffix
+#   -> if it returns _a or _b, it is an A/B device.
+#   -> if it returns nothing, it is an A-only device.
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
 hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-sunfish-axp-os-20.4651368/"
-hugo_first_releasedate: "2024-01-16"
-#hugo_kb_link: ""
-#hugo_custom_installguide_path: 
-hugo_axp_bootloader_id_pro: |
+#hugo_kb_link:
+#hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+
+# PRO block
+android_version_pro: "15" # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
+# bootloader re-lock supported?
+# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
+# can be: 'yes' or 'no', single quotes required
+hugo_relockable_pro: 'yes'
+hugo_encryption_pro: "FBEv1" # device encryption supported: no|FDE|FBEv1|FBEv2 
+hugo_axp_bootloader_id_pro: |-
   BOOTLOADER minimal ID
         2357DB9E
 
@@ -67,7 +154,22 @@ hugo_axp_bootloader_id_pro: |
         908E9BBC0B353CC9
         CA11015AC588001D
         0AB9A80BD8AA5906
-hugo_axp_bootloader_id_slim: |
+hugo_supportlevel_pro: "team"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2024-01-16 (A13)<br/>TBD (A15)" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "stable (A13)<br/>!! ALPHA !! (A15)" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel" 
+#hugo_patchlevel_pro: ""
+
+# SLIM block
+android_version_slim: "A15" # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
+# bootloader re-lock supported?
+# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
+# can be: 'yes' or 'no', single quotes required
+hugo_relockable_slim: 'yes'
+hugo_encryption_slim: "FBEv1" # device encryption supported: no|FDE|FBEv1|FBEv2
+hugo_axp_bootloader_id_slim: |-
   BOOTLOADER minimal ID
           B49112D3
   
@@ -76,11 +178,32 @@ hugo_axp_bootloader_id_slim: |
           AD3FC088B8977377
           4004899D7B181996
           15E6F074099EA3E0
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "2025-02-05 (A13)<br/>TBD (A15)" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "stable (A13)<br/>!! ALPHA !! (A15)" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel" 
+#hugo_patchlevel_slim: ""
 
-# vendor/firmware info
-# download source: https://archive.org/details/sunfish-tq3a.230805.001.s1
+#################################################################################################################################
+## Firmware info
+##
+
+# you need to find a reliable source for downloading the vendor's factory zip.
+# you can find some examples in the porting guide: https://axpos.org/docs/developer/port/#extract-and-push-vendorfirmware
+# (you do not need to follow that guide, just check out the examples there).
+# this is NOT a direct download link but e.g. the download page of the vendor, an XDA post, ...
+# so simply the page from where the actual download is linked
+# just change the URL, leave the '#' at start as it is:
+# source: https://archive.org/details/sunfish-tq3a.230805.001.s1
+
+vendor_factory_version: "sunfish-ota-tq3a.230805.001.s1-965296b1" # optional helper, e.g. FP4.QREL.xxxx.user-factory
+
+# direct download link to the OTA/factory zip of the vendor.
 vendor_firmware_download_url: "https://archive.org/download/sunfish-tq3a.230805.001.s1/sunfish-ota-tq3a.230805.001.s1-965296b1.zip"
 vendor_firmware_download_sha512: "cbdf1aff26ede80276876a791e7e129b763835474ba835472ec84af5791e2316dd154d3c19d06aa64b86fdb0e0b0af8c8c573877be348e2c90d5bcd8a2807819"
+
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
-# in any case the hash sum will be verified though.
-vendor_firmware_persistent_path: "{{ persistent_dir }}/sunfish-ota-tq3a.230805.001.s1-965296b1.zip"
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
+#################################################################################################################################

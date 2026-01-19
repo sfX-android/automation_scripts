@@ -11,6 +11,10 @@ target_model_name: '' # e.g. '5T', always ensure single quotes here
 #### NEVER TOUCH THIS:
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
+#### NEVER TOUCH THIS:
+# allow creating factory image
+#custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+
 #### DEFINE-IF-YOU-CAN:
 # AXP.OS might not offer the latest available Android version for your device (by design):
 # 1. check the current latest stable or planned Android version: https://axpos.org/docs/knowledge/requirements/#android-version
@@ -34,6 +38,12 @@ target_model_common_tree: "" # e.g. device_oneplus_msm8998-common
 
 #### NEVER TOUCH THIS:
 target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model_name | lower() }}
+
+#### NEVER TOUCH THIS:
+# the BoardConfig file within a device tree, required e.g. for switch_major_release
+# usually is one of: BoardConfigCommon, BoardConfig, BoardConfigLineage.
+# defaults to BoardConfigCommon
+#target_model_device_tree_boardmk: BoardConfigLineage.mk
 
 #### NEVER TOUCH THIS:
 # the common tree or if there is none the device main makefile,
@@ -161,13 +171,13 @@ android_version_pro: "" # usually identical to android_shortversion at the top. 
 hugo_relockable_pro: ''
 #### NEVER TOUCH THIS:
 #hugo_encryption_pro: "" # device encryption supported: no|FDE|FBEv1|FBEv2 
-#hugo_axp_bootloader_id_pro: | # if AVB: the bootloader id string (from build log)
+#hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
 #hugo_supportlevel_pro: ""  # i.e.: "team" | "community"
 #hugo_first_releasedate_pro: "" # first public stable release date (YYYY-MM-DD)
 #hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
 #hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
-# can be one of:
-#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel" 
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
 #hugo_patchlevel_pro: ""
 
 # SLIM block
@@ -178,7 +188,7 @@ android_version_slim: "" # usually identical to android_shortversion at the top.
 hugo_relockable_slim: ''
 #### NEVER TOUCH THIS:
 #hugo_encryption_slim: "" # device encryption supported: no|FDE|FBEv1|FBEv2
-#hugo_axp_bootloader_id_slim: | # if AVB: the bootloader id string (from build log)
+#hugo_axp_bootloader_id_slim: |- # if AVB: the bootloader id string (from build log)
 #hugo_supportlevel_slim: "" # i.e.: "team" | "community"
 #hugo_first_releasedate_slim: "" # first public stable release date (YYYY-MM-DD)
 #hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"

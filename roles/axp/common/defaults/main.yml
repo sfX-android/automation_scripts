@@ -116,10 +116,12 @@ ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
 axp_os_build_id: "{{ los_version }}-{{ build_id }}-{{ sub_model | d(target_model) }}-{{ axp_type | lower() }}"
+android_shortversion: >-
+    a{{ lookup('vars', 'android_version_' + axp_type | lower()) }}
 
 # directories to be cleaned on a clean build
 axp_clean_paths:
-    - "{{ SRCPATH }}/kernel" 
+    - "{{ SRCPATH }}/kernel"
     - "{{ SRCPATH }}/DOS_PATCHED_FLAG"
     - "{{ SRCPATH }}/packages/apps/Fennec_DOS-Shim"
     - "{{ SRCPATH }}/vendor/divested"
@@ -232,7 +234,7 @@ extendrom_signing_patches: 'true'
 extendrom_allow_any_call_recording: 'true'
 
 # Signing keys configuration
-KEYS_CERT_DAYS_VERITY: 10950 # some devices do not like if the expire date is long time in the future!! (e.g. dumpling) set in device vars if the default of 30 years avoid booting!
+KEYS_CERT_DAYS_VERITY: 10950 # some devices do not like if the expire date is long time in the future!! (e.g. dumpling) set in device vars if the default of 30 years break booting!
 KEYS_CERT_C: DE
 KEYS_CERT_O: "The AXP.OS Project"
 KEYS_CN: "{{ target_model }}"
@@ -247,7 +249,7 @@ common_apps_keydir: "{{ keys_base_path }}/{{ os_name }}/common"
 build_tag: "{{ ansible_date_time.year }}-{{ ansible_date_time.month }}-{{ ansible_date_time.day }}_{{ target_model }}_{{ android_shortversion }}"
 
 device_cl: |-
-  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() | upper }}***
+  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() | upper() }}***
 
 rom_cl: |-
   ***Changes:***
