@@ -46,7 +46,7 @@
     - target_model_vendor == "Google"
     - android_version_int | int > 14
 
-- name: "Sync DOS"
+- name: "Sync AXP.OS main"
   ansible.builtin.shell: |
       git fetch --all
       
@@ -77,7 +77,7 @@
     chdir: "{{ DOSPATH }}"
 #  no_log: "{{ debug_off | d(true) }}"
 
-- name: "AXP.OS: sync LOS base & local manifests"
+- name: "AXP.OS: Sync LineageOS base & local manifests"
   include_tasks: ../../../common/tasks/sync.yml
 
 - name: "Google Pixel: Setup GrapheneOS link"
@@ -105,10 +105,6 @@
     - axp_build_recovery_only is defined and axp_build_recovery_only
     - target_model == "j5y17lte"
     
-# (needs to be done in DOS more early then for others)
-#- name: "AXP.OS: ensure the keys dir is set correctly"
-#  include_tasks: ../../../common/tasks/set_keys.yml
-
 - name: "Fix syntax issue in repopick on A10"
   ansible.builtin.lineinfile:
     path: "{{ SRCPATH }}/vendor/lineage/build/tools/repopick.py"

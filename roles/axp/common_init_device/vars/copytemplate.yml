@@ -16,17 +16,6 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 #custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 
 #### DEFINE-IF-YOU-CAN:
-# AXP.OS might not offer the latest available Android version for your device (by design):
-# 1. check the current latest stable or planned Android version: https://axpos.org/docs/knowledge/requirements/#android-version
-# 2. find your device in the LineageOS wiki: https://wiki.lineageos.org/
-# 3. find "Current version" and "Previously supported versions" matching the AXP.OS one from step 1
-# (hint: the LineageOS version like 18.1, 20.0 is used later so make a note for you later)
-#
-# format: <a><integer>, e.g. a13, a15, ..
-# (will be deprecated in favor of android_version_pro/slim soon but required atm)
-android_shortversion: ""
-
-#### DEFINE-IF-YOU-CAN:
 # path to the kernel dir
 # e.g. "kernel/oneplus/msm8998"
 target_kernel_dir: ""
@@ -164,7 +153,12 @@ hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
 # one block, either PRO / SLIM depending on your request
 
 # PRO block
-android_version_pro: "" # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
+# AXP.OS might not offer the latest available Android version for your device (by design):
+# 1. check the current latest stable or planned Android version: https://axpos.org/docs/knowledge/requirements/#android-version
+# 2. find your device in the LineageOS wiki: https://wiki.lineageos.org/
+# 3. find "Current version" and "Previously supported versions" matching the AXP.OS one from step 1
+# just the number, no quotes here. e.g. : 9,10,11,13,15
+android_version_pro: 
 # bootloader re-lock supported?
 # if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
 # can be: 'yes' or 'no', single quotes required
@@ -181,7 +175,12 @@ hugo_relockable_pro: ''
 #hugo_patchlevel_pro: ""
 
 # SLIM block
-android_version_slim: "" # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
+# AXP.OS might not offer the latest available Android version for your device (by design):
+# 1. check the current latest stable or planned Android version: https://axpos.org/docs/knowledge/requirements/#android-version
+# 2. find your device in the LineageOS wiki: https://wiki.lineageos.org/
+# 3. find "Current version" and "Previously supported versions" matching the AXP.OS one from step 1
+# just the number, no quotes here. e.g. : 9,10,11,13,15
+android_version_slim: 
 # bootloader re-lock supported?
 # if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
 # can be: 'yes' or 'no', single quotes required

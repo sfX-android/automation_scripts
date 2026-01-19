@@ -119,6 +119,11 @@ axp_os_build_id: "{{ los_version }}-{{ build_id }}-{{ sub_model | d(target_model
 android_shortversion: >-
     a{{ lookup('vars', 'android_version_' + axp_type | lower()) }}
 
+# only has an effect if local_manifest_replace is set to True in semaphore
+local_manifest_replace_path: "{{ SRCPATH }}/.repo/local_manifests/axp.xml"
+local_manifest_replace_regexp: 'https://git.disroot.org/AXP.OS'
+local_manifest_replace_string: "{{ git_axpos_org_private }}"
+
 # directories to be cleaned on a clean build
 axp_clean_paths:
     - "{{ SRCPATH }}/kernel"

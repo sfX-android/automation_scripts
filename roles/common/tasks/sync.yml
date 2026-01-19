@@ -1,7 +1,7 @@
 ---
 
 - name: "Get local manifests (if set)"
-  git:
+  ansible.builtin.git:
     repo: "{{ git_repo_local_manifests }}"
     dest: "{{ SRCPATH }}/.repo/local_manifests"
     version: "{{ git_repo_local_manifests_branch }}"
@@ -9,13 +9,20 @@
   timeout: 180
   when: git_repo_local_manifests is defined
 
+- name: "Adjust local manifest (if requested)"
+  when: local_manifest_replace | d(False)
+  ansible.builtin.replace:
+    path: "{{ local_manifest_replace_path }}"
+    regexp: '{{ local_manifest_replace_regexp }}'
+    replace: '{{ local_manifest_replace_string }}'
+
 - name: "Init Android sources"
-  shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }} --git-lfs >> {{ BUILD_LOG }}"
+  ansible.builtin.shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }} --git-lfs >> {{ BUILD_LOG }}"
   args:
     chdir: "{{ SRCPATH }}"
 
 - name: "Sync"
-  shell: |
+  ansible.builtin.shell: |
       if [ -d .repo/repo ];then cd .repo/repo/ && git pull;fi
       cd {{ SRCPATH }}
       {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} >> {{ BUILD_LOG }} 2>&1\
@@ -27,7 +34,7 @@
 # git lfs can be a pita! i.e. it silently fails and you have no idea where.
 # the following ensures we can catch known issues or print the error path at least
 - name: "Sync LFS"
-  shell: >
+  ansible.builtin.shell: >
       {{ repo_bin }} forall -j{{ max_processes_sync }} -c 'git lfs pull || pwd | grep -E "OpenCL-CTS" ' >> {{ BUILD_LOG }}
   args:
     executable: /bin/bash
