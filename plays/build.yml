@@ -5,51 +5,57 @@
   gather_facts: true
 
   pre_tasks:
-    - name: "Show Semaphore vars"
-      ansible.builtin.debug:
-        msg: "{{ semaphore_vars }}"
 
-    - name: "Prep semaphore run dir"
-      connection: local
-      ansible.builtin.file:
-        path: "{{ semaphore_lock_dir }}"
-        state: directory
-          
-    - name: "Set Semaphore run file"
-      ansible.builtin.set_fact:
-        semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ build_id }}.ansible_running"
+    - name: "Pre-Tasks"
+      block:
 
-    - name: "Setup semaphore running indicator"
-      connection: local
-      ansible.builtin.copy:
-        dest: "{{ semaphore_runfile }}"
-        content: |
-          date="{{ ansible_date_time.iso8601 }}"
-          play=build.yml
-          target={{ target_model }}
-          role="{{ ROM_FLAVOR }}/{{ target_model }}"
+        - name: "Show Semaphore vars"
+          ansible.builtin.debug:
+            msg: "{{ semaphore_vars }}"
 
-    - name: "DEBUG: axp_type"
-      ansible.builtin.debug:
-        var: axp_type
+        - name: "Prep semaphore run dir"
+          connection: local
+          ansible.builtin.file:
+            path: "{{ semaphore_lock_dir }}"
+            state: directory
+              
+        - name: "Set Semaphore run file"
+          ansible.builtin.set_fact:
+            semaphore_runfile: "{{ semaphore_lock_dir }}/{{ ROM_FLAVOR }}_{{ target_model }}_{{ build_id }}.ansible_running"
 
-    - name: "DEBUG: just_git_push"
-      ansible.builtin.debug:
-        var: just_git_push
+        - name: "Setup semaphore running indicator"
+          connection: local
+          ansible.builtin.copy:
+            dest: "{{ semaphore_runfile }}"
+            content: |
+              date="{{ ansible_date_time.iso8601 }}"
+              play=build.yml
+              target={{ target_model }}
+              role="{{ ROM_FLAVOR }}/{{ target_model }}"
 
-    # download_fairphone_firmware is DEPRECATED!
-    - name: "DEBUG: download_fairphone_firmware"
-      ansible.builtin.debug:
-        var: download_fairphone_firmware
+        - name: "DEBUG: axp_type"
+          ansible.builtin.debug:
+            var: axp_type
 
-    - name: "DEBUG: update_vendor_firmware"
-      ansible.builtin.debug:
-        var: update_vendor_firmware
+        - name: "DEBUG: just_git_push"
+          ansible.builtin.debug:
+            var: just_git_push
 
-    - name: "Import pre common role"
-      ansible.builtin.import_role:
-        name: pre   
-          
+        # download_fairphone_firmware is DEPRECATED!
+        - name: "DEBUG: download_fairphone_firmware"
+          ansible.builtin.debug:
+            var: download_fairphone_firmware
+
+        - name: "DEBUG: update_vendor_firmware"
+          ansible.builtin.debug:
+            var: update_vendor_firmware
+
+        - name: "Import pre common role"
+          ansible.builtin.import_role:
+            name: pre
+
+      become: no  # pre-tasks run as semaphore user
+
   tasks:
     # https://docs.ansible.com/ansible/latest/user_guide/playbooks_blocks.html
     - block:
@@ -122,27 +128,38 @@
         ansible.builtin.include_role:
           name: post
 
+      become: yes
+      become_user: "{{ ansible_ssh_user | d(axp_build_user) }}"
+
       # when any of the above fails notify always 
       rescue:
 
-        - ansible.builtin.set_fact:
+        - name: "Set TG ID:"
+          become: no
+          ansible.builtin.set_fact:
             tg_group_id: "{{ vault_tg_group_id_failing }}"
           when:
             - telegram_notifications | bool
 
-        - ansible.builtin.include_role:
+        - name: "Call notifier"
+          become: no
+          ansible.builtin.include_role:
             name: notify
 
         - name: "Remove semaphore running indicator"
+          become: no
           connection: local
           ansible.builtin.file:
             path: "{{ semaphore_runfile }}"
             state: absent
 
-        - ansible.builtin.import_role:
+        - name: "Post-tasks"
+          become: no
+          ansible.builtin.import_role:
             name: post
             
         - name: "Fail Message"
+          become: no
           ansible.builtin.fail:
             msg: |
               ERROR OCCURED:
