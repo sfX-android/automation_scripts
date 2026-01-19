@@ -142,7 +142,6 @@
             - telegram_notifications | bool
 
         - name: "Call notifier"
-          become: no
           ansible.builtin.include_role:
             name: notify
 
