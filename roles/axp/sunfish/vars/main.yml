@@ -139,7 +139,7 @@ hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-sunfish
 #hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
 
 # PRO block
-android_version_pro: "15" # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
+android_version_pro: 15 # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
 # bootloader re-lock supported?
 # if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
 # can be: 'yes' or 'no', single quotes required
@@ -163,7 +163,7 @@ hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the glob
 #hugo_patchlevel_pro: ""
 
 # SLIM block
-android_version_slim: "A15" # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
+android_version_slim: 15 # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
 # bootloader re-lock supported?
 # if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
 # can be: 'yes' or 'no', single quotes required
