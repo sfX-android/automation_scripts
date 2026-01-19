@@ -38,8 +38,8 @@ axp_bootloader_id_slim: 'AC2F6121652F3607'
 axp_git_push_device_include: "device_google_sargo|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_sargo"
 
-# disable Wireguard patching (already part of the upstream kernel since >= A15)
-skip_wireguard: True
+# disable Wireguard patching (already part of the upstream kernel)
+#skip_wireguard: True
 
 # website info
 hugo_encryption: "ICE"
