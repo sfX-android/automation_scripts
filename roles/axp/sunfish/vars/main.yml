@@ -9,9 +9,6 @@ target_model_name: 'Pixel 4a' # e.g. '5T', always ensure single quotes here
 
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# allow creating factory image
-custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
-
 # AXP.OS might not offer the latest available Android version for your device (by design):
 # 1. check the current latest stable or planned Android version: https://axpos.org/docs/knowledge/requirements/#android-version
 # 2. find your device in the LineageOS wiki: https://wiki.lineageos.org/

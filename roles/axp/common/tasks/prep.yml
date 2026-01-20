@@ -21,7 +21,7 @@
 
   when: ROM_FLAVOR != "kernel_patches_tester"
 
-- name: "grab DOS CVE Checker"
+- name: "Grab CVE Checker"
   ansible.builtin.get_url:
     url: "{{ divest_cve_checker_download }}"
     dest: "{{ divest_cve_checker_jar }}"

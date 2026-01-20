@@ -11,10 +11,6 @@ target_model_name: '' # e.g. '5T', always ensure single quotes here
 #### NEVER TOUCH THIS:
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-#### NEVER TOUCH THIS:
-# allow creating factory image
-#custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
-
 #### DEFINE-IF-YOU-CAN:
 # path to the kernel dir
 # e.g. "kernel/oneplus/msm8998"

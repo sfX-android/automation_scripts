@@ -603,19 +603,19 @@ SH_COMMON_BUILD_SNIPPET: |
         a9|a10) source ~/.venv/python2/bin/activate ;;
     esac
 
-    # DEBUG:
-    # custom_build_command defined = {{ custom_build_command is defined }}
-    # value = "{{ custom_build_command | default('UNDEFINED') }}"
-    # generate_factory_image: {{ generate_factory_image | d('UNDEFINED') }}
-
     {%   if axp_build_recovery_only is defined and axp_build_recovery_only   %}
     mka recoveryimage || f_detect_kerr
     if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
     mv -v out/target/product/{{ target_model }}/recovery.img {{ ZIPDIR }}/{{ axp_recovery_filename }}
-    {%   elif custom_build_command is defined   %}
-    # custom_build_command defined!
-    # generate_factory_image: {{ generate_factory_image }}
+    {%   elif generate_factory_image | bool   %}
+    # generate_factory_image !
+    {%      if target_model_vendor | upper() == "GOOGLE" %}
+    # custom build command (Google device)
+    {{ SH_COMMON_PIXEL_CREATE_FACTORY }}
+    {%      else    %}
+    # custom build command (custom_build_command var)
     {{ custom_build_command }}
+    {%      endif   %}
     {%   elif axp_build_eng | bool   %}
     # axp_build_eng set!
     #mka sepolicy
