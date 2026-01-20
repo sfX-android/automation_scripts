@@ -6,18 +6,19 @@
   register: dosdir
 
 - block:
-      
-    - name: "AXP.OS: initial Sync!"
+
+    - name: "AXP.OS: Initial Sync"
+      ansible.builtin.git:
+        repo: "{{ axp_git_repo }}"
+        dest: "{{ DOSPATH }}"
+        version: "{{ axp_main_branch }}"
+        accept_newhostkey: true
+
+    - name: "AXP.OS: Initial submodule Sync!"
       ansible.builtin.shell: |
-          git init -b {{ axp_main_branch }}
-          git remote add origin {{ axp_git_repo }} >> {{ BUILD_LOG }} 2>&1
           git fetch --all >> {{ BUILD_LOG }} 2>&1
-          git pull >> {{ BUILD_LOG }} 2>&1
-          git checkout "axp_main_branch | d('HEAD') }}" -f >> {{ BUILD_LOG }} 2>&1
-          #git branch --set-upstream-to origin/{{ axp_main_branch | d('HEAD') }}
-          
-          sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
-          git submodule update --init --recursive
+          sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config >> {{ BUILD_LOG }} 2>&1
+          git submodule update --init --recursive >> {{ BUILD_LOG }} 2>&1
           git submodule status >> {{ BUILD_LOG }} 2>&1
           git submodule update >> {{ BUILD_LOG }} 2>&1
           git submodule status >> {{ BUILD_LOG }} 2>&1
