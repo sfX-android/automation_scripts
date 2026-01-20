@@ -7,17 +7,14 @@
 
 - block:
 
-    - name: "AXP.OS: Initial Sync"
-      ansible.builtin.git:
-        repo: "{{ axp_git_repo }}"
-        dest: "{{ DOSPATH }}"
-        version: "{{ axp_main_branch }}"
-        accept_newhostkey: true
-        force: true
-
-    - name: "AXP.OS: Initial submodule Sync!"
+    - name: "AXP.OS: Initial Sync!"
       ansible.builtin.shell: |
+          [[ -n "$(echo "{{ axp_git_repo }}" | grep -e '^https\?://')" ]] \
+              && ssh -o StrictHostKeyChecking=accept-new "{{ axp_git_repo | regex_replace(':.*$', '') }}" >> {{ BUILD_LOG }} 2>&1
+          git init -b {{ axp_main_branch }} >> {{ BUILD_LOG }} 2>&1
+          git remote add origin {{ axp_git_repo }} >> {{ BUILD_LOG }} 2>&1
           git fetch --all >> {{ BUILD_LOG }} 2>&1
+          git checkout -b "{{ axp_main_branch }}" --track "origin/{{ axp_main_branch }}" >> {{ BUILD_LOG }} 2>&1
           sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config >> {{ BUILD_LOG }} 2>&1
           git submodule update --init --recursive >> {{ BUILD_LOG }} 2>&1
           git submodule status >> {{ BUILD_LOG }} 2>&1
