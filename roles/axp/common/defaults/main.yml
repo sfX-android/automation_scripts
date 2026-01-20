@@ -603,6 +603,11 @@ SH_COMMON_BUILD_SNIPPET: |
         a9|a10) source ~/.venv/python2/bin/activate ;;
     esac
 
+    # DEBUG:
+    # custom_build_command defined = {{ custom_build_command is defined }}
+    # value = "{{ custom_build_command | default('UNDEFINED') }}"
+    # generate_factory_image: {{ generate_factory_image | d('UNDEFINED') }}
+
     {%   if axp_build_recovery_only is defined and axp_build_recovery_only   %}
     mka recoveryimage || f_detect_kerr
     if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
