@@ -10,10 +10,10 @@
     - name: "AXP.OS: initial Sync!"
       ansible.builtin.shell: |
           git init -b {{ axp_main_branch }}
-          git remote add origin {{ axp_git_repo }}
-          git fetch --all
-          git pull
-          git checkout "axp_main_branch | d('HEAD') }}" -f
+          git remote add origin {{ axp_git_repo }} >> {{ BUILD_LOG }} 2>&1
+          git fetch --all >> {{ BUILD_LOG }} 2>&1
+          git pull >> {{ BUILD_LOG }} 2>&1
+          git checkout "axp_main_branch | d('HEAD') }}" -f >> {{ BUILD_LOG }} 2>&1
           #git branch --set-upstream-to origin/{{ axp_main_branch | d('HEAD') }}
           
           sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
@@ -21,9 +21,8 @@
           git submodule status >> {{ BUILD_LOG }} 2>&1
           git submodule update >> {{ BUILD_LOG }} 2>&1
           git submodule status >> {{ BUILD_LOG }} 2>&1
-          git pull
-          git lfs pull
-          git log -1
+          git pull >> {{ BUILD_LOG }} 2>&1
+          git log -1 >> {{ BUILD_LOG }} 2>&1
       args:
         executable: /bin/bash
         chdir: "{{ DOSPATH }}"
