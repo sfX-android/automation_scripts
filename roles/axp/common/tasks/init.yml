@@ -13,6 +13,7 @@
         dest: "{{ DOSPATH }}"
         version: "{{ axp_main_branch }}"
         accept_newhostkey: true
+        force: true
 
     - name: "AXP.OS: Initial submodule Sync!"
       ansible.builtin.shell: |
