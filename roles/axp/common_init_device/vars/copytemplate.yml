@@ -222,7 +222,7 @@ hugo_relockable_slim: ''
 vendor_firmware_version: "" # filename without zip
 
 #### DEFINE-IF-YOU-CAN:
-# direct download link to the OTA/factory zip of the vendor.
+# direct download link to the OTA zip of the vendor.
 # Examples: 
 # - https://github.com/sfX-android/automation_scripts/blob/284dc09e31e80282645d6d937d34496a860cc515/roles/axp/sargo/vars/main.yml#L80
 # - https://github.com/sfX-android/automation_scripts/blob/284dc09e31e80282645d6d937d34496a860cc515/roles/axp/enchilada/vars/main.yml#L70
@@ -230,7 +230,7 @@ vendor_firmware_download_url: ""
 # one of sha512 or sha256 is required (in that order) if there is none you have to download and generate it (sha512sum xxx.zip)
 # e.g.: https://github.com/sfX-android/automation_scripts/blob/284dc09e31e80282645d6d937d34496a860cc515/roles/axp/sargo/vars/main.yml#L81
 vendor_firmware_download_sha512: ""
-#vendor_firmware_download_sha256: 
+#vendor_firmware_download_sha256: ""
 
 #### NEVER TOUCH THIS:
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
@@ -248,19 +248,26 @@ vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }
 # you can find some examples in the porting guide: https://axpos.org/docs/developer/port/#extract-and-push-vendorfirmware
 # (you do not need to follow that guide, just check out the examples there).
 # this is NOT a direct download link but e.g. the download page of the vendor, an XDA post, ...
-# so simply the page from where the actual download is linked
+# so simply the page from where the actual download is linked.
+# e.g. https://developers.google.com/android/images#cheetah
 # just change the URL, leave the '#' at start as it is:
 # source: https://the-website-where-the-FACTORYZIP-is-located
 
-vendor_factory_version: "" # filename without zip
+#### DEFINE-IF-YOU-CAN and hugo_firmware: "included" and Google pixel or Fairphone:
+# direct download link to the FACTORY zip of the vendor.
+#vendor_factory_download_url: ""
+# one of sha512 or sha256 is required (in that order) if there is none you have to download and generate it (sha512sum xxx.zip)
+#vendor_factory_download_sha512: ""
+#vendor_factory_download_sha256: ""
 
-# direct download link to the OTA/factory zip of the vendor.
-vendor_factory_download_url: ""
-vendor_factory_download_sha512: ""
-#vendor_firmware_download_sha256: 
+#### NEVER TOUCH THIS:
+#vendor_factory_id:   # e.g. tq3a.230805.001.s1
+#vendor_factory_hash:   # e.g. 82902ea9
+#vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
+##ref## vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
 
 #### NEVER TOUCH THIS:
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though. persistent_dir is always a device specific path.
-vendor_factory_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
+#vendor_factory_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
 #################################################################################################################################

@@ -214,7 +214,10 @@ vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }
 # just change the URL, leave the '#' at start as it is:
 # source: https://archive.org/details/sunfish-tq3a.230805.001.s1
 
-vendor_factory_version: "sunfish-tq3a.230805.001.s1-factory-82902ea9.zip" # filename without zip
+vendor_factory_id: tq3a.230805.001.s1
+vendor_factory_hash: 82902ea9
+
+vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
 
 # direct download link to the OTA/factory zip of the vendor.
 vendor_factory_download_url: "https://archive.org/download/sunfish-tq3a.230805.001.s1/sunfish-tq3a.230805.001.s1-factory-82902ea9.zip"
