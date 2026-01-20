@@ -183,10 +183,9 @@ hugo_state_slim: "stable (A13)<br/>!! ALPHA !! (A15)" # "stable" | "!! ALPHA !!"
 #hugo_patchlevel_slim: ""
 
 #################################################################################################################################
-## Firmware info
+## FIRMWARE info
 ##
-
-# you need to find a reliable source for downloading the vendor's factory zip.
+# you need to find a reliable source for downloading the vendor's OTA zip.
 # you can find some examples in the porting guide: https://axpos.org/docs/developer/port/#extract-and-push-vendorfirmware
 # (you do not need to follow that guide, just check out the examples there).
 # this is NOT a direct download link but e.g. the download page of the vendor, an XDA post, ...
@@ -194,7 +193,7 @@ hugo_state_slim: "stable (A13)<br/>!! ALPHA !! (A15)" # "stable" | "!! ALPHA !!"
 # just change the URL, leave the '#' at start as it is:
 # source: https://archive.org/details/sunfish-tq3a.230805.001.s1
 
-vendor_factory_version: "sunfish-ota-tq3a.230805.001.s1-965296b1" # optional helper, e.g. FP4.QREL.xxxx.user-factory
+vendor_firmware_version: "sunfish-ota-tq3a.230805.001.s1-965296b1" # filename without zip
 
 # direct download link to the OTA/factory zip of the vendor.
 vendor_firmware_download_url: "https://archive.org/download/sunfish-tq3a.230805.001.s1/sunfish-ota-tq3a.230805.001.s1-965296b1.zip"
@@ -202,5 +201,26 @@ vendor_firmware_download_sha512: "cbdf1aff26ede80276876a791e7e129b763835474ba835
 
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though. persistent_dir is always a device specific path.
-vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+
+#################################################################################################################################
+## FACTORY info (only relevant for: Google Pixel, Fairphone)
+##
+# you need to find a reliable source for downloading the vendor's FACTORY zip.
+# you can find some examples in the porting guide: https://axpos.org/docs/developer/port/#extract-and-push-vendorfirmware
+# (you do not need to follow that guide, just check out the examples there).
+# this is NOT a direct download link but e.g. the download page of the vendor, an XDA post, ...
+# so simply the page from where the actual download is linked
+# just change the URL, leave the '#' at start as it is:
+# source: https://archive.org/details/sunfish-tq3a.230805.001.s1
+
+vendor_factory_version: "sunfish-tq3a.230805.001.s1-factory-82902ea9.zip" # filename without zip
+
+# direct download link to the OTA/factory zip of the vendor.
+vendor_factory_download_url: "https://archive.org/download/sunfish-tq3a.230805.001.s1/sunfish-tq3a.230805.001.s1-factory-82902ea9.zip"
+vendor_factory_download_sha512: "767d05453ee5da220e1ac12ecf1705d1cb8938d6a280b1c6fe09243122394d25a1fac7f579a9797873c2881d92c126a7c73356288aa66d7608a967dc63386dbf"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_factory_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
 #################################################################################################################################

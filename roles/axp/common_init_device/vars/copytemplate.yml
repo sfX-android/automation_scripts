@@ -198,27 +198,28 @@ hugo_relockable_slim: ''
 ## That means anything below is required ONLY if hugo_firmware: "included"
 
 #################################################################################################################################
-## Firmware info
+## FIRMWARE info
 ##
+#
 
-#### DEFINE-IF-YOU-CAN:
-# you need to find a reliable source for downloading the vendor's factory zip.
+#### DEFINE-IF-YOU-CAN and hugo_firmware: "included":
+# you need to find a reliable source for downloading the vendor's OTA zip.
 # you can find some examples in the porting guide: https://axpos.org/docs/developer/port/#extract-and-push-vendorfirmware
 # (you do not need to follow that guide, just check out the examples there).
 # this is NOT a direct download link but e.g. the download page of the vendor, an XDA post, ...
 # so simply the page from where the actual download is linked
 # just change the URL, leave the '#' at start as it is:
-# source: https://the-website-where-the-firmware-is-located
+# source: https://the-website-where-the-OTAZIP-is-located
 
 #### OPTIONAL:
-# does the factory zip contain super image? Can be eiher: True|False
+# does the factory zip contain super imag(s)? Can be eiher: True|False
 # as it is optional it can be skipped, otherwise it requires extracting the factory zip
 # e.g. using https://github.com/rhythmcache/payload-dumper-rust and checking if there are any "super" images inside
 # do not use any quotes here:
-vendor_firmware_super_img: False
+#vendor_firmware_super_img: False
 
 #### NEVER TOUCH THIS:
-vendor_factory_version: "" # optional helper, e.g. FP4.QREL.xxxx.user-factory
+vendor_firmware_version: "" # filename without zip
 
 #### DEFINE-IF-YOU-CAN:
 # direct download link to the OTA/factory zip of the vendor.
@@ -234,5 +235,32 @@ vendor_firmware_download_sha512: ""
 #### NEVER TOUCH THIS:
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though. persistent_dir is always a device specific path.
-vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+#################################################################################################################################
+
+#################################################################################################################################
+## FACTORY info (only relevant for: Google Pixel, Fairphone)
+##
+#
+
+#### DEFINE-IF-YOU-CAN and hugo_firmware: "included" and Google pixel or Fairphone:
+# you need to find a reliable source for downloading the vendor's FACTORY zip.
+# you can find some examples in the porting guide: https://axpos.org/docs/developer/port/#extract-and-push-vendorfirmware
+# (you do not need to follow that guide, just check out the examples there).
+# this is NOT a direct download link but e.g. the download page of the vendor, an XDA post, ...
+# so simply the page from where the actual download is linked
+# just change the URL, leave the '#' at start as it is:
+# source: https://the-website-where-the-FACTORYZIP-is-located
+
+vendor_factory_version: "" # filename without zip
+
+# direct download link to the OTA/factory zip of the vendor.
+vendor_factory_download_url: ""
+vendor_factory_download_sha512: ""
+#vendor_firmware_download_sha256: 
+
+#### NEVER TOUCH THIS:
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_factory_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
 #################################################################################################################################
