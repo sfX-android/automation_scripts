@@ -1,19 +1,19 @@
 ---
 
-- name: "Check init DOS state"
+- name: "Check AXP.OS state"
   ansible.builtin.stat:
     path: "{{ DOSPATH }}/.git"
   register: dosdir
 
 - block:
       
-    - name: "Init DOS: initial Sync!"
-      shell: |
-          git init
+    - name: "AXP.OS: initial Sync!"
+      ansible.builtin.shell: |
+          git init -b {{ axp_main_branch }}
           git remote add origin {{ axp_git_repo }}
           git fetch --all
           git pull
-          git checkout "{{ axp_main_branch | d('HEAD') }}" -f
+          git checkout "axp_main_branch | d('HEAD') }}" -f
           #git branch --set-upstream-to origin/{{ axp_main_branch | d('HEAD') }}
           
           sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
