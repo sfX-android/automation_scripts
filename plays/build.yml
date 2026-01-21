@@ -119,6 +119,7 @@
           name: notify
 
       - name: "Remove semaphore running indicator"
+        become: false
         connection: local
         ansible.builtin.file:
           path: "{{ semaphore_runfile }}"
