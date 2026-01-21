@@ -23,6 +23,8 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 # e.g. "kernel/oneplus/msm8998"
 target_kernel_dir: "kernel/google/msm-4.14"
 
+pixel_kernel_gki: False
+
 # path to the common tree, if none exists then the device tree.
 # used e.g. for git, vendor/axp, release handling etc
 target_model_common_tree: "device_google_sunfish" # e.g. device_oneplus_msm8998-common
