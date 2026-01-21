@@ -114,10 +114,10 @@
     - name: "Prep AXP.OS recovery vars (non-slim)"
       ansible.builtin.set_fact:
           axp_fastboot_zip: "{{ ROMFILE.stdout | regex_replace('.zip', '-fastboot.zip') }}"
-          axp_recovery_name: "{{ ROMFILE.stdout | regex_replace('-dos-', '-RECOVERY-') | regex_replace('.zip', '.img') }}"
-          axp_recovery_name_boot: "{{ ROMFILE.stdout | regex_replace('-dos-', '-BOOT-') | regex_replace('.zip', '.img') }}"
-          axp_recovery_name_vboot: "{{ ROMFILE.stdout | regex_replace('-dos-', '-VENDOR_BOOT-') | regex_replace('.zip', '.img') }}"
-          axp_recovery_name_dtbo: "{{ ROMFILE.stdout | regex_replace('-dos-', '-DTBO-') | regex_replace('.zip', '.img') }}"
+          axp_recovery_name: "{{ ROMFILE.stdout | regex_replace('-PRO-', '-RECOVERY-') | regex_replace('.zip', '.img') }}"
+          axp_recovery_name_boot: "{{ ROMFILE.stdout | regex_replace('-PRO-', '-BOOT-') | regex_replace('.zip', '.img') }}"
+          axp_recovery_name_vboot: "{{ ROMFILE.stdout | regex_replace('-PRO-', '-VENDOR_BOOT-') | regex_replace('.zip', '.img') }}"
+          axp_recovery_name_dtbo: "{{ ROMFILE.stdout | regex_replace('-PRO-', '-DTBO-') | regex_replace('.zip', '.img') }}"
       when: axp_type | d('') != "slim"
           
     - name: "Release AXP.OS RECOVERY for {{ BDEVICE }}"
