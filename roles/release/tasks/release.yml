@@ -5,6 +5,7 @@
 
     - name: "Prep folders"
       become: true
+      become_user: root
       ansible.builtin.file:
         path: "{{ item }}"
         owner: "{{ release_path_owner }}"
@@ -64,6 +65,8 @@
       when: generate_factory_image | bool
 
     - name: "Correct ZIP timestamp for {{ BDEVICE }} to fix recurring OTA offering"
+      become: true
+      become_user: root
       ansible.builtin.file:
         path: "{{ rempath }}/{{ ROMFILE.stdout }}"
         modification_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
@@ -83,14 +86,17 @@
         chdir: "{{ rempath }}"
       delegate_to: "{{ groups.downloadserver[0] }}"
       when: not unstable_build | d(False) | bool
-  
+
+  become: false
   when:
     - ROM_FLAVOR != "TWRP"
     - ROM_FLAVOR != "SHRP"
     - ROM_FLAVOR != "MAID"
     - axp_build_recovery_only is undefined or (axp_build_recovery_only is defined and not axp_build_recovery_only)
 
+
 - name: "Release RECOVERY for {{ BDEVICE }}"
+  become: false
   ansible.builtin.shell: "scp {{ ZIPDIR }}/{{ item }} {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ rempath }}"
   delegate_to: "{{ groups.buildserver[0] }}"
   loop:
@@ -186,6 +192,7 @@
           {% endif %}
       delegate_to: "{{ groups.buildserver[0] }}"
 
+  become: false
   when:
     - ROM_FLAVOR == "axp"
     - axp_release_recovery | d(False)
