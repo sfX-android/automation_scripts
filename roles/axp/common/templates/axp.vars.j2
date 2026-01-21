@@ -109,7 +109,7 @@ export DOS_BRANDING_LINK_PRIVACY="https://axpos.org/privacy-policy"
 
 # AOS branding
 # WARN: changing this will break the Updater on existing installs
-export AOS_BRANDING_BUILDTYPE="dos"                          # the LINEAGE_BUILDTYPE / channel name (AXP.OS-20.0-20241218-<AOS_BRANDING_BUILDTYPE>-bluejay.zip)
+export AOS_BRANDING_BUILDTYPE="{{ axp_type | upper() }}"   # the LINEAGE_BUILDTYPE / channel name (AXP.OS-20.0-20241218-<AOS_BRANDING_BUILDTYPE>-bluejay.zip)
 
 # build
 export DOS_MAX_THREADS_REPO={{ max_processes_sync }}   # Max amount of threads used for sync, e.g. used by repo (shouldn't exceed your CPU cores count, due to rate limit restrictions this cannot be set higher then 10)

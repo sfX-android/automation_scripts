@@ -208,6 +208,7 @@ hugo_relockable_slim: ''
 # (you do not need to follow that guide, just check out the examples there).
 # this is NOT a direct download link but e.g. the download page of the vendor, an XDA post, ...
 # so simply the page from where the actual download is linked
+# e.g. https://developers.google.com/android/ota#cheetah
 # just change the URL, leave the '#' at start as it is:
 # source: https://the-website-where-the-OTAZIP-is-located
 
