@@ -2,6 +2,7 @@
 # doc: https://core.telegram.org/bots/api
 
 - name: "Telegram: Summary (success)"
+  become: false
   connection: local
   community.general.telegram:
     token: "{{ vault_tg_token }}"
@@ -16,7 +17,7 @@
     - notify_on_success is undefined or (notify_on_success is defined and notify_on_success | bool)
 
 - name: "Telegram: Minimal Summary (success)"
-  become: no
+  become: false
   connection: local
   community.general.telegram:
     token: "{{ vault_tg_token }}"
@@ -31,7 +32,7 @@
     - notify_on_success is undefined or (notify_on_success is defined and notify_on_success | bool)
 
 - name: "Telegram: Summary (failed)"
-  become: no
+  become: false
   connection: local
   community.general.telegram:
     token: "{{ vault_tg_token }}"
@@ -42,7 +43,9 @@
       disable_web_page_preview: True
   when: buildresult.rc is undefined or buildresult.rc != 0
 
-- stat:
+- name: "Register logfile"
+  become: false
+  ansible.builtin.stat:
     path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
   register: logfile
   connection: local
@@ -50,7 +53,9 @@
   no_log: true
   when: ROM_FLAVOR != "MAID"
 
-- stat:
+- name: "Register logfile (mAid)"
+  become: false
+  ansible.builtin.stat:
     path: "/tmp/build_{{ ROM_FLAVOR }}_error.log"
   register: logfile
   connection: local
@@ -68,7 +73,7 @@
         
     - name: "Telegram: attach log (on errors)"
       connection: local
-      shell: |
+      ansible.builtin.shell: |
          curl -F document=@{{ logfile.stat.path }}.gz \ 
          -H "Content-Type:multipart/form-data" \ 
          "https://api.telegram.org/bot{{ vault_tg_token }}/sendDocument?chat_id={{ tg_group_id }}"
@@ -77,6 +82,7 @@
         - tg_group_id == vault_tg_group_id_failing
       no_log: true
 
+  become: false
   when: logfile.stat.isreg is defined
 
 # uploading via multipart/form-data seems to not work

@@ -1,28 +1,34 @@
 ---
 
-- name: "get ansible log path"
+- name: "Get ansible log path"
+  become: false
   connection: local
   ansible.builtin.shell: >-
     grep -E '^log_path\s+=' "{{ ansible_config_file }}" | cut -d '=' -f 2
   register: ansible_log
 
-- set_fact:
+- name: "Flatten log path"
+  become: false
+  ansible.builtin.set_fact:
     ansible_log_flatten: "{{ ansible_log.stdout | regex_replace('\\$HOME', ansible_home_dir) }}"
 
-- name: rotate ansible log
+- name: "Rotate ANSIBLE log"
+  become: false
   connection: local
   ansible.builtin.shell: "mv {{ ansible_log.stdout }} {{ ansible_home_dir }}/ansible-log.{{ build_no }} || true"
 
 - block:
 
-  - stat:
+  - name: "Register buildlogfile"
+    connection: local
+    ansible.builtin.stat:
       path: "/tmp/{{ inventory_hostname }}/{{ build_log_name }}"
     register: buildlogfile
-    connection: local
   
-  - name: rotate build log
+  - name: "Rotate BUILD log"
     connection: local
     ansible.builtin.shell: "mv /tmp/{{ inventory_hostname }}/{{ build_log_name }} /tmp/{{ inventory_hostname }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.log.{{ build_no }}"
     when: buildlogfile.stat.isreg is defined
 
+  become: false
   when: ROM_FLAVOR != "MAID"
