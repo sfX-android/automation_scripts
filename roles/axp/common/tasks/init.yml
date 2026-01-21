@@ -9,8 +9,8 @@
 
     - name: "AXP.OS: Initial Sync!"
       ansible.builtin.shell: |
-          [[ -n "$(echo "{{ axp_git_repo }}" | grep -e '^https\?://')" ]] \
-              && ssh -o StrictHostKeyChecking=accept-new "{{ axp_git_repo | regex_replace(':.*$', '') }}" >> {{ BUILD_LOG }} 2>&1
+          [[ -n "$(echo "{{ axp_git_org }}" | grep -ve '^https\?://')" ]] \
+              && ssh -o StrictHostKeyChecking=accept-new "{{ axp_git_org | regex_replace(':.*$', '') }}" >> {{ BUILD_LOG }} 2>&1
           git init -b {{ axp_main_branch }} >> {{ BUILD_LOG }} 2>&1
           git remote add origin {{ axp_git_repo }} >> {{ BUILD_LOG }} 2>&1
           git fetch --all >> {{ BUILD_LOG }} 2>&1
