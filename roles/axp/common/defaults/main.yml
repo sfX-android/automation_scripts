@@ -117,6 +117,7 @@ axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
 axp_os_build_id: "{{ los_version }}-{{ build_id }}-{{ sub_model | d(target_model) }}-{{ axp_type | lower() }}"
 android_shortversion: >-
     a{{ lookup('vars', 'android_version_' + axp_type | lower()) }}
+axp_skip_common_tasks: false
 
 # only has an effect if local_manifest_replace is set to True in semaphore
 local_manifest_replace_path: "{{ SRCPATH }}/.repo/local_manifests/axp.xml"

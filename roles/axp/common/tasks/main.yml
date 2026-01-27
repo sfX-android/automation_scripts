@@ -6,6 +6,7 @@
 
 - name: "Include: prep.yml"
   ansible.builtin.include_tasks: prep.yml
+  when: not axp_skip_common_tasks
 
 - name: "Include: target_model vars"
   ansible.builtin.include_vars: "../../{{ target_model }}/vars/main.yml"
@@ -53,7 +54,7 @@
 
 - name: "Cleanup"
   ansible.builtin.include_tasks: clean.yml
-  when: axp_skip_common_tasks is undefined
+  when: not axp_skip_common_tasks
 
 - name: "Get patch level based on axp_type"
   ansible.builtin.set_fact:
@@ -118,7 +119,7 @@
 
 - name: "Include: commit_kernel.yml"
   ansible.builtin.include_tasks: commit_kernel.yml
-  when: axp_skip_common_tasks is undefined
+  when: not axp_skip_common_tasks
 
 - name: "Early git push to AXP.OS org"
   ansible.builtin.include_tasks: git_push.yml
