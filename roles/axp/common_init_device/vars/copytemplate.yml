@@ -1,5 +1,6 @@
 ---
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
+# v1.3
 #################################################################################################################################
 ## Device info
 
@@ -160,7 +161,7 @@ android_version_pro:
 # can be: 'yes' or 'no', single quotes required
 hugo_relockable_pro: ''
 #### NEVER TOUCH THIS:
-#hugo_encryption_pro: "" # device encryption supported: no|FDE|FBEv1|FBEv2 
+#hugo_encryption_pro: "" # device encryption supported: no|FDE|ICE|FBEv1|FBEv2 
 #hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
 #hugo_supportlevel_pro: ""  # i.e.: "team" | "community"
 #hugo_first_releasedate_pro: "" # first public stable release date (YYYY-MM-DD)
@@ -182,7 +183,7 @@ android_version_slim:
 # can be: 'yes' or 'no', single quotes required
 hugo_relockable_slim: ''
 #### NEVER TOUCH THIS:
-#hugo_encryption_slim: "" # device encryption supported: no|FDE|FBEv1|FBEv2
+#hugo_encryption_slim: "" # device encryption supported: no|FDE|ICE|FBEv1|FBEv2
 #hugo_axp_bootloader_id_slim: |- # if AVB: the bootloader id string (from build log)
 #hugo_supportlevel_slim: "" # i.e.: "team" | "community"
 #hugo_first_releasedate_slim: "" # first public stable release date (YYYY-MM-DD)
@@ -262,8 +263,8 @@ vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }
 #vendor_factory_download_sha256: ""
 
 #### NEVER TOUCH THIS:
-#vendor_factory_id:   # e.g. tq3a.230805.001.s1
-#vendor_factory_hash:   # e.g. 82902ea9
+#vendor_factory_id: ""  # e.g. tq3a.230805.001.s1
+#vendor_factory_hash: ""  # e.g. 82902ea9
 #vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
 ##ref## vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
 
