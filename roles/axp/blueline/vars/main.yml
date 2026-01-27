@@ -1,0 +1,193 @@
+---
+
+#################################################################################################################################
+## Device info
+
+# human readable model name
+target_model_vendor: "Google" # e.g. OnePlus
+target_model_name: 'Pixel 3' # e.g. '5T', always ensure single quotes here
+
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
+
+# AXP.OS might not offer the latest available Android version for your device (by design):
+# 1. check the current latest stable or planned Android version: https://axpos.org/docs/knowledge/requirements/#android-version
+# 2. find your device in the LineageOS wiki: https://wiki.lineageos.org/
+# 3. find "Current version" and "Previously supported versions" matching the AXP.OS one from step 1
+# (hint: the LineageOS version like 18.1, 20.0 is used later so make a note for you later)
+#
+# format: <a><integer>, e.g. a13, a15, ..
+# (will be deprecated in favor of android_version_pro/slim soon but required atm)
+android_shortversion: "a15"
+
+# path to the kernel dir
+# e.g. "kernel/oneplus/msm8998"
+target_kernel_dir: "kernel/google/msm-4.9"
+
+# path to the common tree, if none exists then the device tree.
+# used e.g. for git, vendor/axp, release handling etc
+target_model_common_tree: "android_device_google_crosshatch" # e.g. device_oneplus_msm8998-common
+
+target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
+
+# the common tree or if there is none the device main makefile,
+# usually named device.mk or common.mk. used in e.g. switch_major_release role.
+# defaults to "device.mk"
+#target_model_device_tree_mk: common.mk
+
+# do NOT upload the recovery image
+#axp_release_recovery: False
+
+# disable Wireguard patching (already part of the upstream kernel)
+# only if the kernel repo contains "drivers/net/wireguard", set this to True
+#skip_wireguard: True
+
+# AVB version. Can be: 1|2|0 (if unset this defaults to 2).
+# Details: https://axpos.org/docs/knowledge/verifiedboot
+# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
+# if device supports only AVB v1 and the target Android version is 11 or later AVB should be disabled (as v1 is deprecated)!
+# (see also: https://axpos.org/docs/knowledge/verifiedboot/#details)
+# to disable AVB, set it to 0.
+# do not use any quotes here.
+#axp_avb_version: 1
+
+# AVB v1 only (if axp_avb_version: 1)
+# the partitions signed by boot_signer:
+#axp_avb_bootparts: "boot|recovery"
+#axp_avb_bootparts_count: 2
+#axp_avb_dmparts_count: 2 # (e.g. system.img + vendor.img)
+
+# some devices might fail verifying the boot.img if the expire date is set to the default (30 years)
+#KEYS_CERT_DAYS_VERITY: 3650
+
+#axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
+#axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
+
+# usually legacy devices like LG G4, klte and such while that always depends on the
+# target Android version. This will have drawbacks, details can be found here: 
+# https://axpos.org/docs/knowledge/techdetails/#what-changes-does-axp_lowend_device-make
+#axp_lowend_device: True
+
+# set to False to skip force encryption,
+# might be required when "axp_lowend_device: True" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
+#axp_auto_encrypt: False
+
+# boot debugger mount point
+# path for boot_debug, must be identified within the device / common tree fstab:
+# - must be a writable partition
+# - must be a mountable partition (ext2, ext4, f2fs, ..)
+# usually one of: /mnt/vendor/persist, /metadata or /cache
+extendrom_debug_path_default: "/metadata"
+
+extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_kernel_default: 100
+extendrom_debug_path_size_selinux_default: 200
+extendrom_debug_path_size_crash_default: 200
+
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
+
+# all used VENDOR paths for this device, e.g. "vendor_google_crosshatch|vendor_google_blueline"
+axp_git_push_vendor_include: "vendor_google_crosshatch|vendor_google_blueline"
+
+# Bootloader ID (first line) for verifying build log
+#axp_bootloader_id_pro: ''
+#axp_bootloader_id_slim: ''
+
+#################################################################################################################################
+## Website info
+
+# COMMON block
+# do we include vendor firmware?
+# 1. open https://code.binbash.rocks/AXP.OS/vendor_firmware
+# 2. select the correct `branch` _(must match the AXP.OS Android version, e.g. "axp-a15")_
+# 3. click the folder with the `codename` for your device
+# 4. If there is a folder with the device's codename (e.g. `enchilada`):
+#   - check the file `AndroidBoardVendor.mk`: It should contain several `$(call add-radio-file.....` lines
+# If steps 1-4 were successful set "included" otherwise "manual"
+hugo_firmware: "included"
+
+# Is the device an A/B device (legacy or virtual)?
+# A/B? -> https://source.android.com/docs/core/ota/virtual_ab
+# How to identify:
+# - https://www.xda-developers.com/list-android-devices-seamless-updates/
+# - General Rules:
+#   Android 13+: (Virtual) A/B
+#   Android 11+: A/B
+#   Google Pixel: Every Google Pixel device ever released uses A/B partitions.
+#   Samsung: not before 2024 and even then need to be verified
+# - Manual Verification Method
+#   adb shell getprop ro.boot.slot_suffix
+#   -> if it returns _a or _b, it is an A/B device.
+#   -> if it returns nothing, it is an A-only device.
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+hugo_xda_link: "TBD" # link to the AXP.OS XDA post for that device
+#hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
+#hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+
+# one block, either PRO / SLIM depending on your request
+
+# PRO block
+android_version_pro: 15 # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
+# bootloader re-lock supported?
+# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
+# can be: 'yes' or 'no', single quotes required
+hugo_relockable_pro: 'yes'
+hugo_encryption_pro: "ICE" # device encryption supported: no|FDE|FBEv1|FBEv2 
+#hugo_axp_bootloader_id_pro: | # if AVB: the bootloader id string (from build log)
+hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "WIP" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+
+# SLIM block
+#android_version_slim: "" # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
+# bootloader re-lock supported?
+# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
+# can be: 'yes' or 'no', single quotes required
+#hugo_relockable_slim: ''
+#hugo_encryption_slim: "" # device encryption supported: no|FDE|FBEv1|FBEv2
+#hugo_axp_bootloader_id_slim: | # if AVB: the bootloader id string (from build log)
+#hugo_supportlevel_slim: "" # i.e.: "team" | "community"
+#hugo_first_releasedate_slim: "" # first public stable release date (YYYY-MM-DD)
+#hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+
+#################################################################################################################################
+## Firmware info
+##
+# source: https://developers.google.com/android/ota#blueline
+
+# does the factory zip contain super imag(s)? Can be eiher: True|False
+# do not use any quotes here:
+#vendor_firmware_super_img: False
+
+vendor_firmware_version: "blueline-ota-sp1a.210812.016.c2-f7ebc6b3" # filename without zip
+
+# direct download link to the OTA zip of the vendor.
+vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_firmware_version }}.zip"
+vendor_firmware_download_sha256: "f7ebc6b326be1b40355d1e0b6d5e5e73204878f3419dec954eb35e1677bb12a1"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+#################################################################################################################################
+
+#################################################################################################################################
+## FACTORY info (only relevant for: Google Pixel, Fairphone)
+##
+#
+# source: https://developers.google.com/android/images#blueline
+
+vendor_factory_download_sha256: "fa981d87b6b28a1996161accbb147f46fe29663bb2ce6cc13dc9e500cbc59c93"
+
+vendor_factory_id: "sp1a.210812.016.c2"   # e.g. tq3a.230805.001.s1
+vendor_factory_hash: "fa981d87"  # e.g. 82902ea9
+vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
+vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_factory_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
+#################################################################################################################################
