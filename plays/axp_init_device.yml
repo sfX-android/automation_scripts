@@ -7,11 +7,12 @@
   tasks:
     - block:
     
-      - include_role:
+      - name: "Import global common role"
+        ansible.builtin.import_role:
           name: common
-          public: yes
 
-      - include_role:
+      - name: "Get ROM_FLAVOR common - default vars"
+        ansible.builtin.include_role:
           name: "{{ ROM_FLAVOR }}/common"
           public: yes
 
