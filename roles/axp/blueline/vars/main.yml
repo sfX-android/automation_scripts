@@ -25,7 +25,7 @@ target_kernel_dir: "kernel/google/msm-4.9"
 
 # path to the common tree, if none exists then the device tree.
 # used e.g. for git, vendor/axp, release handling etc
-target_model_common_tree: "android_device_google_crosshatch" # e.g. device_oneplus_msm8998-common
+target_model_common_tree: "device_google_crosshatch" # e.g. device_oneplus_msm8998-common
 
 target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
 
