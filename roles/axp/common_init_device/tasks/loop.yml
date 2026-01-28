@@ -45,6 +45,22 @@
       axp_switchMR_target_branch: {{ git_repo_local_manifests_branch }}
       all_device_repos: {{ all_device_repos }}
 
+      "reset_git": {{ reset_git }}
+      "debug_build": {{ debug_build }}
+      "ROM_FLAVOR": {{ ROM_FLAVOR }}
+      "override_reset_git": {{ override_reset_git }}
+      "override_clean_out": {{ override_clean_out }}
+      "axp_skip_common_tasks": {{ axp_skip_common_tasks }}
+
+      "skip_setup_otaverify": {{ skip_setup_otaverify }}
+      "skip_setup_repos": {{ skip_setup_otaverify }}
+      "skip_setup_firmware": {{ skip_setup_firmware }}
+      "skip_setup_manifest": {{ skip_setup_manifest }}
+      "skip_setup_ansible": {{ skip_setup_ansible }}
+      "skip_setup_website": {{ skip_setup_website }}
+      "skip_mirror_activation": {{ skip_mirror_activation }}
+      "skip_setup_semaphore": {{ skip_setup_semaphore }}
+
 - name: "Setup all push target repos"
   ansible.builtin.include_tasks: setup_repos.yml
   loop: "{{ all_device_repos }}"
