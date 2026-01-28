@@ -59,6 +59,14 @@
     chdir: "{{ SRCPATH }}"
   when: vendor_firmware_super_img
 
+- name: "Download factory image"
+  ansible.builtin.get_url:
+      url: "{{ vendor_factory_download_url }}"
+      dest: "{{ vendor_factory_persistent_path }}"
+      checksum: >-
+        {% if vendor_factory_download_sha512 is defined %}sha512:{{ vendor_factory_download_sha512 }}{% elif vendor_factory_download_sha256 is defined %}sha256:{{ vendor_factory_download_sha256 }}{% else %}99999{% endif %}
+  when: vendor_factory_id is defined
+
 - name: "Setup firmware: Update ... (non-fairphone)"
   ansible.builtin.shell: |
           export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
