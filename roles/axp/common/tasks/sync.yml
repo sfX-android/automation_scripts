@@ -49,7 +49,6 @@
 - name: "Sync AXP.OS main"
   ansible.builtin.shell: |
       git fetch --all
-      
       # add unstaged changes
       CMT=0
       git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
@@ -61,14 +60,7 @@
           git stash save before-sync-${stashtag} >> {{ BUILD_LOG }} 2>&1
           echo "[GIT] stashed DOS repo changes before-sync-${stashtag}" >> {{ BUILD_LOG }}
       fi
-      
       git checkout {{ axp_main_branch | d('axp') }}
-      sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config
-      git submodule update --init --recursive
-      git submodule sync --recursive
-      git submodule status >> {{ BUILD_LOG }} 2>&1
-      git submodule update >> {{ BUILD_LOG }} 2>&1
-      git submodule status >> {{ BUILD_LOG }} 2>&1
       git pull
       git lfs pull
       git log -1

@@ -15,12 +15,11 @@
           git remote add origin {{ axp_git_repo }} >> {{ BUILD_LOG }} 2>&1
           git fetch --all >> {{ BUILD_LOG }} 2>&1
           git checkout -b "{{ axp_main_branch }}" --track "origin/{{ axp_main_branch }}" >> {{ BUILD_LOG }} 2>&1
-          sed -i 's|git@gitlab.com:|https://gitlab.com/|' .git/config .gitmodules .git/modules/Patches/Linux/config .git/modules/PrebuiltApps/config >> {{ BUILD_LOG }} 2>&1
-          git submodule update --init --recursive >> {{ BUILD_LOG }} 2>&1
-          git submodule status >> {{ BUILD_LOG }} 2>&1
-          git submodule update >> {{ BUILD_LOG }} 2>&1
-          git submodule status >> {{ BUILD_LOG }} 2>&1
+          git clean -ffd >> {{ BUILD_LOG }} 2>&1
           git pull >> {{ BUILD_LOG }} 2>&1
+          test -d .git/modules && rm -rf .git/modules # legacy DOS leftovers
+          grep -q submodule .git/config && (echo "ERROR: pls remove ANY submodule config from $PWD/.git/config manually!" | tee -a {{ BUILD_LOG }}; exit 4)
+          git clean -ffd >> {{ BUILD_LOG }} 2>&1
           git log -1 >> {{ BUILD_LOG }} 2>&1
       args:
         executable: /bin/bash
