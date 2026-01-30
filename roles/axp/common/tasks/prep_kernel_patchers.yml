@@ -40,7 +40,7 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    {% if pixel_kernel_gki %}
+    {% if pixel_kernel_gki | bool %}
     cd {{ git_pixel_kernel_source }}
     {% else %}
     cd {{ target_kernel_dir }}
@@ -61,10 +61,7 @@
     path: "{{ git_pixel_kernel_source }}/android/abi_gki_aarch64_imx"
     regexp: '^\s+mctrl_gpio_disable_ms$'
     state: absent
-  when:
-    - git_pixel_kernel_manifest_branch is defined
-    - target_model_vendor == "Google"
-    - android_version_int | int > 14
+  when: pixel_kernel_gki | bool
 
 - name: "Setup CVE kernel patcher: fixups"
   ansible.builtin.shell: |
