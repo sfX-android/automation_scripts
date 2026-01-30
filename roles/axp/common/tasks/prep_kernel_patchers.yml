@@ -40,7 +40,7 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    {% if git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" %}
+    {% if pixel_kernel_gki %}
     cd {{ git_pixel_kernel_source }}
     {% else %}
     cd {{ target_kernel_dir }}
