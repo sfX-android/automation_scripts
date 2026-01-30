@@ -139,6 +139,7 @@ export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC by default
 export DOS_MICROG_SUPPORT="{{ axp_microg_support | default('false') }}" #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
 export AXP_ANDROIDVERSION_INT="{{ android_version_int }}"
 export AXP_PIXEL_DEFCONF={% if pixel_kernel_gki | bool %}{{ pixel_kernel_defconfig }}{% else %}undefined{% endif %}
+export AXP_PIXEL_LOCALVER_PATH={{ pixel_kernel_localversion_path | d("") }}
 
 # git info used for committing changes within the sources
 export DOS_PATCHER_URI_KERNEL=https://codeberg.org/AXP-OS/kernel_patches/src/branch/main
