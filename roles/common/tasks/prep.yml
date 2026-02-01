@@ -1,10 +1,10 @@
 ---
 
-#- name: "ensure .ansible dir is where we expect it"
-#  ansible.builtin.file:
-#    src: "{{ BUILDHOME }}/.ansible"
-#    dest: "{{ semaphore_work_dir }}"
-#    state: link
+- name: "Prep temp dir"
+  ansible.builtin.file:
+    path: "{{ server_tmp_dir }}"
+    state: directory
+    mode: '0700'
 
 - name: "Prepare common tasks"
   when: android_shortversion is defined
