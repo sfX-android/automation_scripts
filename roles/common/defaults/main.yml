@@ -104,7 +104,7 @@ rempath_unstable: >-
 # used e.g. for downloaded google's factory images
 persistent_dir: "{{ zipdir_mntp }}/{{ ROM_FLAVOR }}/persistent/{{ target_model }}"
 android_shortversion: NA
-server_tmp_dir: /tmp
+server_tmp_dir: /tmp/{{ target_model }}
 
 # AXP.OS only:
 # if set to true (in your env or anywhere else) an -eng build will be created instead of a -user one
