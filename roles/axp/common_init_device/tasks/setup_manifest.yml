@@ -32,7 +32,7 @@
       state: present
   register: info_added
   when:
-      - not (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and 'kernel' in device_repo)
+      - not (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google")
 
 - name: "Setup manifest: add info (Pixels via kleaf)"
   ansible.builtin.lineinfile:
@@ -43,7 +43,7 @@
       state: present
   register: pixinfo_added
   when:
-      - (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and 'kernel' in device_repo)
+      - git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google"
 
 - name: "Setup manifest: add all defined repos"
   ansible.builtin.lineinfile:
