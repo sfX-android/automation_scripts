@@ -42,8 +42,8 @@
   loop: "{{ all_device_repos }}"
   loop_control:
     loop_var: device_repo
-  when:
-      - not (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and 'kernel' in device_repo)
+  #when:
+  #    - not (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and 'kernel' in device_repo)
 
 - name: "Setup manifest: add & push changes"
   ansible.builtin.shell: |
@@ -66,7 +66,7 @@
               echo "[GIT][MANIFEST] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
           fi
       else
-           echo "[GIT][MANIFEST] git commit skipped (no changes)" >> {{ BUILD_LOG }}
+          echo "[GIT][MANIFEST] git commit skipped (no changes)" >> {{ BUILD_LOG }}
       fi
   args:
       chdir: "{{ init_device_temp_path }}"
