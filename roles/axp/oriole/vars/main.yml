@@ -26,7 +26,7 @@ pixel_kernel_codename: raviole
 #pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
 #pixel_kernel_defconfig: "{{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename }}/{{ pixel_kernel_codename }}_defconfig"
 # see https://android.googlesource.com/kernel/common/+refs
-git_pixel_kernel_manifest_branch: "android-gs-raviole-6.1-android15-qpr2"
+git_pixel_kernel_manifest_branch: "android-gs-raviole-6.1-android15-qpr2-beta"
 
 # path to the common tree, if none exists the device tree
 # required e.g. for git, vendor/axp, release handling etc
