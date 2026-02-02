@@ -52,11 +52,8 @@ release_gpg_signing_keys_links: >-
 git_pixel_kernel_dir: "{{ android_build_path }}/google_kernel_source"
 git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
 git_pixel_kernel_manifest: "https://android.googlesource.com/kernel/manifest"
-#git_repo_local_manifests: "{{ axp_git_org }}/manifest"
-#git_repo_local_manifests: "git@{{ git_axpos_org_public_host }}/{{ git_axpos_org_name | regex_replace('\\.', '-') }}/manifest.git"
 git_repo_local_manifests: "{{ git_axpos_org_public }}/manifest"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
-
 
 # set kernel default for pixel vs. non-pixel
 pixel_kernel_gki: >-

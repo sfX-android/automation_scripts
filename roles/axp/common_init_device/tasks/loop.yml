@@ -28,12 +28,7 @@
         (
           axp_git_push_device_include.split('|') | map('regex_replace', '^(.*)$', 'android_\1') | list
           + axp_git_push_vendor_include.split('|') | map('regex_replace', '^(.*)$', 'proprietary_\1') | list
-          + (
-              [target_kernel_dir | regex_replace('/', '_')]
-              if not (git_pixel_kernel_manifest_branch is defined
-                      and target_model_vendor == "Google")
-              else []
-            )
+          + [target_kernel_dir | regex_replace('/', '_')]
         ) | unique
       }}
 

@@ -43,6 +43,7 @@
           state: link
   when:
     - git_pixel_kernel_manifest_branch is defined
+    - git_pixel_kernel_source is defined
     - target_model_vendor == "Google"
     - android_version_int | int > 14
 
