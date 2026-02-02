@@ -31,6 +31,21 @@
       insertafter: '<!\-\- {{ target_model_full | regex_escape() }} \({{ sub_model | d(target_model) | regex_escape() }}\) \-\->'
       state: present
   register: info_added
+  when:
+      - not (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and 'kernel' in device_repo)
+
+- name: "Setup manifest: add info (Pixels via kleaf)"
+  ansible.builtin.lineinfile:
+      path: "{{ init_device_temp_path }}/axp.xml"
+      regexp: 'uses {{ target_model_common_tree }}.*{{ target_kernel_dir | regex_replace("/","_") }}'
+      line: "\t<!-- uses {{ target_model_common_tree }} / https://{{ git_axpos_org_public_host }}/{{ git_axpos_org_name }}/{{ git_pixel_kernel_repo_name }} -->"
+      insertafter: '<!\-\- {{ target_model_full | regex_escape() }} \({{ sub_model | d(target_model) | regex_escape() }}\) \-\->'
+      state: present
+  register: info_added
+  when:
+      - git_pixel_kernel_manifest_branch is defined
+      - target_model_vendor == "Google"
+      - 'kernel' in device_repo
 
 - name: "Setup manifest: add all defined repos"
   ansible.builtin.lineinfile:
@@ -42,8 +57,8 @@
   loop: "{{ all_device_repos }}"
   loop_control:
     loop_var: device_repo
-  #when:
-  #    - not (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and 'kernel' in device_repo)
+  when:
+      - not (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and 'kernel' in device_repo)
 
 - name: "Setup manifest: add & push changes"
   ansible.builtin.shell: |
