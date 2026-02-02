@@ -41,10 +41,9 @@
       line: "\t<!-- uses {{ target_model_common_tree }} / https://{{ git_axpos_org_public_host }}/{{ git_axpos_org_name }}/{{ git_pixel_kernel_repo_name }} -->"
       insertafter: '<!\-\- {{ target_model_full | regex_escape() }} \({{ sub_model | d(target_model) | regex_escape() }}\) \-\->'
       state: present
-  register: info_added
+  register: pixinfo_added
   when:
-      - git_pixel_kernel_manifest_branch is defined
-      - target_model_vendor == "Google" and 'kernel' in device_repo
+      - (git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and 'kernel' in device_repo)
 
 - name: "Setup manifest: add all defined repos"
   ansible.builtin.lineinfile:
