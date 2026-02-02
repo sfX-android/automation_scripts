@@ -30,7 +30,8 @@
         {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }}
         
         cd {{ git_pixel_kernel_source }}
-        git reset --hard FETCH_HEAD
+        git reset --hard #FETCH_HEAD
+        git pull
       args:
         chdir: "{{ git_pixel_kernel_dir }}"
         executable: /bin/bash
