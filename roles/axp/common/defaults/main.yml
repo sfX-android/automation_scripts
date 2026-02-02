@@ -49,6 +49,7 @@ release_gpg_signing_keys_links: >-
 #git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 
 # pixel kernels (google)
+git_pixel_kernel_repo_name: android_kernel_google_common
 git_pixel_kernel_dir: "{{ android_build_path }}/google_kernel_source"
 git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
 git_pixel_kernel_manifest: "https://android.googlesource.com/kernel/manifest"
