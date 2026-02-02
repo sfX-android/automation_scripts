@@ -44,8 +44,7 @@
   register: info_added
   when:
       - git_pixel_kernel_manifest_branch is defined
-      - target_model_vendor == "Google"
-      - 'kernel' in device_repo
+      - target_model_vendor == "Google" and 'kernel' in device_repo
 
 - name: "Setup manifest: add all defined repos"
   ansible.builtin.lineinfile:
