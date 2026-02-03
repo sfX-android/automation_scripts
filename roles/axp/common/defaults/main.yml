@@ -464,13 +464,13 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
 # the build script which will be executed after all the resets, syncs and patching have been done
 SH_COMMON_BUILD_SNIPPET: |
     #!/bin/bash
-    ####################################################################################################################   
+    ####################################################################################################################
     # be strict on failures
     set -e
 
     # fix build errors
     export LC_ALL=C
-    
+
     # unset any extendrom var
     er_vars="ENABLE_EXTENDROM EXTENDROM_SIGNING_PATCHES EXTENDROM_SIGNING_FORCE_PDIR EXTENDROM_PACKAGES EXTENDROM_PACKAGES_SKIP_DL EXTENDROM_BOOT_DEBUG EXTENDROM_DEBUG_PATH EXTENDROM_DEBUG_PATH_SIZE_FULL EXTENDROM_DEBUG_PATH_SIZE_CRASH EXTENDROM_DEBUG_PATH_SIZE_KERNEL EXTENDROM_DEBUG_PATH_SIZE_SELINUX EXTENDROM_PREROOT_BOOT EXTENDROM_FDROID_REPOS EXTENDROM_SIGNATURE_SPOOFING EXTENDROM_ALLOW_ANY_CALL_RECORDING EXTENDROM_INTERCEPT_INSTALLSRC EXTENDROM_PATCHER_RESET EXTENDROM_SIGSPOOF_FORCE_PDIR"
     for v in $er_vars;do unset $v;done
@@ -484,8 +484,8 @@ SH_COMMON_BUILD_SNIPPET: |
 
     ########################### BUILD #########################
 
-    {% if git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" and ((override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)) %}
-    ###### BUILD GOOGLE PIXEL KERNEL
+    {% if pixel_kernel_gki %}
+    ###### BUILD GOOGLE PIXEL KERNEL (KLEAF)
     cd {{ git_pixel_kernel_dir }}
     {{ pixel_kernel_buildcmd | d('echo "Error: missing pixel_kernel_buildcmd def"; false') }} >> {{ BUILD_LOG }} 2>&1
     KERN_REL_DIR=$(grep string_value {{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_KERNEL_{{ target_model | upper() }}_DIR.textproto | cut -d '"' -f2 | tr -d " " | tail -n1)
@@ -501,16 +501,16 @@ SH_COMMON_BUILD_SNIPPET: |
 
     # setup build env including stupid DOS workarounds
     {{ DOS_INIT }}
-    
+
     # ensure vendor secpatch date is set
     source vendor/firmware/{{ target_model }}/0SOURCE  >> {{ BUILD_LOG }} 2>&1 || true
-            
+
     {% if axp_build_eng | bool %}
     breakfast lineage_{{ sub_model | d(target_model) }}${brf_suffix}-eng >> {{ BUILD_LOG }} 2>&1
     {% else %}
     breakfast lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
     {% endif %}
-    
+
     # CCACHE
     export USE_CCACHE={{ USE_CCACHE }}
     if [ "{{ USE_CCACHE }}" -eq 1 ];then
