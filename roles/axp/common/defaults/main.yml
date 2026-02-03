@@ -57,6 +57,7 @@ git_repo_local_manifests: "{{ git_axpos_org_public }}/manifest"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 pixel_kernel_codename: "{{ target_model }}" # overwrite in device vars if required
 pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
+pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
 
 # set kernel default for pixel vs. non-pixel
 pixel_kernel_gki: >-
