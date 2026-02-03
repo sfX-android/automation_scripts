@@ -55,6 +55,8 @@ git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
 git_pixel_kernel_manifest: "https://android.googlesource.com/kernel/manifest"
 git_repo_local_manifests: "{{ git_axpos_org_public }}/manifest"
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
+pixel_kernel_codename: "{{ target_model }}" # overwrite in device vars if required
+pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
 
 # set kernel default for pixel vs. non-pixel
 pixel_kernel_gki: >-
