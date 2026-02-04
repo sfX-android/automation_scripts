@@ -58,7 +58,7 @@ semaphore_aos_template_vaultkey_id: 21                   # Key Store "vault_pw"
 semaphore_aos_template_view_id: 37                       # View: "AOS WIP"
 semaphore_aos_template_desc: "{{ template_desc | d('') }}" # Template Description
 semaphore_aos_template_playbook: "plays/build.yml"        # playbook to attach to
-semaphore_aos_template_parent_name: "-AOS- FREEZEDAY Build-ID"
+semaphore_aos_template_parent_name: "BUILD-ID: available versions"
 
 # survey vars
 semaphore_aos_template_survey_vars: >-
@@ -201,10 +201,10 @@ semaphore_aos_template_survey_vars: >-
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "False"
+        "default_value": false
       },
       {
         "name": "generate_factory_image",
