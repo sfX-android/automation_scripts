@@ -2,7 +2,7 @@
 
 # git stuff
 axp_git_org: "git@git.disroot.org:AXP.OS"
-axp_git_repo: "{{ axp_git_org }}/build.git"
+axp_git_repo: "{{ git_axpos_org_private_host }}/build.git"
 axp_main_branch: axp
 # main LOS manifest
 git_repo_main_manifests: "https://github.com/LineageOS/android.git"
