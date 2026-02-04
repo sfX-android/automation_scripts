@@ -2,14 +2,14 @@
 
 - block:
 
-   - name: "hard reset DOS"
-     shell: |
+   - name: "AXP.OS base repo: hard reset"
+     ansible.builtin.shell: |
        export HOME="{{ BUILDHOME }}"
        echo "BEFORE reset:" >> {{ BUILD_LOG }}
        git log -1 >> {{ BUILD_LOG }} 2>&1
        git status >> {{ BUILD_LOG }} 2>&1
        if [ $? -eq 128 ];then
-         echo "No local changes in DOS repo found!"  >> {{ BUILD_LOG }}
+         echo "No local changes in AXP.OS base repo found!"  >> {{ BUILD_LOG }}
        else
          git am --abort >> {{ BUILD_LOG }} 2>&1
          git rebase --abort >> {{ BUILD_LOG }} 2>&1
@@ -31,8 +31,8 @@
        chdir: "{{ DOSPATH }}"
        executable: /bin/bash
        
-   - name: "DOS State"
-     shell: |
+   - name: "AXP.OS base repo: state"
+     ansible.builtin.shell: |
         echo "AFTER reset + sync:" >> {{ BUILD_LOG }}
         git log -1 >> {{ BUILD_LOG }} 2>&1
         git status >> {{ BUILD_LOG }} 2>&1
@@ -43,8 +43,8 @@
      - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
      - dosdir.stat.isdir is defined
 
-- name: Prepare DOS build
-  file:
+- name: "Prepare build path"
+  ansible.builtin.file:
     path: "{{ item }}"
     state: directory
   loop:
@@ -52,12 +52,12 @@
 
 - block:
 
-   - include_tasks: ../../../common/tasks/clean.yml
+   - ansible.builtin.include_tasks: ../../../common/tasks/clean.yml
      #vars:
      #  override_reset_git: 'true'
     
    - name: "Specific DOS -basic- cleanup"
-     file:
+     ansible.builtin.file:
        path: "{{ item }}"
        state: absent
      no_log: true
@@ -78,7 +78,7 @@
         - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
    
    - name: "Specific AXP.OS -full- cleanup"
-     shell: |
+     ansible.builtin.shell: |
         if [ -d "{{ item.path }}" ];then find {{ item.path }} {{ item.extra | d('') }} -name {{ item.file }} -delete -print; fi
      args:
        chdir: "{{ SRCPATH }}"
