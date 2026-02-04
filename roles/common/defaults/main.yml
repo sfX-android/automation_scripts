@@ -222,7 +222,7 @@ sec_patch_pick_branch: "{{ los_version_gitbranch }}"
 #sec_month: "{{ '%02d' | format((current_month | int) + 1) }}"
 # set dynamic sec_patch_date_last:
 #sec_patch_date_last: "{{ current_year }}{{ sec_month }}"
-sec_patch_date_last: 202602
+sec_patch_date_last: 202603
 
 # either 01 or 05 according to if you patch the KERNEL as well (e.g. by roles/kernel_patcher)
 # see https://source.android.com/docs/security/bulletin/2025-01-01#Common-questions-and-answers
@@ -248,7 +248,8 @@ sec_patch_topics_a9:
     - "{{ range(202205, 202213) }}"
     - "{{ range(202301, 202313) }}"
     - "{{ range(202401, 202413) }}"
-    - "{{ range(202501, sec_patch_date_last | int) }}"
+    - "{{ range(202501, 202513) }}" # unclear if newer backports will be done
+    - "{{ range(202601, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 10 / Q
@@ -258,8 +259,8 @@ sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
 sec_patch_topics_a10:
     - "{{ range(202303, 202313) }}"
     - "{{ range(202401, 202413) }}"
-    - "{{ range(202501, 202509) }}" # no backport available since August!
-    # - "{{ range(202501, sec_patch_date_last | int) }}"
+    - "{{ range(202501, 202513) }}" # unclear if newer backports will be done
+    - "{{ range(202601, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 11 / R
@@ -268,7 +269,8 @@ sec_patch_topics_a10:
 sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
 sec_patch_topics_a11:
     - "{{ range(202403, 202413) }}"
-    - "{{ range(202501, sec_patch_date_last | int) }}"
+    - "{{ range(202501, 202513) }}"
+    - "{{ range(202601, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 12 / S
@@ -276,19 +278,24 @@ sec_patch_topics_a11:
 ##############################################################################################
 sec_patch_date_last_a12: "{{ sec_patch_date_last }}"
 sec_patch_topics_a12:
-    - "{{ range(202504, sec_patch_date_last | int) }}"
+    - "{{ range(202504, 202513) }}"
+    - "{{ range(202601, sec_patch_date_last | int) }}"
+
+##############################################################################################
+#######################    UPSTREAM SUPPORTED BRANCHES   #####################################
+##############################################################################################
+# Several Android versions are still supported by LOS so when being being patient you get them
+# automatically - even if NOT merged (yet).
+# if you want to integrate these only when merged first set sec_patch_unmerged: False
+##############################################################################################
 
 ##############################################################################################
 # ASB patches for: Android 13 / T
-# Last merged upstream (LOS): (https://review.lineageos.org/q/topic:T_asb_2025-12)
+# note: after abandoned for several months they started to merge A13 ASB again!
+# Last merged upstream (LOS): (https://review.lineageos.org/q/topic:T_asb_2026-02)
 ##############################################################################################
 sec_patch_date_last_a13: "{{ sec_patch_date_last }}"
 sec_patch_topics_a13: ''
-
-##############################################################################################
-# A14 and later are still supported by LOS so when being being patient you get them
-# automatically without doing anything once they are merged.
-# if you can't wait, set sec_patch_unmerged: True (default now)
 
 sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
 sec_patch_topics_a14: ''

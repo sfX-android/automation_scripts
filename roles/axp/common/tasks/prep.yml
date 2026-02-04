@@ -28,10 +28,10 @@
     mode: 0640
     timeout: 90
   register: fetch
-  until: fetch.failed is defined
+  #until: fetch.failed is defined
   retries: 4
   delay: 30
-  changed_when: false
+  #changed_when: false
   when: not skip_dl_cve_checker | d(True) | bool
 
 - block:
