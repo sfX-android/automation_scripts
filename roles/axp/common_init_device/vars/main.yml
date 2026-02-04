@@ -201,10 +201,10 @@ semaphore_aos_template_survey_vars: >-
           },
           {
             "name": "no",
-            "value": false
+            "value": "false"
           }
         ],
-        "default_value": false
+        "default_value": "false"
       },
       {
         "name": "generate_factory_image",
