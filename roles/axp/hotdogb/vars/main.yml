@@ -40,7 +40,7 @@ axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_com
 axp_git_push_vendor_include: "{{ target_model_device_tree | replace('device_', 'vendor_') }}|{{ target_model_common_tree | replace('device_', 'vendor_') }}"
 
 # Bootloader ID (first line) for validating build log
-#axp_bootloader_id_pro: ''
+#axp_bootloader_id_pro: 'A058E0A7'
 #axp_bootloader_id_slim: ''
 
 #################################################################################################################################
@@ -63,7 +63,11 @@ hugo_kb_link: "#guacamolehotdog" # OPTIONAL: knownissues link, only if there is 
 #android_version_pro: 
 #hugo_relockable_pro: ''
 #hugo_encryption_pro: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
-#hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
+#hugo_axp_bootloader_id_pro: |-
+#    A058E0A76E10699D
+#    5DEA04B898813EC9
+#    9AC03B6037EBE576
+#    03B8DB1E53363BB3
 #hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
 #hugo_first_releasedate_pro: "TBD" # first public stable release date (YYYY-MM-DD)
 #hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
