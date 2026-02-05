@@ -1,36 +1,103 @@
 ---
+#################################################################################################################################
+# source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
+# v1.4
+#################################################################################################################################
+#################################################################################################################################
+
+#################################################################################################################################
+## Device info
+#
+
 # human readable model name
-target_model_vendor: "OnePlus"
-target_model_name: '7T'
+target_model_vendor: "OnePlus" # e.g. OnePlus or Google
+target_model_name: '7T' # e.g. '5T' or 'Pixel 4a'. always ensure single quotes here
+
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a13
+# path to the kernel dir
+# e.g. "kernel/oneplus/msm8998"
+target_kernel_dir: "kernel/oneplus/sm8150"
 
-# boot debugger path & config
-extendrom_debug_path_default: /metadata
-extendrom_debug_path_size_full_default: 500 
+# path to the common tree, if none exists then the device tree.
+target_model_common_tree: "device_oneplus_sm8150-common"
+
+# construct specific model device tree automatically
+target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
+
+# boot debugger mount point
+extendrom_debug_path_default: "/metadata"
+
+extendrom_debug_path_size_full_default: 500
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
-# path to the kernel dir (req for e.g. wireguard)
-target_kernel_dir: kernel/oneplus/sm8150
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
 
-# path to the common tree, if none exists the device tree
-# required e.g. for git, vendor/axp, release handling etc
-target_model_common_tree: device_oneplus_sm8150-common
+# all used VENDOR paths for this device
+axp_git_push_vendor_include: "{{ target_model_device_tree | replace('device_', 'vendor_') }}|{{ target_model_common_tree | replace('device_', 'vendor_') }}"
 
-# upload the recovery image
-axp_release_recovery: True
-
-# Bootloader ID (first line) for verifying build log
+# Bootloader ID (first line) for validating build log
 #axp_bootloader_id_pro: ''
 #axp_bootloader_id_slim: ''
 
-# git push
-axp_git_push_device_include: "device_oneplus_hotdogb|{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "vendor_oneplus_sm8150-common|vendor_oneplus_hotdogb"
+#################################################################################################################################
+## Website info
+#
 
-# re-testing effect of hibernation on bat life
-axp_defconfig_device: "CONFIG_DEBUG_FS=n"
+# COMMON block
+hugo_firmware: "included"
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+#hugo_xda_link: "" # link to the AXP.OS XDA post for that device
+hugo_kb_link: "#guacamolehotdog" # OPTIONAL: knownissues link, only if there is any
+#hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+
+
+#### PRO block
+#android_version_pro: 
+#hugo_relockable_pro: ''
+#hugo_encryption_pro: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+#hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
+#hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
+#hugo_first_releasedate_pro: "TBD" # first public stable release date (YYYY-MM-DD)
+#hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+#hugo_patchlevel_pro: ""
+
+#### SLIM block
+android_version_slim: 13
+hugo_relockable_slim: 'no'
+hugo_encryption_slim: "FBEv2" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+#hugo_axp_bootloader_id_slim: |- # if AVB: the bootloader id string (from build log)
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "TBD" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+#hugo_patchlevel_slim: ""
+
+
+#################################################################################################################################
+## FIRMWARE info
+#
+# source: https://xdaforums.com/t/oneplus-7t-rom-ota-oxygen-os-repo-of-oxygen-os-builds.3997037/
+
+vendor_firmware_version: "HD1905_11.F.22_3220_202303231811" # filename without zip
+
+# direct download link to the OTA zip of the vendor.
+vendor_firmware_download_url: "https://gauss-otacostmanual-sg.allawnofs.com/remove-d0c8e9c5f4de3e5bb6c84d4101d492e0/ota/23/03/28/65ae2f97-09ec-421b-983b-e4ba2b6de93f.zip"
+vendor_firmware_download_sha512: "753493acce11ebf1a0fba497e142f5acfbdfa14feeefa584b697c2c948e8507219ccf35a7d139590291eca5a8caf2b971c1c5304e8244165955b20782b1cb161"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+#################################################################################################################################

@@ -116,7 +116,7 @@ build_log_name_noid: "build_{{ sub_model | d(target_model) }}_{{ ROM_FLAVOR }}"
 BUILD_LOG: "{{ BUILDHOME }}/{{ build_log_name }}"
 build_log_name_latest: "build_{{ sub_model| d(target_model) }}_{{ ROM_FLAVOR }}_latest.log"
 BUILD_LOG_LATEST: "{{ BUILDHOME }}/{{ build_log_name_latest }}"
-keep_build_logs: True    # if you override this in your env with >False< ANY previous build log will be deleted before building
+keep_build_logs: true    # if you override this in your env with >False< ANY previous build log will be deleted before building
 
 # build signing
 sign_build: true
@@ -142,7 +142,7 @@ reset_git: 'true'        # the whole android sources will be hard reset and re-s
 release_build: 'true'    # releases will be pushed to a specified OTA server
 unstable_build: 'true'   # changes the scp target path (when {{release_build}} is true)
 nolog_gitreset: 'true'   # disable the verbose logging for the git reset tasks
-commit_push: False       # will push all source changes to specified git server
+commit_push: false       # will push all source changes to specified git server
 post_cleanup: 'false'    # will delete the output directory after a successful build if set to true
 
 # set override defaults
