@@ -226,7 +226,7 @@
     # for repo in $({{ repo_bin }} list | tr -d ' ');do
     #   # ...
     # done
-    {{ repo_bin }} list | tr -d ' ' | parallel -j {{ git_push_max_processes }} process_repo >> {{ BUILD_LOG }} 2>&1
+    {{ repo_bin }} list | tr -d ' ' | parallel --halt now,fail=1 -j {{ git_push_max_processes }} process_repo >> {{ BUILD_LOG }} 2>&1
 
     # push manifest
     croot
