@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# (c) 2026 The AXP.OS Project (www.axpos.org)
+# (c) 2026 steadfasterX <steadfasterX |AT| binbash #DOT# rocks>
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
@@ -9,11 +9,10 @@ DOCUMENTATION = '''
     callback: splunkpors
     type: aggregate
     short_description: Sends task result events to Splunk HTTP Event Collector
-    author: "Stuart Hirst <support@convergingdata.com>"
+    author: "steadfasterX <steadfasterX |AT| binbash #DOT# rocks>"
     description:
       - This callback plugin will send task results as JSON formatted events to a Splunk HTTP collector.
-      - The companion Splunk Monitoring & Diagnostics App is available here "https://splunkbase.splunk.com/app/4023/"
-      - Credit to "Ryan Currah (@ryancurrah)" for original source upon which this is based.
+      - Credit to "Ryan Currah (@ryancurrah)" and "Stuart Hirst (https://splunkbase.splunk.com/app/4023)" upon which this is based.
     version_added: "2.7"
     requirements:
       - Whitelisting this callback plugin
@@ -75,12 +74,13 @@ class SplunkHTTPCollectorSource(object):
         self.user = getpass.getuser()
 
     def send_event(self, url, authtoken, state, result, runtime, target_env):
-        if result._task_fields['args'].get('_ansible_check_mode') is True:
+        task_args = result._task_fields.get('args', {})
+
+        if task_args.get('_ansible_check_mode') is True:
             self.ansible_check_mode = True
 
-        if result._task_fields['args'].get('_ansible_version'):
-            self.ansible_version = \
-                result._task_fields['args'].get('_ansible_version')
+        if task_args.get('_ansible_version'):
+            self.ansible_version = task_args.get('_ansible_version')
 
         if result._task._role:
             ansible_role = str(result._task._role)
@@ -105,11 +105,11 @@ class SplunkHTTPCollectorSource(object):
                     if '_raw_params' in ansible_result['invocation']['module_args']:
                         ansible_result['invocation']['module_args']['_raw_params'] = \
                             re.sub(pattern, HIDE_MSG,
-                                   ansible_result['invocation']['module_args']['_raw_params'])
+                                ansible_result['invocation']['module_args']['_raw_params'])
                     elif 'repo' in ansible_result['invocation']['module_args']:
                         ansible_result['invocation']['module_args']['repo'] = \
                             re.sub(pattern, HIDE_MSG,
-                                   ansible_result['invocation']['module_args']['repo'])
+                                ansible_result['invocation']['module_args']['repo'])
 
         data = {}
         data['uuid'] = result._task._uuid
