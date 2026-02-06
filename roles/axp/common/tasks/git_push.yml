@@ -101,7 +101,7 @@
       git remote remove up 2>> /dev/null || true
       git fetch --unshallow >> /dev/null 2>&1 || true
       # first check if this is a problematic repo
-      prepo=$(echo "{{ git_private_repos }},${repoisvendor}" | tr ',' '\n' | grep "${reponame}$" || true)
+      prepo=$(echo "{{ git_private_repos | d('undefined') }},${repoisvendor}" | tr ',' '\n' | grep "${reponame}$" || true)
 
       git remote add up {{ git_axpos_org_private }}/${reponame}.git 2>&1
       echo "[GIT] processing {{ git_axpos_org_private }}/$reponame "
