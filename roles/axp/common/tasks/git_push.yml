@@ -225,16 +225,12 @@
       TE=0
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" || TE=1
       if [ $TE -eq 1 ];then
-      {% if just_git_push %}
-          echo "[GIT] skipped already pushed tag: $TAG as just_git_push var is true"
-      {% else %}
-          tptag=$PTAG
-          echo "[GIT] existing tag ($TAG) found, making ours unique ($PTAG) ..."
-          git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" \
-            || (FPTAG=${TAG}_$(date +%s); git tag -a "$FPTAG" -m "axp.os: tagged on $FPTAG"; tptag=$FPTAG)
-          git push --set-upstream up $tpag || (sleep 10s; git push --set-upstream up $tptag)
-          echo "[GIT] pushed our unique tag ($tpag) successfully!"
-      {% endif %}
+          echo "[GIT] will force push tag: $TAG"
+          git tag -d "$TAG" >> {{ BUILD_LOG }} 2>&1 || true
+          git push up --delete "$TAG" || true
+          git tag -a "$TAG" -m "axp.os: tagged {{ sub_model | d(target_model) }} on $TAG"
+          git push --force --set-upstream up $TAG
+          echo "[GIT] FORCE pushed new tag: $TAG"
       else
           git push --set-upstream up $TAG 2>&1
           echo "[GIT] pushed new tag: $TAG"
