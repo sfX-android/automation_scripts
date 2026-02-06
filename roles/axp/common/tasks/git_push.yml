@@ -17,10 +17,10 @@
     # write full manifest
     {{ repo_bin }} manifest -r -o ${REPRMANIFEST} >> {{ BUILD_LOG }} 2>&1
     
-    # check where we changed origin
-    for repo in $({{ repo_bin }} list | tr -d ' ');do
+    process_repo() {
+      local repo="${1}"
       croot
-      echo "[GIT] processing $repo" >> {{ BUILD_LOG }}
+      echo "[GIT] processing $repo"
       reponame_orig=$(echo "$repo" | cut -d ':' -f2)
       reponame=$(echo "$repo" | cut -d ':' -f2 | sed 's#LineageOS/##g;s#/#_#g')
       localpath=$(echo "$repo" | cut -d ':' -f1)
@@ -37,7 +37,7 @@
       if [ ! -z "$kpcheck" ];then
           kcheck=$(echo "$reponame" | grep -Eo "{{ target_kernel_dir | regex_replace('/private/gs-google','') | regex_replace('/','_') }}" || true)
           if [ -z "$kcheck" ];then
-              echo "[GIT] skipped $reponame as its not our kernel" >> {{ BUILD_LOG }}
+              echo "[GIT] skipped $reponame as its not our kernel"
               continue
           fi
       fi
@@ -46,7 +46,7 @@
       if [ ! -z "$vpcheck" ];then
           vcheck=$(echo "$reponame" | grep -Eo "$AXP_GIT_PUSH_VENDOR_INCLUDE" || true)
           if [ -z "$vcheck" ];then
-              echo "[GIT] skipped $reponame as its not our vendor" >> {{ BUILD_LOG }}
+              echo "[GIT] skipped $reponame as its not our vendor"
               continue
           fi
       fi
@@ -55,13 +55,13 @@
       if [ ! -z "$dpcheck" ];then
           dcheck=$(echo "$reponame" | grep -Eo "$AXP_GIT_PUSH_DEVICE_INCLUDE" || true)
           if [ -z "$dcheck" ];then
-              echo "[GIT] skipped $reponame as its not our device" >> {{ BUILD_LOG }}
+              echo "[GIT] skipped $reponame as its not our device"
               continue
           fi
       fi
       
       cd $localpath
-      echo "[GIT] switched to $localpath" >> {{ BUILD_LOG }}
+      echo "[GIT] switched to $localpath"
       
       # commit any leftovers!
       # besides "normal" patches divest also run several patch scripts(!) which by design can not be
@@ -69,26 +69,23 @@
       # to also make these changes available for reproducible builds and transparency we commit them once now:
       CMT=0
       # add unstaged changes
-      git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+      git add -A || CMT=1
       # check for uncommitted changes
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       # commit if any of the above require it
       if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
           git commit {{ git_commit_args | d('') }} --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "uncatched DOS scripted change(s)"
-          echo "[GIT] committed scripted divest changes for $reponame" >> {{ BUILD_LOG }}
+          echo "[GIT] committed scripted divest changes for $reponame"
       fi
       
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-      #REMHASH=$({{ repo_bin }} info . | grep -i "Current revision" | tr -d ' ' | cut -d ':' -f2) # python crash on repo info within Ansible!
-      #git fetch --all >> /dev/null 2>&1 || true # 2>> {{ BUILD_LOG }} || true
-      #REMHASH=$(git rev-parse up/HEAD 2>> {{ BUILD_LOG }} || true)
       REMHASH=$(git log --pretty=oneline --decorate | grep "m/{{ los_version_gitbranch }}" |cut -d ' ' -f1)
 
       if [ "$CURHASH" != "$REMHASH" ]; then
-        echo -e "\n[GIT] WARNING: changes detected ($CURHASH != $REMHASH) in $localpath ($reponame) which needs to be pushed!\n" >> {{ BUILD_LOG }}
+        echo -e "\n[GIT] WARNING: changes detected ($CURHASH != $REMHASH) in $localpath ($reponame) which needs to be pushed!\n"
       else
-        echo "[GIT] no changes in $localpath, skipping" >> {{ BUILD_LOG }}
+        echo "[GIT] no changes in $localpath, skipping"
         continue
       fi
 
@@ -106,43 +103,43 @@
       # first check if this is a problematic repo
       prepo=$(echo "{{ git_private_repos }},${repoisvendor}" | tr ',' '\n' | grep "${reponame}$" || true)
 
-      git remote add up {{ git_axpos_org_private }}/${reponame}.git  >> {{ BUILD_LOG }} 2>&1
-      echo "[GIT] processing {{ git_axpos_org_private }}/$reponame " >> {{ BUILD_LOG }}
+      git remote add up {{ git_axpos_org_private }}/${reponame}.git 2>&1
+      echo "[GIT] processing {{ git_axpos_org_private }}/$reponame "
       
       if $(git fetch up >> /dev/null 2>&1);then
-        echo "[GIT] repo exists within the org already" >> {{ BUILD_LOG }}
+        echo "[GIT] repo exists within the org already"
       else
-        echo "[GIT] repo does not exist within the org yet! Creating..." >> {{ BUILD_LOG }}
+        echo "[GIT] repo does not exist within the org yet! Creating..."
         git remote remove up 2>> /dev/null || true
         git checkout $REMHASH
-        tea repos create --login {{ git_axpos_org_private_login }} --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" >> {{ BUILD_LOG }} 2>&1
-        echo "[GIT] repo created on remote ({{ git_axpos_org_private_login }})..." >> {{ BUILD_LOG }}
+        tea repos create --login {{ git_axpos_org_private_login }} --name ${reponame} --owner {{ git_axpos_org_name }} --description "forked from: $(git remote -v | head -n1 | cut -f2 | cut -d ' ' -f1)" 2>&1
+        echo "[GIT] repo created on remote ({{ git_axpos_org_private_login }})..."
 
-        echo "[GIT] LFS processing on >remote< branch" >> {{ BUILD_LOG }}
+        echo "[GIT] LFS processing on >remote< branch"
         for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
           git lfs track \"*.${lf}\"
         done
         CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         if [ $CMTL -gt 0 ];then
-          git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
+          git add -A .  >> /dev/null \
+            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null
         fi
 
-        echo "[GIT] LFS processing on >local< branch" >> {{ BUILD_LOG }}
+        echo "[GIT] LFS processing on >local< branch"
         export REMHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-        echo "[GIT] overwrite REMHASH->$REMHASH" >> {{ BUILD_LOG }}
-        git checkout $CURHASH >> /dev/null 2>> {{ BUILD_LOG }}
+        echo "[GIT] overwrite REMHASH->$REMHASH"
+        git checkout $CURHASH >> /dev/null
         for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
           git lfs track \"*.${lf}\"
         done
         CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         if [ $CMTL -gt 0 ];then
-          git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
+          git add -A .  >> /dev/null \
+            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null
         fi
         
         export CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-        echo "[GIT] checked out CURHASH=$CURHASH" >> {{ BUILD_LOG }}
+        echo "[GIT] checked out CURHASH=$CURHASH"
         git remote add up {{ git_axpos_org_private }}/${reponame}.git
       fi
       
@@ -150,24 +147,24 @@
       # falls back to push in batches to workaround issues when index pack is too big
       rerr=0
       if [ ! -z "$REMHASH" -a "$REMHASH" != "up/HEAD" ];then
-          echo "[GIT] REMHASH is set and valid" >> {{ BUILD_LOG }}
+          echo "[GIT] REMHASH is set and valid"
           resp=$(git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} 2>&1) || rerr=$?
       else
-          echo "[GIT] REMHASH is empty or invalid" >> {{ BUILD_LOG }}
+          echo "[GIT] REMHASH is empty or invalid"
           resp=$(git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} 2>&1) || rerr=$?
       fi
-      echo "rerr=$rerr" >> {{ BUILD_LOG }}
+      echo "rerr=$rerr"
       if [ $rerr -ne 0 ]; then
-          echo "[GIT] REMHASH is $REMHASH" >> {{ BUILD_LOG }}
+          echo "[GIT] REMHASH is $REMHASH"
           found=0
           echo "$resp" | tail -n 20 | grep -q "pack exceeds maximum allowed size" || found=1
           if [ $found -eq 0 ]; then
-              echo "[GIT] pack size too big for $reponame, pushing in chunks now.." >> {{ BUILD_LOG }}
-              max=$(git log --oneline|wc -l); for i in $(seq  $max -60000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1; done \
-              || (echo "[GIT] reducing chunk size to: 10000" >> {{ BUILD_LOG }} ; max=$(git log --oneline|wc -l); for i in $(seq  $max -10000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1; done) \
-              || (echo "[GIT] reducing chunk size even more to: 1000"  >> {{ BUILD_LOG }}; max=$(git log --oneline|wc -l); for i in $(seq  $max -1000 1); do echo $i; g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1; done)
+              echo "[GIT] pack size too big for $reponame, pushing in chunks now.."
+              max=$(git log --oneline|wc -l); for i in $(seq  $max -60000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done \
+              || (echo "[GIT] reducing chunk size to: 10000"; max=$(git log --oneline|wc -l); for i in $(seq  $max -10000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done) \
+              || (echo "[GIT] reducing chunk size even more to: 1000"; max=$(git log --oneline|wc -l); for i in $(seq  $max -1000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done)
               if [ $? -ne 0 ];then
-                  echo "$resp" | tail -n 20 >> {{ BUILD_LOG }}
+                  echo "$resp" | tail -n 20
                   exit 3
               fi
               # now the final push should just work
@@ -176,54 +173,65 @@
              echo "$resp" | tail -n 20 | grep -q "fatal: did not receive expected object" || found=1
              if [ $found -eq 0 ]; then
                obj=$(echo "$resp" | tail -n 20 | grep -o "fatal: did not receive expected object .*" | cut -d ' ' -f 7)
-               git push --force -u up ${obj}:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1
+               git push --force -u up ${obj}:refs/heads/upstream_{{ android_shortversion }} 2>&1
              else
-               echo "[GIT] error $rerr occured while pushing" >> {{ BUILD_LOG }}
-               echo "$resp" | tail -n 20 >> {{ BUILD_LOG }}
+               echo "[GIT] error $rerr occured while pushing"
+               echo "$resp" | tail -n 20
                exit $rerr
              fi
           fi
           if [ ! -z "$REMHASH" -a "$REMHASH" != "up/HEAD" ];then
-              echo "[GIT] Final push" >> {{ BUILD_LOG }}
-              git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1
+              echo "[GIT] Final push"
+              git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} 2>&1
           else
               echo "[GIT] Final push (fresh)" >> {{ BUILD_LOG }}
-              git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} >> {{ BUILD_LOG }} 2>&1
+              git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} 2>&1
           fi
       fi
-      echo "[GIT] pushed/updated upstream_{{ android_shortversion }}" >> {{ BUILD_LOG }}
+      echo "[GIT] pushed/updated upstream_{{ android_shortversion }}"
       
       # tag the current patched state and push accordingly
       TE=0
-      git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
+      # git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
+      git tag -a "$TAG" -m "axp.os: tagged on $TAG" || TE=1
       if [ $TE -eq 1 ];then
       {% if just_git_push %}
-          echo "[GIT] skipped already pushed tag: $TAG as just_git_push var is true"  >> {{ BUILD_LOG }}
+          echo "[GIT] skipped already pushed tag: $TAG as just_git_push var is true"
       {% else %}
           tptag=$PTAG
-          echo "[GIT] existing tag ($TAG) found, making ours unique ($PTAG) ..." >> {{ BUILD_LOG }}
-          git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" >> {{ BUILD_LOG }} 2>&1 \
-            || (FPTAG=${TAG}_$(date +%s); git tag -a "$FPTAG" -m "axp.os: tagged on $FPTAG" >> {{ BUILD_LOG }} 2>&1; tptag=$FPTAG)
-          git push --set-upstream up $tpag >> {{ BUILD_LOG }} 2>&1 || (sleep 10s; git push --set-upstream up $tptag >> {{ BUILD_LOG }} 2>&1)
-          echo "[GIT] pushed our unique tag ($tpag) successfully!" >> {{ BUILD_LOG }}
+          echo "[GIT] existing tag ($TAG) found, making ours unique ($PTAG) ..."
+          # git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" >> {{ BUILD_LOG }} 2>&1 \
+          #   || (FPTAG=${TAG}_$(date +%s); git tag -a "$FPTAG" -m "axp.os: tagged on $FPTAG" >> {{ BUILD_LOG }} 2>&1; tptag=$FPTAG)
+          git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" \
+            || (FPTAG=${TAG}_$(date +%s); git tag -a "$FPTAG" -m "axp.os: tagged on $FPTAG"; tptag=$FPTAG)
+          # git push --set-upstream up $tpag >> {{ BUILD_LOG }} 2>&1 || (sleep 10s; git push --set-upstream up $tptag >> {{ BUILD_LOG }} 2>&1)
+          git push --set-upstream up $tpag || (sleep 10s; git push --set-upstream up $tptag)
+          echo "[GIT] pushed our unique tag ($tpag) successfully!"
       {% endif %}
       else
-          git push --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT] pushed new tag: $TAG" >> {{ BUILD_LOG }}
+          git push --set-upstream up $TAG 2>&1
+          echo "[GIT] pushed new tag: $TAG"
       fi
           
       # change manifest line to point to AXP.OS org, ensures private org for proprietary
       croot
       if [ -z "$prepo" ];then
-        echo "[GIT] setting manifest for $reponame to AXP.OS >{{ git_axpos_org_public_host }}<" >> {{ BUILD_LOG }}
+        echo "[GIT] setting manifest for $reponame to AXP.OS >{{ git_axpos_org_public_host }}<"
         sed -i -E 's|(name=".*")\s+(path="'$localpath'")\s+remote="([[:graph:]]+)" |name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
       else
-        echo "[GIT] setting manifest for $reponame to AXP.OS >{{ git_axpos_org_private_host }}<" >> {{ BUILD_LOG }}
+        echo "[GIT] setting manifest for $reponame to AXP.OS >{{ git_axpos_org_private_host }}<"
         sed -i -E 's|(name=".*")\s+(path="'$localpath'")\s+remote="([[:graph:]]+)" |name="'$reponame'" \2 remote="axp.os-private" |g' ${REPRMANIFEST}
       fi
-      echo "[GIT] updated manifest for: $reponame" >> {{ BUILD_LOG }}      
-    done
-        
+      echo "[GIT] updated manifest for: $reponame"
+    }
+    export -f process_repo
+
+    # check where we changed origin
+    # for repo in $({{ repo_bin }} list | tr -d ' ');do
+    #   # ...
+    # done
+    {{ repo_bin }} list | tr -d ' ' | parallel process_repo >> {{ BUILD_LOG }} 2>&1
+
     # push manifest
     croot
     mv ${REPRMANIFEST} .repo/local_manifests/axp.xml
