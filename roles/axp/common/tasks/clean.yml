@@ -5,7 +5,7 @@
    - name: "AXP.OS base repo: hard reset"
      ansible.builtin.shell: |
        export HOME="{{ BUILDHOME }}"
-       echo "BEFORE reset:" >> {{ BUILD_LOG }}
+       echo "BEFORE reset:" > {{ BUILD_LOG }}
        git log -1 >> {{ BUILD_LOG }} 2>&1
        git status >> {{ BUILD_LOG }} 2>&1
        if [ $? -eq 128 ];then
