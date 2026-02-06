@@ -215,7 +215,7 @@
         echo "[GIT] setting manifest for $reponame to AXP.OS >{{ git_axpos_org_public_host }}<"
         sed -i -E 's|(name=".*")\s+(path="'$localpath'")\s+remote="([[:graph:]]+)" |name="'$reponame'" \2 remote="axp.os" |g' ${REPRMANIFEST}
       else
-        echo "[GIT] setting manifest for $reponame to AXP.OS >{{ git_axpos_org_private_host }}<"
+        echo "[GIT] setting manifest for $reponame to AXP.OS >{{ git_axpos_org_limited_host }}<"
         sed -i -E 's|(name=".*")\s+(path="'$localpath'")\s+remote="([[:graph:]]+)" |name="'$reponame'" \2 remote="axp.os-private" |g' ${REPRMANIFEST}
       fi
       echo "[GIT] updated manifest for: $reponame"
