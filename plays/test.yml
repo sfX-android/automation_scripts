@@ -19,15 +19,6 @@
     #- debug:
     #    var: ansible_facts
 
-    - name: "Building"
-      raw: |
-         export BDEVICE=sunfish
-         export DEVICE=$BDEVICE; source build/envsetup.sh; source ../../Scripts/init.sh ; lunch lineage_${DEVICE}-bp1a-user; export AXP_ADVANCED_DEBLOB=true
-         source /home/droidme/build_sunfish_a15_axp.sh >> ~/LOG 2>&1
-      args:
-        executable: /bin/bash
-        chdir: "/usr/src/android/axp/Build/LineageOS-22.2"
-
     - import_role:
         name: common
 
