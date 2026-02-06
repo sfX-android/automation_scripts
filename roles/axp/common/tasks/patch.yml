@@ -82,6 +82,13 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     #do not resetEnv
+
+    {% if pixel_kernel_defconfig is defined and pixel_kernel_gki %}
+    export AXP_KERNEL_PATH="{{ git_pixel_kernel_source }}"
+    {% else %}
+    export AXP_KERNEL_PATH="{{ target_kernel_dir }}"
+    {% endif %}
+
     # tensor need additional fixups
     if [ -f "{{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch" ];then
       cd {{ SRCPATH }}/.repo/manifests && git am {{ DOSPATH }}/Patches/LineageOS-{{ los_version }}/android/0001-tensor.patch; cd {{ SRCPATH }}
