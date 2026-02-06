@@ -117,11 +117,11 @@
 
         echo "[GIT] LFS processing on >remote< branch"
         for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
-          git lfs track \"*.${lf}\"
+          git lfs track \"*.${lf}\" || true
         done
         CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         if [ $CMTL -gt 0 ];then
-          git add -A .  >> /dev/null \
+          git add -A . >> /dev/null \
             && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null
         fi
 
@@ -130,7 +130,7 @@
         echo "[GIT] overwrite REMHASH->$REMHASH"
         git checkout $CURHASH >> /dev/null
         for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
-          git lfs track \"*.${lf}\"
+          git lfs track \"*.${lf}\" || true
         done
         CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         if [ $CMTL -gt 0 ];then
