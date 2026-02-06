@@ -32,10 +32,12 @@ git_axpos_org_private_host: "code.binbash.rocks"
 git_axpos_org_private_manifestremote: "axp.os-private-BBR" # remote name in the manifest
 # private git URI (incl org) for creating/updating repos for AXP.OS
 git_axpos_org_private: "ssh://git@{{ git_axpos_org_private_host }}:22443/{{ git_axpos_org_name }}"
+# max amount used for pushing changes to git
+git_push_max_processes: 10
 # comma separated list of private repos within the AXP.OS org.
 # reasons for listing them here are e.g. they get rejected on github, containing proprietary stuff or similiar.
 # DEPRECATED! handled via ci/cd since the full move to BBR
-git_private_repos: "platform_prebuilts_tools,android_cts"
+#git_private_repos: "platform_prebuilts_tools,android_cts"
 # git / gpg signing key, defaults to empty (is set via Semaphore inventory)
 #release_gpg_signing_key: "FE4B2FA2B225F0AB903AF4136740E645718A8E47"
 release_gpg_signing_keys_links: >-
@@ -215,7 +217,7 @@ unsupported_device_kernel_patch: true    # enable kernel patching by default, ov
 target_model_device_tree_path: "device/{{ target_model_vendor | lower }}/{{ target_model }}"
 
 # translated common tree file path
-target_model_common_tree_path: "{{ target_model_common_tree | regex_replace('_','/') }}"
+target_model_common_tree_path: "{{ target_model_common_tree | regex_replace('_', '/') }}"
 
 # regular makefile name within a device tree, required e.g. for switch_major_release
 target_model_device_tree_mk: device.mk
@@ -234,7 +236,7 @@ extendrom_fdroid_repos: "axpos.xml molly.xml nailyk.xml threema.xml futo_org.xml
 extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
 #extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
-#sh: export EXTENDROM_SIGSPOOF_FORCE_PDIR={{ extendrom_sigspoof_force_dir }}
+# sh: export EXTENDROM_SIGSPOOF_FORCE_PDIR={{ extendrom_sigspoof_force_dir }}
 extendrom_patcher_reset: "false"  # as this would reset divest patches (e.g. boot animation)
 extendrom_boot_debug: "true"
 extendrom_signing_patches: 'true'

@@ -5,32 +5,32 @@
     export LC_ALL=C
     export PATH="~/.local/bin:$PATH"
     {{ DOS_INIT }}
+
+    # make all functions available for any sub shell
+    export -f $(declare -F | awk '{print $3}')
     
     # tag name
-    TAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
+    export TAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
     # fallback tag
-    PTAG=${TAG}_$(date +%s)
+    export PTAG=${TAG}_$(date +%s)
     
     # reproduce manifest
-    REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
+    export REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
     
     # write full manifest
     {{ repo_bin }} manifest -r -o ${REPRMANIFEST} >> {{ BUILD_LOG }} 2>&1
     
     process_repo() {
+      set -e
+
       local repo="${1}"
       croot
       echo "[GIT] processing $repo"
       reponame_orig=$(echo "$repo" | cut -d ':' -f2)
       reponame=$(echo "$repo" | cut -d ':' -f2 | sed 's#LineageOS/##g;s#/#_#g')
       localpath=$(echo "$repo" | cut -d ':' -f1)
-      
-      ################### TEMP SKIP ALL
-      #prepo=$(echo "{{ git_private_repos }}" | grep -o "$reponame," || true)
-      #if [ -z "$prepo" ];then
-      #  continue
-      #fi
-      ################### END: TEMP SKIP ALL
+
+      if [ -z "$TAG" -o -z "$PTAG" ]; then echo "ERROR: $reponame: TAG ($PTAG) or PTAG ($PTAG) is EMPTY!!" && return 3;fi
 
       # kernel match
       kpcheck=$(echo "$reponame" | grep kernel_ || true)
@@ -38,7 +38,7 @@
           kcheck=$(echo "$reponame" | grep -Eo "{{ target_kernel_dir | regex_replace('/private/gs-google','') | regex_replace('/','_') }}" || true)
           if [ -z "$kcheck" ];then
               echo "[GIT] skipped $reponame as its not our kernel"
-              continue
+              return
           fi
       fi
       # vendor match
@@ -47,7 +47,7 @@
           vcheck=$(echo "$reponame" | grep -Eo "$AXP_GIT_PUSH_VENDOR_INCLUDE" || true)
           if [ -z "$vcheck" ];then
               echo "[GIT] skipped $reponame as its not our vendor"
-              continue
+              return
           fi
       fi
       # device match
@@ -56,7 +56,7 @@
           dcheck=$(echo "$reponame" | grep -Eo "$AXP_GIT_PUSH_DEVICE_INCLUDE" || true)
           if [ -z "$dcheck" ];then
               echo "[GIT] skipped $reponame as its not our device"
-              continue
+              return
           fi
       fi
       
@@ -86,7 +86,7 @@
         echo -e "\n[GIT] WARNING: changes detected ($CURHASH != $REMHASH) in $localpath ($reponame) which needs to be pushed!\n"
       else
         echo "[GIT] no changes in $localpath, skipping"
-        continue
+        return
       fi
 
       # generic vendor match
@@ -192,7 +192,6 @@
       
       # tag the current patched state and push accordingly
       TE=0
-      # git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" || TE=1
       if [ $TE -eq 1 ];then
       {% if just_git_push %}
@@ -200,11 +199,8 @@
       {% else %}
           tptag=$PTAG
           echo "[GIT] existing tag ($TAG) found, making ours unique ($PTAG) ..."
-          # git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" >> {{ BUILD_LOG }} 2>&1 \
-          #   || (FPTAG=${TAG}_$(date +%s); git tag -a "$FPTAG" -m "axp.os: tagged on $FPTAG" >> {{ BUILD_LOG }} 2>&1; tptag=$FPTAG)
           git tag -a "$PTAG" -m "axp.os: tagged on $PTAG" \
             || (FPTAG=${TAG}_$(date +%s); git tag -a "$FPTAG" -m "axp.os: tagged on $FPTAG"; tptag=$FPTAG)
-          # git push --set-upstream up $tpag >> {{ BUILD_LOG }} 2>&1 || (sleep 10s; git push --set-upstream up $tptag >> {{ BUILD_LOG }} 2>&1)
           git push --set-upstream up $tpag || (sleep 10s; git push --set-upstream up $tptag)
           echo "[GIT] pushed our unique tag ($tpag) successfully!"
       {% endif %}
@@ -230,7 +226,7 @@
     # for repo in $({{ repo_bin }} list | tr -d ' ');do
     #   # ...
     # done
-    {{ repo_bin }} list | tr -d ' ' | parallel process_repo >> {{ BUILD_LOG }} 2>&1
+    {{ repo_bin }} list | tr -d ' ' | parallel -j {{ git_push_max_processes }} process_repo >> {{ BUILD_LOG }} 2>&1
 
     # push manifest
     croot
