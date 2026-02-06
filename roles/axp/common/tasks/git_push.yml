@@ -16,6 +16,29 @@
     
     # reproduce manifest
     export REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
+
+    # repos using branches on different paths
+    check_for_branch_repo() {
+      rep="$1"
+      declare -A branchrepos=(
+          [android_device_qcom_sepolicy]=1
+          [android_device_qcom_sepolicy_vndr]=1
+          [android_hardware_qcom_audio]=1
+          [android_hardware_qcom_audio-ar]=1
+          [android_hardware_qcom_display]=1
+          [android_hardware_qcom_media]=1
+          [android_hardware_qcom_wlan]=1
+          [android_vendor_qcom_opensource_agm]=1
+          [android_vendor_qcom_opensource_arpal-lx]=1
+          [android_vendor_qcom_opensource_data-ipa-cfg-mgr]=1
+      )
+      if [[ "${branchrepos[$rep]}" ]]; then
+        echo 1
+      else
+        echo 0
+      fi
+    }
+    export -f check_for_branch_repo
     
     # write full manifest
     {{ repo_bin }} manifest -r -o ${REPRMANIFEST} >> {{ BUILD_LOG }} 2>&1
@@ -154,42 +177,50 @@
           resp=$(git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} 2>&1) || rerr=$?
       fi
       echo "rerr=$rerr"
-      if [ $rerr -ne 0 ]; then
-          echo "[GIT] REMHASH is $REMHASH"
-          found=0
-          echo "$resp" | tail -n 20 | grep -q "pack exceeds maximum allowed size" || found=1
-          if [ $found -eq 0 ]; then
-              echo "[GIT] pack size too big for $reponame, pushing in chunks now.."
-              max=$(git log --oneline|wc -l); for i in $(seq  $max -60000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done \
-              || (echo "[GIT] reducing chunk size to: 10000"; max=$(git log --oneline|wc -l); for i in $(seq  $max -10000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done) \
-              || (echo "[GIT] reducing chunk size even more to: 1000"; max=$(git log --oneline|wc -l); for i in $(seq  $max -1000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done)
-              if [ $? -ne 0 ];then
-                  echo "$resp" | tail -n 20
-                  exit 3
+
+      if [ "$rerr" -ne 0 ]; then
+          # some repos need extra caution as they use the same repo but checking out different branches at different paths
+          specialfound=$(check_for_branch_repo "${reponame}")
+          if [ "$specialfound" == "0" ];then
+            echo "[GIT] REMHASH is $REMHASH"
+            found=0
+            echo "$resp" | tail -n 20 | grep -q "pack exceeds maximum allowed size" || found=1
+            if [ $found -eq 0 ]; then
+                echo "[GIT] pack size too big for $reponame, pushing in chunks now.."
+                max=$(git log --oneline|wc -l); for i in $(seq  $max -60000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done \
+                || (echo "[GIT] reducing chunk size to: 10000"; max=$(git log --oneline|wc -l); for i in $(seq  $max -10000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done) \
+                || (echo "[GIT] reducing chunk size even more to: 1000"; max=$(git log --oneline|wc -l); for i in $(seq  $max -1000 1); do g=$(git log --reverse --oneline --skip $i -n1|perl -alne'print $F[0]'); git push --force up $g:refs/heads/upstream_{{ android_shortversion }}; done)
+                if [ $? -ne 0 ];then
+                    echo "$resp" | tail -n 20
+                    exit 3
+                fi
+                # now the final push should just work
+            else
+              found=0
+              echo "$resp" | tail -n 20 | grep -q "fatal: did not receive expected object" || found=1
+              if [ $found -eq 0 ]; then
+                obj=$(echo "$resp" | tail -n 20 | grep -o "fatal: did not receive expected object .*" | cut -d ' ' -f 7)
+                git push --force -u up ${obj}:refs/heads/upstream_{{ android_shortversion }} 2>&1
+              else
+                echo "[GIT] error $rerr occured while pushing"
+                echo "$resp" | tail -n 20
+                exit $rerr
               fi
-              # now the final push should just work
+            fi
+            if [ ! -z "$REMHASH" -a "$REMHASH" != "up/HEAD" ];then
+                echo "[GIT] Final push"
+                git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} 2>&1
+            else
+                echo "[GIT] Final push (fresh)" >> {{ BUILD_LOG }}
+                git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} 2>&1
+            fi
+            echo "[GIT] pushed/updated upstream_{{ android_shortversion }} (check_for_branch_repo result was: $specialfound)"
           else
-             found=0
-             echo "$resp" | tail -n 20 | grep -q "fatal: did not receive expected object" || found=1
-             if [ $found -eq 0 ]; then
-               obj=$(echo "$resp" | tail -n 20 | grep -o "fatal: did not receive expected object .*" | cut -d ' ' -f 7)
-               git push --force -u up ${obj}:refs/heads/upstream_{{ android_shortversion }} 2>&1
-             else
-               echo "[GIT] error $rerr occured while pushing"
-               echo "$resp" | tail -n 20
-               exit $rerr
-             fi
+            echo "[GIT] skipping upstream push as this due to check_for_branch_repo result ($specialfound)"
           fi
-          if [ ! -z "$REMHASH" -a "$REMHASH" != "up/HEAD" ];then
-              echo "[GIT] Final push"
-              git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} 2>&1
-          else
-              echo "[GIT] Final push (fresh)" >> {{ BUILD_LOG }}
-              git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} 2>&1
-          fi
+          echo "[GIT] pushed/updated upstream_{{ android_shortversion }}"
       fi
-      echo "[GIT] pushed/updated upstream_{{ android_shortversion }}"
-      
+
       # tag the current patched state and push accordingly
       TE=0
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" || TE=1
