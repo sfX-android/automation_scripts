@@ -1,18 +1,6 @@
 # -*- coding: utf-8 -*-
-# This file is part of Ansible
-#
-# Ansible is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Ansible is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+# (c) 2026 The AXP.OS Project (www.axpos.org)
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
@@ -103,28 +91,31 @@ class SplunkHTTPCollectorSource(object):
             del result._task_fields['args']
 
         # Censor the log based on known splunk cmd's
-        HIDE_PARAM = ['-auth .*:.*','-password .*(\s|$)','(http|https|ssh|git)://(.*)@']
+        HIDE_PARAM = ['-auth .*:.*', '-password .*(\\s|$)', '(http|https|ssh|git)://(.*)@']
         HIDE_MSG = "**CENSORED-BY-HIDE_PARAM**"
         ansible_result = result._result
 
         for pattern in HIDE_PARAM:
             if 'cmd' in ansible_result:
-                ansible_result['cmd'] = re.sub(pattern, HIDE_MSG, result._result['cmd'])
+                ansible_result['cmd'] = re.sub(pattern, HIDE_MSG, ansible_result['cmd'])
             if 'stdout' in ansible_result:
-                ansible_result['stdout'] = re.sub(pattern, HIDE_MSG, result._result['stdout'])
+                ansible_result['stdout'] = re.sub(pattern, HIDE_MSG, ansible_result['stdout'])
             if 'invocation' in ansible_result:
                 if 'module_args' in ansible_result['invocation']:
                     if '_raw_params' in ansible_result['invocation']['module_args']:
-                        ansible_result['invocation']['module_args']['_raw_params'] = re.sub(pattern, HIDE_MSG, ansible_result['invocation']['module_args']['_raw_params'])
+                        ansible_result['invocation']['module_args']['_raw_params'] = \
+                            re.sub(pattern, HIDE_MSG,
+                                   ansible_result['invocation']['module_args']['_raw_params'])
                     elif 'repo' in ansible_result['invocation']['module_args']:
-                        ansible_result['invocation']['module_args']['repo'] = re.sub(pattern, HIDE_MSG, ansible_result['invocation']['module_args']['repo'])
+                        ansible_result['invocation']['module_args']['repo'] = \
+                            re.sub(pattern, HIDE_MSG,
+                                   ansible_result['invocation']['module_args']['repo'])
 
         data = {}
         data['uuid'] = result._task._uuid
         data['session'] = self.session
         data['status'] = state
-        data['timestamp'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S '
-                                                       '+0000')
+        data['timestamp'] = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S +0000')
         data['host'] = self.host
         data['ip_address'] = self.ip_address
         data['user'] = self.user
@@ -138,9 +129,9 @@ class SplunkHTTPCollectorSource(object):
         data['ansible_result'] = ansible_result
         data['target_env'] = target_env
 
-        # This wraps the json payload in and outer json event needed by Splunk
+        # This wraps the json payload in an outer json event needed by Splunk
         jsondata = json.dumps(data, cls=AnsibleJSONEncoder, sort_keys=True)
-        jsondata = '{"event":' + jsondata + "}"
+        jsondata = '{"event":' + jsondata + '}'
 
         open_url(
             url,
@@ -154,7 +145,7 @@ class SplunkHTTPCollectorSource(object):
 
 
 class CallbackModule(CallbackBase):
-    CALLBACK_VERSION = 2.02
+    CALLBACK_VERSION = 3.0
     CALLBACK_TYPE = 'aggregate'
     CALLBACK_NAME = 'splunkpors'
     CALLBACK_NEEDS_WHITELIST = True
@@ -165,6 +156,8 @@ class CallbackModule(CallbackBase):
         self.url = None
         self.authtoken = None
         self.splunk = SplunkHTTPCollectorSource()
+        self.vm = None
+        self.play = None
 
     def _runtime(self, result):
         return (
@@ -173,27 +166,32 @@ class CallbackModule(CallbackBase):
         ).total_seconds()
 
     def set_options(self, task_keys=None, var_options=None, direct=None):
-        super(CallbackModule, self).set_options(task_keys=task_keys, var_options=var_options, direct=direct)
+        super(CallbackModule, self).set_options(
+            task_keys=task_keys,
+            var_options=var_options,
+            direct=direct
+        )
 
         self.url = self.get_option('url')
 
         if self.url is None:
             self.disabled = True
-            self._display.warning('Splunk HTTP collector source URL was '
-                                  'not provided. The Splunk HTTP collector '
-                                  'source URL can be provided using the '
-                                  '`SPLUNK_URL` environment variable or '
-                                  'in the ansible.cfg file.')
+            self._display.warning(
+                'Splunk HTTP collector source URL was not provided. '
+                'The Splunk HTTP collector source URL can be provided using '
+                'the `SPLUNK_URL` environment variable or in the ansible.cfg file.'
+            )
 
         self.authtoken = self.get_option('authtoken')
 
         if self.authtoken is None:
             self.disabled = True
-            self._display.warning('Splunk HTTP collector requires an authentication'
-                                  'token. The Splunk HTTP collector '
-                                  'authentication token can be provided using the '
-                                  '`SPLUNK_AUTHTOKEN` environment variable or '
-                                  'in the ansible.cfg file.')
+            self._display.warning(
+                'Splunk HTTP collector requires an authentication token. '
+                'The Splunk HTTP collector authentication token can be provided '
+                'using the `SPLUNK_AUTHTOKEN` environment variable or in the '
+                'ansible.cfg file.'
+            )
 
     def v2_playbook_on_start(self, playbook):
         self.splunk.ansible_playbook = basename(playbook._file_name)
@@ -208,67 +206,45 @@ class CallbackModule(CallbackBase):
         self.play = play
         self.vm = play.get_variable_manager()
 
-    def v2_runner_on_ok(self, result, **kwargs):
+    # ------------------------
+    # Result handlers
+    # ------------------------
+
+    def _handle_result(self, result, state):
         # get the PORS target environment
         host_vars = self.vm.get_vars()['hostvars'][result._host.name]
-        self.target_env = host_vars['target_env']
+        target_env = host_vars['target_env']
+
         self.splunk.send_event(
-                self.url,
-                self.authtoken,
-                'OK',
-                result,
-                self._runtime(result),
-                self.target_env
-                )
+            self.url,
+            self.authtoken,
+            state,
+            result,
+            self._runtime(result),
+            target_env
+        )
+
+    def v2_runner_on_ok(self, result, **kwargs):
+        self._handle_result(result, 'OK')
 
     def v2_runner_on_skipped(self, result, **kwargs):
-        # get the PORS target environment
-        host_vars = self.vm.get_vars()['hostvars'][result._host.name]
-        self.target_env = host_vars['target_env']
-        self.splunk.send_event(
-            self.url,
-            self.authtoken,
-            'SKIPPED',
-            result,
-            self._runtime(result),
-        self.target_env
-        )
+        self._handle_result(result, 'SKIPPED')
 
-    def v2_runner_on_failed(self, result, **kwargs):
-        # get the PORS target environment
-        host_vars = self.vm.get_vars()['hostvars'][result._host.name]
-        self.target_env = host_vars['target_env']
-        self.splunk.send_event(
-            self.url,
-            self.authtoken,
-            'FAILED',
-            result,
-            self._runtime(result),
-        self.target_env
-        )
-
-    def runner_on_async_failed(self, result, **kwargs):
-        # get the PORS target environment
-        host_vars = self.vm.get_vars()['hostvars'][result._host.name]
-        self.target_env = host_vars['target_env']
-        self.splunk.send_event(
-            self.url,
-            self.authtoken,
-            'FAILED',
-            result,
-            self._runtime(result),
-        self.target_env
-        )
+    def v2_runner_on_failed(self, result, ignore_errors=False, **kwargs):
+        self._handle_result(result, 'FAILED')
 
     def v2_runner_on_unreachable(self, result, **kwargs):
-        # get the PORS target environment
-        host_vars = self.vm.get_vars()['hostvars'][result._host.name]
-        self.target_env = host_vars['target_env']
-        self.splunk.send_event(
-            self.url,
-            self.authtoken,
-            'UNREACHABLE',
-            result,
-            self._runtime(result),
-        self.target_env
-        )
+        self._handle_result(result, 'UNREACHABLE')
+
+    def v2_runner_on_async_failed(self, host, result, **kwargs):
+        self._handle_result(result, 'FAILED')
+
+    # ------------------------
+    # Future-proof hardening
+    # ------------------------
+
+    def __getattr__(self, name):
+        # Absorb any future v2_* callback Ansible may introduce
+        if name.startswith('v2_'):
+            return lambda *args, **kwargs: None
+        raise AttributeError(name)
