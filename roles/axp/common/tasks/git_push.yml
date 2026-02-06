@@ -21,7 +21,7 @@
     {{ repo_bin }} manifest -r -o ${REPRMANIFEST} >> {{ BUILD_LOG }} 2>&1
     
     process_repo() {
-      set -e
+      #set -e
 
       local repo="${1}"
       croot
