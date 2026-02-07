@@ -35,7 +35,7 @@ git_axpos_org_private_manifestremote: "axp.os-private-BBR" # remote name in the 
 # private git URI (incl org) for creating/updating repos for AXP.OS
 git_axpos_org_private: "ssh://git@{{ git_axpos_org_private_host }}:22443/{{ git_axpos_org_name }}"
 # max amount used for pushing changes to git
-git_push_max_processes: 20
+git_push_max_processes: "{{ max_processes }}"
 # comma separated list of private repos within the AXP.OS org.
 # reasons for listing them here are e.g. they get rejected on github, containing proprietary stuff or similiar.
 # DEPRECATED! handled via ci/cd since the full move to BBR
