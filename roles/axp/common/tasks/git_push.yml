@@ -300,7 +300,7 @@
     cd $CDIR
     
     echo "[VERSIONING] create list of APK versions..." >> {{ BUILD_LOG }}
-    for erapp in {{ extendrom_package_list | d(extendrom_package_list_default) }}; do
+    for erapp in {{ extendrom_package_list | d(extendrom_package_list_default) | flatten | join(' ') }}; do
         for app in $(find vendor/extendrom/prebuilt out/target/product/{{ sub_model | d(target_model) }} -type f -name "${erapp}*.apk"); do
             AVER=$(aapt dump badging "${app}" | gawk -F \' '/^package: name/{print $6}')
             ANAME=$(aapt dump badging "${app}" | gawk -F \' '/application-label:/{print $2}')
