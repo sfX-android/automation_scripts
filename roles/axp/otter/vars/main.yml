@@ -1,0 +1,138 @@
+---
+# yamllint disable rule:comments
+#################################################################################################################################
+# source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
+# v1.6
+#################################################################################################################################
+#################################################################################################################################
+
+#################################################################################################################################
+## Device info
+#
+
+# human readable model name
+target_model_vendor: "SHIFT"
+target_model_name: 'SHIFTphone 8'
+
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
+
+# path to the kernel dir
+# e.g. "kernel/oneplus/msm8998"
+target_kernel_dir: "kernel/shift/qcm649"
+
+# Pixel devices: KLEAF based kernel build
+#pixel_kernel_codename: raviole
+# see https://android.googlesource.com/kernel/common/+refs
+#git_pixel_kernel_manifest_branch: "android-gs-{{ pixel_kernel_codename }}-6.1-android15-qpr2"
+
+# path to the common tree, if none exists then the device tree.
+target_model_common_tree: "android_device_shift_otter"
+
+# construct specific model device tree automatically
+target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
+
+# add OpenEUICC
+axp_euicc_capable: true
+
+# disable Wireguard patching (already part of the upstream kernel)
+skip_wireguard: true
+
+# boot debugger mount point
+extendrom_debug_path_default: "/metadata"
+
+extendrom_debug_path_size_full_default: 500
+extendrom_debug_path_size_kernel_default: 100
+extendrom_debug_path_size_selinux_default: 200
+extendrom_debug_path_size_crash_default: 200
+
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
+
+# all used VENDOR paths for this device
+axp_git_push_vendor_include: "{{ target_model_device_tree | replace('device_', 'vendor_') }}|{{ target_model_common_tree | replace('device_', 'vendor_') }}"
+
+# Bootloader ID (first line) for validating build log
+#axp_bootloader_id_pro: ''
+#axp_bootloader_id_slim: ''
+
+#################################################################################################################################
+## Website info
+#
+
+# COMMON block
+hugo_firmware: "included"
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+#hugo_xda_link: "" # link to the AXP.OS XDA post for that device
+#hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
+#hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+
+#### PRO block
+android_version_pro: 15
+hugo_relockable_pro: 'yes'
+hugo_encryption_pro: "FBEv2" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+#hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
+hugo_supportlevel_pro: "team"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "TBD" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+hugo_patchlevel_pro: "Platform + Kernel + Firmware"
+
+#### SLIM block
+android_version_slim: 15
+hugo_relockable_slim: 'yes'
+hugo_encryption_slim: "FBEv2" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+#hugo_axp_bootloader_id_slim: |- # if AVB: the bootloader id string (from build log)
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "TBD" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+hugo_patchlevel_slim: "Platform + Kernel + Firmware"
+
+
+#################################################################################################################################
+## FIRMWARE info
+#
+# source: https://downloads.shiftphones.com/otter
+# api: curl -X 'GET' 'https://downloads.shiftphones.com/api/v1/otter/release-light' -H 'accept: application/json'
+
+# do not use any quotes here:
+#vendor_firmware_super_img: False
+
+vendor_firmware_version: "SHIFTPHONE_8.SOS.7.0.L-RELEASE-LIGHT-20260127-OTA" # filename without zip
+
+# direct download link to the OTA zip of the vendor.
+vendor_firmware_download_url: "https://downloads.shiftphones.com/builds/{{ vendor_firmware_version }}.zip"
+vendor_firmware_download_sha256: "79a413027bae328bffc1432aaa067f920267c8477d42622c3d781c09fedaa122"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+#################################################################################################################################
+
+#################################################################################################################################
+## FACTORY info (only relevant for: Google Pixel, Fairphone)
+#
+# source: https://the-website-where-the-FACTORYZIP-is-located
+
+#vendor_factory_download_url: ""
+# one of sha512 or sha256 is required (in that order) if there is none you have to download and generate it (sha512sum xxx.zip)
+#vendor_factory_download_sha512: ""
+#vendor_factory_download_sha256: ""
+
+#vendor_factory_id: ""  # e.g. tq3a.230805.001.s1
+#vendor_factory_hash: ""  # e.g. 82902ea9
+#vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
+##ref## vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+#vendor_factory_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
+#################################################################################################################################
