@@ -1,13 +1,24 @@
 ---
-# must be explicitly included!
-
-# allow to (manually) set selinux permissive
-axp_allow_permissive: False
+# Slim flavor overrides and config
 
 # extendrom stuff
 extendrom_package_list_default: "{{ extendrom_package_list_common }}"
 extendrom_preroot_boot: "false"
-extendrom_fdroid_repos: "axpos.xml molly.xml nailyk.xml threema.xml futo_org.xml cromite.xml izzysoft.xml ironfox.xml microg.xml"
+extendrom_fdroid_repos: >
+    {{
+        [
+            'axpos.xml',
+            'molly.xml',
+            'nailyk.xml',
+            'threema.xml',
+            'futo_org.xml',
+            'cromite.xml',
+            'ironfox.xml',
+            'izzysoft.xml',
+            'microg.xml'
+        ] +
+        ((target_model_vendor | lower == "shift") | ternary(['shiftphone.xml'], []))
+    }}
 
 # keys
 keysdir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/{{ sub_model | d(target_model) }}"

@@ -26,9 +26,8 @@ target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_m
 # defaults to BoardConfigCommon
 target_model_device_tree_boardmk: BoardConfigLineage.mk
 
-# does the device support eSIMs (check e.g. here: https://esim.sm/en/compatible-devices)?
-# If YES, then enable the following line:
-extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
+# add OpenEUICC
+axp_euicc_capable: true
 
 # boot debugger mount point
 # path for boot_debug, must be identified within the device / common tree fstab:

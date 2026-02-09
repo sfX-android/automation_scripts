@@ -25,7 +25,7 @@ target_model_common_tree: device_google_gs201
 skip_wireguard: True
 
 # add OpenEUICC
-extendrom_package_list: "{{ extendrom_package_list_default }} OpenEUICC_AXP-OS"
+axp_euicc_capable: true
 
 # allow creating factory image
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"

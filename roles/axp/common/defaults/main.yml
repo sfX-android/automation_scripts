@@ -90,7 +90,8 @@ gitea_login_name: "{{ git_axpos_org_private_login }}"
 #    repo
 #    admin:public_key
 gitea_cli_version: '0.10.1'
-gitea_cli_download_uri: "https://gitea.com/gitea/tea/releases/download/v{{ gitea_cli_version }}/tea-{{ gitea_cli_version }}-linux-amd64"    # xz is not supported by unarchive
+# xz is not supported by unarchive
+gitea_cli_download_uri: "https://gitea.com/gitea/tea/releases/download/v{{ gitea_cli_version }}/tea-{{ gitea_cli_version }}-linux-amd64"
 gitea_cli_main_host: code.binbash.rocks
 
 # Github CLI tool
@@ -166,14 +167,14 @@ android_signing_testkey_verity: e8eb784d2f4d54917a7bb33bdbe76967e4d1e433
 
 # disable/enable low-end device (optimize for performance, increase storage, lower avb hashsums)
 # override in device vars if required
-axp_lowend_device: False
+axp_lowend_device: false
 
 # set force encryption (ICE, FDE, FBE), disable in device vars if required, will set AXP_AUTO_ENCRYPT
-axp_auto_encrypt: True
+axp_auto_encrypt: true
 
 # AVB / Verified Boot
 axp_avb_version: 2 # AVB v1 or v2, override in the device vars where required. to disable set it to 0.
-vbmeta_verify: True # DEPRECATED! handled by axp_avb_version + skip_avb_boot_verify. verify all build images via the created vbmeta.img?
+vbmeta_verify: true # DEPRECATED! handled by axp_avb_version + skip_avb_boot_verify. verify all build images via the created vbmeta.img?
 # enable/disable based on version set. sets AXP_ENABLE_AVB which enforces enabling(!) AVB
 axp_enable_avb: >-
     {% if axp_avb_version == 0 %}'false'{% else %}'true'{% endif %}
@@ -184,7 +185,7 @@ axp_avb_buildarg: >-
     {% if axp_avb_version == 1 %}verity{% endif %}
 AVB_VERSION: "{{ axp_avb_version }}"
 # for AVB 1, some devices might not sign boot images, override in device vars if required
-skip_avb_boot_verify: False
+skip_avb_boot_verify: false
 
 # common search strings used to parse the log after building.
 # when overriding these, copy the WHOLE part of this to a device vars yml.
@@ -209,32 +210,62 @@ parselogerr:
       expect: ''
 
 # allow to (manually) set selinux permissive
-axp_allow_permissive: False
-
-# kernel patching
-divest_unsupported_device: false    # should be overwritten in a device's vars/main.yml if needed
-unsupported_device_kernel_patch: true    # enable kernel patching by default, overwrite in semaphore if needed
+axp_allow_permissive: false
 
 # translated device tree path
 target_model_device_tree_path: "device/{{ target_model_vendor | lower }}/{{ target_model }}"
 
 # translated common tree file path
-target_model_common_tree_path: "{{ target_model_common_tree | regex_replace('_', '/') }}"
+target_model_common_tree_path: "{{ target_model_common_tree | regex_replace('android_', '') | regex_replace('_', '/') }}"
 
 # regular makefile name within a device tree, required e.g. for switch_major_release
 target_model_device_tree_mk: device.mk
 
-# the BoardConfig file within a device tree, required e.g. for switch_major_release
-# usually is one of: BoardConfigCommon, BoardConfig, BoardConfigLineage.
-# defaults to BoardConfigCommon
-target_model_device_tree_boardmk: BoardConfigCommon.mk
-
 # extendrom stuff
 use_extendrom: "true"
 extendrom_packages_skip_dl: 'false'
-extendrom_package_list_common: "AOSmium_webview64 additional_repos.xml AuroraStore F-Droid noeSpeakNG noDefaultBrowserWebView Etar_ER FossifyGallery_FD"
-extendrom_package_list_default: "{{ extendrom_package_list_common }} GsfProxy_GH Magisk MicrogGmsCore_GH Phonesky_AXP-OS {% if android_version_int | int > 14 %}AOSLauncher{% else %}NeoLauncher-latest{% endif %}"
-extendrom_fdroid_repos: "axpos.xml molly.xml nailyk.xml threema.xml futo_org.xml cromite.xml ironfox.xml izzysoft.xml"
+# this one is shared by slim and pro:
+extendrom_package_list_common: >
+    {{
+        [
+        'AOSmium_webview64',
+        'additional_repos.xml',
+        'AuroraStore',
+        'F-Droid',
+        'noeSpeakNG',
+        'noDefaultBrowserWebView',
+        'Etar_ER',
+        'FossifyGallery_FD'
+        ] +
+        (axp_euicc_capable | default(false) | bool | ternary(['OpenEUICC_AXP-OS'], []))
+    }}
+# default (used by pro) will include common
+extendrom_package_list_default: >
+    {{ extendrom_package_list_common +
+        [
+        'GsfProxy_GH',
+        'Magisk',
+        'MicrogGmsCore_GH',
+        'Phonesky_AXP-OS',
+        (android_version_int | int > 14) | ternary('AOSLauncher', 'NeoLauncher-latest')
+        ]
+    }}
+# F-Droid repos provided by extendrom, can be conditionally extended like:
+#  + ((target_model_vendor | lower == "<vendor>") | ternary(['<extendrom-repo>.xml'], []))
+extendrom_fdroid_repos: >
+    {{
+        [
+            'axpos.xml',
+            'molly.xml',
+            'nailyk.xml',
+            'threema.xml',
+            'futo_org.xml',
+            'cromite.xml',
+            'ironfox.xml',
+            'izzysoft.xml'
+        ] +
+        ((target_model_vendor | lower == "shift") | ternary(['shiftphone.xml'], []))
+    }}
 extendrom_preroot_boot: "true"
 extendrom_signature_spoofing: "true"
 #extendrom_sigspoof_force_dir: "vendor/extendrom/config/sigspoof/{{ ROM_FLAVOR }}/{{ android_shortversion | upper() }}"
@@ -310,19 +341,19 @@ DOS_INIT: |
 
 # we do not want to generate a fastboot factory image by roles/common/defaults/main.yml
 # override "generate_factory_image" in semaphore if needed
-generate_factory_image: False
+generate_factory_image: false
 
 # get & upload a recovery image
-axp_release_recovery: False
+axp_release_recovery: false
 
 # should we start the vendor firmware updater? should be overwritten in SEMAPHORE if required
-update_vendor_firmware: False
+update_vendor_firmware: false
 
 # override in semaphore, DEPRECATED, use update_vendor_firmware instead
-download_fairphone_firmware: False
+download_fairphone_firmware: false
 
 # does factory zip contains super image? should be overwritten in device vars if required
-vendor_firmware_super_img: False
+vendor_firmware_super_img: false
 
 # default patchlevels as hugo vars, override in device vars if required!
 hugo_patchlevel_pro: "Platform + Kernel"
@@ -344,12 +375,12 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         if [ -f {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip ];then rm -vf {{ SRCPATH }}/out/{{ os_name }}-${VERSION}-factory.zip;fi
         if [ -f {{ SRCPATH }}/out/${FZIP}-factory.zip ]; then rm -vf {{ SRCPATH }}/out/${FZIP}-factory.zip;fi
         if [ -d {{ SRCPATH }}/out/{{ target_model }}-factory/ ];then rm -rf {{ SRCPATH }}/out/{{ target_model }}-factory/;fi
-        
+
         # extract the origin factory zip
         unzip {{ SRCPATH }}/out/{{ target_model }}-factory.zip -d {{ SRCPATH }}/out/{{ target_model }}-factory > /dev/null
         IMAGES_PATH=images
         export FPIMGPATH=$(dirname {{ SRCPATH }}/out/{{ target_model }}-factory/*/images/)/$IMAGES_PATH
-       
+
         # extract AXP.OS factory zip and override Fairphone images by AOS ones
         REPLHASH=$(zipinfo -1 {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip '*.img')
         unzip -o {{ SRCPATH }}/out/target/product/{{ target_model }}/${FZIP}-fastboot.zip -d ${FPIMGPATH} '*.img' > /dev/null
@@ -364,20 +395,20 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
             mv -v ${FPIMGPATH}/vendor.img ${FPIMGPATH}/super_vendor.img
             REPLHASH=$(echo "$REPLHASH" | sed "s/vendor.img/super_vendor.img/g" )
         fi
-        
+
         avb_file="{{ target_model }}_AXP.OS_avb_pkmd.bin"
         if [ "{{ axp_type }}" == "slim" ];then avb_file="{{ target_model }}_AXP.OS-slim_avb_pkmd.bin";fi
         cp {{ SRCPATH }}/user-keys/avb_pkmd.bin ${FPIMGPATH}/$avb_file
         croot
-        
+
         # add flashing-cmd for the AXP.OS avb key
         cd ${FPIMGPATH} && cd ..
         f=$(echo flash_fp*.command)
         awk '{print} /^flash_device$/ && !n {print "sleep 5\n'"\${FASTBOOT_BIN}"' erase avb_custom_key\n'"\${FASTBOOT_BIN}"' flash avb_custom_key '\${IMAGES_DIR}'/'"$avb_file"'\n'"\${FASTBOOT_BIN}"' reboot-bootloader"; n++}' ${f} > ${f}.tmp && mv -v ${f}.tmp ${f} && chmod +x ${f}
-        
+
         # do not auto-lock by default
         sed -i 's/^RELOCK_BOOTLOADER=.*/RELOCK_BOOTLOADER="false"/g' $f
-        
+
         # update checksums
         for hfile in $REPLHASH;do
             echo "generating hash for: $hfile"
@@ -387,10 +418,10 @@ SH_COMMON_FAIRPHONE_CREATE_FACTORY: |
         # add command file
         CMDHASH=$(sha256sum $f | cut -d ' ' -f1)
         sed -E "s#^(.*){64,}(\s)(.*$f)#$CMDHASH\2\3#g" -i SHA256SUMS
-        
+
         # test checksums
         sha256sum --check SHA256SUMS
-        
+
         # test vbmeta
         croot
         out/host/linux-x86/bin/avbtool info_image --image ${FPIMGPATH}/vbmeta.img
@@ -419,7 +450,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% if generate_factory_image | bool %}
 
     echo "Creating FACTORY ZIP!" >> {{ BUILD_LOG }}
-    
+
     if [ -f "{{ vendor_factory_persistent_path }}" ];then
         echo "Using previously downloaded factory image: {{ vendor_factory_version }}.zip" >> {{ BUILD_LOG }}
     else
@@ -427,7 +458,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
         wget -q {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} >> {{ BUILD_LOG }} 2>&1 \
           || (wget {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} >> {{ BUILD_LOG }} 2>&1 ; exit 9)
     fi
-    
+
     VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
     FZIP="{{ os_name }}-${VERSION}-{{ target_model }}"
     FACTORYID="{{ vendor_factory_id }}"
@@ -452,7 +483,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     zip -r ../${FZIP}-factory.zip {{ target_model }}-${FACTORYID}
     cd ..
     sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512sum
-    
+
     {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
     echo "GPG signing ${FZIP}-factory.zip.sha512sum with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
     if [ -f "${FZIP}-factory.zip.sha512sum.asc" ]; then rm ${FZIP}-factory.zip.sha512sum.asc; fi
@@ -564,8 +595,8 @@ SH_COMMON_BUILD_SNIPPET: |
     # extendrom flags
     export ENABLE_EXTENDROM={{ use_extendrom }}
     export EXTENDROM_PACKAGES_SKIP_DL={{ extendrom_packages_skip_dl }}
-    export EXTENDROM_PACKAGES="{{ extendrom_package_list | d(extendrom_package_list_default) }}"
-    export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos }}"
+    export EXTENDROM_PACKAGES="{{ extendrom_package_list | d(extendrom_package_list_default) | flatten | join(' ') }}"
+    export EXTENDROM_FDROID_REPOS="{{ extendrom_fdroid_repos | flatten | join(' ') }}"
     export EXTENDROM_PREROOT_BOOT={{ extendrom_preroot_boot }}
     #export MAGISK_TARGET_ARCH=
     export EXTENDROM_BOOT_DEBUG={{ extendrom_boot_debug }}
@@ -590,20 +621,22 @@ SH_COMMON_BUILD_SNIPPET: |
     # check for uncommitted changes
     CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
     # commit if required
-    if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+    if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
         git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
         echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
     fi
     git status
     croot
-    
+
     # build
     #resetEnv
     {%   if android_version_int | int >= 15   %}
     {%      if (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)   %}
     # as we patch bionic/libc ABI reference updates are required
-    $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant APEX --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
-    $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant LLNDK --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
+    $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant APEX \
+        --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
+    $ANDROID_BUILD_TOP/development/vndk/tools/header-checker/utils/create_reference_dumps.py --lib libc --lib-variant LLNDK \
+        --release $TARGET_RELEASE --product lineage_{{ target_model }} --build-variant user
     {%      endif      %}
     {%   endif   %}
 
@@ -711,21 +744,7 @@ SH_COMMON_BUILD_SNIPPET: |
 ##############################################################################################
 
 # we always need to change sec_patch_level as we patch the kernel
-force_secpatchdate: True
-
-# specific DOS overrides are required as we consider DOS as upstream until its EOL in 2024-12
-
-#sec_patch_topics_a9:
-#    - "{{ range(202501, sec_patch_date_last | int) }}"
-
-#sec_patch_topics_a10:
-#    - "{{ range(202501, sec_patch_date_last | int) }}"
-
-#sec_patch_topics_a11:
-#    - "{{ range(202501, sec_patch_date_last | int) }}"
-
-# A12 + A13 were still supported at DOS's EOL so no need to override the common one
-# A14 and later are still supported by LOS so again no need to override the common one
+force_secpatchdate: true
 
 ##############################################################################################
 ##############################################################################################
