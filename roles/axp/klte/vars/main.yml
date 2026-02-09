@@ -15,7 +15,7 @@ extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
 # ensure we get the 32bit webview
-extendrom_package_list: "{{ extendrom_package_list_default | regex_replace('AOSmium_webview64','AOSmium_webview32') }}"
+extendrom_package_list: "{{ extendrom_package_list_default | map('regex_replace', 'AOSmium_webview64', 'AOSmium_webview32') | list }}"
 
 # path to the kernel dir (req for e.g. wireguard)
 target_kernel_dir: kernel/samsung/msm8974
