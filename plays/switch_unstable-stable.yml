@@ -52,7 +52,7 @@
         ansible.builtin.shell: >-
           grep ro.build.version.security_patch= {{ rempath_unstable }}/{{ os_zip_filename }}.prop | cut -d "=" -f 2
         register: pprop
-       
+
       - name: "Setup ASB level var"
         ansible.builtin.set_fact:
             sec_level_date: "{{ pprop.stdout }}"
@@ -71,14 +71,14 @@
           done
           {% endif %}
         when: axp_release_recovery_skip == "False"
-        
+
       - name: "RECOVERY: verify IMG integrity"
         ansible.builtin.shell: >-
             sha512sum --check {{ recovery_filename_no_ext }}*{{ target_model }}*.img.sha512sum
         args:
           chdir: "{{ rempath }}/recovery"
         when: axp_release_recovery_skip == "False"
-  
+
       - name: "RECOVERY: delete from unstable"
         ansible.builtin.shell: |
           {% if axp_type | d('') == "slim" %}

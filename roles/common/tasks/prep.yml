@@ -5,6 +5,9 @@
     path: "{{ server_tmp_dir }}"
     state: directory
     mode: '0700'
+  when:
+    - not axp_skip_common_tasks | d(false)
+    - not common_skip_prep_tasks | d(false)
 
 - name: "Prepare common tasks"
   when: android_shortversion is defined
