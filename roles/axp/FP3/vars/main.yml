@@ -83,10 +83,12 @@ hugo_patchlevel_slim: "Platform + Kernel<br/><i>(Firmware until 2025-08)</i>"
 # vendor/firmware info
 # source: https://support.fairphone.com/hc/en-us/articles/18896094650513-How-to-manually-install-Android-on-your-Fairphone#01HB8ZZ1BMMQNSNMFT3YXDBXA0
 #
-vendor_firmware_super_img: True   # factory contains super image
-vendor_fairphone_factory_version: FP3-6.A.039.4-gms-2f612659
+vendor_firmware_super_img: true   # factory contains super image
+vendor_fairphone_factory_version: "FP3-6.A.039.7-gms-44ba459b"
+
 vendor_firmware_download_url: "https://android-builds.fairphone.com/FP3/A13/{{ vendor_fairphone_factory_version }}-user-fastbootimage.zip"
-vendor_firmware_download_sha256: "456b1b328a36ba016a5d790196cb5cdc0ce4042d4f19e8b4c655677cd47f918d"
+vendor_firmware_download_sha256: "615b58bdc9eeeb0e67e20b0a24547b773cc90c6b9aac2af866677dfd0f1fc9e6"
+
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though.
 vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ vendor_fairphone_factory_version }}.zip"
