@@ -2,7 +2,7 @@
 # yamllint disable rule:comments
 #################################################################################################################################
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
-# v1.5
+# v1.6
 #################################################################################################################################
 #:h:# all lines starting with '#:h:#' are special help lines to give some context for identifying what's requested
 #:h:# if you have no idea about a setting, either ask in the support "bringup" channel or simply skip it
@@ -32,19 +32,24 @@ target_kernel_dir: ""
 #git_pixel_kernel_manifest_branch: "android-gs-{{ pixel_kernel_codename }}-6.1-android15-qpr2"
 
 #:h:# DEFINE-IF-YOU-CAN:
-# path to the common tree, if none exists then the device tree.
-#:h:# e.g. device_oneplus_msm8998-common
+# git repo name of the device common tree
+#:h:# e.g. "android_device_oneplus_msm8998-common"
+#:h:# usually this can be found in https://github.com/LineageOS
+#:h:# if you have no idea, leave empty
 target_model_common_tree: ""
 
 #:h:# NEVER TOUCH THIS:
 # construct specific model device tree automatically
-target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
+target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
 
-#:h:# NEVER TOUCH THIS:
-# the BoardConfig file within a device tree, required e.g. for switch_major_release
-# usually is one of: BoardConfigCommon, BoardConfig, BoardConfigLineage.
-# defaults to BoardConfigCommon
-#target_model_device_tree_boardmk: BoardConfigLineage.mk
+#:h:# DEFINE-IF-YOU-CAN:
+#:h:# does your device support eSIM's?
+#:h:# If so just remove the "#" on the axp_euicc_capable: true line
+#:h:# if you are unsure you can try:
+#:h:# Settings > Network & Internet/Connections > SIM Manager/Add eSIM
+#:h:# Alternatively, dial *#06# and check for an "EID" number.
+# add OpenEUICC
+#axp_euicc_capable: true
 
 #:h:# NEVER TOUCH THIS:
 # the common tree or if there is none the device main makefile,
@@ -54,12 +59,12 @@ target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_m
 
 #:h:# NEVER TOUCH THIS:
 # do NOT upload the recovery image
-#axp_release_recovery: False
+#axp_release_recovery: false
 
 #:h:# OPTIONAL OVERWRITE:
-#:h:# only if the kernel repo contains "drivers/net/wireguard", set this to True
+#:h:# only if the kernel repo contains "drivers/net/wireguard", set this to true
 # disable Wireguard patching (already part of the upstream kernel)
-#skip_wireguard: True
+#skip_wireguard: true
 
 #:h:# OPTIONAL OVERWRITE:
 # AVB version. Can be: 1|2|0 (if unset this defaults to 2).
@@ -90,12 +95,12 @@ target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_m
 #:h:# usually legacy devices like LG G4, klte and such while that always depends on the
 #:h:# target Android version. This will have drawbacks, details can be found here: 
 # https://axpos.org/docs/knowledge/techdetails/#what-changes-does-axp_lowend_device-make
-#axp_lowend_device: True
+#axp_lowend_device: true
 
 #:h:# OPTIONAL OVERWRITE:
 # set to False to skip force encryption,
-# might be required when "axp_lowend_device: True" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
-#axp_auto_encrypt: False
+# might be required when "axp_lowend_device: true" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
+#axp_auto_encrypt: false
 
 #:h:# OPTIONAL / DEFINE-IF-YOU-CAN:
 # boot debugger mount point
@@ -177,7 +182,7 @@ android_version_pro:
 #:h:# can be: 'yes' or 'no', single quotes required
 hugo_relockable_pro: ''
 #:h:# NEVER TOUCH THIS:
-#hugo_encryption_pro: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2 
+#hugo_encryption_pro: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
 #hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
 #hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
 #hugo_first_releasedate_pro: "TBD" # first public stable release date (YYYY-MM-DD)
@@ -206,7 +211,7 @@ hugo_relockable_slim: ''
 #hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
 #hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
 # can be one of:
-#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel" 
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
 #hugo_patchlevel_slim: ""
 
 #:h:#################################################################################################################################
