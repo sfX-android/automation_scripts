@@ -22,23 +22,23 @@ git_axpos_actions_workflow_repo_branch: main
 
 git_axpos_website_workflow_repo: axpos-org
 git_axpos_website_workflow_id: pages.yaml
-git_axpos_website_workflow_force: False
+git_axpos_website_workflow_force: false
 git_axpos_website_workflow_repo_branch: hugo
 
 ######## defaults
 
-skip_dl_cve_checker: True
-skip_dl_git_cli_tools: True
-skip_setup_otaverify: False
-skip_setup_repos: False
-skip_setup_firmware: False
-skip_setup_firmware_fetch: False
-skip_setup_firmware_clean: False
-skip_setup_manifest: False
-skip_setup_ansible: False
-skip_setup_website: False
-skip_setup_semaphore: False
-skip_mirror_activation: False
+skip_dl_cve_checker: true
+skip_dl_git_cli_tools: true
+skip_setup_otaverify: false
+skip_setup_repos: false
+skip_setup_firmware: false
+skip_setup_firmware_fetch: false
+skip_setup_firmware_clean: false
+skip_setup_manifest: false
+skip_setup_ansible: false
+skip_setup_website: false
+skip_setup_semaphore: false
+skip_mirror_activation: false
 
 ########### generate-4-ALL vars
 
@@ -73,14 +73,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "True"
+        "default_value": true
       },
       {
         "name": "override_clean_out",
@@ -91,14 +91,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "True"
+        "default_value": true
       },
       {
         "name": "override_reset_git",
@@ -109,14 +109,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "True"
+        "default_value": true
       },
       {
         "name": "override_release_build",
@@ -127,14 +127,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "True"
+        "default_value": true
       },
       {
         "name": "debug_build",
@@ -145,14 +145,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "True"
+        "default_value": true
       },
       {
         "name": "axp_build_eng",
@@ -163,14 +163,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "False"
+        "default_value": false
       },
       {
         "name": "unstable_build",
@@ -181,14 +181,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "True"
+        "default_value": true
       },
       {
         "name": "update_vendor_firmware",
@@ -198,14 +198,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "False"
+        "default_value": false
       },
       {
         "name": "generate_factory_image",
@@ -216,14 +216,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "True"
+            "value": true
           },
           {
             "name": "no",
-            "value": "False"
+            "value": false
           }
         ],
-        "default_value": "False"
+        "default_value": false
       },
       {
         "name": "commit_push",
@@ -233,14 +233,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
             {
                 "name": "yes",
-                "value": "True"
+                "value": true
             },
             {
                 "name": "no",
-                "value": "False"
+                "value": false
             }
         ],
-        "default_value": "True"
+        "default_value": true
     }
     ]
 
