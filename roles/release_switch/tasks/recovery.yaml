@@ -1,37 +1,41 @@
 ---
 
-- name: "RECOVERY: switch to stable"
-  ansible.builtin.shell: >-
-    {% if axp_type | d('') == "slim" %}
-    cp -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}* {{ rempath }}/recovery/
-    {% else %}
-    
-    for i in $(ls {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* | grep -v SLIM);do
-      cp -v $i {{ rempath }}/recovery/
-    done
-    
-    {% endif %}
-  when: axp_release_recovery_skip == "False"
+- name: "RECOVERY block"
+  delegate_to: "{{ groups.downloadserver[0] }}"
+  block:
 
-- name: "RECOVERY: verify IMG integrity"
-  ansible.builtin.shell: >-
-    sha512sum --check {{ recovery_filename_no_ext }}*{{ target_model }}*.img.sha512sum
-  args:
-    chdir: "{{ rempath }}/recovery"
-  when: axp_release_recovery_skip == "False"
+    - name: "RECOVERY: switch to stable"
+      ansible.builtin.shell: >-
+        {% if axp_type | d('') == "slim" %}
+        cp -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}* {{ rempath }}/recovery/
+        {% else %}
 
-- name: "RECOVERY: delete from unstable"
-  ansible.builtin.shell: |
-    {% if axp_type | d('') == "slim" %}
-    DEL=$(ls {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }})
-    {% else %}
-    DEL=$(ls -1 {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }} | grep -v SLIM | tr '\n' ' ')
-    {% endif %}
+        for i in $(ls {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* | grep -v SLIM);do
+          cp -v $i {{ rempath }}/recovery/
+        done
 
-    for f in $DEL;do test -f $f && rm -fv "$f"; done
-  loop:
-    - img
-    - img.sha256sum
-    - img.sha512sum
-    - img-ODIN_RENAME-TO_recovery.tar.md5
-  when: axp_release_recovery_skip == "False"
+        {% endif %}
+      when: axp_release_recovery_skip == "False"
+
+    - name: "RECOVERY: verify IMG integrity"
+      ansible.builtin.shell: >-
+        sha512sum --check {{ recovery_filename_no_ext }}*{{ target_model }}*.img.sha512sum
+      args:
+        chdir: "{{ rempath }}/recovery"
+      when: axp_release_recovery_skip == "False"
+
+    - name: "RECOVERY: delete from unstable"
+      ansible.builtin.shell: |
+        {% if axp_type | d('') == "slim" %}
+        DEL=$(ls {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}*.{{ item }})
+        {% else %}
+        DEL=$(ls -1 {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}*.{{ item }} | grep -v SLIM | tr '\n' ' ')
+        {% endif %}
+
+        for f in $DEL;do test -f $f && rm -fv "$f"; done
+      loop:
+        - img
+        - img.sha256sum
+        - img.sha512sum
+        - img-ODIN_RENAME-TO_recovery.tar.md5
+      when: axp_release_recovery_skip == "False"

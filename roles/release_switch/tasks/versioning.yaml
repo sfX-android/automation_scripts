@@ -7,13 +7,11 @@
       "{{ sm_build_id | replace(' ', '') }}"
 
 - name: "RELDATE: start clean"
-  delegate_to: "{{ groups.buildserver[0] }}"
   ansible.builtin.file:
     path: "{{ task_temp_path }}"
     state: absent
 
-- name: "Git"
-  delegate_to: "{{ groups.buildserver[0] }}"
+- name: "Git block"
   block:
 
         - name: "RELDATE: fetch git repo"

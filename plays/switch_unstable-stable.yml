@@ -1,7 +1,7 @@
 ---
 
 - name: "Switch from unstable to stable"
-  hosts: "{{ groups.downloadserver[0] }}"
+  hosts: "{{ groups.buildserver[0] }}"
   gather_facts: false
   become: no
 
