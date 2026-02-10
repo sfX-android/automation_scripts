@@ -8,7 +8,7 @@ export HUGO_CI_GUIDE="{% if hugo_custom_installguide_path is defined %}yes{% end
 export HUGO_CI_GUIDE_PATH="{% if hugo_custom_installguide_path is defined %}{{ hugo_custom_installguide_path }}{% endif %}"
 export HUGO_CODENAME="{{ sub_model | d(target_model) }}"
 export HUGO_DEBUGBOOTPATH="{{ extendrom_debug_path_default }}"
-export HUGO_FACTORYZIP="{% if custom_build_command is defined %}yes{% else %}no{% endif %}"
+export HUGO_FACTORYZIP="{% if vendor_factory_id is defined %}yes{% else %}no{% endif %}"
 export HUGO_FIRMWARE="{{ hugo_firmware }}"
 export HUGO_ISAB="{{ hugo_isab }}"
 export HUGO_ISPIXEL="{% if target_model_name | upper is search('PIXEL.*') %}yes{% else %}no{% endif %}"
@@ -20,6 +20,7 @@ export HUGO_XDALINK="{{ hugo_xda_link }}"
 # PRO Block
 export HUGO_PRO_ANDROID="{{ android_version_pro }}"
 export HUGO_PRO_FLAVOR={% if android_version_pro is defined %}True{% endif %}
+
 export HUGO_PRO_ENCRYPTION="{{ hugo_encryption_pro }}"
 export HUGO_PRO_FIRSTRELEASE="{{ hugo_first_releasedate_pro }}"
 export HUGO_PRO_RELOCKABLE="{{ hugo_relockable_pro }}"
@@ -31,6 +32,7 @@ export HUGO_PRO_VERIFIEDBOOT="{% if hugo_avb_pro == 2 %}v2.0{% elif hugo_avb_pro
 # SLIM Block
 export HUGO_SLIM_ANDROID="{{ android_version_slim }}"
 export HUGO_SLIM_FLAVOR={% if android_version_slim is defined %}True{% endif %}
+
 export HUGO_SLIM_ENCRYPTION="{{ hugo_encryption_slim }}"
 export HUGO_SLIM_FIRSTRELEASE="{{ hugo_first_releasedate_slim }}"
 export HUGO_SLIM_RELOCKABLE="{{ hugo_relockable_slim }}"

@@ -79,7 +79,7 @@
     body: >-
         { "inputs": {
             "force": {{ git_axpos_website_workflow_force }},
-            "forcewhat": "{{ device_tree }}"
+            "forcewhat": "{{ init_device_website_repo_name }}"
           },
           "ref": "{{ git_axpos_website_workflow_repo_branch }}"
         }
