@@ -67,6 +67,14 @@
         {% if vendor_factory_download_sha512 is defined %}sha512:{{ vendor_factory_download_sha512 }}{% elif vendor_factory_download_sha256 is defined %}sha256:{{ vendor_factory_download_sha256 }}{% else %}99999{% endif %}
   when: vendor_factory_id is defined
 
+- name: "Download firmware image"
+  ansible.builtin.get_url:
+      url: "{{ vendor_firmware_download_url }}"
+      dest: "{{ vendor_firmware_persistent_path }}"
+      checksum: >-
+        {% if vendor_firmware_download_sha512 is defined %}sha512:{{ vendor_firmware_download_sha512 }}{% elif vendor_firmware_download_sha256 is defined %}sha256:{{ vendor_firmware_download_sha256 }}{% else %}99999{% endif %}
+  when: vendor_firmware_download_url is defined
+
 - name: "Setup firmware: Update ... (non-fairphone)"
   ansible.builtin.shell: |
           export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -93,26 +101,14 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    echo "Fairphone factory image handling ..." | tee -a {{ BUILD_LOG }}
+    echo "Fairphone firmware handling ..." | tee -a {{ BUILD_LOG }}
 
-    if [ -f "{{ vendor_firmware_persistent_path }}" ];then
-        echo "Using previously downloaded factory image: {{ vendor_fairphone_factory_version }}.zip" | tee -a {{ BUILD_LOG }}
-    else
-        echo "{{ vendor_fairphone_factory_version }}.zip not found in: {{ persistent_dir }}, downloading.." | tee -a {{ BUILD_LOG }}
-        wget -q {{ vendor_firmware_download_url }} -O {{ vendor_firmware_persistent_path }} >> {{ BUILD_LOG }} 2>&1 \
-          || (wget {{ vendor_firmware_download_url }} -O {{ vendor_firmware_persistent_path }} >> {{ BUILD_LOG }} 2>&1 ; exit 9)
-    fi
-
-    {% if sub_model is defined %}
-    lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
-    {% else %}
-    lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
-    {% endif %}
+    lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
     cd vendor/firmware/{{ target_model }}
     ./update.sh >> {{ BUILD_LOG }} 2>&1
   environment:
-    FACZIP: "{{ vendor_firmware_persistent_path }}"
-    FACTORYID: "{{ vendor_fairphone_factory_version }}"
+    FACZIP: "{{ vendor_factory_persistent_path | d(vendor_firmware_persistent_path) }}"
+    FACTORYID: "{{ vendor_factory_id | d(vendor_firmware_version) }}"
     ANDROIDSHORTVERSION: "{{ android_shortversion }}"
     CODEN: "{{ target_model }}"
   args:
