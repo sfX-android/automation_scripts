@@ -142,11 +142,11 @@
       fi
 
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-      REMHASH=$(git log --pretty=oneline --decorate | grep "origin/{{ git_repo_local_manifests_branch }}" |cut -d ' ' -f1)
+      REMHASH=$(git log --pretty=oneline --decorate | grep "{{ init_device_remotename | d('origin') }}/{{ git_repo_local_manifests_branch }}" |cut -d ' ' -f1)
         
       if [ "$CURHASH" != "$REMHASH" ]; then
           echo "[GIT][FIRMWARE] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-          git push origin {{ git_repo_local_manifests_branch }} >> {{ BUILD_LOG }} 2>&1
+          git push "{{ init_device_remotename | d('origin') }}" {{ git_repo_local_manifests_branch }} >> {{ BUILD_LOG }} 2>&1
       else
           echo "[GIT][FIRMWARE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
       fi
