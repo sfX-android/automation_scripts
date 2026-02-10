@@ -1,53 +1,63 @@
 ---
+# yamllint disable rule:comments
+#################################################################################################################################
+# source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
+# v1.6
+#################################################################################################################################
+#################################################################################################################################
+
+#################################################################################################################################
+## Device info
+#
+
 # human readable model name
 target_model_vendor: "Fairphone"
 target_model_name: '3'
+
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a13
+# path to the kernel dir
+# e.g. "kernel/oneplus/msm8998"
+target_kernel_dir: "kernel/fairphone/sdm632"
 
-# boot debugger path & config
+# Pixel devices: KLEAF based kernel build
+#pixel_kernel_codename: raviole
+# see https://android.googlesource.com/kernel/common/+refs
+#git_pixel_kernel_manifest_branch: "android-gs-{{ pixel_kernel_codename }}-6.1-android15-qpr2"
+
+# git repo name of the device common tree
+target_model_common_tree: "android_device_fairphone_FP3"
+
+# construct specific model device tree automatically
+target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
+
+# boot debugger mount point
 extendrom_debug_path_default: /mnt/vendor/persist
-extendrom_debug_path_size_full_default: 500 
+
+extendrom_debug_path_size_full_default: 500
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
-# path to the kernel dir (req for e.g. wireguard)
-target_kernel_dir: kernel/fairphone/sdm632
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
 
-# path to the common tree, if none exists the device tree
-# required e.g. for git, vendor/axp, release handling etc
-target_model_common_tree: device_fairphone_FP3
+# all used VENDOR paths for this device
+axp_git_push_vendor_include: "{{ target_model_device_tree | replace('android_device_', 'vendor_') }}|{{ target_model_common_tree | replace('android_device_', 'vendor_') }}"
 
-# disable Wireguard patching (already part of the upstream kernel)
-# part of the A14 and later kernel though
-#skip_wireguard: True
-
-# upload the recovery image
-axp_release_recovery: True
-
-# allow creating factory image
-#custom_build_command: "{{ SH_COMMON_FAIRPHONE_CREATE_FACTORY }}"
-
-# Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: ''
+# Bootloader ID (first line) for validating build log
+#axp_bootloader_id_pro: ''
 axp_bootloader_id_slim: '2F554EFA46B4B4A9'
 
-# git push
-axp_git_push_device_include: "{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "vendor_fairphone_FP3"
-
-# override common log err catcher
+# FP3 is buggy, let's override common log err catcher
 parselogerr:
-    - search: 'key .*/testkey.*.pem' # ALWAYS COPY THIS! we NEVER EVER want something signed with a testkey
+    - search: 'key .*/testkey.*.pem'
       expect: ''
-    - search: '{{ android_signing_testkey }}' # ALWAYS COPY THIS! sha1 of testkey we NEVER EVER want something signed with a testkey
+    - search: '{{ android_signing_testkey }}'
       expect: ''
-    - search: 'Algorithm:.*SHA(1|256)_RSA(1024|2048)' # ALWAYS COPY THIS! AVB (if enabled) should never use a weak key (at least "SHA512_4096")
+    - search: 'Algorithm:.*SHA(1|256)_RSA(1024|2048)'
       expect: ''
-    - search: "{{ axp_bootloader_id }}" # ALWAYS COPY THIS! Check the device's bootloader ID (if AVB / vbmeta_verify is on)
+    - search: "{{ axp_bootloader_id }}"
       expect_cnt: 1
     - search: 'Successfully verified sha512 hashtree of.*system.img' # system should be on sha512
       expect_cnt: 1
@@ -56,19 +66,40 @@ parselogerr:
     - search: 'Successfully verified sha1 hashtree of.*vendor' # FP3 fails to boot when touching this
       expect_cnt: 1
 
-# website info
-hugo_encryption: "FBEv1"
+#################################################################################################################################
+## Website info
+#
+
+# COMMON block
 hugo_firmware: "included"
-hugo_relockable: "yes"
-hugo_state: "stable"
-hugo_supportlevel: "community"
-hugo_isab: "yes"
-hugo_xda_link: "https://xdaforums.com/TBD"
-hugo_first_releasedate: "2025-04-06"
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+#hugo_xda_link: "" # link to the AXP.OS XDA post for that device
 hugo_kb_link: "fp3"
-#hugo_custom_installguide_path: 
-#hugo_axp_bootloader_id_pro: |
-hugo_axp_bootloader_id_slim: |
+#hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+
+
+#### PRO block
+#android_version_pro: 
+#hugo_relockable_pro: ''
+#hugo_encryption_pro: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+#hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
+#hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
+#hugo_first_releasedate_pro: "TBD" # first public stable release date (YYYY-MM-DD)
+#hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+#hugo_patchlevel_pro: ""
+
+#### SLIM block
+android_version_slim: 13
+hugo_relockable_slim: 'yes'
+hugo_encryption_slim: "FBEv1"
+hugo_axp_bootloader_id_slim: |-
     BOOTLOADER minimal ID
         2F554EFA
 
@@ -77,18 +108,49 @@ hugo_axp_bootloader_id_slim: |
         E2F86CD9D695018B
         667B67D29F9B5EBC
         4D09EC6750C3AEEC
-
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "2025-04-06" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
 hugo_patchlevel_slim: "Platform + Kernel + Firmware"
 
-# vendor/firmware info
-# source: https://support.fairphone.com/hc/en-us/articles/18896094650513-How-to-manually-install-Android-on-your-Fairphone#01HB8ZZ1BMMQNSNMFT3YXDBXA0
+#################################################################################################################################
+## FIRMWARE info
 #
-vendor_firmware_super_img: true   # factory contains super image
-vendor_fairphone_factory_version: "FP3-6.A.039.7-gms-44ba459b"
+# source: https://support.fairphone.com/hc/en-us/articles/18896094650513-How-to-manually-install-Android-on-your-Fairphone#01HB8ZZ1BMMQNSNMFT3YXDBXA0
 
-vendor_firmware_download_url: "https://android-builds.fairphone.com/FP3/A13/{{ vendor_fairphone_factory_version }}-user-fastbootimage.zip"
+# do not use any quotes here:
+vendor_firmware_super_img: true
+
+vendor_firmware_version: "FP3-6.A.039.7-gms-44ba459b" # filename without zip
+
+# direct download link to the OTA zip of the vendor.
+vendor_firmware_download_url: "https://android-builds.fairphone.com/FP3/A13/{{ vendor_firmware_version }}-user-fastbootimage.zip"
 vendor_firmware_download_sha256: "615b58bdc9eeeb0e67e20b0a24547b773cc90c6b9aac2af866677dfd0f1fc9e6"
 
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
-# in any case the hash sum will be verified though.
-vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ vendor_fairphone_factory_version }}.zip"
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+#################################################################################################################################
+
+#################################################################################################################################
+## FACTORY info (only relevant for: Google Pixel, Fairphone)
+#
+# source: https://the-website-where-the-FACTORYZIP-is-located
+
+#vendor_factory_download_url: ""
+# one of sha512 or sha256 is required (in that order) if there is none you have to download and generate it (sha512sum xxx.zip)
+#vendor_factory_download_sha512: ""
+#vendor_factory_download_sha256: ""
+
+#vendor_factory_id: ""  # e.g. tq3a.230805.001.s1
+#vendor_factory_hash: ""  # e.g. 82902ea9
+#vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
+##ref## vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+#vendor_factory_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
+#################################################################################################################################
