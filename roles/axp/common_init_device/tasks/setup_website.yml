@@ -67,26 +67,26 @@
       executable: /bin/bash
   when: info_added.changed or id_pro_added.changed or id_slim_added.changed
 
-#- name: "Setup website: run generate page action"
-  # connection: local
-  # ansible.builtin.uri:
-  #   url: "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/{{ git_axpos_website_workflow_repo }}/actions/workflows/{{ git_axpos_website_workflow_id }}/dispatches"
-  #   method: POST
-  #   headers:
-  #       Content-Type: application/json
-  #       Authorization: "Bearer {{ vault_axp_private_repo_token_rw }}"
-  #   body_format: json
-  #   body: >-
-  #       { "inputs": {
-  #           "force": {{ git_axpos_website_workflow_force }},
-  #           "forcewhat": "{{ init_device_website_repo_name }}"
-  #         },
-  #         "ref": "{{ git_axpos_website_workflow_repo_branch }}"
-  #       }
-  #   status_code: 204
-  # #register: amirr
-  # #changed_when: amirr.status == 201
-  # #no_log: true
+- name: "Setup website: run generate page action"
+  connection: local
+  ansible.builtin.uri:
+    url: "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/{{ git_axpos_website_workflow_repo }}/actions/workflows/{{ git_axpos_website_workflow_id }}/dispatches"
+    method: POST
+    headers:
+        Content-Type: application/json
+        Authorization: "Bearer {{ vault_axp_private_repo_token_rw }}"
+    body_format: json
+    body: >-
+        { "inputs": {
+            "force": {{ git_axpos_website_workflow_force }},
+            "forcewhat": "{{ init_device_website_repo_name }}"
+          },
+          "ref": "{{ git_axpos_website_workflow_repo_branch }}"
+        }
+    status_code: 204
+  #register: amirr
+  #changed_when: amirr.status == 201
+  #no_log: true
   
 - name: "Setup website: End clean"
   ansible.builtin.file:
