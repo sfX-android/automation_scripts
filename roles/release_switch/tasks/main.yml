@@ -4,6 +4,9 @@
   ansible.builtin.include_tasks: versioning.yaml
   when: not release_switch_skip_ver
 
+- fail:
+    msg: booo
+
 - name: "Include prep"
   ansible.builtin.include_tasks: prep.yaml
   when: not release_switch_skip_prep
