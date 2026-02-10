@@ -74,7 +74,7 @@
     method: POST
     headers:
         Content-Type: application/json
-        Authorization: "Bearer {{ vault_axp_private_repo_token_rw }}"
+        Authorization: "token {{ vault_axp_private_repo_token_rw }}"
     body_format: json
     body: >-
         { "inputs": {
