@@ -101,7 +101,7 @@ hugo_axp_bootloader_id_pro: |-
         CA11015AC588001D
         0AB9A80BD8AA5906
 hugo_supportlevel_pro: "team"  # i.e.: "team" | "community"
-hugo_first_releasedate_pro: "2024-01-16 (A13)<br/>TBD (A15)" # first public stable release date (YYYY-MM-DD)
+hugo_first_releasedate_pro: "2024-01-16 (A13)<br/>2026-02-10 (A15)" # first public stable release date (YYYY-MM-DD)
 hugo_state_pro: "stable (A13)<br/>stable (A15)" # "stable" | "!! ALPHA !!" | "BETA"
 #hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
 # can be one of:
