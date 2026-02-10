@@ -8,7 +8,7 @@
     method: GET
     headers:
         Content-Type: application/json
-        Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
+        Authorization: "token {{ vault_semaphore_api_aos_rw }}"
   register: sp_all_templates
   no_log: true
 
@@ -19,7 +19,7 @@
     method: GET
     headers:
         Content-Type: application/json
-        Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
+        Authorization: "token {{ vault_semaphore_api_aos_rw }}"
   register: sp_all_envs
   no_log: true
 
@@ -45,7 +45,7 @@
     method: POST
     headers:
         Content-Type: application/json
-        Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
+        Authorization: "token {{ vault_semaphore_api_aos_rw }}"
     body_format: json
     body: >-
         { "project_id": {{ semaphore_aos_template_project_id }},
