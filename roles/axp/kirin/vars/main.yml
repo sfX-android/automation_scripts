@@ -1,48 +1,82 @@
 ---
+# yamllint disable rule:comments
+#################################################################################################################################
+# source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
+# v1.7
+#################################################################################################################################
+#################################################################################################################################
+
+#################################################################################################################################
+## Device info
+#
+
 # human readable model name
 target_model_vendor: "Sony"
 target_model_name: 'Xperia 10'
+
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a15
+# path to the kernel dir
+# e.g. "kernel/oneplus/msm8998"
+target_kernel_dir: "kernel/sony/sdm660"
 
-# boot debugger path & config
-extendrom_debug_path_default: /mnt/vendor/persist
-extendrom_debug_path_size_full_default: 500 
+# git repo name of the device common tree
+target_model_common_tree: "android_device_sony_nile-common"
+
+# construct specific model device tree automatically
+target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
+
+# the common tree or if there is none the device main makefile,
+# usually named device.mk or common.mk. used in e.g. switch_major_release role.
+# defaults to "device.mk"
+target_model_device_tree_mk: nile.mk
+
+# do NOT upload the recovery image
+#axp_release_recovery: false
+
+# disable Wireguard patching (already part of the upstream kernel)
+skip_wireguard: true
+
+# AVB version. Can be: 1|2|0 (if unset this defaults to 2).
+axp_avb_version: 0
+
+# boot debugger mount point
+extendrom_debug_path_default: "/mnt/vendor/persist"
+
+extendrom_debug_path_size_full_default: 500
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
 
-# path to the kernel dir (req for e.g. wireguard)
-target_kernel_dir: kernel/sony/sdm660
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
 
-# path to the common tree, if none exists the device tree
-# required e.g. for git, vendor/axp, release handling etc
-target_model_common_tree: device_sony_nile-common
+# all used VENDOR paths for this device
+axp_git_push_vendor_include: "{{ target_model_device_tree | replace('android_device_', 'vendor_') }}|{{ target_model_common_tree | replace('android_device_', 'vendor_') }}"
 
-# regular makefile name within a device tree, required e.g. for switch_major_release
-# defaults to device.mk
-target_model_device_tree_mk: nile.mk
+#################################################################################################################################
+## Website info
+#
 
-# upload the recovery image
-axp_release_recovery: True
+# COMMON block
+hugo_firmware: "manual"
 
-# disable Wireguard patching (already part of the upstream kernel)
-skip_wireguard: True
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
 
-# AVB v1.0 is not supported anymore since A11
-axp_avb_version: 0
+#hugo_xda_link: "" # link to the AXP.OS XDA post for that device
+#hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
 
-# required for parselogerr: if axp_avb_version=1
-# the partitions signed by boot_signer:
-#axp_avb_bootparts: "boot|recovery"
-aaxp_avb_bootparts_count: 2
-axp_avb_dmparts_count: 2 # (system.img + vendor.img)
-
-# git push
-axp_git_push_device_include: "device_sony_kirin|{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "vendor_sony_kirin|vendor_sony_nile-common"
-
-# TESTING
-#axp_graphene_malloc: 'false'
+#### SLIM block
+android_version_slim: 15
+hugo_relockable_slim: 'no'
+hugo_encryption_slim: "ICE" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+#hugo_axp_bootloader_id_slim: |- # if AVB: the bootloader id string (from build log)
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "2026-02-10" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+#hugo_patchlevel_slim: ""
