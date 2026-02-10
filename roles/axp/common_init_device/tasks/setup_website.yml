@@ -74,7 +74,7 @@
     method: POST
     headers:
         Content-Type: application/json
-        Authorization: "token {{ vault_semaphore_api_aos_rw }}"
+        Authorization: "token {{ vault_gitea-sfxbot_ansible_repocreate }}"
     body_format: json
     body: >-
         { "inputs": {
