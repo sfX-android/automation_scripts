@@ -43,9 +43,9 @@
             git add -A
             git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "$TAG: {{ sub_model | d(target_model) }} {{ axp_type }} - stable"
             git tag -d "$TAG" 2>&1 || true
-            git push up --delete "$TAG" 2>&1 || true
+            git push --delete "$TAG" 2>&1 || true
             git tag -a "$TAG" -m "$TAG: last updated by {{ sub_model | d(target_model) }} {{ axp_type }}" 2>&1
-            git push --force --set-upstream up $TAG 2>&1
+            git push --force --set-upstream origin $TAG 2>&1
           else
             echo "NO CHANGES DETECTED: PUSH SKIPPED!"
           fi
@@ -53,17 +53,17 @@
           executable: /bin/bash
           chdir: "{{ task_temp_path }}"
 
-      - name: "RELDATE: end clean"
-        ansible.builtin.file:
-          path: "{{ task_temp_path }}"
-          state: absent
+      #- name: "RELDATE: end clean"
+      #  ansible.builtin.file:
+      #    path: "{{ task_temp_path }}"
+      #    state: absent
 
   rescue:
 
-      - name: "RELDATE: end clean"
-        ansible.builtin.file:
-          path: "{{ task_temp_path }}"
-          state: absent
+      #- name: "RELDATE: end clean"
+      #  ansible.builtin.file:
+      #    path: "{{ task_temp_path }}"
+      #    state: absent
 
       - name: "RELDATE: failed"
         ansible.builtin.fail:
