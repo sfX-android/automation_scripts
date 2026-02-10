@@ -53,10 +53,10 @@
           executable: /bin/bash
           chdir: "{{ task_temp_path }}"
 
-      #- name: "RELDATE: end clean"
-      #  ansible.builtin.file:
-      #    path: "{{ task_temp_path }}"
-      #    state: absent
+      - name: "RELDATE: end clean"
+        ansible.builtin.file:
+          path: "{{ task_temp_path }}"
+          state: absent
 
   rescue:
 
