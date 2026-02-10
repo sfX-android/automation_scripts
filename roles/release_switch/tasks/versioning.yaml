@@ -2,16 +2,19 @@
 
 - name: "RELDATE: prep"
   ansible.builtin.set_fact:
-    task_temp_path: "{{ android_build_path }}/.tmp/versioning"
+    task_temp_path: "/tmp/versioning"
     tag_version: >-
-      "{{ sm_build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
+      "{{ sm_build_id | replace(' ', '') }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
 
 - name: "RELDATE: start clean"
+  connection: local
   ansible.builtin.file:
     path: "{{ task_temp_path }}"
     state: absent
 
-- block:
+- name: "git"
+  connection: local
+  block:
 
         - name: "RELDATE: fetch git repo"
           ansible.builtin.git:
@@ -57,6 +60,7 @@
   rescue:
 
         - name: "RELDATE: end clean"
+          connection: local
           ansible.builtin.file:
             path: "{{ task_temp_path }}"
             state: absent

@@ -1,0 +1,6 @@
+---
+
+release_switch_skip_prep: false
+release_switch_skip_rec: false
+release_switch_skip_os: false
+release_switch_skip_ver: false
