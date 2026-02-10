@@ -15,7 +15,7 @@ export HUGO_ISPIXEL="{% if target_model_name | upper is search('PIXEL.*') %}yes{
 export HUGO_KILINK="{{ hugo_kb_link | d('') }}"
 export HUGO_NAME="{{ target_model_full }}"
 export HUGO_VENDOR="{{ target_model_vendor }}"
-export HUGO_XDALINK="{{ hugo_xda_link }}"
+export HUGO_XDALINK="{{ hugo_xda_link | d('') }}"
 
 # PRO Block
 export HUGO_PRO_ANDROID="{{ android_version_pro }}"
