@@ -27,7 +27,7 @@
   ansible.builtin.template:
       src: hugo_bootloader_id.j2
       dest: "{{ init_device_temp_path }}/content/devices/fp_{{ sub_model | d(target_model) }}_pro"
-  when: hugo_axp_bootloader_id_pro is defined and hugo_relockable == "yes"
+  when: hugo_axp_bootloader_id_pro is defined and hugo_relockable_pro == "yes"
   register: id_pro_added
 
 - name: "Setup website: add/update bootloader ID (slim)"
@@ -36,7 +36,7 @@
   ansible.builtin.template:
       src: hugo_bootloader_id.j2
       dest: "{{ init_device_temp_path }}/content/devices/fp_{{ sub_model | d(target_model) }}_slim"
-  when: hugo_axp_bootloader_id_slim is defined and hugo_relockable == "yes"
+  when: hugo_axp_bootloader_id_slim is defined and hugo_axp_bootloader_id_slim == "yes"
   register: id_slim_added
 
 - name: "Setup website: add & push changes"
