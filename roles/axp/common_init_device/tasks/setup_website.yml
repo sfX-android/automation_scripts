@@ -84,9 +84,8 @@
           "ref": "{{ git_axpos_website_workflow_repo_branch }}"
         }
     status_code: 204
-  #register: amirr
-  #changed_when: amirr.status == 201
-  #no_log: true
+  register: rewr
+  changed_when: rewr.status == 204
   
 - name: "Setup website: End clean"
   ansible.builtin.file:
