@@ -27,14 +27,14 @@
           source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}
           set -e
 
-          ls -la
+          cat {{ sub_model | d(target_model) }}_{{ axp_type }}.md
 
           # set tag name & type
           TAG="{{ tag_version }}"
 
           # update release date
           sed -iE "s|(Release date:\*\*)(.*)|\1 $(date +%F) _({{ os_zip_filename }})_|g" \
-                {{ sub_model | d(target_model) }}_{{ axp_type }}.md
+            {{ sub_model | d(target_model) }}_{{ axp_type }}.md
 
           # commit if required
           CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
