@@ -5,9 +5,11 @@
     {% if axp_type | d('') == "slim" %}
     cp -v {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*SLIM*{{ target_model }}* {{ rempath }}/recovery/
     {% else %}
+    
     for i in $(ls {{ rempath_unstable }}/recovery/{{ recovery_filename_no_ext }}*{{ target_model }}* | grep -v SLIM);do
-    cp -v $i {{ rempath }}/recovery/
+      cp -v $i {{ rempath }}/recovery/
     done
+    
     {% endif %}
   when: axp_release_recovery_skip == "False"
 
