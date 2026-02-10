@@ -14,4 +14,5 @@
 
 - name: "Include release date"
   ansible.builtin.include_tasks: versioning.yaml
+  delegate_to: "{{ groups.buildserver[0] }}"
   when: not release_switch_skip_ver
