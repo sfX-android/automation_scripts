@@ -31,7 +31,7 @@
             TAG="{{ tag_version }}"
 
             # update release date
-            sed -iE "s|(Release date:\*\*)(.*)_(.*)_|\1 $(date +%F) \3|g" {{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+            sed -iE 's|(Release date:\*\*)(.*)_(.*)_|\1 $(date +%F) \3|g' {{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
             # commit if required
             CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
