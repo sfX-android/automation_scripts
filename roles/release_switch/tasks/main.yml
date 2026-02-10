@@ -1,5 +1,9 @@
 ---
 
+- name: "Include release date"
+   ansible.builtin.include_tasks: versioning.yaml
+   when: not release_switch_skip_ver
+
 - name: "Include prep"
   ansible.builtin.include_tasks: prep.yaml
   when: not release_switch_skip_prep
@@ -12,6 +16,6 @@
   ansible.builtin.include_tasks: os.yaml
   when: not release_switch_skip_os
 
-- name: "Include release date"
-  ansible.builtin.include_tasks: versioning.yaml
-  when: not release_switch_skip_ver
+# - name: "Include release date"
+#   ansible.builtin.include_tasks: versioning.yaml
+#   when: not release_switch_skip_ver
