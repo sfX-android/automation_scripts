@@ -7,11 +7,13 @@
       "{{ sm_build_id | replace(' ', '') }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
 
 - name: "RELDATE: start clean"
+  delegate_to: "{{ groups.buildserver[0] }}"
   ansible.builtin.file:
     path: "{{ task_temp_path }}"
     state: absent
 
 - name: "Git"
+  delegate_to: "{{ groups.buildserver[0] }}"
   block:
 
         - name: "RELDATE: fetch git repo"
