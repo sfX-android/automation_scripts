@@ -1,5 +1,7 @@
 ---
 
+axp_main_website_url: "https://axpos.org"
+
 # git stuff
 axp_git_org: "git@git.disroot.org:AXP.OS"
 axp_git_repo: "{{ git_axpos_org_private }}/build.git"

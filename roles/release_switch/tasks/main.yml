@@ -1,0 +1,13 @@
+---
+
+- name: "Include prep"
+  ansible.builtin.include_tasks: prep.yaml
+
+- name: "Include recovery"
+  ansible.builtin.include_tasks: recovery.yaml
+
+- name: "Include os"
+  ansible.builtin.include_tasks: os.yaml
+
+- name: "Include release date"
+  ansible.builtin.include_tasks: versioning.yaml

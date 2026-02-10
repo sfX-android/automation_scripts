@@ -1,0 +1,49 @@
+---
+
+# must have .stdout, so do not set_fact or vars it!
+- name: "OS: set zip name"
+  ansible.builtin.shell: >-
+      echo "{{ os_zip_filename }}"
+  register: ROMFILE
+  
+- name: "OS: get HASH (for notification)"
+  ansible.builtin.shell: >-
+      cat "{{ rempath_unstable }}/{{ os_zip_filename }}.sha512sum" | grep zip | cut -d ' ' -f1
+  register: hashfile
+  
+- name: "OS: switch to stable"
+  ansible.builtin.copy:
+    remote_src: yes
+    src: "{{ rempath_unstable }}/{{ os_zip_filename_no_ext }}.{{ item }}"
+    dest: "{{ rempath }}/"
+  loop:
+    - zip
+    - zip.sha512sum
+    - zip.prop
+
+- name: "OS: verify ZIP integrity"
+  ansible.builtin.shell: "sha512sum --check {{ os_zip_filename_no_ext }}.zip.sha512sum"
+  args:
+    chdir: "{{ rempath }}"
+
+- name: "OS: delete from unstable"
+  ansible.builtin.file:
+    path: "{{ rempath_unstable }}/{{ os_zip_filename_no_ext }}.{{ item }}"
+    state: absent
+  loop:
+    - zip
+    - zip.sha512sum
+    - zip.prop
+
+- name: "OS: identify unstable build date"
+  ansible.builtin.shell: |
+    grep ro.build.date.utc {{ rempath }}/{{ os_zip_filename }}.prop | cut -d "=" -f2
+  register: build_date_utc
+
+- name: "OS: correcting ZIP timestamp for stable to fix recurring OTA popup"
+  ansible.builtin.file:
+    path: "{{ rempath }}/{{ os_zip_filename }}"
+    modification_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
+    access_time: "{{ '%Y%m%d%H%M.%S' | strftime(build_date_utc.stdout) }}"
+    state: touch
+    mode: '0644'

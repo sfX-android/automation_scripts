@@ -1,0 +1,71 @@
+---
+
+- name: "RELDATE: prep"
+  ansible.builtin.set_fact:
+    task_temp_path: "{{ android_build_path }}/.tmp/versioning"
+    tag_version: >-
+      "{{ sm_build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
+
+- name: "RELDATE: start clean"
+  ansible.builtin.file:
+    path: "{{ task_temp_path }}"
+    state: absent
+
+- block:
+
+        - name: "RELDATE: fetch git repo"
+          ansible.builtin.git:
+            repo: "{{ git_axpos_org_private }}/axp_versioning"
+            dest: "{{ task_temp_path }}"
+            version: "{{ tag_version }}"
+          timeout: 180
+
+        - name: "RELDATE: set & push changes"
+          ansible.builtin.shell: |
+            export LC_ALL=C
+            export PATH="~/.local/bin:$PATH"
+            source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}
+
+            # set tag name
+            TAG="{{ tag_version }}"
+
+            # update release date
+            sed -iE "s|(Release date:\*\*)(.*)_(.*)_|\1 $(date +%F) \3|g" {{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
+            # commit if required
+            CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+            # commit if any of the above require it
+            if [ $CMTL -gt 0 ];then 
+              git add -A
+              git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "add app versions for {{ build_id }}"
+              git tag -d "$TAG" 2>&1 || true
+              git push up --delete "$TAG" 2>&1 || true
+              git tag -a "$TAG" -m "axp.os: set stable for {{ sub_model | d(target_model) }} on $TAG" 2>&1
+              git push --force --set-upstream up $TAG 2>&1
+            else
+              echo "NO CHANGES DETECTED: PUSH SKIPPED!"
+            fi
+          args:
+            executable: /bin/bash
+            chdir: "{{ task_temp_path }}"
+
+        - name: "RELDATE: end clean"
+          ansible.builtin.file:
+            path: "{{ task_temp_path }}"
+            state: absent
+
+  rescue:
+
+        - name: "RELDATE: end clean"
+          ansible.builtin.file:
+            path: "{{ task_temp_path }}"
+            state: absent
+
+        - name: "RELDATE: failed"
+          ansible.builtin.fail:
+            msg: |
+              ERROR OCCURED:
+
+              {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
+
+              See above for details.

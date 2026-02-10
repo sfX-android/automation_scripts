@@ -1,0 +1,14 @@
+---
+
+- name: "Parse OS prop"
+  ansible.builtin.shell: >-
+    grep ro.build.version.security_patch= {{ rempath_unstable }}/{{ os_zip_filename }}.prop | cut -d "=" -f 2
+  register: pprop
+
+- name: "Setup ASB level var"
+  ansible.builtin.set_fact:
+    sec_level_date: "{{ pprop.stdout }}"
+
+- name: "Debug info"
+  ansible.builtin.debug:
+    msg: "axp_release_recovery_skip = >{{ axp_release_recovery_skip }}<"
