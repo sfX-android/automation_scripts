@@ -22,7 +22,7 @@ export HUGO_PRO_ANDROID="{{ android_version_pro | d('') }}"
 export HUGO_PRO_FLAVOR={% if android_version_pro is defined %}True{% endif %}
 
 export HUGO_PRO_ENCRYPTION="{{ hugo_encryption_pro | d('') }}"
-export HUGO_PRO_FIRSTRELEASE="{{ hugo_first_releasedate_pro }}"
+export HUGO_PRO_FIRSTRELEASE="{{ hugo_first_releasedate_pro | d('TBD') }}"
 export HUGO_PRO_RELOCKABLE="{{ hugo_relockable_pro | d('') }}"
 export HUGO_PRO_PATCHLEVEL="{{ hugo_patchlevel_pro | d('') }}"
 export HUGO_PRO_STATE="{{ hugo_state_pro | d('') }}"
