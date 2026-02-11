@@ -75,7 +75,7 @@ hugo_firmware: "included"
 hugo_isab: 'no'
 
 #hugo_xda_link: "" # link to the AXP.OS XDA post for that device
-hugo_kb_link: "#cheeseburgerdumpling" # OPTIONAL: knownissues link, only if there is any
+hugo_kb_link: "cheeseburgerdumpling" # OPTIONAL: knownissues link, only if there is any
 #hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
 hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=61"
 
