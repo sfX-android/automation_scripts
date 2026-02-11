@@ -63,12 +63,31 @@
     state: absent
   when: pixel_kernel_gki | bool
 
+- name: "Setup CVE exclusion list (device)"
+  ansible.builtin.template:
+    src: "cve_excludes/{{ target_kernel_dir | regex_replace('/','_') }}.j2"
+    dest: "{{ SRCPATH }}/.cve_excludes.{{ target_model }}"
+  when: target_model == "oriole"  # TESTING..
+
+- name: "Setup CVE exclusion list (common)"
+  ansible.builtin.template:
+    src: "cve_excludes/common.j2"
+    dest: "{{ SRCPATH }}/.cve_excludes.common"
+
 - name: "Setup CVE kernel patcher: fixups"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
-      && bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
+    if [ -f "{{ SRCPATH }}/.cve_excludes.{{ target_model }}" ];then
+      echo "ANSIBLE CVE excludes!" | tee -a {{ BUILD_LOG }} 
+      cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
+        && source {{ SRCPATH }}/.cve_excludes.common >> {{ BUILD_LOG }} 2>&1 \
+        && commentPatchesFromFile {{ SRCPATH }}/.cve_excludes.{{ target_model }}
+    else
+      echo "LEGACY CVE excludes" | tee -a {{ BUILD_LOG }}
+      cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
+        && bash {{ DOSPATH }}/Scripts/Common/Fix_CVE_Patchers.sh >> {{ BUILD_LOG }} 2>&1
+    fi
 
     echo "Setup CVE kernel patcher FINISHED" >> {{ BUILD_LOG }}
     
