@@ -36,7 +36,7 @@ semaphore_api_uri: "http://127.0.0.1:8153/api"
 # Variables used to create a new task template
 
 semaphore_aos_template_project_id: 6                     # Project "AXP.OS"
-semaphore_aos_template_name: '-AOS- FREEZEDAY Build-ID'  # Template name
+semaphore_aos_template_name: 'BUILD-ID: available versions'  # Template name
 semaphore_aos_template_template_id: 214                  # Template ID of semaphore_aos_template_name
 semaphore_aos_template_env_id: 258                       # Group variable ID
 semaphore_aos_template_inventory_id: 29                  # Inventory "axp_build_inventory"

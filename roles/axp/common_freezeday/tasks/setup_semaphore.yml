@@ -10,7 +10,7 @@
         Content-Type: application/json
         Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
   register: sp_all_templates
-  #no_log: true
+  no_log: true
 
 
 - name: "Setup semaphore: update semaphore template (if required)"
@@ -41,7 +41,7 @@
   changed_when: tmplc.status == 204
   when: 
     - semaphore_aos_template_name in sp_all_templates.json | map(attribute='name') | list
-  #no_log: true
+  no_log: true
   #breaks on NEXT run: "vaults": {{ semaphore_aos_template_vaults }},
 
 - name: "Setup semaphore: run build id task"
