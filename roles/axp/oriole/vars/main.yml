@@ -1,24 +1,36 @@
 ---
+# yamllint disable rule:comments
+#################################################################################################################################
+# source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
+# v2.1
+#################################################################################################################################
+#################################################################################################################################
+
+#################################################################################################################################
+## Device info
+#
+
 # human readable model name
 target_model_vendor: "Google"
 target_model_name: 'Pixel 6'
+
+# path to the kernel dir
+# gs201 due to: https://github.com/LineageOS/android_device_google_gs101/blame/lineage-20/BoardConfigLineage.mk#L12
+target_kernel_dir: "kernel/google/gs201/private/gs-google"
+
+# git repo name of the device common tree
+target_model_common_tree: "android_device_google_gs101"
+
+# add OpenEUICC
+axp_euicc_capable: true
+
+# disable Wireguard patching (already part of the upstream kernel)
+skip_wireguard: true
+
+# construct full model info
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a15
-
-# boot debugger path & config
-extendrom_debug_path_default: /mnt/vendor/persist
-extendrom_debug_path_size_full_default: 500 
-extendrom_debug_path_size_kernel_default: 100
-extendrom_debug_path_size_selinux_default: 200
-extendrom_debug_path_size_crash_default: 200
-
-# path to the kernel dir (req for e.g. wireguard)
-# gs201 due to: https://github.com/LineageOS/android_device_google_gs101/blame/lineage-20/BoardConfigLineage.mk#L12
-target_kernel_dir: kernel/google/gs201/private/gs-google
-
-# KLEAF based kernel build
+# Pixel devices: KLEAF based kernel build
 pixel_kernel_codename: raviole
 #pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
 #git_pixel_kernel_manifest_branch: "15-qpr2"
@@ -28,40 +40,61 @@ pixel_kernel_codename: raviole
 # see https://android.googlesource.com/kernel/common/+refs
 git_pixel_kernel_manifest_branch: "android-gs-raviole-6.1-android15-qpr2-beta"
 
-# path to the common tree, if none exists the device tree
-# required e.g. for git, vendor/axp, release handling etc
-target_model_common_tree: device_google_gs101
+# construct specific model device tree automatically
+target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
 
-# allow creating factory image
-custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
+# boot debugger mount point
+extendrom_debug_path_default: "/mnt/vendor/persist"
 
-# add OpenEUICC
-axp_euicc_capable: true
+extendrom_debug_path_size_full_default: 500
+extendrom_debug_path_size_kernel_default: 100
+extendrom_debug_path_size_selinux_default: 200
+extendrom_debug_path_size_crash_default: 200
 
-# Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: ''
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
+
+# all used VENDOR paths for this device
+axp_git_push_vendor_include: "{{ target_model_device_tree | replace('android_device_', 'vendor_') }}|{{ target_model_common_tree | replace('android_device_', 'vendor_') }}"
+
+# Bootloader ID (first line) for validating build log
+#axp_bootloader_id_pro: ''
 axp_bootloader_id_slim: '42D46266F04BBF79'
 
-# git push
-axp_git_push_device_include: "device_google_oriole|device_google_raven|device_google_raviole|device_google_gs-common|device_google_gs201|{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "vendor_google_oriole"
+#################################################################################################################################
+## Website info
+#
 
-# disable Wireguard patching (already part of the upstream kernel)
-skip_wireguard: True
-
-# website info
-hugo_encryption: "FBEv1"  #https://github.com/LineageOS/android_device_google_gs101/blob/lineage-22.2/conf/fstab.gs101.in
+# COMMON block
 hugo_firmware: "included"
-hugo_relockable: "yes"
-hugo_state: "stable"
-hugo_supportlevel: "community"
-hugo_isab: "yes"
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+#hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
+#hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=57"
 hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-oriole-axp-os-20-0.4718167/"
-hugo_first_releasedate: "2025-02-08"
-#hugo_kb_link: ""
-#hugo_custom_installguide_path: 
-#hugo_axp_bootloader_id_pro: |
-hugo_axp_bootloader_id_slim: |
+
+#### PRO block ####
+#android_version_pro: 
+#hugo_relockable_pro: ''
+#hugo_encryption_pro: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+#hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
+#hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
+#hugo_first_releasedate_pro: "TBD" # first public stable release date (YYYY-MM-DD)
+#hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+#hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+#hugo_patchlevel_pro: ""
+
+#### SLIM block ####
+android_version_slim: 15
+hugo_relockable_slim: 'yes'
+hugo_encryption_slim: "FBEv1" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+hugo_axp_bootloader_id_slim: |-
   BOOTLOADER minimal ID
         42D46266
 
@@ -70,10 +103,19 @@ hugo_axp_bootloader_id_slim: |
         709B79C9FEC8BD6C
         515A525030E24BFF
         C762747813879DC8
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "2025-02-08 (A13)<br/>TBD (A15)" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+#hugo_patchlevel_slim: ""
 
-###############################################################################################################################
-# vendor/firmware info
-###############################################################################################################################
+
+#################################################################################################################################
+## FIRMWARE info
+#
+# source: https://developers.google.com/android/ota#oriole
 
 ####### A13:
 # Firmware image source: https://developers.google.com/android/ota#oriole
@@ -83,19 +125,31 @@ hugo_axp_bootloader_id_slim: |
 # in any case the hash sum will be verified though.
 #vendor_firmware_persistent_path: "{{ persistent_dir }}/oriole-ota-tq3a.230901.001-ea9d9bca.zip"
 
-####### A15:
-# Firmware image source: https://developers.google.com/android/ota#oriole
-vendor_firmware_version: oriole-ota-bp1a.250505.005-0ac3ca61
-vendor_firmware_download_sha256: 0ac3ca6175db1b86ed666aa2079a1f8ad41ea67a52e5a9b834c09bde6a6e5a5f
-#
-vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_firmware_version }}.zip"
-vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ vendor_firmware_version }}.zip"
 
-# Factory image source: https://developers.google.com/android/images#oriole
-vendor_factory_id: bp1a.250505.005
-vendor_factory_hash: 9fc37bcc
-vendor_factory_download_sha256: 9fc37bccc63a243d046f459d22cfbf0dd0ea26336f356c9dd3fe0525093316c1
+vendor_firmware_version: "oriole-ota-bp1a.250505.005-0ac3ca61"
+
+# direct download link to the OTA zip of the vendor.
+vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_firmware_version }}.zip"
+vendor_firmware_download_sha256: "0ac3ca6175db1b86ed666aa2079a1f8ad41ea67a52e5a9b834c09bde6a6e5a5f"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+#################################################################################################################################
+
+#################################################################################################################################
+## FACTORY info (only relevant for: Google Pixel, Fairphone)
 #
+# source: https://developers.google.com/android/images#oriole
+
+vendor_factory_id: "bp1a.250505.005"
+vendor_factory_hash: "9fc37bcc"
+vendor_factory_download_sha256: "9fc37bccc63a243d046f459d22cfbf0dd0ea26336f356c9dd3fe0525093316c1"
+
 vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ vendor_factory_hash }}"
 vendor_factory_download_url: "https://dl.google.com/dl/android/aosp/{{ vendor_factory_version }}.zip"
-vendor_factory_persistent_path: "{{ persistent_dir }}/{{ vendor_factory_version }}.zip"
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_factory_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_factory_version }}.zip"
+#################################################################################################################################

@@ -2,7 +2,7 @@
 # yamllint disable rule:comments
 #################################################################################################################################
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
-# v2.0
+# v2.1
 #################################################################################################################################
 #:h:# all lines starting with '#:h:#' are special help lines to give some context for identifying what's requested
 #:h:# if you have no idea about a setting, either ask in the support "bringup" channel or simply skip it
@@ -74,6 +74,7 @@ target_model_common_tree: ""
 extendrom_debug_path_default: ""
 
 #:h:# NEVER TOUCH THIS ##############################################################################
+# construct full model info
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
 #:h:# NEVER TOUCH THIS ##############################################################################
