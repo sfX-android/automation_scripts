@@ -90,3 +90,14 @@
         - (override_reset_git == "undef" and reset_git | bool) or (override_reset_git | bool) or (override_sync | bool)
 
   when: dosdir.stat.isdir is defined
+
+- name: "Reset: kernel sources (>A14 + Google Pixel)"
+  ansible.builtin.shell: |
+    {{ DOS_INIT }}
+    cd {{ git_pixel_kernel_source }}
+    
+    if [ -f .defconf.patched ];then rm -v .defconf.patched;fi
+    (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true   
+  args:
+    executable: /bin/bash
+  when: pixel_kernel_gki | bool
