@@ -36,12 +36,12 @@
         "type": "build",
         "start_version": "{{ semaphore_aos_template_startversion }}"
         }
-    status_code: [ 201, 200, 204 ]
+    status_code: [201,200,204]
   register: tmplc
   changed_when: tmplc.status == 204
   when: 
     - semaphore_aos_template_name in sp_all_templates.json | map(attribute='name') | list
-  no_log: true
+  #no_log: true
   #breaks on NEXT run: "vaults": {{ semaphore_aos_template_vaults }},
 
 - name: "Setup semaphore: run build id task"
