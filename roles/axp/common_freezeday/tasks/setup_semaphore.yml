@@ -8,7 +8,7 @@
     method: GET
     headers:
         Content-Type: application/json
-        Authorization: "token {{ vault_semaphore_api_aos_rw }}"
+        Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
   register: sp_all_templates
   no_log: true
 
@@ -20,7 +20,7 @@
     method: PUT
     headers:
         Content-Type: application/json
-        Authorization: "token {{ vault_semaphore_api_aos_rw }}"
+        Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
     body_format: json
     body: >-
         {
@@ -51,7 +51,7 @@
     method: POST
     headers:
         Content-Type: application/json
-        Authorization: "token {{ vault_semaphore_api_aos_rw }}"
+        Authorization: "Bearer {{ vault_semaphore_api_aos_rw }}"
     body_format: json
     body: >-
         { 

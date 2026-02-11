@@ -1,19 +1,14 @@
 ---
 
 - name: "AXP.OS: introduce a new build run"
-  #hosts: buildserver
   hosts: localhost
   gather_facts: true
-          
+
   tasks:
     - block:
-    
+
       - import_role:
           name: common
-
-#      - include_role:
-#          name: "{{ ROM_FLAVOR }}/common"
-#          public: yes
 
       - name: Show freezeday_app_repos
         debug:
@@ -50,7 +45,7 @@
         - fail:
             msg: |
               ERROR OCCURED:
-              
+
               {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
-              
+
               See above for details.

@@ -1,12 +1,15 @@
 ---
 
-- include_tasks: loop.yml
+- name: "Include loop"
+  ansible.builtin.include_tasks: loop.yml
   when: not skip_build_apps
 
-- include_tasks: loop.yml
+- name: "Include loop"
+  ansible.builtin.include_tasks: loop.yml
   vars:
     freezeday_app_repos: "{{ freezeday_app_repos_longrun }}"
   when: not skip_build_apps_longrun
 
-- include_tasks: setup_semaphore.yml
+- name: "Include setup semaphore"
+  ansible.builtin.include_tasks: setup_semaphore.yml
   when: skip_setup_semaphore is undefined
