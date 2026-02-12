@@ -81,15 +81,10 @@
             git checkout -b "$upstream_branch" up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1
         fi
         
-        BROKENLFS=$(grep -c undocumented .lfsconfig || echo 0)
-        if [ $BROKENLFS -eq 0 ]; then
-            #git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
-            echo skipping lfs fetch
-        else
-            rm .lfsconfig
-            git add -A .lfsconfig  >> /dev/null 2>> {{ BUILD_LOG }} \
-                && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove broken lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}
-        fi
+        git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
+        rm .lfsconfig
+        git add -A .lfsconfig  >> /dev/null 2>> {{ BUILD_LOG }} \
+          && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove conflicting lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}
 
         git checkout --track origin/$axp_release >> {{ BUILD_LOG }} 2>&1 || (git checkout $axp_release >> {{ BUILD_LOG }} 2>&1 || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1)
         git remote -v >> {{ BUILD_LOG }} 2>&1
@@ -242,7 +237,7 @@
         #    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
         #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
         #fi
-        git lfs fetch up >> {{ BUILD_LOG }} 2>&1
+        #git lfs fetch up >> {{ BUILD_LOG }} 2>&1
         
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$upstream_branch" |cut -d ' ' -f1)
