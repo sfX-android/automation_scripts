@@ -60,6 +60,7 @@
       ansible.builtin.shell: |
         {{ DOS_INIT }}
         upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+        mapped_branch="upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}"
         cd {{ init_device_temp_path }}
         
         if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
@@ -69,16 +70,16 @@
         fi
         echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
         
-        echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
+        echo "[GIT] checking out origin/$mapped_branch" >> {{ BUILD_LOG }}
         create_br=0
-        git fetch origin $upstream_branch >> {{ BUILD_LOG }} 2>&1 || true
-        git checkout $upstream_branch  >> {{ BUILD_LOG }} 2>&1 || create_br=1
+        git fetch origin $mapped_branch >> {{ BUILD_LOG }} 2>&1 || true
+        git checkout $mapped_branch  >> {{ BUILD_LOG }} 2>&1 || create_br=1
         git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
         git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
 
         if [ $create_br -eq 1 ];then
             echo "[GIT] checking out up/$upstream_branch instead of origin (does not exist yet)" >> {{ BUILD_LOG }}
-            git checkout -b "$upstream_branch" up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1
+            git checkout -b "$mapped_branch" up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1
         fi
         
         git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
@@ -135,6 +136,7 @@
       ansible.builtin.shell: |
         {{ DOS_INIT }}
         upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+        mapped_branch="upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}"
         cd {{ init_device_temp_path }}
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         
@@ -145,7 +147,7 @@
         fi
         echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
 
-        for work in $axp_release $upstream_branch; do
+        for work in $axp_release $mapped_branch; do
             git checkout $work >> {{ BUILD_LOG }}
             for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
               git lfs track \"*.${lf}\" >> {{ BUILD_LOG }} 
@@ -225,6 +227,7 @@
       ansible.builtin.shell: |
         {{ DOS_INIT }}
         upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
+        mapped_branch="upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}"
 
         if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
             reponame=proprietary_{{ device_tree }}; private=1
@@ -234,7 +237,7 @@
         cd {{ init_device_temp_path }}
 
         ####### UPSTREAM HANDLING #########
-        git checkout $upstream_branch
+        git checkout $mapped_branch
         #git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
         #CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         #if [ $CMTL -gt 0 ];then
@@ -244,14 +247,14 @@
         #git lfs fetch up >> {{ BUILD_LOG }} 2>&1
         
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-        REMHASH=$(git log --pretty=oneline --decorate "origin/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}" |cut -d ' ' -f1)
+        REMHASH=$(git log --pretty=oneline --decorate "origin/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}" | head -n 1 | cut -d ' ' -f1)
         
         if [ "$CURHASH" != "$REMHASH" ]; then
           echo "[GIT][UPSTREAM-BRANCH] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-          git push --force origin $upstream_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT][UPSTREAM-BRANCH] Pushed $reponame / $upstream_branch!" >> {{ BUILD_LOG }} 2>&1
+          git push --force origin $mapped_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][UPSTREAM-BRANCH] Pushed $reponame / $mapped_branch!" >> {{ BUILD_LOG }} 2>&1
         else
-          echo "[GIT][UPSTREAM-BRANCH] Skipped pushing $reponame / $upstream_branch (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][UPSTREAM-BRANCH] Skipped pushing $reponame / $mapped_branch (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
         fi
 
         ####### AXP HANDLING #########
