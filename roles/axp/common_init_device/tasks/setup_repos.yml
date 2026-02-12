@@ -71,10 +71,12 @@
         
         echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
         create_br=0
-        git fetch origin $upstream_branch  >> {{ BUILD_LOG }} 2>&1 || true
+        git fetch origin $upstream_branch >> {{ BUILD_LOG }} 2>&1 || true
+        git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
         git checkout $upstream_branch  >> {{ BUILD_LOG }} 2>&1 || create_br=1
         git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
         git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
+        git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
 
         if [ $create_br -eq 1 ];then
             echo "[GIT] checking out up/$upstream_branch instead of origin (does not exist yet)" >> {{ BUILD_LOG }}
@@ -241,7 +243,7 @@
         #    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
         #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
         #fi
-        git lfs fetch up  >> {{ BUILD_LOG }} 2>&1
+        git lfs fetch --all >> {{ BUILD_LOG }} 2>&1
         
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$upstream_branch" |cut -d ' ' -f1)
@@ -262,7 +264,7 @@
         #    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
         #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
         #fi
-        git lfs fetch origin  >> {{ BUILD_LOG }} 2>&1
+        git lfs fetch --all >> {{ BUILD_LOG }} 2>&1
 
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)

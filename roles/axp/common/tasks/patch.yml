@@ -3,7 +3,7 @@
 - name: "Disable GPG verify if dirty build"
   ansible.builtin.lineinfile:
     path: "{{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/Functions.sh"
-    line: '#verifyAllPlatformTag'
+    line: '#verifyAllPlatformTags'
     regexp: '\s+verifyAllPlatformTags\;'
   when:
     - clean_out != "true" or (override_clean_out != "true") or (skip_gpg_verify | bool)
