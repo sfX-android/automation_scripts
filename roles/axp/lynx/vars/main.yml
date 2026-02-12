@@ -35,6 +35,7 @@ pixel_kernel_codename: raviole
 #pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
 git_pixel_kernel_manifest_branch: "15-qpr2"
 pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
+git_pixel_kernel_repo_name: "grapheneos_kernel_common-6.1"  # used only for manifest comments
 
 # construct specific model device tree automatically
 target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
