@@ -73,14 +73,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "true"
+            "value": true
           },
           {
             "name": "no",
-            "value": "false"
+            "value": false
           }
         ],
-        "default_value": "true"
+        "default_value": true
       },
       {
         "name": "override_clean_out",
@@ -91,14 +91,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "true"
+            "value": true
           },
           {
             "name": "no",
-            "value": "false"
+            "value": false
           }
         ],
-        "default_value": "true"
+        "default_value": true
       },
       {
         "name": "override_reset_git",
@@ -109,14 +109,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "true"
+            "value": true
           },
           {
             "name": "no",
             "value": false
           }
         ],
-        "default_value": "true"
+        "default_value": true
       },
       {
         "name": "override_release_build",
@@ -127,14 +127,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "true"
+            "value": true
           },
           {
             "name": "no",
             "value": false
           }
         ],
-        "default_value": "true"
+        "default_value": true
       },
       {
         "name": "debug_build",
@@ -145,14 +145,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "true"
+            "value": true
           },
           {
             "name": "no",
-            "value": "false"
+            "value": false
           }
         ],
-        "default_value": "true"
+        "default_value": true
       },
       {
         "name": "axp_build_eng",
@@ -163,14 +163,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "true"
+            "value": true
           },
           {
             "name": "no",
-            "value": "false"
+            "value": false
           }
         ],
-        "default_value": "false"
+        "default_value": false
       },
       {
         "name": "unstable_build",
@@ -181,14 +181,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "true"
+            "value": true
           },
           {
             "name": "no",
-            "value": "false"
+            "value": false
           }
         ],
-        "default_value": "true"
+        "default_value": true
       },
       {
         "name": "update_vendor_firmware",
@@ -202,10 +202,10 @@ semaphore_aos_template_survey_vars: >-
           },
           {
             "name": "no",
-            "value": "false"
+            "value": false
           }
         ],
-        "default_value": "false"
+        "default_value": false
       },
       {
         "name": "generate_factory_image",
@@ -216,14 +216,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
           {
             "name": "yes",
-            "value": "true"
+            "value": true
           },
           {
             "name": "no",
-            "value": "false"
+            "value": false
           }
         ],
-        "default_value": "false"
+        "default_value": false
       },
       {
         "name": "commit_push",
@@ -233,14 +233,14 @@ semaphore_aos_template_survey_vars: >-
         "values": [
             {
                 "name": "yes",
-                "value": "true"
+                "value": true
             },
             {
                 "name": "no",
                 "value": false
             }
         ],
-        "default_value": "true"
+        "default_value": true
     }
     ]
 
