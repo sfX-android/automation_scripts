@@ -56,7 +56,6 @@ git_pixel_kernel_dir: "{{ android_build_path }}/graphene_kernel_source"
 git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
 git_pixel_kernel_manifest: https://github.com/GrapheneOS-Archive/kernel_manifest-pixel.git
 pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
-pixel_kernel_defconfig: "{{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename }}/{{ pixel_kernel_codename }}_defconfig"
 pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
 
 # pixel kernels (google)
