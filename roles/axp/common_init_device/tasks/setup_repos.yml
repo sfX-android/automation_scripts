@@ -82,7 +82,7 @@
             git checkout -b "$mapped_branch" up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1
         fi
         
-        git config remote.origin.lfsurl "{{ git_axpos_org_private }}/$reponame"
+        git config remote.origin.lfsurl "{{ git_axpos_org_private }}/${reponame}.git/info/lfs"
         git config remote.up.lfsurl "$(git lfs env | awk -F= '/^Endpoint=/{print $2}' | awk '{print $1}')"
 
         git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
