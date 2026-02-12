@@ -82,12 +82,15 @@
             git checkout -b "$mapped_branch" up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1
         fi
         
+        git config remote.origin.lfsurl "{{ git_axpos_org_private }}/$reponame"
+        git config remote.up.lfsurl "$(git lfs env | awk -F= '/^Endpoint=/{print $2}' | awk '{print $1}')"
+
         git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
         if [ -f .lfsconfig ];then
           echo "[GIT] moving upstream lfsconfig"
-          mv .lfsconfig .lfsconfig_upstream >> {{ BUILD_LOG }}
-          git add -A .lfsconfig*  >> /dev/null 2>> {{ BUILD_LOG }} \
-            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove conflicting lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}
+          #mv .lfsconfig .lfsconfig_upstream >> {{ BUILD_LOG }}
+          (git add -A .lfsconfig*  >> /dev/null 2>> {{ BUILD_LOG }} \
+            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove conflicting lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}) || true
         fi
 
         echo "[GIT] checking out $axp_release" >> {{ BUILD_LOG }}
