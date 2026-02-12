@@ -242,10 +242,9 @@
         #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
         #fi
         #git lfs fetch up >> {{ BUILD_LOG }} 2>&1
-        git fetch origin >> {{ BUILD_LOG }} 2>&1
         
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-        REMHASH=$(git log --pretty=oneline --decorate | grep "origin/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}" |cut -d ' ' -f1)
+        REMHASH=$(git log --pretty=oneline --decorate "origin/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}" |cut -d ' ' -f1)
         
         if [ "$CURHASH" != "$REMHASH" ]; then
           echo "[GIT][UPSTREAM-BRANCH] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
