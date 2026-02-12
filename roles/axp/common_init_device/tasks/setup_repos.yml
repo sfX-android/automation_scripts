@@ -270,7 +270,7 @@
 
         if [ "$CURHASH" != "$REMHASH" ]; then
           echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-          git push origin $axp_release >> {{ BUILD_LOG }} 2>&1
+          git push origin $axp_release >> {{ BUILD_LOG }} 2>&1 || ( echo "pushing incomplete LFS!" && git config lfs.allowincompletepush true && git push origin $axp_release >> {{ BUILD_LOG }} 2>&1 )
           echo "[GIT] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
         else
           echo "Skipped pushing $reponame / $axp_release (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
