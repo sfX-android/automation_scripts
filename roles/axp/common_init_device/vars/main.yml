@@ -113,7 +113,7 @@ semaphore_aos_template_survey_vars: >-
           },
           {
             "name": "no",
-            "value": false
+            "value": "false"
           }
         ],
         "default_value": "true"
@@ -237,7 +237,7 @@ semaphore_aos_template_survey_vars: >-
             },
             {
                 "name": "no",
-                "value": false
+                "value": "false"
             }
         ],
         "default_value": "true"
