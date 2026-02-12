@@ -10,6 +10,8 @@ axp_git_repo: "{{ git_axpos_org_private }}/build.git"
 axp_main_branch: axp
 # main LOS manifest
 git_repo_main_manifests: "https://github.com/LineageOS/android.git"
+git_repo_local_manifests: "{{ git_axpos_org_public }}/manifest"
+git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 # the organization name within git(ea):
 git_axpos_org_name: "AXP.OS"
 # always push changes for reproducible builds
@@ -64,8 +66,6 @@ pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_downl
 #git_pixel_kernel_dir: "{{ android_build_path }}/google_kernel_source"
 #git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
 #git_pixel_kernel_manifest: "https://android.googlesource.com/kernel/manifest"
-#git_repo_local_manifests: "{{ git_axpos_org_public }}/manifest"
-#git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}"
 #pixel_kernel_codename: "{{ target_model }}" # overwrite in device vars if required
 #pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
 #pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
