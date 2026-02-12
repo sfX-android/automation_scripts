@@ -82,10 +82,14 @@
         fi
         
         git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
-        rm .lfsconfig
-        git add -A .lfsconfig  >> /dev/null 2>> {{ BUILD_LOG }} \
-          && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove conflicting lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}
+        if [ -f .lfsconfig ];then
+          echo "[GIT] moving upstream lfsconfig"
+          mv .lfsconfig .lfsconfig_upstream >> {{ BUILD_LOG }}
+          git add -A .lfsconfig*  >> /dev/null 2>> {{ BUILD_LOG }} \
+            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove conflicting lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}
+        fi
 
+        echo "[GIT] checking out $axp_release" >> {{ BUILD_LOG }}
         git checkout --track origin/$axp_release >> {{ BUILD_LOG }} 2>&1 || (git checkout $axp_release >> {{ BUILD_LOG }} 2>&1 || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1)
         git remote -v >> {{ BUILD_LOG }} 2>&1
       args:
