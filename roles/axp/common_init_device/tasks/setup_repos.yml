@@ -72,11 +72,9 @@
         echo "[GIT] checking out origin/$upstream_branch" >> {{ BUILD_LOG }}
         create_br=0
         git fetch origin $upstream_branch >> {{ BUILD_LOG }} 2>&1 || true
-        git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
         git checkout $upstream_branch  >> {{ BUILD_LOG }} 2>&1 || create_br=1
         git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
         git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
-        git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
 
         if [ $create_br -eq 1 ];then
             echo "[GIT] checking out up/$upstream_branch instead of origin (does not exist yet)" >> {{ BUILD_LOG }}
@@ -85,7 +83,8 @@
         
         BROKENLFS=$(grep -c undocumented .lfsconfig || echo 0)
         if [ $BROKENLFS -eq 0 ]; then
-            git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
+            #git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
+            echo skipping lfs fetch
         else
             rm .lfsconfig
             git add -A .lfsconfig  >> /dev/null 2>> {{ BUILD_LOG }} \
