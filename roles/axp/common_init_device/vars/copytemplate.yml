@@ -2,7 +2,7 @@
 # yamllint disable rule:comments
 #################################################################################################################################
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
-# v2.1
+# v2.2
 #################################################################################################################################
 #:h:# all lines starting with '#:h:#' are special help lines to give some context for identifying what's requested
 #:h:# if you have no idea about a setting, either ask in the support "bringup" channel or simply skip it
@@ -113,23 +113,12 @@ target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ 
 #axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
 
 #:h:# NEVER TOUCH THIS ##############################################################################
-extendrom_debug_path_size_full_default: 500
-extendrom_debug_path_size_kernel_default: 100
-extendrom_debug_path_size_selinux_default: 200
-extendrom_debug_path_size_crash_default: 200
-
-#:h:# NEVER TOUCH THIS ##############################################################################
 # git push project names related to this device. used for device init, reproducible builds, ci/cd
 axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
 
 #:h:# NEVER TOUCH THIS ##############################################################################
 # all used VENDOR paths for this device
 axp_git_push_vendor_include: "{{ target_model_device_tree | replace('android_device_', 'vendor_') }}|{{ target_model_common_tree | replace('android_device_', 'vendor_') }}"
-
-#:h:# NEVER TOUCH THIS ##############################################################################
-# Bootloader ID (first line) for validating build log
-#axp_bootloader_id_pro: ''
-#axp_bootloader_id_slim: ''
 
 #################################################################################################################################
 ## Website info
@@ -183,10 +172,11 @@ android_version_pro:
 #:h:# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
 #:h:# can be: 'yes' or 'no', single quotes required
 hugo_relockable_pro: ''
-
+#:h:#
 #:h:# NEVER TOUCH THIS ##############################################################################
 #hugo_encryption_pro: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
-#hugo_axp_bootloader_id_pro: |- # if AVB: the bootloader id string (from build log)
+#axp_bootloader_id_pro: '' # if AVB: Bootloader ID (first line) for validating build log
+#hugo_axp_bootloader_id_pro: |- # if AVB: the full bootloader id string (from build log)
 #hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
 #hugo_first_releasedate_pro: "TBD" # first public stable release date (YYYY-MM-DD)
 #hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
@@ -206,10 +196,11 @@ android_version_slim:
 #:h:# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
 #:h:# can be: 'yes' or 'no', single quotes required
 hugo_relockable_slim: ''
-
+#:h:#
 #:h:# NEVER TOUCH THIS ##############################################################################
 #hugo_encryption_slim: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
-#hugo_axp_bootloader_id_slim: |- # if AVB: the bootloader id string (from build log)
+#axp_bootloader_id_slim: '' # if AVB: Bootloader ID (first line) for validating build log
+#hugo_axp_bootloader_id_slim: |- # if AVB: the full bootloader id string (from build log)
 #hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
 #hugo_first_releasedate_slim: "TBD" # first public stable release date (YYYY-MM-DD)
 #hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
