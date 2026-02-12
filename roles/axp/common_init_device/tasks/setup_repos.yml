@@ -244,14 +244,14 @@
         #git lfs fetch up >> {{ BUILD_LOG }} 2>&1
         
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
-        REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$upstream_branch" |cut -d ' ' -f1)
+        REMHASH=$(git log --pretty=oneline --decorate | grep "origin/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}" |cut -d ' ' -f1)
         
         if [ "$CURHASH" != "$REMHASH" ]; then
-          echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
+          echo "[GIT][UPSTREAM-BRANCH] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
           git push --force origin $upstream_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT] Pushed $reponame / $upstream_branch!" >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][UPSTREAM-BRANCH] Pushed $reponame / $upstream_branch!" >> {{ BUILD_LOG }} 2>&1
         else
-          echo "Skipped pushing $reponame / $upstream_branch (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][UPSTREAM-BRANCH] Skipped pushing $reponame / $upstream_branch (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
         fi
 
         ####### AXP HANDLING #########
@@ -268,11 +268,11 @@
         REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
 
         if [ "$CURHASH" != "$REMHASH" ]; then
-          echo "[GIT] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
+          echo "[GIT][AXP-BRANCH] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
           git push origin $axp_release >> {{ BUILD_LOG }} 2>&1 || ( echo "pushing incomplete LFS!" && git config lfs.allowincompletepush true && git push origin $axp_release >> {{ BUILD_LOG }} 2>&1 )
-          echo "[GIT] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][AXP-BRANCH] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
         else
-          echo "Skipped pushing $reponame / $axp_release (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][AXP-BRANCH] Skipped pushing $reponame / $axp_release (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
         fi
         
         sleep 10              
