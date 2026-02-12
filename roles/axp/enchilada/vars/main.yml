@@ -1,52 +1,68 @@
 ---
+# yamllint disable rule:comments
+#################################################################################################################################
+# source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
+# v2.2
+#################################################################################################################################
+#################################################################################################################################
+
+#################################################################################################################################
+## Device info
+#
+
 # human readable model name
 target_model_vendor: "OnePlus"
 target_model_name: '6'
-target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a13
+# path to the kernel dir
+# e.g. "kernel/oneplus/msm8998"
+target_kernel_dir: "kernel/oneplus/sdm845"
 
-# boot debugger path & config
-extendrom_debug_path_default: /mnt/vendor/persist
-extendrom_debug_path_size_full_default: 500 
-extendrom_debug_path_size_kernel_default: 100
-extendrom_debug_path_size_selinux_default: 200
-extendrom_debug_path_size_crash_default: 200
-
-# path to the kernel dir (req for e.g. wireguard)
-target_kernel_dir: kernel/oneplus/sdm845
-
-# path to the common tree, if none exists the device tree
-# required e.g. for git, vendor/axp, release handling etc
-target_model_common_tree: device_oneplus_sdm845-common
-
-# upload the recovery image
-axp_release_recovery: True
+# git repo name of the device common tree
+target_model_common_tree: "android_device_oneplus_sdm845-common"
 
 # disable Wireguard patching (already part of the upstream kernel)
-skip_wireguard: True
+skip_wireguard: true
 
-# Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: '3026966C854EB5EB'
-axp_bootloader_id_slim: '8EDD5AEB8F28BC9B'
+# boot debugger mount point
+extendrom_debug_path_default: "/mnt/vendor/persist"
 
-# git push
-axp_git_push_device_include: "device_oneplus_enchilada|{{ target_model_common_tree }}"
-axp_git_push_vendor_include: "vendor_oneplus_sdm845-common|vendor_oneplus_enchilada"
+# construct full model info
+target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# website info
-hugo_encryption: "FBEv1"
+# construct specific model device tree automatically
+target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
+
+#axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
+#axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
+
+# git push project names related to this device. used for device init, reproducible builds, ci/cd
+axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
+
+# all used VENDOR paths for this device
+axp_git_push_vendor_include: "{{ target_model_device_tree | replace('android_device_', 'vendor_') }}|{{ target_model_common_tree | replace('android_device_', 'vendor_') }}"
+
+#################################################################################################################################
+## Website info
+#
+
+# COMMON block
 hugo_firmware: "included"
-hugo_relockable: "yes"
-hugo_state: "!! ALPHA !!"
-hugo_supportlevel: "community"
-hugo_isab: "yes"
-hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-enchilada-axp-os-20-0.4711844/"
-hugo_first_releasedate: "2025-01-23"
-hugo_kb_link: "enchiladafajita"
-#hugo_custom_installguide_path: 
-hugo_axp_bootloader_id_pro: |
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-enchilada-axp-os-20-0.4711844/" # link to the AXP.OS XDA post for that device
+hugo_kb_link: "enchiladafajita" # OPTIONAL: knownissues link, only if there is any
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=56"
+
+#### PRO block ####
+android_version_pro: 15
+hugo_relockable_pro: 'yes (untested)'
+hugo_encryption_pro: "FBEv1" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+axp_bootloader_id_pro: '3026966C854EB5EB'
+hugo_axp_bootloader_id_pro: |-
    BOOTLOADER minimal ID
         3026966C
 
@@ -55,7 +71,20 @@ hugo_axp_bootloader_id_pro: |
         2D1CF437BA2F38A0
         657F8DE88A1751E7
         B73D9BA0B28D6196
-hugo_axp_bootloader_id_slim: |
+hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2025-01-23" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+#hugo_patchlevel_pro: ""
+
+#### SLIM block ####
+android_version_slim: 15
+hugo_relockable_slim: 'yes (untested)'
+hugo_encryption_slim: "FBEv1" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+axp_bootloader_id_slim: '8EDD5AEB8F28BC9B'
+hugo_axp_bootloader_id_slim: |-
   BOOTLOADER minimal ID
         8EDD5AEB
 
@@ -64,11 +93,27 @@ hugo_axp_bootloader_id_slim: |
         5FA947A871985F71
         3A710980D2B7C6C7
         8259171B4B82282F
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "2025-01-23" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+#hugo_patchlevel_slim: ""
 
-# vendor/firmware info (A11+)
-# download source: https://xdaforums.com/t/oneplus-6-rom-ota-oxygen-os-mirrors-for-official-oxygen-os-roms-and-ota-updates.3792244/
+#################################################################################################################################
+## FIRMWARE info
+#
+# source: https://xdaforums.com/t/oneplus-6-rom-ota-oxygen-os-mirrors-for-official-oxygen-os-roms-and-ota-updates.3792244/
+
+vendor_firmware_version: "OnePlus6Oxygen_22.J.62_OTA_0620_all_2111252336_14afec75dd6fa" # filename without zip
+
+# direct download link to the OTA zip of the vendor.
 vendor_firmware_download_url: "https://ava4.androidfilehost.com/dl/Z6AZvSwYv9ZBmYpuVjExmw/1759927918/7161016148664850007/OnePlus6Oxygen_22.J.62_OTA_0620_all_2111252336_14afec75dd6fa.zip"
 vendor_firmware_download_sha512: "f50120baee98a0b0b098db039eda985fcc8a30306bd1aac801de591ffff70a6f606cdf92606ae4d9c8f796fc185ba5cb3089fb97a480071334e928e025dfe954"
+
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
-# in any case the hash sum will be verified though.
-vendor_firmware_persistent_path: "{{ persistent_dir }}/OnePlus6Oxygen_22.J.62_OTA_0620_all_2111252336_14afec75dd6fa.zip"
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+#################################################################################################################################
+
