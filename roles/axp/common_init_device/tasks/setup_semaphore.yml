@@ -58,7 +58,6 @@
         "playbook": "{{ semaphore_aos_template_playbook }}",
         "description": "{{ semaphore_aos_template_desc }}",
         "arguments": "{{ semaphore_aos_template_arguments }}",
-        "survey_vars": {{ semaphore_aos_template_survey_vars }},
         "vaults": {{ semaphore_aos_template_vaults }},
         "type": "deploy",
         "build_template_id": {{ semaphore_aos_template_parent_id }},
@@ -68,3 +67,5 @@
   changed_when: tmplc.status == 201
   when: semaphore_aos_template_name not in sp_all_templates.json | map(attribute='name') | list
   #no_log: true
+
+#        "survey_vars": {{ semaphore_aos_template_survey_vars }},
