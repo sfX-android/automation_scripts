@@ -544,7 +544,7 @@ SH_COMMON_BUILD_SNIPPET: |
         exit 5
     }
 
-    {% if pixel_kernel_gki %}
+    {% if pixel_kernel_gki | bool %}
     ###### BUILD GOOGLE PIXEL KERNEL (KLEAF)
     cd {{ git_pixel_kernel_dir }}
     {{ pixel_kernel_buildcmd | d('echo "Error: missing pixel_kernel_buildcmd def"; false') }} >> {{ BUILD_LOG }} 2>&1 || f_detect_kerr
