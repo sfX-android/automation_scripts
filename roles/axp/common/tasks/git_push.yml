@@ -348,8 +348,19 @@
     # set release filename
     sed -i "s/%%RELFILE%%/{{ ROMFILE.stdout }}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
+    # get patch level
+    {% if sec_patch_date_last_human is undefined %}
+    {%    if android_version_int | int < 14 %}
+    real_patch_level=$(grep -E 'PLATFORM_SECURITY_PATCH\s+:=\s+' build/core/version_defaults.mk | cut -d "=" -f 2 | tr -d " " | tail -n1)
+    {%    else %}
+    real_patch_level=$(grep string_value build/release/flag_values/{{ android_target_release }}/RELEASE_PLATFORM_SECURITY_PATCH.textproto | cut -d '"' -f2 | tr -d " " | tail -n1)
+    {%    endif %}
+    {% else %}
+    real_patch_level="{{ sec_patch_date_last_human }}"
+    {% endif %}
+
     # set patch level
-    sed -i "s/%%PATCHLEVEL%%/{{ sec_patch_date_last_human }}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+    sed -i "s/%%PATCHLEVEL%%/${real_patch_level}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
     
     # set android version
     sed -i "s/%%ANDROIDVER%%/{{ android_version_int }}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
