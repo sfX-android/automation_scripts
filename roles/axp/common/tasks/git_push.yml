@@ -211,7 +211,7 @@
                 echo "[GIT] Final push"
                 git push --force -u up $REMHASH:refs/heads/upstream_{{ android_shortversion }} 2>&1
             else
-                echo "[GIT] Final push (fresh)" >> {{ BUILD_LOG }}
+                echo "[GIT] Final push (fresh)"
                 git push --force -u up HEAD:refs/heads/upstream_{{ android_shortversion }} 2>&1
             fi
             echo "[GIT] pushed/updated upstream_{{ android_shortversion }} (check_for_branch_repo result was: $specialfound)"
@@ -226,7 +226,7 @@
       git tag -a "$TAG" -m "axp.os: tagged on $TAG" || TE=1
       if [ $TE -eq 1 ];then
           echo "[GIT] will force push tag: $TAG"
-          git tag -d "$TAG" >> {{ BUILD_LOG }} 2>&1 || true
+          git tag -d "$TAG" || true
           git push up --delete "$TAG" || true
           git tag -a "$TAG" -m "axp.os: tagged {{ sub_model | d(target_model) }} on $TAG"
           git push --force --set-upstream up $TAG
