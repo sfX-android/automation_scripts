@@ -78,7 +78,7 @@
     replace: '#\1'
   when: android_version_int | int > 13
 
-- name: "Apply DOS patches"
+- name: "Apply AXP.OS patches"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     #do not resetEnv
@@ -114,6 +114,10 @@
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk >> {{ BUILD_LOG }} 2>&1
+
+    {% if android_version_int | int >= 15 %}
+    m api-stubs-docs-non-updatable-update-current-api
+    {% endif %}
   register: patchout
   environment:
     KERNEL_PATH_CVE: "{{ target_kernel_dir | regex_replace('/','_') }}"
