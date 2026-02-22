@@ -118,6 +118,9 @@
     {% if android_version_int | int >= 15 %}
     m api-stubs-docs-non-updatable-update-current-api
     m system-api-stubs-docs-non-updatable-update-current-api
+    m update-api \
+       && cp "out/soong/.intermediates/frameworks/base/api/module-lib-api-stubs-docs-non-updatable/android_common/everything/api_lint_baseline.txt \
+       "frameworks/base/core/api/module-lib-lint-baseline.txt"
     {% endif %}
   register: patchout
   environment:
