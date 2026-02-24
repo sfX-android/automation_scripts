@@ -619,6 +619,7 @@ SH_COMMON_BUILD_SNIPPET: |
     export EXTENDROM_SIGNING_PATCHES={{ extendrom_signing_patches }}
     export EXTENDROM_ALLOW_ANY_CALL_RECORDING={{ extendrom_allow_any_call_recording }}
     export EXTENDROM_INTERCEPT_INSTALLSRC={{ extendrom_intercept_installsrc | d('false') }}
+    export EXTENDROM_SIGSPOOF_FORCE_PDIR="$DOS_BUILD_BASE/vendor/extendrom/config/sigspoof/axp/{{ android_shortversion | upper() }}"
     # execute extendrom
     $PWD/vendor/extendrom/er.sh
 
@@ -680,7 +681,7 @@ SH_COMMON_BUILD_SNIPPET: |
     set -e
 
     {%   if axp_avb_version == 2   %}
-    # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow 
+    # See: https://source.android.com/docs/security/features/verifiedboot/boot-flow
     FPID=$(cat user-keys/avb_pkmd.bin | openssl dgst -sha256 | cut -d "=" -f 2 | tr -d " " | tr "[[:lower:]]" "[[:upper:]]")
     echo -e "\nBOOTLOADER minimal ID (AVB 2)"
     echo -e "\t${FPID:0:8}\n"
