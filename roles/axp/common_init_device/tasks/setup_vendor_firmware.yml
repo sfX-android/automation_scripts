@@ -119,7 +119,7 @@
 - name: "Setup firmware: add & push changes"
   ansible.builtin.shell: |
       echo "[GIT][FIRMWARE] starting git commit process" >> {{ BUILD_LOG }}
-      source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}
+      source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type }}
     
       CMTL=$(git status --porcelain=v1 {{ target_model }}/0SOURCE | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
