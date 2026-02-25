@@ -61,7 +61,7 @@
       for r in $(grep -r remove .repo/local_manifests/axp.xml | cut -d '"' -f2 |grep -v android_ ; echo PrintRecommendationService);do
         sed -E "s# (\"${r/*\/}\")# //\1#g" build/make/target/product/generic/Android.bp -i >> {{ BUILD_LOG }} 2>&1
       done
-      
+
       # add AXP.OS BoardConfig globally!
       sed -i '/^INSTALLED_MISC_INFO_TARGET := $(PRODUCT_OUT)\/misc_info.txt$/a \
       \n# we need to encorce-include AXPs own BoardConfig here now.\n# while using the device tree'"'"'s BoardConfig worked fine up to A13 this\n# does not work in all cases with A15 anymore.\ninclude vendor/axp/BoardConfigVendor.mk' \
@@ -115,16 +115,6 @@
     patchWorkspaceReal >> {{ BUILD_LOG }} 2>&1
     resetEnv >> {{ BUILD_LOG }} 2>&1
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk >> {{ BUILD_LOG }} 2>&1
-
-    {% if android_version_int | int >= 15 %}
-    m api-stubs-docs-non-updatable-update-current-api
-    m system-api-stubs-docs-non-updatable-update-current-api
-    m update-api
-    cp "out/soong/.intermediates/frameworks/base/api/module-lib-api-stubs-docs-non-updatable/android_common/everything/api_lint_baseline.txt" \
-      "frameworks/base/core/api/module-lib-lint-baseline.txt"
-    cp "out/soong/.intermediates/frameworks/base/api/api-stubs-docs-non-updatable/android_common/everything/api_lint_baseline.txt" \
-      "frameworks/base/core/api/lint-baseline.txt"
-    {% endif %}
   register: patchout
   environment:
     KERNEL_PATH_CVE: "{{ target_kernel_dir | regex_replace('/','_') }}"
