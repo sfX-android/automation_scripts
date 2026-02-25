@@ -5,12 +5,12 @@
 - name: "Add device vars"
   ansible.builtin.template:
     src: "axp.vars.j2"
-    dest: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}-{{ android_shortversion }}-{{ axp_type }}"
+    dest: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
 
 - name: "Set device vars link (sub_model)"
   ansible.builtin.file:
     src: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
-    dest: "{{ BUILDHOME }}/.divested.vars.{{ sub_model }}-{{ android_shortversion }}-{{ axp_type }}"
+    dest: "{{ BUILDHOME }}/.divested.vars.{{ sub_model }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
     force: true
     state: link
   when: sub_model is defined and sub_model != ""
@@ -23,7 +23,7 @@
 
     - name: "Include slim vars overrides"
       ansible.builtin.lineinfile:
-        path: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
+        path: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
         line: "source {{ BUILDHOME }}/.divested.vars.slim"
         insertafter: EOF
         state: present
