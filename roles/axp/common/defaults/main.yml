@@ -324,6 +324,7 @@ DOS_INIT: |
     echo "BUILDHOME: {{ BUILDHOME }}"
     export HOME="{{ BUILDHOME }}" && echo "home set to $HOME" >> {{ BUILD_LOG }}
     export BDEVICE="{{ target_model }}"
+    export AXP_VARS_ID="{{ target_model }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
     export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     export TMPDIR="{{ server_tmp_dir }}"
     if [ ! -L "$HOME/.local/bin/sh" ];then ln -s /bin/bash $HOME/.local/bin/sh; fi

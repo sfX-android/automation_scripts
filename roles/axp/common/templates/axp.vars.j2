@@ -140,6 +140,7 @@ export DOS_MICROG_SUPPORT="{{ axp_microg_support | default('false') }}" #Opt-out
 export AXP_ANDROIDVERSION_INT="{{ android_version_int }}"
 export AXP_PIXEL_LOCALVER_PATH={{ pixel_kernel_localversion_path | d("") }}
 export AXP_PIXEL_DEFCONF={% if pixel_kernel_gki | bool %}{{ pixel_kernel_defconfig }}{% else %}undefined{% endif %}
+export AXP_VARS_ID="{{ target_model }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
 
 # git info used for committing changes within the sources
 export DOS_PATCHER_URI_KERNEL=https://codeberg.org/AXP-OS/kernel_patches/src/branch/main
