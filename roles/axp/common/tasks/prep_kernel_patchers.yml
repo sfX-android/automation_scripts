@@ -63,16 +63,27 @@
     state: absent
   when: pixel_kernel_gki | bool
 
-- name: "Setup CVE exclusion list (device)"
-  ansible.builtin.template:
-    src: "cve_excludes/{{ target_kernel_dir | regex_replace('/','_') }}.j2"
-    dest: "{{ BUILDHOME }}/.cve_excludes.{{ target_model }}"
-  when: target_model == "oriole"  # TESTING..
+- name: "new CVE exclusion approach"
+  when: target_kernel_dir == "kernel/google/gs201/private/gs-google"  # FIXME: TESTING !!
+  block:
 
-- name: "Setup CVE exclusion list (common)"
-  ansible.builtin.template:
-    src: "cve_excludes/common.j2"
-    dest: "{{ BUILDHOME }}/.cve_excludes.common"
+    - name: "Clean CVE exclusion lists"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ BUILDHOME }}/.cve_excludes.{{ target_model }}"
+        - "{{ BUILDHOME }}/.cve_excludes.common"
+
+    - name: "Setup CVE exclusion list (device)"
+      ansible.builtin.template:
+        src: "cve_excludes/{{ target_kernel_dir | regex_replace('/','_') }}.j2"
+        dest: "{{ BUILDHOME }}/.cve_excludes.{{ target_model }}"
+
+    - name: "Setup CVE exclusion list (common)"
+      ansible.builtin.template:
+        src: "cve_excludes/common.j2"
+        dest: "{{ BUILDHOME }}/.cve_excludes.common"
 
 - name: "Setup CVE kernel patcher: fixups"
   ansible.builtin.shell: |
