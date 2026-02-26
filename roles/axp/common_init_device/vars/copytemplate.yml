@@ -2,7 +2,7 @@
 # yamllint disable rule:comments
 #################################################################################################################################
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
-# v2.2
+# v2.3
 #################################################################################################################################
 #:h:# all lines starting with '#:h:#' are special help lines to give some context for identifying what's requested
 #:h:# if you have no idea about a setting, either ask in the support "bringup" channel or simply skip it
@@ -103,6 +103,10 @@ target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ 
 #axp_avb_bootparts: "boot|recovery"
 #axp_avb_bootparts_count: 2
 #axp_avb_dmparts_count: 2 # (e.g. system.img + vendor.img)
+
+#:h:# NEVER TOUCH THIS ##############################################################################
+# enforce adding verity params to kernel cmdline in system.img if set to >1<
+#axp_avb_enforce_system_cmdline: 1
 
 #:h:# NEVER TOUCH THIS ##############################################################################
 # some devices might fail verifying the boot.img if the expire date is set to the default (30 years)
