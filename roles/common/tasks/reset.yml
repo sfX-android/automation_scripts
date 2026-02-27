@@ -1,24 +1,25 @@
 ---
 
 - name: "Cleanup patch indicators"
-  file:
+  ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   loop:
     - "{{ SRCPATH }}/EXTENDROM_PATCHER_DONE"
 
 - name: "Clear manifests"
-  file:
+  ansible.builtin.file:
     path: "{{ SRCPATH }}/.repo/manifests"
     state: absent
   
 - name: "Init Android sources"
-  shell: "{{ repo_bin }} init --repo-url="{{ repo_bin }}" -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }} || true"
+  ansible.builtin.shell: >-
+    {{ repo_bin }} init --repo-url="{{ repo_bin }}" -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }} || true
   args:
     chdir: "{{ SRCPATH }}"
 
 - name: "Reset path (simple)"
-  shell: |
+  ansible.builtin.shell: |
     {{ repo_bin }} forall -j{{ max_processes }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard"  
   args:
     chdir: "{{ SRCPATH }}"
@@ -33,7 +34,7 @@
   block:
 
     - name: Find all manifests
-      shell: |
+      ansible.builtin.shell: |
         if [ -d "{{ SRCPATH }}/.repo/local_manifests" ];then
           find {{ SRCPATH }}/.repo/manifests/ {{ SRCPATH }}/.repo/local_manifests -name '*.xml'
         else
@@ -65,18 +66,18 @@
       no_log: true
     
     - name: "Clean old results file"
-      file:
+      ansible.builtin.file:
         path: "{{ manifest_paths_file }}"
         state: absent
       no_log: true
     
     - name: Write manifest paths file
-      template:
+      ansible.builtin.template:
         src: ../roles/common/templates/manifest_paths.j2
         dest: "{{ manifest_paths_file }}"
     
     - name: "remove unwanted"
-      replace:
+      ansible.builtin.replace:
         path: "{{ manifest_paths_file }}"
         regexp: "^{{ item.path }}$\\n"
       when: item.path is defined
@@ -85,7 +86,7 @@
     # instead of reset it is dramatically faster to simply delete everything..
     # (other then .repo/ ofc)
     - name: "RIP all project paths"
-      shell: |
+      ansible.builtin.shell: |
            for d in $(cat {{ manifest_paths_file }});do
               if [ -d "$d" ]; then 
                 rm -rf $d
@@ -102,7 +103,7 @@
     # try to use the most efficient way of resetting paths - if they exists
     # while ignoring unknown paths - as they get removed by repo sync anyways
     - name: "Reset path(s)"
-      shell: |
+      ansible.builtin.shell: |
         CORES={{ max_processes }}
         SEQ=$(for s in $(seq 1 $CORES);do echo "{${s}}";done | tr '\n' ' ')
         CPWD=$PWD
