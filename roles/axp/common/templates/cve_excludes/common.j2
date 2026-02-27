@@ -22,8 +22,8 @@ commentPatchesFromFile() {
     local target="$1"
     local pattern_file="$2"
 
-    [ -f "$target" ] || return 1
-    [ -f "$pattern_file" ] || return 1
+    [ -f "$target" ] || (echo "ERROR: target missing!" ; return 2)
+    [ -f "$pattern_file" ] || (echo "ERROR: pattern_file missing!"; return 3)
 
     awk '
         NR==FNR {
