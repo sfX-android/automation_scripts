@@ -71,15 +71,16 @@ hugo_xda_link: "https://xdaforums.com/t/rom-a10-official-microg-hardened-j5y17lt
 hugo_first_releasedate: "2024-06-20"
 hugo_kb_link: ""
 hugo_custom_installguide_path: "content/devices/custom_${HUGO_CODENAME}.guide"
-hugo_axp_bootloader_id_pro: |
-  BOOTLOADER minimal ID (AVB 1)
-        A87D42D8
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=60"
+# hugo_axp_bootloader_id_pro: |
+#   BOOTLOADER minimal ID (AVB 1)
+#         A87D42D8
 
-  BOOTLOADER full ID:
-        A87D42D8B66CA9CC
-        0D509BADFECACC79
-        521EED275F4677EA
-        0F5DB3688EA16A0C
+#   BOOTLOADER full ID:
+#         A87D42D8B66CA9CC
+#         0D509BADFECACC79
+#         521EED275F4677EA
+#         0F5DB3688EA16A0C
 #hugo_axp_bootloader_id_slim: |
 
 # ASB patch date override, month+1:
