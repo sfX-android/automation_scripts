@@ -122,10 +122,6 @@ export AXP_AVB_ALGORITHM={{ axp_avb_algorithm }}
 export AXP_HASHTREE_ALGORITHM={{ axp_avb_hashtree_algorithm }}
 export AXP_AVB_VERSION={{ axp_avb_version }}
 
-{% if axp_avb_enforce_system_cmdline is defined %}
-export AXP_AVB_ENFORCE_SYSTEM_CMDLINE={{ axp_avb_enforce_system_cmdline }}
-{% endif %}
-
 # encryption
 export AXP_AUTO_ENCRYPT={{ axp_auto_encrypt}} # if set to True (which is the default) forceencrypt will be enabled in fstab
 

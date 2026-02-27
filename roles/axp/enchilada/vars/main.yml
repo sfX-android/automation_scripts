@@ -36,9 +36,6 @@ target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ 
 #axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
 #axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
 
-# enforce adding verity params to kernel cmdline in system.img
-axp_avb_enforce_system_cmdline: 1
-
 # git push project names related to this device. used for device init, reproducible builds, ci/cd
 axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
 
