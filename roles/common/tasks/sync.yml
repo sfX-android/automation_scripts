@@ -17,7 +17,7 @@
     replace: '{{ local_manifest_replace_string }}'
 
 - name: "Init Android sources"
-  ansible.builtin.shell: "{{ repo_bin }} init -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }} --git-lfs >> {{ BUILD_LOG }}"
+  ansible.builtin.shell: "{{ repo_bin }} init --repo-url="{{ repo_bin }}" -u {{ git_repo_main_manifests }} -b {{ git_repo_main_branch | d(REPOBRANCH) }} --git-lfs >> {{ BUILD_LOG }}"
   args:
     chdir: "{{ SRCPATH }}"
 
