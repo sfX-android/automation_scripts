@@ -28,13 +28,8 @@ target_model_common_tree: device_samsung_universal7870-common
 divest_unsupported_device: true
 unsupported_device_kernel_patch: true
 
-# set AVB v1.0 / Verity-only
-axp_avb_version: 1
-
-# no boot/recovery.img tests
-# 1) we cannot re-lock this device
-# 2) samsungs crappy boot.img handling conflicts with all standards, making verify tests fail anyways
-skip_avb_boot_verify: true
+# we cannot re-lock this device nor use dm-verity
+axp_avb_version: 0
 
 # this is a low-end device (optimize for performance)
 axp_lowend_device: true
