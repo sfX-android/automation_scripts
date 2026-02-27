@@ -7,12 +7,9 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 # android version
 android_shortversion: a10
 
-# temp pin asb level to august atm
-sec_patch_date_last: level
-
 # boot debugger path & config
 extendrom_debug_path_default: /cache
-extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_full_default: 500
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
@@ -37,10 +34,10 @@ axp_avb_version: 1
 # no boot/recovery.img tests
 # 1) we cannot re-lock this device
 # 2) samsungs crappy boot.img handling conflicts with all standards, making verify tests fail anyways
-skip_avb_boot_verify: True
+skip_avb_boot_verify: true
 
 # this is a low-end device (optimize for performance)
-axp_lowend_device: True
+axp_lowend_device: true
 
 # A10 does not support allow call recording
 extendrom_allow_any_call_recording: 'false'
