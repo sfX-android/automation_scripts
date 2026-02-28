@@ -119,7 +119,7 @@ DOSPATH: "/ssd2/aos"
 # If you need to use a different path for any reason you can use symlinks for the "LineageOS-XX" folders
 # but ensure you leave the directory structure intact then
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
-dos_release_dir: "{{ zipdir_mntp }}/{{ axp_type | d('axp') }}/zips/{{ target_model }}"
+dos_release_dir: "{{ zipdir_mntp }}/{{ axp_type | lower() }}/{{ target_model }}"
 axp_finalzip_dir: "{{ dos_release_dir }}/LineageOS-{{ los_version }}/release_keys/"
 ZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
