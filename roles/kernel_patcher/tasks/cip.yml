@@ -28,20 +28,42 @@
     # only needed once as further syncs are handled by: roles/kernel_patcher/tasks/sync.yml
     #./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
 
+    f_fail {
+      echo $1 >&2
+      exit 1
+    }
+
+    f_retry {
+      local n=1
+      local max=5
+      local delay=30
+      while true; do
+        "$@" && break || {
+          if [[ $n -lt $max ]]; then
+            ((n++))
+            echo "Command failed. Attempt $n/$max:"
+            sleep $delay;
+          else
+            f_fail "The command has failed after $n attempts."
+          fi
+        }
+      done
+    }
+
     # import
-    timeout 1h ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable1 remote" || exit 91
+    (f_retry timeout 1h ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }}) 2>&1 && echo "imported stable1 remote" || exit 91
     git add -A >> {{ BUILD_LOG }} 2>&1 && git commit {{ git_commit_args | d('') }} -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
     
-    timeout 1h ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported debian remote" || exit 92
+    (f_retry timeout 1h ./scripts/import_debian.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }}) 2>&1 && echo "imported debian remote" || exit 92
     git add -A >> {{ BUILD_LOG }} 2>&1 && git commit {{ git_commit_args | d('') }} -a -m 'Import data from Debian' >> {{ BUILD_LOG }} 2>&1
     
-    timeout 1h ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable2 remote" || exit 93
+    (f_retry timeout 1h ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }}) 2>&1 && echo "imported stable2 remote" || exit 93
     git add -A >> {{ BUILD_LOG }} 2>&1 && git commit {{ git_commit_args | d('') }} -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1
     
-    timeout 1h ./scripts/import_ubuntu.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported ubuntu remote" || exit 94
+    (f_retry timeout 1h ./scripts/import_ubuntu.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }}) 2>&1 && echo "imported ubuntu remote" || exit 94
     git add -A >> {{ BUILD_LOG }} 2>&1 && git commit {{ git_commit_args | d('') }} -a -m 'Import data from Ubuntu' >> {{ BUILD_LOG }} 2>&1
 
-    timeout 1h ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1 && echo "imported stable3 remote" || exit 95
+    (f_retry timeout 1h ./scripts/import_stable.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }}) 2>&1 && echo "imported stable3 remote" || exit 95
     (git add -A >> {{ BUILD_LOG }} 2>&1 && git commit {{ git_commit_args | d('') }} -a -m 'Import data from stable branches' >> {{ BUILD_LOG }} 2>&1) || true
   args:
     executable: /bin/bash
