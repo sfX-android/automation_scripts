@@ -69,7 +69,7 @@
   args:
       chdir: "{{ init_device_temp_path }}"
       executable: /bin/bash
-  when: info_added.changed or id_pro_added.changed or id_slim_added.changed
+  when: info_added.changed or id_pro_added.changed or id_slim_added.changed or git_axpos_website_workflow_force | bool
 
 # - name: "Setup website: run force generate page action"
 #   connection: local
