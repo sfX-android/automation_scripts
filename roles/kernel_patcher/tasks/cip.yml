@@ -28,12 +28,12 @@
     # only needed once as further syncs are handled by: roles/kernel_patcher/tasks/sync.yml
     #./scripts/prepare_remotes.py --git-repo "{{ kernel_stable_path }}" >> {{ BUILD_LOG }} 2>&1
 
-    f_fail {
+    f_fail(){
       echo $1 >&2
       exit 1
     }
 
-    f_retry {
+    f_retry(){
       local n=1
       local max=5
       local delay=30
