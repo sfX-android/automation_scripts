@@ -44,7 +44,7 @@
       echo "[GIT][WEBSITE] starting git commit process" >> {{ BUILD_LOG }}
       source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
 
-      if [ "{{ git_axpos_website_workflow_force }}" = true ] && [ -f content/devices/{{ target_model_vendor | lower }}/{{ target_model }}.md ] ;then
+      if [ "{{ git_axpos_website_workflow_force }}" = true ] && [ -f content/devices/{{ target_model_vendor }}/{{ target_model }}.md ] ;then
         rm -v content/devices/{{ target_model_vendor | lower }}/{{ target_model }}.md
       fi
 
