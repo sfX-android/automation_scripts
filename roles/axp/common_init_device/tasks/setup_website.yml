@@ -67,27 +67,26 @@
       executable: /bin/bash
   when: info_added.changed or id_pro_added.changed or id_slim_added.changed
 
-# following will auto-run due to workflow "on push" rule!
-#
-# - name: "Setup website: run generate page action"
-#   connection: local
-#   ansible.builtin.uri:
-#     url: "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/{{ git_axpos_website_workflow_repo }}/actions/workflows/{{ git_axpos_website_workflow_id }}/dispatches"
-#     method: POST
-#     headers:
-#         Content-Type: application/json
-#         Authorization: "token {{ vault_giteasfxbot_ansible_repocreate }}"
-#     body_format: json
-#     body: >-
-#         { "inputs": {
-#             "force": "{{ git_axpos_website_workflow_force }}",
-#             "forcewhat": "{{ target_model }}"
-#           },
-#           "ref": "{{ git_axpos_website_workflow_repo_branch }}"
-#         }
-#     status_code: 204
-#   register: rewr
-#   changed_when: rewr.status == 204
+- name: "Setup website: run force generate page action"
+  connection: local
+  ansible.builtin.uri:
+    url: "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/{{ git_axpos_website_workflow_repo }}/actions/workflows/{{ git_axpos_website_workflow_id }}/dispatches"
+    method: POST
+    headers:
+        Content-Type: application/json
+        Authorization: "token {{ vault_giteasfxbot_ansible_repocreate }}"
+    body_format: json
+    body: >-
+        { "inputs": {
+            "force": "{{ git_axpos_website_workflow_force }}",
+            "forcewhat": "{{ target_model }}"
+          },
+          "ref": "{{ git_axpos_website_workflow_repo_branch }}"
+        }
+    status_code: 204
+  register: rewr
+  changed_when: rewr.status == 204
+  when: git_axpos_website_workflow_force | bool
 
 - name: "Setup website: End clean"
   ansible.builtin.file:

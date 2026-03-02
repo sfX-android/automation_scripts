@@ -61,27 +61,20 @@ axp_bootloader_id_pro: A87D42D8B66CA9CC
 #axp_bootloader_id_slim:
 
 # website info
-hugo_encryption: "FBEv1"
 hugo_firmware: "manual"
-hugo_relockable: "no"
-hugo_state: "stable"
-hugo_supportlevel: "team"
 hugo_isab: "no"
 hugo_xda_link: "https://xdaforums.com/t/rom-a10-official-microg-hardened-j5y17lte-axp-os-17-1.4644557/"
-hugo_first_releasedate: "2024-06-20"
-hugo_kb_link: ""
 hugo_custom_installguide_path: "content/devices/custom_${HUGO_CODENAME}.guide"
 hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=60"
-# hugo_axp_bootloader_id_pro: |
-#   BOOTLOADER minimal ID (AVB 1)
-#         A87D42D8
 
-#   BOOTLOADER full ID:
-#         A87D42D8B66CA9CC
-#         0D509BADFECACC79
-#         521EED275F4677EA
-#         0F5DB3688EA16A0C
-#hugo_axp_bootloader_id_slim: |
+#### PRO block ####
+android_version_pro: 10
+hugo_relockable_pro: 'no'
+hugo_encryption_pro: "FBEv1" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+hugo_supportlevel_pro: "team"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2024-06-20" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
 
 # ASB patch date override, month+1:
 # (latest avail backport is from August 2025)
