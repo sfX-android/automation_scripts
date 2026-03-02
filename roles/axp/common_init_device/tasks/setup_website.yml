@@ -44,6 +44,10 @@
       echo "[GIT][WEBSITE] starting git commit process" >> {{ BUILD_LOG }}
       source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
 
+      if [ "{{ git_axpos_website_workflow_force }}" = true ];then
+        ./create_page.sh device_{{ target_model }}.params force
+      fi
+
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
           git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
@@ -67,26 +71,26 @@
       executable: /bin/bash
   when: info_added.changed or id_pro_added.changed or id_slim_added.changed
 
-- name: "Setup website: run force generate page action"
-  connection: local
-  ansible.builtin.uri:
-    url: "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/{{ git_axpos_website_workflow_repo }}/actions/workflows/{{ git_axpos_website_workflow_id }}/dispatches"
-    method: POST
-    headers:
-        Content-Type: application/json
-        Authorization: "token {{ vault_giteasfxbot_ansible_repocreate }}"
-    body_format: json
-    body: >-
-        { "inputs": {
-            "force": "{{ git_axpos_website_workflow_force }}",
-            "forcewhat": "{{ target_model }}"
-          },
-          "ref": "{{ git_axpos_website_workflow_repo_branch }}"
-        }
-    status_code: 204
-  register: rewr
-  changed_when: rewr.status == 204
-  when: git_axpos_website_workflow_force | bool
+# - name: "Setup website: run force generate page action"
+#   connection: local
+#   ansible.builtin.uri:
+#     url: "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/{{ git_axpos_website_workflow_repo }}/actions/workflows/{{ git_axpos_website_workflow_id }}/dispatches"
+#     method: POST
+#     headers:
+#         Content-Type: application/json
+#         Authorization: "token {{ vault_giteasfxbot_ansible_repocreate }}"
+#     body_format: json
+#     body: >-
+#         { "inputs": {
+#             "force": "{{ git_axpos_website_workflow_force }}",
+#             "forcewhat": "{{ target_model }}"
+#           },
+#           "ref": "{{ git_axpos_website_workflow_repo_branch }}"
+#         }
+#     status_code: 204
+#   register: rewr
+#   changed_when: rewr.status == 204
+#   when: git_axpos_website_workflow_force | bool
 
 - name: "Setup website: End clean"
   ansible.builtin.file:
