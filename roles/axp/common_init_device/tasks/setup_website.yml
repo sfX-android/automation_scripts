@@ -44,8 +44,8 @@
       echo "[GIT][WEBSITE] starting git commit process" >> {{ BUILD_LOG }}
       source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
 
-      if [ "{{ git_axpos_website_workflow_force }}" = true ];then
-        ./create_page.sh device_{{ target_model }}.params force
+      if [ "{{ git_axpos_website_workflow_force }}" = true ] && [ -f content/devices/{{ target_model_vendor | lower }}/{{ target_model }}.md ] ;then
+        rm -v content/devices/{{ target_model_vendor | lower }}/{{ target_model }}.md
       fi
 
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
