@@ -190,6 +190,8 @@ axp_avb_buildarg: >-
 AVB_VERSION: "{{ axp_avb_version }}"
 # for AVB 1, some devices might not sign boot images, override in device vars if required
 skip_avb_boot_verify: false
+# vbmeta fallback for ultra legacy devices on A15 and later, override in device vars if required. will set AXP_AVB_VBMETA_FALLBACK
+axp_avb_vbmeta_fallback: 'false'
 
 # common search strings used to parse the log after building.
 # when overriding these, copy the WHOLE part of this to a device vars yml.

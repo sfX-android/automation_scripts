@@ -2,7 +2,7 @@
 # yamllint disable rule:comments
 #################################################################################################################################
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
-# v2.2
+# v2.3
 #################################################################################################################################
 #:h:# all lines starting with '#:h:#' are special help lines to give some context for identifying what's requested
 #:h:# if you have no idea about a setting, either ask in the support "bringup" channel or simply skip it
@@ -111,6 +111,10 @@ target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ 
 #:h:# NEVER TOUCH THIS ##############################################################################
 #axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
 #axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
+
+#:h:# NEVER TOUCH THIS ##############################################################################
+# enable vbmeta fallback for ultra legacy devices on A15 and later
+#axp_avb_vbmeta_fallback: 'true'
 
 #:h:# NEVER TOUCH THIS ##############################################################################
 # git push project names related to this device. used for device init, reproducible builds, ci/cd
