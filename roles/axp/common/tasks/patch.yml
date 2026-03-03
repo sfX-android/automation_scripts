@@ -19,9 +19,9 @@
       CPWD="{{ SRCPATH }}"
 
       {% if git_pixel_kernel_manifest_branch is defined and target_model_vendor == "Google" %}
-      AXP_KERNEL_PATH="{{ git_pixel_kernel_source }}"
+      export AXP_KERNEL_PATH="{{ git_pixel_kernel_source }}"
       {% else %}
-      AXP_KERNEL_PATH="{{ target_kernel_dir }}"
+      export AXP_KERNEL_PATH="{{ target_kernel_dir }}"
       {% endif %}
       
       if [ ! -f "$AXP_KERNEL_PATH/.wg.patched" ];then
