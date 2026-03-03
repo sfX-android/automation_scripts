@@ -29,7 +29,7 @@
         when: ROM_FLAVOR == "axp" or ROM_FLAVOR == "graphene" or ROM_FLAVOR == "eos"
 
       - include_vars: "../roles/{{ ROM_FLAVOR }}/common/tasks/axp-slim.vars.yml"
-        when: axp_type | d('') == "slim"
+        when: axp_type | lower() == "slim"
 
       - include_vars: "../roles/{{ ROM_FLAVOR }}/{{ target_model }}/vars/main.yml"
       - include_vars: "../roles/{{ ROM_FLAVOR }}/{{ parent_model }}/vars/main.yml"

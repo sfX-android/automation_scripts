@@ -113,18 +113,18 @@ github_cli_main_host: github.com
 os_name: "AXP.OS"
 # default flavor we build for
 axp_type: "pro"
+RELEASE_TYPE: "{{ axp_type | upper() }}"
 git_repo_main_branch: "{{ los_version_gitbranch }}"
 DOSPATH: "/ssd2/aos"
 # SRCPATH HAS TO be part of DOSPATH - this is a divestOS limitation and cannot be changed
 # If you need to use a different path for any reason you can use symlinks for the "LineageOS-XX" folders
 # but ensure you leave the directory structure intact then
 SRCPATH: "{{ DOSPATH }}/Build/LineageOS-{{ los_version }}"
-dos_release_dir: "{{ zipdir_mntp }}/{{ axp_type | lower() }}/{{ target_model }}"
+dos_release_dir: "{{ zipdir_mntp }}/{{ ROM_FLAVOR }}/{{ target_model }}/{{ RELEASE_TYPE }}"
 axp_finalzip_dir: "{{ dos_release_dir }}/LineageOS-{{ los_version }}/release_keys/"
 ZIPDIR: "{{ axp_finalzip_dir }}"
 USE_CCACHE: 1
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ sub_model | d(target_model) }}/"
-RELEASE_TYPE: "{{ axp_type | upper() }}"
 ROM_VERSION: "{{ build_id }}"
 PREFIXFNAME: "{{ os_name }}-{{ los_version }}"
 axp_recovery_filename: "{{ PREFIXFNAME }}-RECOVERY-{{ build_id }}.img"
@@ -163,7 +163,7 @@ axp_bootloader_id_slim: 'You should find your build here'
 
 # set bootloader id for the current build process depending on the AXP.OS flavor
 axp_bootloader_id: >-
-    {% if axp_type | d(ROM_FLAVOR) == "slim" %}{{ axp_bootloader_id_slim }}{% else %}{{ axp_bootloader_id_pro }}{% endif %}
+    {% if axp_type | lower() == "slim" %}{{ axp_bootloader_id_slim }}{% else %}{{ axp_bootloader_id_pro }}{% endif %}
 
 # android testkey hashes (https://github.com/LineageOS/android_build/tree/lineage-22.2/target/product/security)
 android_signing_testkey: cdbb77177f731920bbe0a0f94f84d9038ae0617d
