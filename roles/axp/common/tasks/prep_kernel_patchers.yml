@@ -93,7 +93,7 @@
       echo "ANSIBLE CVE excludes!" | tee -a {{ BUILD_LOG }} 
       cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
         && source {{ BUILDHOME }}/.cve_excludes.common >> {{ BUILD_LOG }} 2>&1 \
-        && commentPatchesFromFile {{ BUILDHOME }}/.cve_excludes.{{ target_model }} {{ target_kernel_dir | regex_replace('/','_') }}.sh >> {{ BUILD_LOG }} 2>&1
+        && commentPatchesFromFile {{ BUILDHOME }}/.cve_excludes.{{ target_model }} android_{{ target_kernel_dir | regex_replace('/','_') }}.sh >> {{ BUILD_LOG }} 2>&1
     else
       echo "LEGACY CVE excludes" | tee -a {{ BUILD_LOG }}
       cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
