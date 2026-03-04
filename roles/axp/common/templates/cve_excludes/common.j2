@@ -34,7 +34,7 @@ commentPatchesFromFile() {
     fi
     
     # Create temporary file for output
-    local temp_file
+    export temp_file
     temp_file=$(mktemp) || {
         echo "ERROR: Failed to create temporary file" >&2
         return 4
