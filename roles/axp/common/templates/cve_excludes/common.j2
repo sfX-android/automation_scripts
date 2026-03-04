@@ -19,33 +19,70 @@ commentPatches() {
 }
 
 commentPatchesFromFile() {
-    local target="$1"
-    local pattern_file="$2"
-
-    [ -f "$target" ] || (echo "ERROR: target missing!" ; return 2)
-    [ -f "$pattern_file" ] || (echo "ERROR: pattern_file missing!"; return 3)
-
-    awk '
-        NR==FNR {
-            if ($0 ~ /^[[:space:]]*#/ || $0 ~ /^[[:space:]]*$/)
-                next
-            patterns[$0] = 1
-            next
-        }
-        {
-            if ($0 ~ /^[[:space:]]*#/) {
-                print
-                next
-            }
-            for (p in patterns) {
-                if (index($0, p)) {
-                    print "#" $0
-                    next
-                }
-            }
-            print
-        }
-    ' "$pattern_file" "$target" > "$target.tmp" && mv "$target.tmp" "$target"
+    local pattern_file="$1"
+    local target="$2"
+    
+    # Validate inputs
+    if [[ ! -f "$pattern_file" ]]; then
+        echo "ERROR: pattern file missing!" >&2
+        return 3
+    fi
+    
+    if [[ ! -f "$target" ]]; then
+        echo "ERROR: target file missing!" >&2
+        return 2
+    fi
+    
+    # Create temporary file for output
+    local temp_file
+    temp_file=$(mktemp) || {
+        echo "ERROR: Failed to create temporary file" >&2
+        return 4
+    }
+    
+    # Cleanup on exit
+    trap 'rm -f "$temp_file"' EXIT
+    
+    # Process files
+    local pattern
+    local line
+    local commented
+    
+    # Read patterns into array, skipping empty lines and comments
+    local patterns=()
+    while IFS= read -r pattern; do
+        # Skip empty lines and comments (lines starting with #)
+        if [[ -z "$pattern" || "$pattern" =~ ^[[:space:]]*# ]]; then
+            continue
+        fi
+        # Remove surrounding quotes if present
+        pattern="${pattern#\"}"
+        pattern="${pattern%\"}"
+        patterns+=("$pattern")
+    done < "$pattern_file"
+    
+    # Process target file
+    while IFS= read -r line; do
+        commented=false
+        
+        # Check if line contains any pattern
+        for pattern in "${patterns[@]}"; do
+            # Use case-insensitive matching and handle special characters properly
+            if [[ "$line" == *"$pattern"* ]]; then
+                echo "#$line"
+                commented=true
+                break
+            fi
+        done
+        
+        # If not commented, output as is
+        if [[ "$commented" == false ]]; then
+            echo "$line"
+        fi
+    done < "$target" > "$temp_file"
+    
+    # Atomically replace target file
+    mv "$temp_file" "$target"
 }; export -f commentPatchesFromFile
 
 #Loose versioning hacks
