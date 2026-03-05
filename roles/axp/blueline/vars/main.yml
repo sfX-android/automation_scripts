@@ -23,7 +23,10 @@ android_shortversion: "a15"
 # e.g. "kernel/oneplus/msm8998"
 target_kernel_dir: "kernel/google/msm-4.9"
 
-axp_defconfig_device: "CONFIG_LTO=n"
+# custom CLANG override, otherwise it would fallback to ccache
+# see: vendor/lineage/build/tasks/kernel.mk
+axp_post_build_cmd: >-
+  export KERNEL_CC="CC=\"$PWD/prebuilts/clang/host/linux-x86/${CLANG_VERSION}/bin/clang\""
 
 # path to the common tree, if none exists then the device tree.
 # used e.g. for git, vendor/axp, release handling etc

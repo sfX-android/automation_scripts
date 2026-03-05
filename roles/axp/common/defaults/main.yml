@@ -679,6 +679,10 @@ SH_COMMON_BUILD_SNIPPET: |
 
     echo "STARTING BUILD"
 
+    {%   if axp_post_build_cmd is defined %}
+    {{ axp_post_build_cmd }}
+    {%   endif %}
+
     {%   if axp_build_recovery_only is defined and axp_build_recovery_only   %}
     mka recoveryimage || f_detect_kerr
     if [ ! -d {{ ZIPDIR }} ]; then mkdir -p {{ ZIPDIR }};fi
