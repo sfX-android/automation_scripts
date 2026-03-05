@@ -65,8 +65,8 @@ hugo_firmware: "manual"
 # Can be either 'yes' or 'no'. use single quotes here:
 hugo_isab: 'yes'
 
-#hugo_xda_link: "" # link to the AXP.OS XDA post for that device
-#hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
+hugo_xda_link: "https://xdaforums.com/t/rom-a-15-official-microg-hardened-kirin-axp-os-22-2.4781117/" # link to the AXP.OS XDA post for that device
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=62"
 
 #### SLIM block
 android_version_slim: 15
