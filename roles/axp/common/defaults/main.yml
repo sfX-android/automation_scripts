@@ -49,9 +49,15 @@ git_private_repos: "axp_versioning"
 # git / gpg signing key, defaults to empty (is set via Semaphore inventory)
 #release_gpg_signing_key: "FE4B2FA2B225F0AB903AF4136740E645718A8E47"
 release_gpg_signing_keys_links: >-
-    \([key](https://axpos.org/axpos_signing.key), [mirror1](https://codeberg.org/AXP-OS/axpos-org/src/branch/hugo/static/axpos_signing.key), [mirror2](https://leech.binbash.rocks:8008/axp/axpos_signing.key), [mirror3](https://keyserver.ubuntu.com/pks/lookup?search=FE4B2FA2B225F0AB903AF4136740E645718A8E47&fingerprint=on&op=index), [mirror4](https://keys.openpgp.org/search?q=FE4B2FA2B225F0AB903AF4136740E645718A8E47)\)
+    \([key](https://axpos.org/axpos_signing.key),
+     [mirror1](https://codeberg.org/AXP-OS/axpos-org/src/branch/hugo/static/axpos_signing.key),
+     [mirror2](https://leech.binbash.rocks:8008/axp/axpos_signing.key),
+     [mirror3](https://keyserver.ubuntu.com/pks/lookup?search=FE4B2FA2B225F0AB903AF4136740E645718A8E47&fingerprint=on&op=index),
+     [mirror4](https://keys.openpgp.org/search?q=FE4B2FA2B225F0AB903AF4136740E645718A8E47)\)
 
 # pixel kernels (graphene)
+# https://grapheneos.org/build#kernel-6th-through-9th-generation-pixels
+# https://grapheneos.org/build#kernel-10th-generation-pixels
 git_pixel_kernel_dir: "{{ android_build_path }}/graphene_kernel_source"
 git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
 git_pixel_kernel_manifest: https://github.com/GrapheneOS-Archive/kernel_manifest-pixel.git
@@ -67,11 +73,17 @@ pixel_kernel_buildcmd: "./build_{{ target_model }}.sh --config=no_download_gki -
 
 # set kernel default for pixel vs. non-pixel
 pixel_kernel_gki: >-
-    {% if target_model_vendor | d('undef') == "Google" and android_version_int | int > 14 and git_pixel_kernel_manifest_branch is defined %}true{% else %}false{% endif %}
+    {% if target_model_vendor | d('undef') == "Google" and android_version_int | int > 14 and git_pixel_kernel_manifest_branch is defined %}
+    true
+    {% else %}
+    false
+    {% endif %}
 
 # set defconfig based on target model or an override
 pixel_kernel_defconfig: >-
-    {% if pixel_kernel_gki | bool %}{{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename | d(target_model) }}/{{ pixel_kernel_codename | d(target_model) }}_defconfig{% endif %}
+    {% if pixel_kernel_gki | bool %}
+    {{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename | d(target_model) }}/{{ pixel_kernel_codename | d(target_model) }}_defconfig
+    {% endif %}
 
 # CONFIG_LOCALVERSION cannot be easily managed anymore with KLEAF.
 # instead we will modify the stamp config which empties it otherwise. there are (maybe) better ways to achieve
@@ -180,7 +192,7 @@ vbmeta_verify: true # DEPRECATED! handled by axp_avb_version + skip_avb_boot_ver
 # enable/disable based on version set. sets AXP_ENABLE_AVB which enforces enabling(!) AVB
 axp_enable_avb: >-
     {% if axp_avb_version == 0 %}'false'{% else %}'true'{% endif %}
-#axp_enable_avb_handling: 'true' # axp_enable_avb_handling is deprecated. sets AXP_ENABLE_AVB_HANDLING which applies all AXP.OS configs like increasing key sizes etc
+# axp_enable_avb_handling: 'true' # axp_enable_avb_handling is deprecated. sets AXP_ENABLE_AVB_HANDLING which applies advanced AXP.OS configs
 axp_avb_algorithm: "SHA512_RSA4096" # sets BOARD_AVB_ALGORITHM (warning: must match the created AVB key!)
 axp_avb_hashtree_algorithm: default # sets AXP_HASHTREE_ALGORITHM (can be one of: default,sha1,sha256,sha512. "default" depends on AXP_LOWEND_DEVICE)
 axp_avb_buildarg: >-
@@ -553,7 +565,7 @@ SH_COMMON_BUILD_SNIPPET: |
     KERN_REL_DIR=$(grep string_value {{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_KERNEL_{{ target_model | upper() }}_DIR.textproto | cut -d '"' -f2 | tr -d " " | tail -n1)
     echo "KERN_REL_DIR: >{{ SRCPATH }}/$KERN_REL_DIR<" >> {{ BUILD_LOG }}
     if [ -d "{{ SRCPATH }}/$KERN_REL_DIR" ];then
-        cp -av {{ target_model }}/* {{ SRCPATH }}/$KERN_REL_DIR/ >> {{ BUILD_LOG }} 2>&1
+        cp -av out/{{ target_model }}/dist/* {{ SRCPATH }}/$KERN_REL_DIR/ >> {{ BUILD_LOG }} 2>&1
     else
         echo "ERROR: KERN_REL_DIR DOES NOT EXIST!" >> {{ BUILD_LOG }}
         exit 33
