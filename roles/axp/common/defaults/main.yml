@@ -253,7 +253,7 @@ extendrom_package_list_default: >
         [
         'GsfProxy_GH',
         'Magisk',
-        'MicrogGmsCore_GH',
+        'MicrogGmsCore_GH_presigned',
         'Phonesky_AXP-OS',
         (android_version_int | int > 14) | ternary('AOSLauncher', 'NeoLauncher-latest')
         ]
