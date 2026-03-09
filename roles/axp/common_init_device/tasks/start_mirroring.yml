@@ -7,7 +7,7 @@
     method: POST
     headers:
         Content-Type: application/json
-        Authorization: "token {{ vault_giteasfxbot_ansible_repocreate  }}"
+        Authorization: "token {{ vault_axp_private_repo_token_rw  }}"
     body_format: json
     body: >-
         { "inputs": {
