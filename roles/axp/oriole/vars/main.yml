@@ -30,14 +30,10 @@ skip_wireguard: true
 # construct full model info
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# Pixel devices: KLEAF based kernel build
-#pixel_kernel_buildcmd: "./build_{{ pixel_kernel_codename }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
+# Pixel devices: KLEAF based + GrapheneOS kernel build
+# see https://github.com/GrapheneOS-Archive/kernel_manifest-pixel.git
+git_pixel_kernel_repo_name: "grapheneos_kernel_common-6.1" # used only for manifest comments
 git_pixel_kernel_manifest_branch: "15-qpr2"
-#pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
-#pixel_kernel_buildout: "out/{{ pixel_kernel_codename }}/dist"
-#pixel_kernel_defconfig: "{{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename }}/{{ pixel_kernel_codename }}_defconfig"
-# see https://android.googlesource.com/kernel/common/+refs
-#git_pixel_kernel_manifest_branch: "android-gs-raviole-6.1-android15-qpr2-beta"
 
 # construct specific model device tree automatically
 target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}

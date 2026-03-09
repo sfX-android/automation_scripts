@@ -2,7 +2,7 @@
 # yamllint disable rule:comments
 #################################################################################################################################
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
-# v2.6
+# v2.7
 #################################################################################################################################
 #:h:# all lines starting with '#:h:#' are special help lines to give some context for identifying what's requested
 #:h:# if you have no idea about a setting, either ask in the support "bringup" channel or simply skip it
@@ -80,6 +80,7 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 #:h:# NEVER TOUCH THIS ##############################################################################
 # Pixel devices: KLEAF based + GrapheneOS kernel build
 # see https://github.com/GrapheneOS-Archive/kernel_manifest-pixel.git
+#git_pixel_kernel_repo_name: "grapheneos_kernel_common-6.1" # used only for manifest comments
 #git_pixel_kernel_manifest_branch: "15-qpr2"
 
 #:h:# NEVER TOUCH THIS ##############################################################################
