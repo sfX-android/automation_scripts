@@ -31,9 +31,9 @@ skip_wireguard: true
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
 # Pixel devices: KLEAF based kernel build
-pixel_kernel_codename: raviole
+#pixel_kernel_codename: "{{ target_model }}"
 git_pixel_kernel_manifest_branch: "15-qpr2"
-pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
+#pixel_kernel_buildresult: "device/google/{{ pixel_kernel_codename }}-kernels/6.1"
 
 # construct specific model device tree automatically
 target_model_device_tree: android_device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}

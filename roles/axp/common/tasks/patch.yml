@@ -1,13 +1,5 @@
 ---
 
-# - name: "Disable GPG verify if dirty build"
-#   ansible.builtin.lineinfile:
-#     path: "{{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/Functions.sh"
-#     line: '#verifyAllPlatformTags'
-#     regexp: '\s+verifyAllPlatformTags\;'
-#   when:
-#     - clean_out != "true" or (override_clean_out != "true") or (skip_gpg_verify | bool)
-
 - name: "Prepare kernel patchers"
   include_tasks: prep_kernel_patchers.yml
   

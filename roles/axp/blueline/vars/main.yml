@@ -92,7 +92,9 @@ extendrom_debug_path_size_crash_default: 200
 axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_common_tree }}"
 
 # all used VENDOR paths for this device, e.g. "vendor_google_crosshatch|vendor_google_blueline"
-axp_git_push_vendor_include: "vendor_google_crosshatch|vendor_google_blueline"
+axp_git_push_vendor_include: >-
+    {{ target_model_device_tree | replace('android_device_', 'proprietary_vendor_') }}
+    |{{ target_model_common_tree | replace('android_device_', 'proprietary_vendor_') }}
 
 # Bootloader ID (first line) for verifying build log
 #axp_bootloader_id_pro: ''
