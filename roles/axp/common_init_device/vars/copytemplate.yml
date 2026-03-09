@@ -2,7 +2,7 @@
 # yamllint disable rule:comments
 #################################################################################################################################
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
-# v2.3
+# v2.4
 #################################################################################################################################
 #:h:# all lines starting with '#:h:#' are special help lines to give some context for identifying what's requested
 #:h:# if you have no idea about a setting, either ask in the support "bringup" channel or simply skip it
@@ -122,7 +122,7 @@ axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_com
 
 #:h:# NEVER TOUCH THIS ##############################################################################
 # all used VENDOR paths for this device
-axp_git_push_vendor_include: "{{ target_model_device_tree | replace('android_device_', 'vendor_') }}|{{ target_model_common_tree | replace('android_device_', 'vendor_') }}"
+axp_git_push_vendor_include: "{{ target_model_device_tree | replace('android_device_', 'proprietary_vendor_') }}|{{ target_model_common_tree | replace('android_device_', 'proprietary_vendor_') }}"
 
 #################################################################################################################################
 ## Website info
