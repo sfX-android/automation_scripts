@@ -335,7 +335,8 @@ ota_hint: |-
 # with divest due to its non-standard behavior and inits DOS as it should be
 DOS_INIT: |
     echo "BUILDHOME: {{ BUILDHOME }}"
-    export HOME="{{ BUILDHOME }}" && echo "home set to $HOME" >> {{ BUILD_LOG }}
+    export build_log="{{ BUILD_LOG }}"
+    export HOME="{{ BUILDHOME }}" && echo "home set to $HOME"
     export BDEVICE="{{ target_model }}"
     export AXP_VARS_ID="{{ target_model }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
     export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
@@ -345,12 +346,12 @@ DOS_INIT: |
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
     {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
-    gpg --list-secret-keys >> {{ BUILD_LOG }} 2>&1 || true
+    gpg --list-secret-keys || true
     {% endif %}
 
     cd {{ SRCPATH }}
-    source build/envsetup.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing envsetup: success" >> {{ BUILD_LOG }}
-    source {{ DOSPATH }}/Scripts/init.sh >> {{ BUILD_LOG }} 2>&1 && echo "sourcing init: success" >> {{ BUILD_LOG }}
+    source build/envsetup.sh && echo "sourcing envsetup: success"
+    source {{ DOSPATH }}/Scripts/init.sh && echo "sourcing init: success"
 
     # set target release (see common/defaults)
     {% if android_target_release != "0" %}export TARGET_RELEASE={{ android_target_release }} brf_suffix="-{{ android_target_release }}"{% endif %}
@@ -472,14 +473,14 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% endif %}
     {% if generate_factory_image | bool %}
 
-    echo "Creating FACTORY ZIP!" >> {{ BUILD_LOG }}
+    echo "Creating FACTORY ZIP!" >>
 
     if [ -f "{{ vendor_factory_persistent_path }}" ];then
-        echo "Using previously downloaded factory image: {{ vendor_factory_version }}.zip" >> {{ BUILD_LOG }}
+        echo "Using previously downloaded factory image: {{ vendor_factory_version }}.zip"
     else
-        echo "{{ vendor_factory_version }}.zip not found in: {{ persistent_dir }}, downloading.." >> {{ BUILD_LOG }}
-        wget -q {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} >> {{ BUILD_LOG }} 2>&1 \
-          || (wget {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} >> {{ BUILD_LOG }} 2>&1 ; exit 9)
+        echo "{{ vendor_factory_version }}.zip not found in: {{ persistent_dir }}, downloading.."
+        wget -q {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} \
+          || (wget {{ vendor_factory_download_url }} -O {{ vendor_factory_persistent_path }} ; exit 9)
     fi
 
     VERSION="{{ los_version }}-{{ BUILDIDENT }}-{{ RELEASE_TYPE }}"
@@ -496,7 +497,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     unzip {{ vendor_factory_persistent_path }} -x "*/image-{{ target_model }}-*.zip" -d factory
     cd factory/{{ target_model }}-${FACTORYID}
 
-    cp ../../${FZIP}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip     
+    cp ../../${FZIP}-fastboot.zip image-{{ target_model }}-${FACTORYID}.zip
     cp {{ SRCPATH }}/user-keys/avb_pkmd.bin .
     for f in flash-base.sh flash-all.sh;do
         awk '{print} /fastboot reboot-bootloader/ && !n {print "sleep 5\nfastboot erase avb_custom_key\nfastboot flash avb_custom_key avb_pkmd.bin\nfastboot reboot-bootloader"; n++}' $f > $f.tmp && mv $f.tmp $f && chmod +x $f
@@ -508,10 +509,10 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     sha512sum ${FZIP}-factory.zip > ${FZIP}-factory.zip.sha512sum
 
     {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
-    echo "GPG signing ${FZIP}-factory.zip.sha512sum with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+    echo "GPG signing ${FZIP}-factory.zip.sha512sum with {{ release_gpg_signing_key }}"
     if [ -f "${FZIP}-factory.zip.sha512sum.asc" ]; then rm ${FZIP}-factory.zip.sha512sum.asc; fi
     if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${FZIP}-factory.zip.sha512sum"; then
-        mv -f "${FZIP}-factory.zip.sha512sum.asc" "${FZIP}-factory.zip.sha512sum" >> {{ BUILD_LOG }} 2>&1
+        mv -f "${FZIP}-factory.zip.sha512sum.asc" "${FZIP}-factory.zip.sha512sum"
     fi
     {% endif %}
 
@@ -543,31 +544,67 @@ SH_COMMON_BUILD_SNIPPET: |
 
     ########################### BUILD #########################
 
+    export build_log="{{ BUILD_LOG }}"
+
     f_detect_kerr(){
         set +e
         resetEnv
-        vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L {{ BUILD_LOG }}
-        just_cve_excl=$(grep "PROBLEMATIC_CVES:" {{ BUILD_LOG }} | cut -d ':' -f2- | tr '\n' ' ')
+        vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L "$build_log"
+        just_cve_excl=$(grep "PROBLEMATIC_CVES:" "$build_log" | cut -d ':' -f2- | tr '\n' ' ')
 
         if [ -n "$just_cve_excl" ];then
             echo -e "\ndirty test: revert CVE's and re-test like:"
             echo -e "\tcd {{ target_kernel_dir }} && for p in $just_cve_excl; do patch -p1 -R < \$DOS_PATCHES_LINUX_CVES/\$p;done; croot; time ~/build_{{ sub_model | d(target_model) }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh | tee ~/LOG"
-            echo -e "\nIf you then encounter another error do:\n\tcat ~/LOG >> {{ BUILD_LOG }}"
-            echo -e "\tvendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L {{ BUILD_LOG }}"
+            echo -e "\nIf you then encounter another error do:\n\tcat ~/LOG >> $build_log"
+            echo -e "\tvendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L $build_log"
         fi
         exit 5
     }
 
     {% if pixel_kernel_gki | bool %}
+    update_kernel_headers(){
+        local archive_kh="kernel-headers.tar.gz"
+        local archive_uapi="kernel-uapi-headers.tar.gz"
+        local dir_kernel_headers="kernel-headers"
+
+        # Validate required files exist
+        for file in "$archive_kh" "$archive_uapi"; do
+            if [[ ! -f "$file" ]]; then
+                echo "ERROR: Required archive '$file' not found" >&2
+                exit 1
+            fi
+        done
+
+        # Process all files in kernel-headers directory
+        local module
+        while IFS= read -r -d '' module; do
+            module=$(basename -- "$module")
+
+            if tar tf "$archive_kh" 2>/dev/null | grep -F -- "$module" >/dev/null 2>&1; then
+                tar xf "$archive_kh" --wildcards -- "*/$module" && printf '%s: SUCCESS\n' "$module"
+            elif tar tf "$archive_uapi" 2>/dev/null | grep -F -- "$module" >/dev/null 2>&1; then
+                printf '%s not found in kh, trying uapi: ' "$module"
+                mkdir -p "$dir_kernel_headers"
+                tar xf "$archive_uapi" --strip-components=2 --wildcards "*/$module" -C "$dir_kernel_headers"
+                printf '%s: SUCCESS\n' "$module"
+            else
+                printf '\n\nERROR: MISSING %s\n' "$module" >&2
+                exit 3
+            fi
+        done < <(find "$dir_kernel_headers" -type f -print0 2>/dev/null || true)
+    }
+    
     ###### BUILD GOOGLE PIXEL KERNEL (KLEAF)
     cd {{ git_pixel_kernel_dir }}
-    {{ pixel_kernel_buildcmd | d('echo "Error: missing pixel_kernel_buildcmd def"; false') }} >> {{ BUILD_LOG }} 2>&1 || f_detect_kerr
+    {{ pixel_kernel_buildcmd | d('echo "Error: missing pixel_kernel_buildcmd def"; false') }} || f_detect_kerr
     KERN_REL_DIR=$(grep string_value {{ SRCPATH }}/build/release/flag_values/{{ android_target_release }}/RELEASE_KERNEL_{{ target_model | upper() }}_DIR.textproto | cut -d '"' -f2 | tr -d " " | tail -n1)
-    echo "KERN_REL_DIR: >{{ SRCPATH }}/$KERN_REL_DIR<" >> {{ BUILD_LOG }}
+    echo "KERN_REL_DIR: >{{ SRCPATH }}/$KERN_REL_DIR<"
     if [ -d "{{ SRCPATH }}/$KERN_REL_DIR" ];then
-        cp -av out/{{ target_model }}/dist/* {{ SRCPATH }}/$KERN_REL_DIR/ >> {{ BUILD_LOG }} 2>&1
+        cp -av out/{{ target_model }}/dist/* {{ SRCPATH }}/$KERN_REL_DIR/
+        cd "{{ SRCPATH }}/$KERN_REL_DIR"
+        update_kernel_headers
     else
-        echo "ERROR: KERN_REL_DIR DOES NOT EXIST!" >> {{ BUILD_LOG }}
+        echo "ERROR: KERN_REL_DIR DOES NOT EXIST (usually part of lineage.dependencies in device tree)!"
         exit 33
     fi
     cd {{ SRCPATH }}
@@ -577,12 +614,12 @@ SH_COMMON_BUILD_SNIPPET: |
     {{ DOS_INIT }}
 
     # ensure vendor secpatch date is set
-    source vendor/firmware/{{ target_model }}/0SOURCE  >> {{ BUILD_LOG }} 2>&1 || true
+    source vendor/firmware/{{ target_model }}/0SOURCE || true
 
     {% if axp_build_eng | bool %}
-    breakfast lineage_{{ sub_model | d(target_model) }}${brf_suffix}-eng >> {{ BUILD_LOG }} 2>&1
+    breakfast lineage_{{ sub_model | d(target_model) }}${brf_suffix}-eng
     {% else %}
-    breakfast lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+    breakfast lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user
     {% endif %}
 
     # CCACHE
@@ -647,7 +684,7 @@ SH_COMMON_BUILD_SNIPPET: |
     # commit if required
     if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
         git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
-        echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}" >> {{ BUILD_LOG }}
+        echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}"
     fi
     git status
     croot
