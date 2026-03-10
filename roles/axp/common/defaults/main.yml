@@ -469,7 +469,7 @@ SH_COMMON_PIXEL_CREATE_FACTORY: |
     {% endif %}
     {% if generate_factory_image | bool %}
 
-    echo "Creating FACTORY ZIP!" >>
+    echo "Creating FACTORY ZIP!"
 
     if [ -f "{{ vendor_factory_persistent_path }}" ];then
         echo "Using previously downloaded factory image: {{ vendor_factory_version }}.zip"
