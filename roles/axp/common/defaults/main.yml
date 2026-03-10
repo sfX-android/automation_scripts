@@ -540,7 +540,8 @@ SH_COMMON_BUILD_SNIPPET: |
 
     ########################### BUILD #########################
 
-    export build_log="{{ BUILD_LOG }}"
+    # setup build env including stupid DOS workarounds
+    {{ DOS_INIT }}
 
     f_detect_kerr(){
         set +e
@@ -605,9 +606,6 @@ SH_COMMON_BUILD_SNIPPET: |
     fi
     cd {{ SRCPATH }}
     {% endif %}
-
-    # setup build env including stupid DOS workarounds
-    {{ DOS_INIT }}
 
     # ensure vendor secpatch date is set
     source vendor/firmware/{{ target_model }}/0SOURCE || true
