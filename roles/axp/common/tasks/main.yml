@@ -107,9 +107,6 @@
         chdir: "{{ SRCPATH }}"
         executable: /bin/bash
 
-    # - fail:
-    #    msg: YEEEEEEeeeeeeeeeeeeeHa..
-
     # special deblob workarounds
     # FIXME: can be removed once all gs201 device have been ported to A15
     - name: "Include: patch_device_gs201.yml"

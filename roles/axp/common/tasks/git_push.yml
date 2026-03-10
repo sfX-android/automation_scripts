@@ -365,6 +365,14 @@
     # set android version
     sed -i "s/%%ANDROIDVER%%/{{ android_version_int }}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
+    # update issue tracker info
+    {% if axp_community_tracker_id is defined %}
+    sed -i 's|%%COMTRACKID%%|- **Community test result:** [#{{ axp_community_tracker_id }}]({{ axp_community_tracker_uri }}/{{ axp_community_tracker_id }})\n|g' \
+      {{ sub_model | d(target_model) }}_{{ axp_type }}.md
+    {% else %}
+    sed -i 's/%%COMTRACKID%%//g' {{ sub_model | d(target_model) }}_{{ axp_type }}.md
+    {% endif %}
+    
     # set manifest
     sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('.*git@','') | regex_replace(':','/') }}/src/tag/$MTAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
   
