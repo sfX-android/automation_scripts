@@ -546,7 +546,7 @@ SH_COMMON_BUILD_SNIPPET: |
     f_detect_kerr(){
         set +e
         resetEnv
-        vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L "$build_log"
+        {{ SRCPATH }}/vendor/axp/scripts/find_cve_error.sh --parse -k {{ SRCPATH }}/{{ target_kernel_dir }} -L "$build_log"
         just_cve_excl=$(grep "PROBLEMATIC_CVES:" "$build_log" | cut -d ':' -f2- | tr '\n' ' ')
 
         if [ -n "$just_cve_excl" ];then
