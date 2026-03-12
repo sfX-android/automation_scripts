@@ -16,7 +16,7 @@
             name: "{{ container_name }}"
             image: "{{ base_image }}"
             state: started
-            detach: false
+            detach: true
             tty: true
             command: "/bin/sh"
             auto_remove: false
