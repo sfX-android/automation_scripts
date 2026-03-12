@@ -53,3 +53,16 @@
             name: "{{ container_name }}"
             state: absent
             force_kill: true
+
+        - name: Failed state
+          fail:
+            msg: |
+              ________________________________________________________
+              Workflow failed due to an exception!
+              Last error was (check above):
+              
+              {{ ansible_failed_result.msg | replace('"','') |replace("'","") | regex_replace('[}{]','') }}
+              
+              Container '{{ container_name }}' may need manual cleanup.
+              ________________________________________________________
+              
