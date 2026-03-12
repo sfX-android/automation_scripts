@@ -35,8 +35,8 @@
 
     f_retry(){
       local n=1
-      local max=5
-      local delay=30
+      local max=10
+      local delay=120
       while true; do
         "$@" && break || {
           if [[ $n -lt $max ]]; then
