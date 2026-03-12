@@ -1,0 +1,56 @@
+---
+- name: Manage Docker container for image updates
+  hosts: localhost
+  gather_facts: true
+  vars:
+    base_image: "{{ BASEIMG }}"
+    command_to_run: "{{ CMD }}"
+    container_name: "temp_container_{{ ansible_date_time.epoch }}"
+    
+  tasks:
+    - name: Create, execute, and commit Docker container workflow
+      block:
+        - name: Create Docker container from existing image
+          community.docker.docker_container:
+            name: "{{ container_name }}"
+            image: "{{ base_image }}"
+            state: started
+            detach: false
+            stdin_open: true
+            tty: true
+            command: "/bin/sh"
+            auto_remove: false
+            recreate: true
+
+        - name: Execute command in running container
+          community.docker.docker_container_exec:
+            container: "{{ container_name }}"
+            command: "{{ command_to_run }}"
+            chdir: "/"
+            user: root
+            interactive: true
+            detach: false
+
+        - name: Commit container changes to update base image
+          community.docker.docker_image:
+            name: "{{ base_image }}"
+            source: "local"
+            state: present
+            buildargs: {}
+            pull: false
+            force_source: true
+            commit: "{{ container_name }}"
+            tag: "latest"
+
+        - name: Remove temporary container
+          community.docker.docker_container:
+            name: "{{ container_name }}"
+            state: absent
+            force_kill: true
+
+      rescue:
+        - name: Clean up temporary container on failure
+          community.docker.docker_container:
+            name: "{{ container_name }}"
+            state: absent
+            force_kill: true
