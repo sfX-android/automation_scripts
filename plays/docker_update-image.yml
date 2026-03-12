@@ -8,6 +8,7 @@
     container_name: "temp_container_{{ ansible_date_time.epoch }}"
     
   tasks:
+
     - name: Create, execute, and commit Docker container workflow
       block:
         - name: Create Docker container from existing image
@@ -16,7 +17,6 @@
             image: "{{ base_image }}"
             state: started
             detach: false
-            stdin_open: true
             tty: true
             command: "/bin/sh"
             auto_remove: false
