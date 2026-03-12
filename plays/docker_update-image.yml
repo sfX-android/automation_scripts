@@ -2,8 +2,6 @@
 - name: Manage Docker container for image updates
   hosts: "{{ groups.docker[0] }}"
   gather_facts: true
-  become: true
-  become_user: root
   vars:
     base_image: "{{ BASEIMG }}"
     command_to_run: "{{ CMD }}"
