@@ -25,7 +25,7 @@
         - name: Execute command in running container
           community.docker.docker_container_exec:
             container: "{{ container_name }}"
-            command: "{{ command_to_run }}"
+            command: "/bin/bash -c '{{ command_to_run }}'"
             chdir: "/"
             user: root
             detach: false
