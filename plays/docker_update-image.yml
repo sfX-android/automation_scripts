@@ -1,6 +1,6 @@
 ---
 - name: Manage Docker container for image updates
-  hosts: dockerserver
+  hosts: docker
   gather_facts: true
   vars:
     base_image: "{{ BASEIMG }}"
