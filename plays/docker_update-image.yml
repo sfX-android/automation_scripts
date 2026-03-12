@@ -28,7 +28,6 @@
             command: "{{ command_to_run }}"
             chdir: "/"
             user: root
-            interactive: true
             detach: false
 
         - name: Commit container changes to update base image
