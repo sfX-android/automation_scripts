@@ -538,10 +538,29 @@ SH_COMMON_BUILD_SNIPPET: |
     export AXP_LOWEND_DEVICE=True
     {% endif %}
 
-    ########################### BUILD #########################
+    ########################### INIT #########################
 
     # setup build env including stupid DOS workarounds
     {{ DOS_INIT }}
+
+    ########################### KERNEL COMMIT #########################
+
+    echo "[GIT] checking kernel changes in {{ target_kernel_dir }}"
+    # add unstaged changes
+    CMT=0
+    cd {{ target_kernel_dir }}
+    git add -A || CMT=1
+    # check for uncommitted changes
+    CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+    # commit if required
+    if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
+        git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
+        echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}"
+    fi
+    git status
+    croot
+
+    ########################### BUILD #########################
 
     f_detect_kerr(){
         set +e
@@ -667,21 +686,6 @@ SH_COMMON_BUILD_SNIPPET: |
     export EXTENDROM_SIGSPOOF_FORCE_PDIR="$DOS_BUILD_BASE/vendor/extendrom/config/sigspoof/axp/{{ android_shortversion | upper() }}"
     # execute extendrom
     $PWD/vendor/extendrom/er.sh
-
-    echo "[GIT] checking kernel changes in {{ target_kernel_dir }}"
-    # add unstaged changes
-    CMT=0
-    cd {{ target_kernel_dir }}
-    git add -A || CMT=1
-    # check for uncommitted changes
-    CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
-    # commit if required
-    if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
-        git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "uncatched scripted change(s)"
-        echo "[GIT] committed scripted kernel changes for {{ target_kernel_dir }}"
-    fi
-    git status
-    croot
 
     # build
     #resetEnv
