@@ -5,7 +5,7 @@
     url: "{{ divest_cve_checker_download }}"
     dest: "{{ divest_cve_checker_jar }}"
     mode: 0640
-  retries: 3
+  retries: 30
   delay: 10
   when: not skip_dl_cve_checker | d(False)
 
@@ -22,7 +22,7 @@
     # revert slow-down commit
     # see: https://gitlab.com/cip-project/cip-kernel/cip-kernel-sec/-/issues/16
     #git revert -n 105a7541545edefd3f4f4bf800d72fc5220043a0 6406c3574f08a5bb2ff811703deccf55f2ffb113 086af155fc235cfad4ed3844c6b175fc4ae16add a02eaa7c797348f1435c571a972243ebf5d66587 878bda8d5be6b7c2d5c6360386625ba07068008b
-    git revert -n 105a7541545edefd3f4f4bf800d72fc5220043a0 6406c3574f08a5bb2ff811703deccf55f2ffb113 086af155fc235cfad4ed3844c6b175fc4ae16add 878bda8d5be6b7c2d5c6360386625ba07068008b
+    git revert 105a7541545edefd3f4f4bf800d72fc5220043a0 6406c3574f08a5bb2ff811703deccf55f2ffb113 086af155fc235cfad4ed3844c6b175fc4ae16add 878bda8d5be6b7c2d5c6360386625ba07068008b >> {{ BUILD_LOG }} 2>&1
 
     # prepare & sync remotes
     # only needed once as further syncs are handled by: roles/kernel_patcher/tasks/sync.yml
@@ -35,7 +35,7 @@
 
     f_retry(){
       local n=1
-      local max=10
+      local max=5
       local delay=120
       while true; do
         "$@" && break || {
