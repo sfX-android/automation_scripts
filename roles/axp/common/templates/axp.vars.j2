@@ -139,6 +139,7 @@ export AXP_VARS_ID="{{ target_model }}-{{ android_shortversion }}-{{ axp_type | 
 
 # Kernel
 export AXP_PIXEL_LOCALVER_PATH={{ pixel_kernel_localversion_path | d("") }}
+export AXP_KERNEL_KLEAF="{{ axp_kernel_kleaf | trim }}"
 #export AXP_DISABLE_CVE_PATCHING={{ pixel_kernel_gki | lower() }}
 export AXP_DISABLE_CVE_PATCHING=false
 #export AXP_DISABLE_DEFCONF_HARDENING={{ pixel_kernel_gki | lower() }}
