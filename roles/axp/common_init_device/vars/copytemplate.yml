@@ -2,7 +2,7 @@
 # yamllint disable rule:comments
 #################################################################################################################################
 # source: https://github.com/sfX-android/automation_scripts/blob/ansible/roles/axp/common_init_device/vars/copytemplate.yml
-# v2.7
+# v2.8
 #################################################################################################################################
 #:h:# all lines starting with '#:h:#' are special help lines to give some context for identifying what's requested
 #:h:# if you have no idea about a setting, either ask in the support "bringup" channel or simply skip it
@@ -82,6 +82,8 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 # see https://github.com/GrapheneOS-Archive/kernel_manifest-pixel.git
 #git_pixel_kernel_repo_name: "grapheneos_kernel_common-6.1" # used only for manifest comments
 #git_pixel_kernel_manifest_branch: "15-qpr2"
+# kernel codename if not target_model (https://grapheneos.org/build#kernel)
+#axp_pixel_kernel_codename:
 
 #:h:# NEVER TOUCH THIS ##############################################################################
 # construct specific model device tree automatically
