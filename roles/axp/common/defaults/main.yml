@@ -582,7 +582,7 @@ SH_COMMON_BUILD_SNIPPET: |
         exit 5
     }
 
-    {% if pixel_kernel_gki | bool %}
+    {% if axp_kernel_kleaf | bool %}
     update_kernel_headers(){
         local archive_kh="kernel-headers.tar.gz"
         local archive_uapi="kernel-uapi-headers.tar.gz"
@@ -728,6 +728,9 @@ SH_COMMON_BUILD_SNIPPET: |
     {% endif %}
 
     echo "STARTING BUILD"
+    {%   if axp_vendorkernelboot | bool %}
+    mka avbtool vendorkernelbootimage
+    {%   endif %}
 
     {%   if axp_post_build_cmd is defined %}
     {{ axp_post_build_cmd }}
