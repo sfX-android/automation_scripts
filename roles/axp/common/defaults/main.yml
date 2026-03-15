@@ -80,6 +80,10 @@ axp_kernel_kleaf: >-
         and android_version_int | int > 14
         and git_pixel_kernel_manifest_branch is defined %}true{% else %}false{% endif %}
 
+# device has vendor_kernel_boot.img? override in device vars if required
+axp_vendorkernelboot: >-
+    {% if axp_kernel_kleaf | bool %}true{% else %}false{% endif %}
+
 # set defconfig based on target model or an override
 pixel_kernel_defconfig: >-
     {% if pixel_kernel_gki | bool %}
