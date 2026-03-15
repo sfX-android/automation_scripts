@@ -59,7 +59,7 @@ release_gpg_signing_keys_links: >-
 git_pixel_kernel_dir: "{{ android_build_path }}/graphene_kernel_source"
 git_pixel_kernel_source: "{{ git_pixel_kernel_dir }}/aosp"
 git_pixel_kernel_manifest: https://github.com/GrapheneOS-Archive/kernel_manifest-pixel.git
-pixel_kernel_buildcmd: "./build_{{ target_model }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
+pixel_kernel_buildcmd: "./build_{{ axp_pixel_kernel_codename | d(target_model) }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
 
 # pixel kernels (google)
 #git_pixel_kernel_repo_name: android_kernel_google_common   # used only for manifest comments
