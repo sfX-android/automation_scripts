@@ -45,9 +45,9 @@
     {% else %}
     cd {{ target_kernel_dir }}
     {% endif %}
-    
+
     if [ -f .defconf.patched ];then rm -v .defconf.patched;fi
-    (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true   
+    (git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD) >> {{ BUILD_LOG }} 2>&1 || true
   args:
     executable: /bin/bash
   when:
@@ -63,7 +63,7 @@
     state: absent
   when: pixel_kernel_gki | bool
 
-- name: "new CVE exclusion approach"
+- name: "New CVE exclusion approach"
   when: target_kernel_dir == "kernel/google/gs201/private/gs-google" or target_model == "blueline"
   block:
 

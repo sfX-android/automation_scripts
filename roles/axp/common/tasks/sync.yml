@@ -9,7 +9,7 @@
       loop:
           - "{{ git_pixel_kernel_dir }}"
           - "{{ SRCPATH }}/{{ target_kernel_dir }}"
-    
+
     - name: "Google Pixel: sync kernel manifest"
       ansible.builtin.shell: |
         # add unstaged changes
@@ -26,7 +26,7 @@
         fi
         cd {{ git_pixel_kernel_dir }}
         set -e
-        
+
         {{ repo_bin }} init --repo-url="{{ repo_bin }}" {{ git_pixel_kernel_manifest }} -b {{ git_pixel_kernel_manifest_branch }} --submodules >> {{ BUILD_LOG }} 2>&1
         {{ repo_bin }} sync --jobs-checkout={{ max_processes }} --jobs-network={{ max_processes_sync }} {{ repo_sync_args }} --fetch-submodules >> {{ BUILD_LOG }} 2>&1
       args:
