@@ -1,9 +1,28 @@
 ---
 
+- name: "Identify ISO filename"
+  become: false
+  ansible.builtin.shell: >
+    find /var/tmp/mAid_work/iso/ -type f -name "*{{ MAID_VERSION | d('nightly') }}*.iso"
+  register: isoname
+
 - name: "Get current build hash"
-  become: no
-  shell: >
-    find /var/tmp/mAid_work/iso/ -type f -name *{{ MAID_VERSION | d('nightly') }}*.iso.md5 -exec cat {} \; | cut -d " " -f1
-  args:
-    executable: /bin/bash
-  register: md5hash
+  become: false
+  ansible.builtin.stat:
+    checksum_algorithm: sha512
+    path: "{{ isoname.stdout }}"
+  register: isohash
+
+- name: "Sign ISO hash"
+  become: false
+  ansible.builtin.shell: >
+      isofile=$(basename "{{ isoname.stdout }}")
+      isofpath=$(dirname "{{ isoname.stdout }}")
+
+      cd isofpath
+      echo "{{ isohash.stat.checksum }}" > "${isofile}.sha512sum"
+      echo "GPG signing ${isofile}.sha512sum with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
+      if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${isofile}.sha512sum"; then
+        mv -fv "${isofile}.sha512sum.asc" "${isofile}.sha512sum" >> {{ BUILD_LOG }} 2>&1
+      fi
+  when: release_gpg_signing_key is defined and release_gpg_signing_key != ''

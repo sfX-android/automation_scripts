@@ -9,7 +9,7 @@ SRCPATH: "{{ maid_home_path }}"
 maid_build_path: "/var/tmp"
 
 # default mAid kernel if not specified in Semaphore
-maid_kernel: linux66
+maid_kernel: linux612
 
 # default build size if not specified in Semaphore
 maid_size: light
@@ -19,25 +19,30 @@ debug_build: 'false'
 skip_clean_build: 'false'
 maid_build_mirrorserver: "https://mirror.netcologne.de/manjaro"        # used for the initial setup only
 
+# release_gpg_signing_key must be set in Semaphore
+# release_gpg_signing_key: "0DF962FE4E345A610C0C029375F507E560664923"
+release_gpg_signing_keys_links: >-
+    \([key](https://maid.binbash.rocks/mAid_signing.gpg), [mirror1](https://leech.binbash.rocks:8008/mAid/stable/mAid_signing.gpg), [mirror2](https://keyserver.ubuntu.com/pks/lookup?search=0DF962FE4E345A610C0C029375F507E560664923&fingerprint=on&op=index)\)
+
 commit_uri_id: >
         {% if RELEASE_TYPE == "nightly" %}branch/nightly{% else %}tag/v{{ MAID_VERSION }}{% endif %}
 
 tg_success: |
         {{ ICON_GOOD }} ***New build has finished\!***
-        
+
         ***mAid {{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }} \- {{ RELEASE_TYPE | d('nightly') | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}***
 
         \- Size: **{{ maid_size }}** \(see [wiki](https://code.binbash.rocks:8443/mAid/build/wiki/Frequently-Asked-Questions#what-means-light-full)\)
         \- Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/{{ commit_uri_id }})
         \- Download: [ISO]({{ dl_link }})
-        
-        ***MD5 hash:***
-        {{ md5hash.stdout | default("error getting hash") }}
-        
+
+        ***SH256 hash:***
+        {{ isohash.stat.checksum | default("error getting hash") }}
+
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
 
 tg_failed: |
         {{ ICON_BAD }} ***ERROR:*** Last build failed\!
-        
-        \- mAid v{{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
+
+        \- mAid version: {{ MAID_VERSION | d('nightly') | replace("!","\!") | replace("-","\-")  | replace(".","\.") | replace(">","\>") }}
         \- Build id: _{{ BUILDIDENT | replace("-","\-") }}_
