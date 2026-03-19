@@ -79,7 +79,13 @@
 
 - name: "mAid build process"
   become: false
-  ansible.builtin.shell: >
+  ansible.builtin.shell: |
+    {% if skip_clean_build | bool %}
+    if test -d {{ maid_build_path }}/mAid_work;then
+      sudo rm -rf {{ maid_build_path }}/mAid_work
+    fi
+    {% endif %}
+
     build_mirror="{{ maid_build_mirrorserver }}" buildiso \
       -k {{ maid_kernel }} \
       -p mAid \
