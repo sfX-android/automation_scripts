@@ -36,7 +36,7 @@ tg_success: |
         \- Changes: [commits](https://code.binbash.rocks:8443/mAid/build/commits/{{ commit_uri_id }})
         \- Download: [ISO]({{ dl_link }})
 
-        ***SH256 hash:***
+        ***sha512 hash:***
         {{ isohash.stat.checksum | default("error getting hash") }}
 
         This build has been created by my [Ansible project](https://github.com/sfX-android/automation_scripts) \+ [Semaphore](https://ansible-semaphore.com) with ❤️
