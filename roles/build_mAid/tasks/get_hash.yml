@@ -19,7 +19,7 @@
       isofile=$(basename "{{ isoname.stdout }}")
       isofpath=$(dirname "{{ isoname.stdout }}")
 
-      cd isofpath
+      cd $isofpath || (echo "cannot access $isofpath !" ; exit 3)
       echo "{{ isohash.stat.checksum }}" > "${isofile}.sha512sum"
       echo "GPG signing ${isofile}.sha512sum with {{ release_gpg_signing_key }}" >> {{ BUILD_LOG }}
       if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${isofile}.sha512sum"; then
