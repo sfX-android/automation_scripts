@@ -41,6 +41,7 @@
   block:
 
     - name: "Trying to add.."
+      become: false
       ansible.builtin.shell: |
           echo "WARN: mAid HOOK IS MISSING, trying to add.."
           sudo /sbin/add-maid-hook
