@@ -13,7 +13,7 @@
     path: "{{ isoname.stdout }}"
   register: isohash
 
-- name: "Sign ISO hash"
+- name: "Sign & upload ISO hash"
   become: false
   ansible.builtin.shell: |
       isofile=$(basename "{{ isoname.stdout }}")
@@ -25,4 +25,10 @@
       if gpg --sign --local-user "{{ release_gpg_signing_key }}" --clearsign "${isofile}.sha512sum"; then
         mv -fv "${isofile}.sha512sum.asc" "${isofile}.sha512sum" >> {{ BUILD_LOG }} 2>&1
       fi
+
+      {% if MAID_TYPE != "stable" %}
+      scp {{ isoname.stdout }}.sha512sum {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ maid_repo_upload_path }}/
+      {% else %}
+      scp {{ isoname.stdout }}.sha512sum {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ maid_repo_upload_path }}/stable/
+      {% endif %}
   when: release_gpg_signing_key is defined and release_gpg_signing_key != ''
