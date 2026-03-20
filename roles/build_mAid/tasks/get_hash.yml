@@ -15,7 +15,7 @@
 
 - name: "Sign ISO hash"
   become: false
-  ansible.builtin.shell: >
+  ansible.builtin.shell: |
       isofile=$(basename "{{ isoname.stdout }}")
       isofpath=$(dirname "{{ isoname.stdout }}")
 
