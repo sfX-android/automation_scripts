@@ -40,6 +40,7 @@ export DOS_GPS_NTP_SERVER="2.android.pool.ntp.org" #Options: Any NTP pool
 export DOS_GPS_SUPL_HOST="supl.google.com" #Options: Any *valid* SUPL server
 
 # Deblobber
+export AXP_DISABLE_DEBLOBBER="{{ axp_disable_deblobber | default('false') }}"
 export DOS_DEBLOBBER_REMOVE_ACCESSORIES="{{ axp_deblobber_remove_accessories | default('true') }}" #Set false to allow use of external accessories that depend on blobs
 export DOS_DEBLOBBER_REMOVE_ATFWD="{{ axp_deblobber_remove_atfwd | default('true') }}" #Set true to remove basic ATFWD blobs
 export DOS_DEBLOBBER_REMOVE_AUDIOFX="{{ axp_deblobber_remove_audiofx | default('true') }}" #Set true to remove AudioFX

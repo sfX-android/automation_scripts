@@ -3,7 +3,6 @@
 axp_main_website_url: "https://axpos.org"
 axp_issue_tracker_uri: "https://code.binbash.rocks/AXP.OS-public/issue-tracker"
 axp_issue_tracker_queryall: "{{ axp_issue_tracker_uri }}/issues?q=&type=all&state=all"
-
 axp_community_tracker_uri: "{{ axp_issue_tracker_uri }}/issues"
 
 # git stuff
