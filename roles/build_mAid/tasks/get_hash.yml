@@ -26,7 +26,7 @@
         mv -fv "${isofile}.sha512sum.asc" "${isofile}.sha512sum" >> {{ BUILD_LOG }} 2>&1
       fi
 
-      {% if MAID_TYPE != "stable" %}
+      {% if RELEASE_TYPE != "stable" %}
       scp {{ isoname.stdout }}.sha512sum {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ maid_repo_upload_path }}/
       {% else %}
       scp {{ isoname.stdout }}.sha512sum {{ hostvars['leechserver'].ansible_ssh_user }}@{{ hostvars['leechserver'].ansible_host }}:{{ maid_repo_upload_path }}/stable/
