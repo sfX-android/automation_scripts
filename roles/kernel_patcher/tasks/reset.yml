@@ -10,6 +10,7 @@
        else
          git am --abort >> {{ BUILD_LOG }} 2>&1 || true
          git rebase --abort >> {{ BUILD_LOG }} 2>&1 || true
+         git revert --abort >> {{ BUILD_LOG }} 2>&1 || true
          git add -A . && git stash save befreset-$(date +%F_%T) >> {{ BUILD_LOG }} 2>&1 || true
        fi
        git reset --hard origin/{{ item.branch | d("main") }} >> {{ BUILD_LOG }} 2>&1
