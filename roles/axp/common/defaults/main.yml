@@ -167,6 +167,7 @@ axp_clean_paths:
     - "{{ SRCPATH }}/external/firebase-messaging"
     - "{{ SRCPATH }}/device"
     - "{{ SRCPATH }}/vendor/axp"
+    - "{{ SRCPATH }}/external/axp_versioning"
 
 
 # Bootloader ID (first line) for verifying build log
