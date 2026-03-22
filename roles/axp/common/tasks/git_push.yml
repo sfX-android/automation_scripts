@@ -368,7 +368,7 @@
     # update issue tracker info
     {% if axp_community_tracker_id is defined %}
     sed -i 's|%%COMTRACKID%%|- **Community test result:** [#{{ axp_community_tracker_id }}]({{ axp_community_tracker_uri }}/{{ axp_community_tracker_id }})\n|g' \
-      {{ sub_model | d(target_model) }}_{{ axp_type }}.md
+      external/axp_versioning/{{ sub_model | d(target_model) }}_{{ axp_type }}.md
     {% else %}
     sed -i 's/%%COMTRACKID%%//g' external/axp_versioning/{{ sub_model | d(target_model) }}_{{ axp_type }}.md
     {% endif %}
