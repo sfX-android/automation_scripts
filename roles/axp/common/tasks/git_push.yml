@@ -366,7 +366,7 @@
     sed -i "s/%%ANDROIDVER%%/{{ android_version_int }}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
     # update issue tracker info
-    {% if axp_community_tracker_id is defined %}
+    {% if axp_community_tracker_id is defined and axp_community_tracker_id != "" %}
     sed -i 's|%%COMTRACKID%%|- **Community test result:** [#{{ axp_community_tracker_id }}]({{ axp_community_tracker_uri }}/{{ axp_community_tracker_id }})\n|g' \
       external/axp_versioning/{{ sub_model | d(target_model) }}_{{ axp_type }}.md
     {% else %}

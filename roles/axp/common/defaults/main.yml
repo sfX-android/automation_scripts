@@ -1,9 +1,12 @@
 ---
 
 axp_main_website_url: "https://axpos.org"
-axp_issue_tracker_uri: "https://code.binbash.rocks/AXP.OS-public/issue-tracker"
+axp_issue_tracker: "https://code.binbash.rocks"
+axp_issue_tracker_uri: "{{ axp_issue_tracker }}/AXP.OS-public/issue-tracker"
 axp_issue_tracker_queryall: "{{ axp_issue_tracker_uri }}/issues?q=&type=all&state=all"
 axp_community_tracker_uri: "{{ axp_issue_tracker_uri }}/issues"
+axp_community_tracker_fetchlabel_uri: >-
+    "{{ axp_issue_tracker }}/api/v1/repos/issues/search?state=open&type=issues&owner=AXP.OS-public&labels=build%2F{{ build_id }}"
 
 # git stuff
 axp_git_org: "git@git.disroot.org:AXP.OS"
