@@ -85,7 +85,9 @@
             executable: /bin/bash
 
 - name: "Community device check"
-  when: vars['hugo_supportlevel_' ~ (axp_type | lower)] == 'community'
+  when: >-
+    vars['hugo_supportlevel_' ~ (axp_type | lower)] == 'community' or
+    hugo_supportlevel == "community"
   block:
 
     - name: "Check for a community test issue"
