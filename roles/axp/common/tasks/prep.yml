@@ -85,9 +85,8 @@
             executable: /bin/bash
 
 - name: "Community device check"
-  when: >-
-    (lookup('vars', 'hugo_supportlevel_' ~ (axp_type | lower)) | default('')) == 'community' 
-    or (hugo_supportlevel | default('')) == 'community'
+  when: (vars['hugo_supportlevel_' ~ (axp_type | lower)] | default('')) == 'community' or
+      (hugo_supportlevel | default('')) == 'community'
   block:
 
     - name: "Check for a community test issue"
