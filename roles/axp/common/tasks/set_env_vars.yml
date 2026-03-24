@@ -9,7 +9,7 @@
 
 - name: "Set device vars link (sub_model)"
   ansible.builtin.file:
-    src: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}"
+    src: "{{ BUILDHOME }}/.divested.vars.{{ target_model }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
     dest: "{{ BUILDHOME }}/.divested.vars.{{ sub_model }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
     force: true
     state: link
