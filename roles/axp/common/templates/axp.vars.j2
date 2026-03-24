@@ -136,7 +136,6 @@ export AXP_DEFCONFIG_GLOBALS="{{ axp_defconfig_globals | default('CONFIG_NET CON
 export AXP_BUILD_OPENEUICC=false  # do not build OpenEUICC by default
 export DOS_MICROG_SUPPORT="{{ axp_microg_support | default('false') }}" #Opt-out unprivileged microG support on 17.1+18.1+19.1+20.0 - part of extendrom's advanced sigspoof patch!
 export AXP_ANDROIDVERSION_INT="{{ android_version_int }}"
-export AXP_VARS_ID="{{ parent_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
 
 # Kernel
 export AXP_PIXEL_LOCALVER_PATH={{ pixel_kernel_localversion_path | d("") }}
