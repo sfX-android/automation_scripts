@@ -8,7 +8,7 @@
       if [ -d "{{ item }}" ];then
         export LC_ALL=C
         {{ DOS_INIT }}
-  
+
         echo "[GIT] checking kernel changes in {{ item }}" >> {{ BUILD_LOG }}
         # add unstaged changes
         CMT=0
@@ -16,7 +16,7 @@
         # check for uncommitted changes
         CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         # commit if any of the above require it
-        if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+        if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
             git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "AXP.OS: uncatched scripted change(s)"
             echo "[GIT] committed scripted kernel changes for {{ item }}" >> {{ BUILD_LOG }}
         fi
