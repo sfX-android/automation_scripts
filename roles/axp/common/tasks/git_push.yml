@@ -8,12 +8,12 @@
 
     # make all functions available for any sub shell
     export -f $(declare -F | awk '{print $3}')
-    
+
     # tag name
     export TAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
     # fallback tag
     export PTAG=${TAG}_$(date +%s)
-    
+
     # reproduce manifest
     export REPRMANIFEST=".repo/local_manifests/axp_cicd.xml.repr"
 
@@ -39,10 +39,10 @@
       fi
     }
     export -f check_for_branch_repo
-    
+
     # write full manifest
     {{ repo_bin }} manifest -r -o ${REPRMANIFEST} >> {{ BUILD_LOG }} 2>&1
-    
+
     process_repo() {
       #set -e
 
@@ -82,10 +82,10 @@
               return
           fi
       fi
-      
+
       cd $localpath
       echo "[GIT] switched to $localpath"
-      
+
       # commit any leftovers!
       # besides "normal" patches divest also run several patch scripts(!) which by design can not be
       # catched regularly (i.e. they do not use git am, git apply, patch .. but awk, sed etc to modify)
@@ -96,11 +96,11 @@
       # check for uncommitted changes
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       # commit if any of the above require it
-      if [ $CMT -eq 1 -o $CMTL -gt 0 ];then 
+      if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
           git commit {{ git_commit_args | d('') }} --author="${DOS_GIT_AUTHOR} <${DOS_GIT_MAIL}>" -m "uncatched DOS scripted change(s)"
           echo "[GIT] committed scripted divest changes for $reponame"
       fi
-      
+
       # check and add new repo if needed only
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
       REMHASH=$(git log --pretty=oneline --decorate | grep "m/{{ los_version_gitbranch }}" |cut -d ' ' -f1)
@@ -114,11 +114,11 @@
 
       # generic vendor match
       repoisvendor=$(echo "$reponame" | grep vendor_ | grep -vE "packages|qcom|nxp|lineage" || true)
-      
+
       # create repo if non-existent
       # using a workaround as github cli does not allow to set permission on create
       # see: https://github.com/cli/cli/issues/2241#issuecomment-1402316546
-      # requires to auth/login first: 
+      # requires to auth/login first:
       # $> gh auth login
         # $> tea login add (see common/defaults/main.yml for details)
       git remote remove up 2>> /dev/null || true
@@ -128,7 +128,7 @@
 
       git remote add up {{ git_axpos_org_private }}/${reponame}.git 2>&1
       echo "[GIT] processing {{ git_axpos_org_private }}/$reponame "
-      
+
       if $(git fetch up >> /dev/null 2>&1);then
         echo "[GIT] repo exists within the org already"
       else
@@ -160,12 +160,12 @@
           git add -A .  >> /dev/null \
             && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null
         fi
-        
+
         export CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         echo "[GIT] checked out CURHASH=$CURHASH"
         git remote add up {{ git_axpos_org_private }}/${reponame}.git
       fi
-      
+
       # push origin sources first
       # falls back to push in batches to workaround issues when index pack is too big
       rerr=0
@@ -235,7 +235,7 @@
           git push --set-upstream up $TAG 2>&1
           echo "[GIT] pushed new tag: $TAG"
       fi
-          
+
       # change manifest line to point to AXP.OS org, ensures private org for proprietary
       croot
       if [ -z "$prepo" ];then
@@ -279,7 +279,7 @@
     export LC_ALL=C
     export PATH="~/.local/bin:$PATH"
     {{ DOS_INIT }}
-    
+
     # tag name
     TAG="{{ build_id }}"
     MTAG="{{ build_id }}_{{ sub_model | d(target_model) }}_{{ android_shortversion }}{% if axp_type | d('') == "slim" %}_slim{% endif %}"
@@ -290,7 +290,7 @@
     git remote add up {{ git_axpos_org_private }}/axp_versioning >> {{ BUILD_LOG }} 2>&1 || true
     git fetch up --tags --force
     git tag | grep "$TAG" || LTAG=$(git tag | tail -n1)
-    
+
     # base on the previous tag (for comparison) or an existing
     git checkout $LTAG >> {{ BUILD_LOG }} 2>&1
 
@@ -298,7 +298,7 @@
     git checkout FETCH_HEAD template.md >> {{ BUILD_LOG }} 2>&1
     git checkout FETCH_HEAD README.md >> {{ BUILD_LOG }} 2>&1
     cd $CDIR
-    
+
     echo "[VERSIONING] create list of APK versions..." >> {{ BUILD_LOG }}
     for erapp in {{ extendrom_package_list | d(extendrom_package_list_default) | flatten | join(' ') }}; do
         for app in $(find vendor/extendrom/prebuilt out/target/product/{{ sub_model | d(target_model) }} -type f -name "${erapp}*.apk"); do
@@ -314,22 +314,31 @@
 
     # add changelog: AOSmium
     sed -i -E 's#(AOSmium)#[\1](https://code.binbash.rocks/AXP.OS/app_aosmium/commits/branch/main)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: Aurora Store
     sed -i -E 's#(Aurora Store)#[\1](https://gitlab.com/AuroraOSS/AuroraStore/blob/HEAD/CHANGELOG)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: Etar
     sed -i -E 's#(Etar)#[\1](https://github.com/Etar-Group/Etar-Calendar/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: F-Droid
     sed -i -E 's#(F-Droid)#[\1](https://gitlab.com/fdroid/fdroidclient/-/blob/HEAD/CHANGELOG.md)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: Fossify Gallery
     sed -i -E 's#(Gallery)#[\1](https://github.com/FossifyOrg/Gallery/blob/master/CHANGELOG.md)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: Google Play Store
     sed -i -E 's#(Google Play Store)#[\1](https://codeberg.org/AXP-OS/packages_apps_phonesky/releases/)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: Magisk
     sed -i -E 's#(Magisk)#[\1](https://github.com/topjohnwu/Magisk/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: Neo Launcher
     sed -i -E 's#(Neo Launcher)#[\1](https://github.com/NeoApplications/Neo-Launcher/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: microG
     sed -i -E 's#(microG Services)#[\1](https://github.com/microg/GmsCore/releases)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+
     # add changelog: OpenEUICC
     sed -i -E 's#(OpenEUICC)#[\1](https://gitea.angry.im/PeterCxy/OpenEUICC/commits/branch/master)#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
@@ -348,7 +357,7 @@
     # set release filename
     sed -i "s/%%RELFILE%%/{{ ROMFILE.stdout }}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
-    # get patch level
+    # get AOS patch level
     {% if sec_patch_date_last_human is undefined %}
     {%    if android_version_int | int < 14 %}
     real_patch_level=$(grep -E 'PLATFORM_SECURITY_PATCH\s+:=\s+' build/core/version_defaults.mk | cut -d "=" -f 2 | tr -d " " | tail -n1)
@@ -359,9 +368,19 @@
     real_patch_level="{{ sec_patch_date_last_human }}"
     {% endif %}
 
-    # set patch level
+    # set AOS patch level
     sed -i "s/%%PATCHLEVEL%%/${real_patch_level}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
-    
+
+    # set Kernel CVE patch level
+    {% if cve_tag is defined or cve_tag_auto is defined %}
+    sed -i 's|%%CVEPATCHLEVEL%%|{{ cve_tag | d(cve_tag_auto) | regex_replace('(^.{4})(.{2})','\1-\2-AOS') }}|g' \
+      external/axp_versioning/{{ sub_model | d(target_model) }}_{{ axp_type }}.md
+    sed -i 's|%%CVEINFOURI%%|{{ axp_cve_info_uri }}|g' \
+      external/axp_versioning/{{ sub_model | d(target_model) }}_{{ axp_type }}.md
+    sed -i 's|%%CVEPATCHESURI%%|{{ axp_cve_patches_repo_tag_uri }}|g' \
+      external/axp_versioning/{{ sub_model | d(target_model) }}_{{ axp_type }}.md
+    {% endif %}
+
     # set android version
     sed -i "s/%%ANDROIDVER%%/{{ android_version_int }}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
@@ -372,10 +391,10 @@
     {% else %}
     sed -i 's/%%COMTRACKID%%//g' external/axp_versioning/{{ sub_model | d(target_model) }}_{{ axp_type }}.md
     {% endif %}
-    
+
     # set manifest
     sed -i "s#%%MANIFEST%%#https://{{ git_repo_local_manifests | regex_replace('.*git@','') | regex_replace(':','/') }}/src/tag/$MTAG#g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
-  
+
     echo "[VERSIONING] prepare version repo..." >> {{ BUILD_LOG }}
     cd external/axp_versioning || exit 44
     if [ -f template.md ]; then rm template.md; fi
