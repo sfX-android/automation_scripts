@@ -346,7 +346,7 @@ DOS_INIT: |
     export build_log="{{ BUILD_LOG }}"
     export HOME="{{ BUILDHOME }}" && echo "home set to $HOME"
     export BDEVICE="{{ target_model }}"
-    export AXP_VARS_ID="{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
+    export AXP_VARS_ID="{{ parent_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
     export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     export TMPDIR="{{ server_tmp_dir }}"
     if [ ! -L "$HOME/.local/bin/sh" ];then ln -s /bin/bash $HOME/.local/bin/sh; fi
@@ -577,7 +577,7 @@ SH_COMMON_BUILD_SNIPPET: |
     f_detect_kerr(){
         set +e
         resetEnv
-        {{ SRCPATH }}/vendor/axp/scripts/find_cve_error.sh --parse -k {{ SRCPATH }}/{{ target_kernel_dir }} -L "$build_log"
+        {{ SRCPATH }}/vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L "$build_log"
         just_cve_excl=$(grep "PROBLEMATIC_CVES:" "$build_log" | cut -d ':' -f2- | tr '\n' ' ')
 
         if [ -n "$just_cve_excl" ];then
@@ -621,7 +621,7 @@ SH_COMMON_BUILD_SNIPPET: |
             fi
         done < <(find "$dir_kernel_headers" -type f -print0 2>/dev/null || true)
     }
-    
+
     ###### BUILD GOOGLE PIXEL KERNEL (KLEAF)
     cd {{ git_pixel_kernel_dir }}
     {{ pixel_kernel_buildcmd | d('echo "Error: missing pixel_kernel_buildcmd def"; false') }} || f_detect_kerr
