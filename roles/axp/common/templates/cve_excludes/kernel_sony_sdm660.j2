@@ -1,0 +1,20 @@
+#################################################################
+# Copyright (c) 2024-2026 AXP.OS <project |AT| axpos #dot# org>
+#################################################################
+# format:
+# - 1 exclude per line
+# - no quotes
+# - starting with 2026.002 prepend each block with its build id
+#################################################################
+# Exclude specific CVE's for:
+# - 
+#################################################################
+
+CVE-2023-54171/ANY/0001.patch
+
+
+{% if android_version_int | int > 14 %}
+# A15 and later
+
+
+{% endif %}
