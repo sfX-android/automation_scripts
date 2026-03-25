@@ -393,7 +393,9 @@
     sed -i "s/%%RELDATE%%/$(date +%F)/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
     # set release filename
+    {% if ROMFILE is defined %}
     sed -i "s/%%RELFILE%%/{{ ROMFILE.stdout }}/g" external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+    {% endif %}
 
     # get AOS patch level
     {% if sec_patch_date_last_human is undefined %}
