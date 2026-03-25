@@ -1,6 +1,17 @@
 #!/bin/bash
 # Copyright (c) 2020-2024 Divested Computing Group
 # Copyright (c) 2024-2026 AXP.OS <project |AT| axpos #dot# org>
+#########################################################################
+
+#XXX: Patches that will compile but...
+#break boot completely
+#   0006-AndroidHardening-Kernel_Hardening/3.18/0026.patch
+#   0006-AndroidHardening-Kernel_Hardening/3.10/0009.patch
+#   CVE-2017-13218/4.4/0025.patch
+#   CVE-2025-38034
+#   CVE-2022-49980
+#crash when unplugging headphones while using FM radio
+#   CVE-2021-Misc2/3.4/0049.patch
 
 umask 0022
 set -euo pipefail
