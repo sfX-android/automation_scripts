@@ -1,9 +1,5 @@
 ---
 
-- name: "Set CVE tag"
-  ansible.builtin.set_fact:
-    cve_tag_auto: "{{ sec_patch_date_last | int - 1 }}"
-
 - name: "Setup CVE kernel patcher"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
