@@ -88,9 +88,12 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers \
-      && source {{ BUILDHOME }}/.cve_excludes.common >> {{ BUILD_LOG }} 2>&1 \
-      echo "Common CVE excludes processed" | tee -a {{ BUILD_LOG }}
+    set -e
+
+    cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers
+    
+    source {{ BUILDHOME }}/.cve_excludes.common >> {{ BUILD_LOG }} 2>&1 \
+      && echo "Common CVE excludes processed" | tee -a {{ BUILD_LOG }}
 
     if [ -f "{{ BUILDHOME }}/.cve_excludes.{{ target_model }}" ];then
       echo "Device specific CVE excludes detected!" | tee -a {{ BUILD_LOG }}
