@@ -22,15 +22,49 @@ target_kernel_dir: kernel/oneplus/sm8150
 target_model_common_tree: device_oneplus_sm8150-common
 
 # upload the recovery image
-axp_release_recovery: True
+axp_release_recovery: true
 
 # disable Wireguard patching (already part of the upstream kernel)
 #skip_wireguard: True
 
-# Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: '26B88EDA82ED966A'
-axp_bootloader_id_slim: ''
-
 # git push
 axp_git_push_device_include: "device_google_guacamole|{{ target_model_common_tree }}" 
 axp_git_push_vendor_include: "vendor_google_guacamole|vendor_oneplus_sm8150-common"
+
+#################################################################################################################################
+## Website info
+#
+
+# COMMON block
+hugo_firmware: "included"
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+# hugo_xda_link: "" # link to the AXP.OS XDA post for that device
+hugo_kb_link: "guacamolehotdog"
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=54" # "&labels=56" for enchilada
+
+#### PRO block ####
+android_version_pro: 13
+hugo_relockable_pro: 'no'
+hugo_encryption_pro: "FBEv2" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+axp_bootloader_id_pro: '26B88EDA82ED966A' # if AVB: Bootloader ID (first line) for validating build log
+hugo_axp_bootloader_id_pro: |- # if AVB: the full bootloader id string (from build log)
+  BOOTLOADER minimal ID (AVB 2)
+          26B88EDA
+
+  BOOTLOADER full ID:
+          26B88EDA82ED966A
+          31F70787112DDF08
+          06326C409D36B894
+          15B0132B7A65C439
+hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2025-10-07" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+# hugo_patchlevel_pro: ""
+

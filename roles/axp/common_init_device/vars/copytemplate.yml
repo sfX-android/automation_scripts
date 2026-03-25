@@ -162,7 +162,7 @@ hugo_isab: ''
 
 #:h:# NEVER TOUCH THIS ##############################################################################
 #hugo_xda_link: "" # link to the AXP.OS XDA post for that device
-#hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
+#hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any, will be prefixed with "#"
 #hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
 #hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=" # "&labels=56" for enchilada
 
@@ -180,7 +180,6 @@ android_version_pro:
 #:h:# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
 #:h:# can be: 'yes' or 'no', single quotes required
 hugo_relockable_pro: ''
-#:h:#
 #:h:# NEVER TOUCH THIS ##############################################################################
 #hugo_encryption_pro: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
 #axp_bootloader_id_pro: '' # if AVB: Bootloader ID (first line) for validating build log
@@ -204,7 +203,6 @@ android_version_slim:
 #:h:# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
 #:h:# can be: 'yes' or 'no', single quotes required
 hugo_relockable_slim: ''
-#:h:#
 #:h:# NEVER TOUCH THIS ##############################################################################
 #hugo_encryption_slim: "" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
 #axp_bootloader_id_slim: '' # if AVB: Bootloader ID (first line) for validating build log
