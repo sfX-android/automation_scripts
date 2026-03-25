@@ -9,7 +9,7 @@ axp_issue_tracker_queryall: "{{ axp_issue_tracker_uri }}/issues?q=&type=all&stat
 # versioning
 axp_community_tracker_uri: "{{ axp_issue_tracker_uri }}/issues"
 axp_community_tracker_fetchlabel_uri: >-
-    "{{ axp_issue_tracker }}/api/v1/repos/issues/search?state=open&type=issues&owner=AXP.OS-public&labels=build%2F{{ build_id }}"
+    {{ axp_issue_tracker }}/api/v1/repos/issues/search?state=open&type=issues&owner=AXP.OS-public&labels=build%2F{{ build_id }}
 axp_cve_patches_repo_tag_uri: "https://git.disroot.org/AXP.OS/kernel_patches/src/tag"
 axp_cve_info_uri: "https://git.disroot.org/AXP.OS/cve_checker"
 
