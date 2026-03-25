@@ -20,6 +20,7 @@
           Accept: application/json
         return_content: true
       register: api_response
+      no_log: true
 
     - name: "Set axp_community_tracker_id if there is a matching label"
       ansible.builtin.set_fact:
