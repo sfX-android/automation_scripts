@@ -70,3 +70,31 @@ axp_deblobber_remove_ir: 'false'
 
 # special testing area
 extendrom_intercept_installsrc: 'true'
+
+#################################################################################################################################
+## Website info
+#
+
+# COMMON block
+hugo_firmware: "manual"
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'no'
+
+hugo_xda_link: "https://xdaforums.com/t/rom-a11-official-microg-hardened-h815-axp-os-18-1.4708920/" # link to the AXP.OS XDA post for that device
+# hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any, will be prefixed with "#"
+hugo_custom_installguide_path: "content/devices/custom_h815.guide" # OPTIONAL: custom installation guide
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=74" # "&labels=56" for enchilada
+
+#### PRO block ####
+android_version_pro: 11
+hugo_relockable_pro: 'no'
+hugo_encryption_pro: "FDE" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+hugo_supportlevel_pro: "team"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2024-12-20" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+# hugo_patchlevel_pro: ""

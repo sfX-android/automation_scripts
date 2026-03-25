@@ -53,7 +53,6 @@ hugo_first_releasedate: "2025-03-01"
 hugo_kb_link: "sargo"
 #hugo_custom_installguide_path: 
 hugo_axp_bootloader_id_pro: |
-  ```
   BOOTLOADER minimal ID
         BB8B6D9E
 
@@ -62,9 +61,8 @@ hugo_axp_bootloader_id_pro: |
         369A874E6ADDB573
         41A349D9AC536C95
         1A0560AB2F63B07F
-  ```
+
 hugo_axp_bootloader_id_slim: |
-  ```
   BOOTLOADER minimal ID
         AC2F6121
 
@@ -73,7 +71,6 @@ hugo_axp_bootloader_id_slim: |
         71EEB5510F6DB2D2
         9CB444CE23F8A64E
         9D1FDB7175432C32
-  ```
 
 # vendor/firmware info
 # download source: https://developers.google.com/android/ota#sargo

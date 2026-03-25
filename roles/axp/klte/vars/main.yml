@@ -4,9 +4,6 @@ target_model_vendor: "Samsung"
 target_model_name: 'S5'
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a11
-
 # boot debugger path & config
 extendrom_debug_path_default: /cache
 extendrom_debug_path_size_full_default: 500
@@ -49,20 +46,43 @@ axp_defconfig_globals: ''
 # special testing area
 extendrom_intercept_installsrc: 'true'
 
-# required for log parsing & website flavor info
-axp_bootloader_id_pro: TBD
-axp_bootloader_id_slim: TBD
+#################################################################################################################################
+## Website info
+#
 
-# website info
-hugo_encryption: "FBEv1"
+# COMMON block
 hugo_firmware: "manual"
-hugo_relockable: "no"
-hugo_state: "stable"
-hugo_supportlevel: "community"
-hugo_isab: "no"
-hugo_xda_link: "https://xdaforums.com/t/rom-a11-official-microg-hardened-klte-axp-os-18-1.4703947/"
-hugo_first_releasedate: "2024-11-20"
-hugo_kb_link: "klte-and-maybe-hlte"
-hugo_custom_installguide_path: "content/devices/custom_${HUGO_CODENAME}.guide"
-#hugo_axp_bootloader_id_pro: |
-#hugo_axp_bootloader_id_slim: |
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'no'
+
+hugo_xda_link: "https://xdaforums.com/t/rom-a11-official-microg-hardened-klte-axp-os-18-1.4703947/" # link to the AXP.OS XDA post for that device
+hugo_kb_link: "klte-and-maybe-hlte" # OPTIONAL: knownissues link, only if there is any, will be prefixed with "#"
+hugo_custom_installguide_path: "content/devices/custom_klte.guide" # OPTIONAL: custom installation guide
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=83" # "&labels=56" for enchilada
+
+
+#### PRO block ####
+android_version_pro: 11
+hugo_relockable_pro: 'no'
+hugo_encryption_pro: "FBEv1" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2024-11-20" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+# hugo_patchlevel_pro: ""
+
+#### SLIM block ####
+android_version_slim: 11
+hugo_relockable_slim: 'no'
+hugo_encryption_slim: "FBEv1" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "2025-02-04" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+# hugo_patchlevel_slim: ""
