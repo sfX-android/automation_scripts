@@ -124,11 +124,11 @@ hugo_patchlevel_slim: "Platform + Kernel + Firmware"
 # do not use any quotes here:
 vendor_firmware_super_img: true
 
-vendor_firmware_version: "FP3-6.A.039.7-gms-44ba459b" # filename without zip
+vendor_firmware_version: "FP3-6.A.040.2-gms-d33dc62f" # filename without zip
 
 # direct download link to the OTA zip of the vendor.
 vendor_firmware_download_url: "https://android-builds.fairphone.com/FP3/A13/{{ vendor_firmware_version }}-user-fastbootimage.zip"
-vendor_firmware_download_sha256: "615b58bdc9eeeb0e67e20b0a24547b773cc90c6b9aac2af866677dfd0f1fc9e6"
+vendor_firmware_download_sha256: "ee8fbcadc666df622d360eaed25568a623c4377db82253db7692753d61f8bc89"
 
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though. persistent_dir is always a device specific path.
