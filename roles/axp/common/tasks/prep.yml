@@ -84,9 +84,18 @@
         args:
             executable: /bin/bash
 
+- name: "Detect support level"
+  set_fact:
+    detected_support_level: "{{ vars['hugo_supportlevel_' ~ (axp_type | lower)] | d(hugo_supportlevel) }}"
+
+- name: debug
+  debug:
+    var: detected_support_level
+- fail:
+    msg: boo
+
 - name: "Community device check"
-  when: (vars['hugo_supportlevel_' ~ (axp_type | lower)] | default('')) == 'community' or
-      (hugo_supportlevel | default('')) == 'community'
+  when: detected_support_level == 'community'
   block:
 
     - name: "Check for a community test issue"
