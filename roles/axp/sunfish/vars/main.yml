@@ -13,7 +13,7 @@ target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 # e.g. "kernel/oneplus/msm8998"
 target_kernel_dir: "kernel/google/msm-4.14"
 
-pixel_kernel_gki: False
+pixel_kernel_gki: false
 
 # path to the common tree, if none exists then the device tree.
 # used e.g. for git, vendor/axp, release handling etc
@@ -55,40 +55,14 @@ axp_bootloader_id_slim: 'B49112D3DD534A21'
 ## Website info
 
 # COMMON block
-# do we include vendor firmware?
-# 1. open https://code.binbash.rocks/AXP.OS/vendor_firmware
-# 2. select the correct `branch` _(must match the AXP.OS Android version, e.g. "axp-a15")_
-# 3. click the folder with the `codename` for your device
-# 4. If there is a folder with the device's codename (e.g. `enchilada`):
-#   - check the file `AndroidBoardVendor.mk`: It should contain several `$(call add-radio-file.....` lines
-# If steps 1-4 were successful set "included" otherwise "manual"
 hugo_firmware: "included"
-
-# Is the device an A/B device (legacy or virtual)?
-# A/B? -> https://source.android.com/docs/core/ota/virtual_ab
-# How to identify:
-# - https://www.xda-developers.com/list-android-devices-seamless-updates/
-# - General Rules:
-#   Android 13+: (Virtual) A/B
-#   Android 11+: A/B
-#   Google Pixel: Every Google Pixel device ever released uses A/B partitions.
-#   Samsung: not before 2024 and even then need to be verified
-# - Manual Verification Method
-#   adb shell getprop ro.boot.slot_suffix
-#   -> if it returns _a or _b, it is an A/B device.
-#   -> if it returns nothing, it is an A-only device.
-# Can be either 'yes' or 'no'. use single quotes here:
 hugo_isab: 'yes'
 
 hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-sunfish-axp-os-20.4651368/"
-#hugo_kb_link:
-#hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=59" # "&labels=56" for enchilada
 
 # PRO block
 android_version_pro: 15 # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
-# bootloader re-lock supported?
-# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
-# can be: 'yes' or 'no', single quotes required
 hugo_relockable_pro: 'yes'
 hugo_encryption_pro: "FBEv1" # device encryption supported: no|FDE|FBEv1|FBEv2
 hugo_axp_bootloader_id_pro: |-
@@ -106,19 +80,16 @@ hugo_state_pro: "stable" # "stable" | "!! ALPHA !!" | "BETA"
 hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
 # can be one of:
 #   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
-#hugo_patchlevel_pro: ""
+# hugo_patchlevel_pro: ""
 
 # SLIM block
 android_version_slim: 15 # usually identical to android_shortversion at the top. just the number though: 9,10,11,13,15
-# bootloader re-lock supported?
-# if the device was supported by DivestOS you can check "Verified Boot" at https://divestos-archive.codeberg.page/page/devices.html
-# can be: 'yes' or 'no', single quotes required
 hugo_relockable_slim: 'yes'
 hugo_encryption_slim: "FBEv1" # device encryption supported: no|FDE|FBEv1|FBEv2
 hugo_axp_bootloader_id_slim: |-
   BOOTLOADER minimal ID
           B49112D3
-  
+
   BOOTLOADER full ID:
           B49112D3DD534A21
           AD3FC088B8977377
@@ -128,8 +99,8 @@ hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
 hugo_first_releasedate_slim: "2025-02-05 (A13)<br/>2026-02-11 (A15)" # first public stable release date (YYYY-MM-DD)
 hugo_state_slim: "stable" # "stable" | "!! ALPHA !!" | "BETA"
 hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
-# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel" 
-#hugo_patchlevel_slim: ""
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+# hugo_patchlevel_slim: ""
 
 #################################################################################################################################
 ## FIRMWARE info
@@ -140,7 +111,8 @@ vendor_firmware_version: "sunfish-ota-tq3a.230805.001.s1-965296b1" # filename wi
 
 # direct download link to the OTA/factory zip of the vendor.
 vendor_firmware_download_url: "https://archive.org/download/sunfish-tq3a.230805.001.s1/sunfish-ota-tq3a.230805.001.s1-965296b1.zip"
-vendor_firmware_download_sha512: "cbdf1aff26ede80276876a791e7e129b763835474ba835472ec84af5791e2316dd154d3c19d06aa64b86fdb0e0b0af8c8c573877be348e2c90d5bcd8a2807819"
+vendor_firmware_download_sha512: >-
+        cbdf1aff26ede80276876a791e7e129b763835474ba835472ec84af5791e2316dd154d3c19d06aa64b86fdb0e0b0af8c8c573877be348e2c90d5bcd8a2807819
 
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though. persistent_dir is always a device specific path.
@@ -158,7 +130,8 @@ vendor_factory_version: "{{ target_model }}-{{ vendor_factory_id }}-factory-{{ v
 
 # direct download link to the OTA/factory zip of the vendor.
 vendor_factory_download_url: "https://archive.org/download/sunfish-tq3a.230805.001.s1/sunfish-tq3a.230805.001.s1-factory-82902ea9.zip"
-vendor_factory_download_sha512: "767d05453ee5da220e1ac12ecf1705d1cb8938d6a280b1c6fe09243122394d25a1fac7f579a9797873c2881d92c126a7c73356288aa66d7608a967dc63386dbf"
+vendor_factory_download_sha512: >-
+        767d05453ee5da220e1ac12ecf1705d1cb8938d6a280b1c6fe09243122394d25a1fac7f579a9797873c2881d92c126a7c73356288aa66d7608a967dc63386dbf
 
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
 # in any case the hash sum will be verified though. persistent_dir is always a device specific path.
