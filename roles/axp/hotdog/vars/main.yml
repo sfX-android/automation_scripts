@@ -4,12 +4,9 @@ target_model_vendor: "OnePlus"
 target_model_name: '7T Pro'
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a13
-
 # boot debugger path & config
 extendrom_debug_path_default: /metadata
-extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_full_default: 500
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
@@ -27,14 +24,10 @@ target_model_common_tree: device_oneplus_sm8150-common
 target_model_device_tree_mk: common.mk
 
 # upload the recovery image
-axp_release_recovery: True
+axp_release_recovery: true
 
 # disable Wireguard patching (already part of the upstream kernel (>= A15)
-#skip_wireguard: True
-
-# Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: 'B9C105F3CB6FAFD3'
-axp_bootloader_id_slim: 'C72044ECCDD6ECE1'
+#skip_wireguard: true
 
 # git push
 axp_git_push_device_include: "device_oneplus_hotdog|{{ target_model_common_tree }}"
@@ -44,31 +37,56 @@ axp_git_push_vendor_include: "vendor_oneplus_sm8150-common|vendor_oneplus_hotdog
 # CONFIG_SECURITY_SELINUX_DEVELOP allows switching to permissive with root, breaks boot if "n"
 axp_defconfig_device: "CONFIG_HIBERNATION=y CONFIG_DEBUG_FS=n CONFIG_SECURITY_SELINUX_DEVELOP=y"
 
-# website info
-hugo_encryption: "FBEv2"
+
+#################################################################################################################################
+## Website info
+#
+
+# COMMON block
 hugo_firmware: "included"
-hugo_relockable: "no"
-hugo_state: "stable"
-hugo_supportlevel: "team"
-hugo_isab: "yes"
-hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-hotdog-axp-os-20-0.4625525/"
-hugo_first_releasedate: "2023-07-23"
-hugo_kb_link: "guacamolehotdog"
-#hugo_custom_installguide_path: 
-#hugo_axp_bootloader_id_pro: |
-hugo_axp_bootloader_id_slim: |
-  BOOTLOADER minimal ID (AVB 2)
-    C72044EC
 
-  BOOTLOADER full ID:
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
 
-    C72044ECCDD6ECE1
-    632EFA126E822DDC
-    FB787B9633851CF7
-    8BA3F02BFD2FE2E9
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-hotdog-axp-os-20-0.4625525/" # link to the AXP.OS XDA post for that device
+hugo_kb_link: "guacamolehotdog" # OPTIONAL: knownissues link, only if there is any, will be prefixed with "#"
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=70" # "&labels=56" for enchilada
 
-# vendor/firmware info
-# download source: https://xdaforums.com/t/oneplus-7t-pro-rom-ota-oxygen-os-repo-of-oxygen-os-builds.4003455/
+
+#### PRO block ####
+android_version_pro: 13
+hugo_relockable_pro: 'no'
+hugo_encryption_pro: "FBEv2" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+axp_bootloader_id_pro: 'B9C105F3CB6FAFD3' # if AVB: Bootloader ID (first line) for validating build log
+# hugo_axp_bootloader_id_pro: |-
+hugo_supportlevel_pro: "team"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2023-07-23" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+# hugo_patchlevel_pro: ""
+
+#### SLIM block ####
+android_version_slim: 15
+hugo_relockable_slim: 'no'
+hugo_encryption_slim: "FBEv2" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+axp_bootloader_id_slim: 'C72044ECCDD6ECE1' # if AVB: Bootloader ID (first line) for validating build log
+hugo_axp_bootloader_id_slim: |- # if AVB: the full bootloader id string (from build log)
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "TBD" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "!! ALPHA !!" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+# hugo_patchlevel_slim: ""
+
+#################################################################################################################################
+## FIRMWARE info
+#
+# source: https://xdaforums.com/t/oneplus-7t-pro-rom-ota-oxygen-os-repo-of-oxygen-os-builds.4003455/
+
 vendor_firmware_download_url: "https://gauss-otacostmanual-sg.allawnofs.com/remove-d88a4d0d4f8644d2e5deaa0bfcd57816/ota/23/03/29/43440ec0-4d18-4657-a6ff-8a203bdc939a.zip"
 vendor_firmware_download_sha512: "0910df09c475d04ef8fa3b0b52cc24ad24c0bd10b8433bae550663e84f6ca9d830e204e8420d42771a832dad403a353362f1cfacedfd32b17b8b5cec6ef79ee3"
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used

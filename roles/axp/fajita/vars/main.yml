@@ -22,15 +22,66 @@ target_kernel_dir: kernel/oneplus/sdm845
 target_model_common_tree: device_oneplus_sdm845-common
 
 # disable Wireguard patching (already part of the upstream kernel)
-skip_wireguard: True
+skip_wireguard: true
 
 # upload the recovery image
 #axp_release_recovery: True
 
-# Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: 'D2F1C2BFE54C5952'
-axp_bootloader_id_slim: ''
-
 #git_push:
 axp_git_push_device_include: "device_oneplus_fajita|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_oneplus_sdm845-common|vendor_oneplus_fajita"
+
+
+#################################################################################################################################
+## Website info
+#
+
+# COMMON block
+hugo_firmware: "included"
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-fajita-axp-os-20.4631539/" # link to the AXP.OS XDA post for that device
+hugo_kb_link: "enchiladafajita" # OPTIONAL: knownissues link, only if there is any, will be prefixed with "#"
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=" # "&labels=56" for enchilada
+
+#### PRO block ####
+android_version_pro: 13
+hugo_relockable_pro: 'yes'
+hugo_encryption_pro: "FBEv1" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+axp_bootloader_id_pro: 'D2F1C2BFE54C5952' # if AVB: Bootloader ID (first line) for validating build log
+hugo_axp_bootloader_id_pro: |-
+  BOOTLOADER minimal ID
+          D2F1C2BF
+
+  BOOTLOADER full ID:
+          D2F1C2BFE54C5952
+          C85AD14082122EB2
+          DFD99615D390050C
+          DFA799F625681731
+hugo_supportlevel_pro: "team"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2023-11-13" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+# hugo_patchlevel_pro: ""
+
+#################################################################################################################################
+## FIRMWARE info
+#
+# source: https://the-website-where-the-OTAZIP-is-located
+
+#vendor_firmware_version: "" # filename without zip
+
+# direct download link to the OTA zip of the vendor.
+#vendor_firmware_download_url: ""
+#vendor_firmware_download_sha512: ""
+#vendor_firmware_download_sha256: ""
+
+# if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
+# in any case the hash sum will be verified though. persistent_dir is always a device specific path.
+#vendor_firmware_persistent_path: "{{ persistent_dir }}/{{ android_shortversion }}_{{ vendor_firmware_version }}.zip"
+#################################################################################################################################

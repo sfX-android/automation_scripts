@@ -39,10 +39,6 @@ axp_git_push_device_include: "{{ target_model_device_tree }}|{{ target_model_com
 # all used VENDOR paths for this device
 axp_git_push_vendor_include: "{{ target_model_device_tree | replace('device_', 'vendor_') }}|{{ target_model_common_tree | replace('device_', 'vendor_') }}"
 
-# Bootloader ID (first line) for validating build log
-#axp_bootloader_id_pro: 'A058E0A7'
-#axp_bootloader_id_slim: ''
-
 #################################################################################################################################
 ## Website info
 #
@@ -55,7 +51,7 @@ hugo_firmware: "included"
 hugo_isab: 'yes'
 
 #hugo_xda_link: "" # link to the AXP.OS XDA post for that device
-hugo_kb_link: "#guacamolehotdog" # OPTIONAL: knownissues link, only if there is any
+hugo_kb_link: "guacamolehotdog" # OPTIONAL: knownissues link, only if there is any
 #hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
 
 

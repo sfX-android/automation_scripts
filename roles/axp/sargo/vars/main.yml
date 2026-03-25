@@ -4,12 +4,9 @@ target_model_vendor: "Google"
 target_model_name: 'Pixel 3a'
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a15
-
 # boot debugger path & config
 extendrom_debug_path_default: /metadata
-extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_full_default: 500
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
@@ -30,28 +27,33 @@ custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 # remove disk space reservation (e.g. on product partition)
 remove_space_reservation: 'yes'
 
-# Bootloader ID (first line) for verifying build log
-axp_bootloader_id_pro: 'BB8B6D9E18C68E46'
-axp_bootloader_id_slim: 'AC2F6121652F3607'
-
 # git push
 axp_git_push_device_include: "device_google_sargo|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_google_sargo"
 
 # disable Wireguard patching (already part of the upstream kernel)
-#skip_wireguard: True
+#skip_wireguard: true
 
-# website info
-hugo_encryption: "ICE"
+#################################################################################################################################
+## Website info
+#
+
+# COMMON block
 hugo_firmware: "included"
-hugo_relockable: "yes"
-hugo_state: "stable"
-hugo_supportlevel: "community"
-hugo_isab: "yes"
-hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-sargo-axp-os-20-0.4722274/"
-hugo_first_releasedate: "2025-03-01"
-hugo_kb_link: "sargo"
-#hugo_custom_installguide_path: 
+
+# Is the device an A/B device (legacy or virtual)?
+# Can be either 'yes' or 'no'. use single quotes here:
+hugo_isab: 'yes'
+
+hugo_xda_link: "https://xdaforums.com/t/rom-a13-official-microg-hardened-sargo-axp-os-20-0.4722274/" # link to the AXP.OS XDA post for that device
+hugo_kb_link: "sargo" # OPTIONAL: knownissues link, only if there is any, will be prefixed with "#"
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=58" # "&labels=56" for enchilada
+
+#### PRO block ####
+android_version_pro: 13
+hugo_relockable_pro: 'yes'
+hugo_encryption_pro: "ICE" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+axp_bootloader_id_pro: 'BB8B6D9E18C68E46' # if AVB: Bootloader ID (first line) for validating build log
 hugo_axp_bootloader_id_pro: |
   BOOTLOADER minimal ID
         BB8B6D9E
@@ -61,7 +63,19 @@ hugo_axp_bootloader_id_pro: |
         369A874E6ADDB573
         41A349D9AC536C95
         1A0560AB2F63B07F
+hugo_supportlevel_pro: "community"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2025-03-01" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_pro: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of: "Platform + Kernel + Firmware" | "Platform + Kernel" | "Kernel"
+# "Platform + Kernel" = DEFAULT if unset
+# hugo_patchlevel_pro: ""
 
+#### SLIM block ####
+android_version_slim: 13
+hugo_relockable_slim: 'yes'
+hugo_encryption_slim: "ICE" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
+axp_bootloader_id_slim: 'AC2F6121652F3607' # if AVB: Bootloader ID (first line) for validating build log
 hugo_axp_bootloader_id_slim: |
   BOOTLOADER minimal ID
         AC2F6121
@@ -71,9 +85,20 @@ hugo_axp_bootloader_id_slim: |
         71EEB5510F6DB2D2
         9CB444CE23F8A64E
         9D1FDB7175432C32
+hugo_supportlevel_slim: "community" # i.e.: "team" | "community"
+hugo_first_releasedate_slim: "2025-03-03" # first public stable release date (YYYY-MM-DD)
+hugo_state_slim: "stable" # "stable" | "!! ALPHA !!" | "BETA"
+hugo_avb_slim: "{{ axp_avb_version }}" # AVB version - if different from the global one for this device
+# can be one of:
+#   "Platform + Kernel + Firmware" | "Platform + Kernel" (DEFAULT if unset) | "Kernel"
+# hugo_patchlevel_slim: ""
 
-# vendor/firmware info
-# download source: https://developers.google.com/android/ota#sargo
+
+#################################################################################################################################
+## FIRMWARE info
+#
+# source: https://developers.google.com/android/ota#sargo
+
 vendor_firmware_download_url: "https://dl.google.com/dl/android/aosp/sargo-ota-sp2a.220505.008-2037245c.zip"
 vendor_firmware_download_sha256: "2037245c06c8e0912c098c347be7b49a707d7cacf9a663ad7e68c96ce75ea32b"
 # if specified: when file does not exist it will be stored there, if it does download will be skipped and the given one is used
