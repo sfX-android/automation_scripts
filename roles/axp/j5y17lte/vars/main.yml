@@ -64,7 +64,7 @@ axp_bootloader_id_pro: A87D42D8B66CA9CC
 hugo_firmware: "manual"
 hugo_isab: "no"
 hugo_xda_link: "https://xdaforums.com/t/rom-a10-official-microg-hardened-j5y17lte-axp-os-17-1.4644557/"
-hugo_custom_installguide_path: "content/devices/custom_${HUGO_CODENAME}.guide"
+hugo_custom_installguide_path: "content/devices/custom_{{ target_model }}.guide"
 hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=60"
 
 #### PRO block ####
