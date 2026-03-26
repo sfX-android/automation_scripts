@@ -263,11 +263,11 @@ sec_patch_topics_a10:
 ##############################################################################################
 # ASB patches for: Android 11 / R
 # note (2026-03-24): after abandoned for several YEARS they merged several A11 ASB again!
-# Last merged upstream (LOS): https://review.lineageos.org/q/topic:R_asb_2025-12
+# Last merged upstream (LOS): https://review.lineageos.org/q/topic:R_asb_2026-03
 ##############################################################################################
 sec_patch_date_last_a11: "{{ sec_patch_date_last }}"
-sec_patch_topics_a11:
-    - "{{ range(202601, sec_patch_date_last | int) }}"
+sec_patch_topics_a11: ''
+#    - "{{ range(202601, sec_patch_date_last | int) }}"
 
 ##############################################################################################
 # ASB patches for: Android 12 / S
