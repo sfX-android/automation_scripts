@@ -298,7 +298,8 @@ sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
 sec_patch_topics_a14: ''
 
 sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
-sec_patch_topics_a15: ''
+sec_patch_topics_a15:
+    - "{{ range(202603, sec_patch_date_last | int) }}"
 
 sec_patch_date_last_a16: "{{ sec_patch_date_last }}"
 sec_patch_topics_a16: ''
