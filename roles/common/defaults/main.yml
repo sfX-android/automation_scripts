@@ -251,12 +251,11 @@ sec_patch_topics_a9:
 ##############################################################################################
 # ASB patches for: Android 10 / Q
 # note (2026-03-24): after abandoned for several YEARS they merged several A10 ASB again!
-# Last merged upstream (LOS): https://review.lineageos.org/q/topic:Q_asb_2023-06
+# Last merged upstream (LOS): https://review.lineageos.org/q/topic:Q_asb_2024-01
 ##############################################################################################
 sec_patch_date_last_a10: "{{ sec_patch_date_last }}"
 sec_patch_topics_a10:
-    - "{{ range(202307, 202313) }}"
-    - "{{ range(202401, 202413) }}"
+    - "{{ range(202402, 202413) }}"
     - "{{ range(202501, 202513) }}" # unclear if newer backports will be done
     - "{{ range(202601, sec_patch_date_last | int) }}"
 
@@ -298,8 +297,7 @@ sec_patch_date_last_a14: "{{ sec_patch_date_last }}"
 sec_patch_topics_a14: ''
 
 sec_patch_date_last_a15: "{{ sec_patch_date_last }}"
-sec_patch_topics_a15:
-    - "{{ range(202603, sec_patch_date_last | int) }}"
+sec_patch_topics_a15: ''
 
 sec_patch_date_last_a16: "{{ sec_patch_date_last }}"
 sec_patch_topics_a16: ''
@@ -316,7 +314,7 @@ sec_patch_topics_a16: ''
 #
 # That being said: for all Android versions NOT supported by LOS anymore
 # you HAVE TO set this to True to get patches and the reason why this is the default here.
-sec_patch_unmerged: True  # set to False in semaphore for not fetching unmerged patch topics
+sec_patch_unmerged: true  # set to False in semaphore for not fetching unmerged patch topics
 
 ##############################################################################################
 ##############################################################################################
