@@ -129,7 +129,9 @@ vendor_firmware_super_img: true
 
 # A13:
 vendor_factory_id: "FP4-TP31"
-#https://android-builds.fairphone.com/FP4/A13/FP4-TP31-factory.zip
+# TP32 is available for ORANGE users only and might not work on any other cell provider:
+# - https://forum.fairphone.com/t/software-update-android-13-fp4-tp32-c-0144-orange-user
+# - https://android-builds.fairphone.com/FP4/A13/FP4-TP32-factory.zip
 vendor_factory_version: "{{ vendor_factory_id }}-factory"
 vendor_factory_download_url: "https://android-builds.fairphone.com/FP4/A13/{{ vendor_factory_id }}.zip"
 vendor_factory_download_sha256: "7404233c93f281948134d114247a7dc4cd31466a64ea91f71c76df0f1aad6535"
