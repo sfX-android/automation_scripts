@@ -3,6 +3,10 @@
 - name: "VARS: include target model vars"
   ansible.builtin.include_vars: "../../{{ target_model }}/vars/main.yml"
 
+- name: "VARS: include target sub_model vars"
+  ansible.builtin.include_vars: "../../{{ sub_model }}/vars/main.yml"
+  when: sub_model is defined
+
 - name: "VARS: include slim vars"
   ansible.builtin.include_vars: "../../common/tasks/axp-slim.vars.yml"
   when: (axp_type | d(ROM_FLAVOR)) == "slim"
@@ -40,7 +44,7 @@
 - name: DEBUG
   ansible.builtin.debug:
     msg: |
-      target_model: {{ target_model }}
+      target_model: {{ target_model }} {{ sub_model | d('') }}
       axp_switchMR_upstream_branch: {{ los_version_gitbranch }}
       axp_switchMR_target_branch: {{ git_repo_local_manifests_branch }}
       all_device_repos: {{ all_device_repos }}
@@ -93,7 +97,10 @@
 - name: "Setup Semaphore task template"
   ansible.builtin.include_tasks: setup_semaphore.yml
   vars:
-    semaphore_aos_template_name: "AOS {{ git_repo_local_manifests_branch | upper | regex_replace('AXP-','') }} {{ axp_type | regex_replace('slim','Slim') | regex_replace('pro','Pro') }}: {{ target_model_full }} ({{ target_model }})"
+    semaphore_aos_template_name: >-
+      AOS {{ git_repo_local_manifests_branch | upper | regex_replace('AXP-', '') }}
+       {{ axp_type | regex_replace('slim', 'Slim') | regex_replace('pro', 'Pro') }}
+      : {{ target_model_full }}
   when: not skip_setup_semaphore | bool
 
 - name: "Setup OTA/AVB key repo"
