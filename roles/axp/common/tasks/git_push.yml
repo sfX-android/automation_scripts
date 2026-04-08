@@ -384,7 +384,7 @@
     sed -i 's/%%DEVICE%%/{{ target_model_full }}/g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
     # set device link
-    sed -i 's#%%DEVICE_URI%%#{{ axp_main_website_url }}/devices/{{ target_model_vendor | lower() }}/{{ target_model | lower() }}#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
+    sed -i 's#%%DEVICE_URI%%#{{ axp_main_website_url }}/devices/{{ target_model_vendor | regex_replace('LGE', 'LG') | lower() }}/{{ sub_model | d(target_model) | lower() }}#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
 
     # set base website
     sed -i 's#%%WEBSITE%%#{{ axp_main_website_url }}#g' external/axp_versioning/{{ sub_model | d(target_model) }}_{% if axp_type | d('') == "slim" %}slim{% else %}pro{% endif %}.md
