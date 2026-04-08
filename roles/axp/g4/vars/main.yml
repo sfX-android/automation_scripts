@@ -4,18 +4,12 @@ target_model_vendor: LGE
 target_model_name: 'G4'
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }} {{ sub_model | d('') }}"
 
-# android version
-android_shortversion: a11
-
 # boot debugger path & config
 extendrom_debug_path_default: /persist
-extendrom_debug_path_size_full_default: 500 
+extendrom_debug_path_size_full_default: 500
 extendrom_debug_path_size_kernel_default: 100
 extendrom_debug_path_size_selinux_default: 200
 extendrom_debug_path_size_crash_default: 200
-
-# increasing key size is not supported for A9
-#extendrom_signing_patches: 'false'
 
 # special G4 manifest branch
 git_repo_local_manifests_branch: "{{ ROM_FLAVOR }}-{{ android_shortversion }}_g4"
@@ -34,12 +28,6 @@ post_cleanup_product_override: "{{ SEPARATE_OUT_DIR }}/target/product/{{ sub_mod
 # disable AVB
 axp_avb_version: 0
 
-# required for parselogerr: if axp_avb_version=1
-# the partitions signed by boot_signer:
-#axp_avb_bootparts: "boot|recovery"
-#axp_avb_bootparts_count: 2
-#axp_avb_dmparts_count: 1 # (system.img)
-
 # git push
 axp_git_push_device_include: "device_lge_g4|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_lge"
@@ -51,14 +39,15 @@ divest_unsupported_device: true
 unsupported_device_kernel_patch: true
 
 # this is a low-end device (optimize for performance)
-axp_lowend_device: True
-axp_auto_encrypt: False
+axp_lowend_device: true
+axp_auto_encrypt: false
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | replace("-","\-") | replace("_","\_") | replace(".","\.") }} ]({{ leech_server }}/axp/{{ sub_model }})
 
 # CONFIG_STRICT_MEMORY_RWX=y breaks boot!
-axp_defconfig_device: "CONFIG_STRICT_MEMORY_RWX=n"
+# no need to set this due to the new hardenDefconfig approach this gets not added at all
+# axp_defconfig_device: "CONFIG_STRICT_MEMORY_RWX=n"
 
 # removing IMS will break boot
 # > "/vendor/bin/imscmservice": library "lib-imsrcscmservice.so" not found: needed by main executable
@@ -83,7 +72,7 @@ hugo_firmware: "manual"
 hugo_isab: 'no'
 
 hugo_xda_link: "https://xdaforums.com/t/rom-a11-official-microg-hardened-h815-axp-os-18-1.4708920/" # link to the AXP.OS XDA post for that device
-# hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any, will be prefixed with "#"
+hugo_kb_link: "g4"
 hugo_custom_installguide_path: "content/devices/custom_h815.guide" # OPTIONAL: custom installation guide
 hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=74" # "&labels=56" for enchilada
 
