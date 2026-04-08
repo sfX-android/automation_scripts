@@ -1,5 +1,9 @@
 ---
 
+- name: "Set kernel commit message"
+  ansible.builtin.set_fact:
+    commit_message: "{{ custom_commit_message | d('AXP.OS: uncatched scripted change') }}"
+
 # if not all changes are committed the kernel version will be suffixed with "<hash>-dirty"
 # so before build all changes must have been committed
 
@@ -17,7 +21,7 @@
         CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         # commit if any of the above require it
         if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
-            git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "AXP.OS: uncatched scripted change(s)"
+            git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "{{ commit_message }}"
             echo "[GIT] committed scripted kernel changes for {{ item }}" >> {{ BUILD_LOG }}
         fi
       else

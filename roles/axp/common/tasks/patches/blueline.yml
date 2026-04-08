@@ -1,0 +1,13 @@
+---
+
+# - name: "Apply CLANG fixup for Ubuntu >=24"
+#   ansible.builtin.lineinfile:
+#   args:
+#     chdir: "{{ SRCPATH }}"
+#     executable: /bin/bash
+
+# - name: "Commit kernel changes"
+#   ansible.builtin.include_tasks: commit_kernel.yml
+#   vars:
+#     custom_commit_message: "AXP.OS: fixup clang build on recent OS"
+#   when: not axp_skip_common_tasks

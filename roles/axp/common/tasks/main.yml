@@ -109,11 +109,16 @@
 
     # special deblob workarounds
     # FIXME: can be removed once all gs201 device have been ported to A15
-    - name: "Include: patch_device_gs201.yml"
-      ansible.builtin.include_tasks: patch_device_gs201.yml
+    - name: "Include: patches/gs201.yml"
+      ansible.builtin.include_tasks: patches/gs201.yml
       when:
         - target_model == "cheetah"
         - android_version_int | int < 15
+
+    # special handling for blueline
+    - name: "Include: patches/blueline.yml"
+      ansible.builtin.include_tasks: patches/blueline.yml
+      when: target_model == "blueline"
 
 - name: "Include: commit_kernel.yml"
   ansible.builtin.include_tasks: commit_kernel.yml

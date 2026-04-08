@@ -1,0 +1,15 @@
+---
+
+- name: "apply specific gs201 common fixup"
+  ansible.builtin.shell: |-
+    # the divest deblobber removes the clearkey entry AND PRODUCT_PACKAGES += so we need to re-add it
+    sed -i -E 's/\s+android.hardware.drm-service.widevine/PRODUCT_PACKAGES += android.hardware.drm-service.widevine/g' device/google/gs201/widevine/device.mk
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
+
+- name: "Commit kernel changes"
+  ansible.builtin.include_tasks: commit_kernel.yml
+  vars:
+    custom_commit_message: "AXP.OS: fixup deblob leftovers"
+  when: not axp_skip_common_tasks
