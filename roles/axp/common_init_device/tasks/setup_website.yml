@@ -42,7 +42,11 @@
 - name: "Setup website: add & push changes"
   ansible.builtin.shell: |
     cat "{{ init_device_temp_path }}/params/device_{{ sub_model | d(target_model) }}.params"
+
+    {% if init_debug_webpush is defined and init_debug_webpush | bool %}
+    echo "DEBUG ENABLED (init_debug_webpush: {{ init_debug_webpush }})"
     exit 4
+    {% endif %}
 
     echo "[GIT][WEBSITE] starting git commit process" >> {{ BUILD_LOG }}
     source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
