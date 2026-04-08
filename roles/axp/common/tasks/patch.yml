@@ -2,7 +2,7 @@
 
 - name: "Prepare kernel patchers"
   include_tasks: prep_kernel_patchers.yml
-  
+
 - name: "Apply Wireguard patch"
   ansible.builtin.shell: |
       # patch kernel source to build wireguard module
@@ -15,7 +15,7 @@
       {% else %}
       export AXP_KERNEL_PATH="{{ target_kernel_dir }}"
       {% endif %}
-      
+
       if [ ! -f "$AXP_KERNEL_PATH/.wg.patched" ];then
           cd $AXP_KERNEL_PATH
           if [ -d "net/wireguard" ];then rm -rf net/wireguard ;fi
@@ -109,7 +109,7 @@
     awk -i inplace '!/enforce-product-packages-exist-internal/' vendor/lineage/config/common.mk >> {{ BUILD_LOG }} 2>&1
   register: patchout
   environment:
-    KERNEL_PATH_CVE: "{{ target_kernel_dir | regex_replace('/','_') }}"
+    KERNEL_PATH_CVE: "{{ target_kernel_dir | regex_replace('/', '_') }}"
     TERM: linux
   args:
     executable: /bin/bash
@@ -149,7 +149,7 @@
     export AXP_KERNEL_CONF_FILE=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG 2>/dev/null | cut -d " " -f 1)
     export AXP_KERNEL_CONF="$AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF_FILE"
     {% endif %}
-    
+
     # FIXME: legacy handling, should be merged here
     vendor/axp/axp.sh >> {{ BUILD_LOG }} 2>&1
 
@@ -165,7 +165,7 @@
             echo "[AXP] .. kernel device specific defconfig $cfd has been set" >> {{ BUILD_LOG }}
           done
           touch $AXP_KERNEL_PATH/.defconf.patched
-          
+
           {% if pixel_kernel_defconfig is defined %}
           cp -v $AXP_KERNEL_CONF {{ target_model_common_tree_path }}/ >> {{ BUILD_LOG }} 2>&1
           cd {{ target_model_common_tree_path }}/
@@ -174,19 +174,19 @@
           {% endif %}
 
           git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "defconfig: applied:
-      
+
       $AXP_KERNEL_CONF $AXP_DEFCONFIG_DEVICE"
-      
+
       else
           echo "[AXP] .. kernel defconfig is already patched (patch indicator exists)" >> {{ BUILD_LOG }}
       fi
     {% endif %}
-    
+
     cd $CPWD
     # set displayed build id shown in About phone info
     find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.version=\$(LINEAGE_VERSION)/ro.lineage.version={{ axp_os_build_id }}/g" {} \;
     find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.display\.version=\$(LINEAGE_DISPLAY_VERSION)/ro.lineage.display.version={{ axp_os_build_id }}/g" {} \;
-    echo "LineageOS version set to: {{ axp_os_build_id }}" | tee -a {{ BUILD_LOG }} 
+    echo "LineageOS version set to: {{ axp_os_build_id }}" | tee -a {{ BUILD_LOG }}
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
@@ -202,7 +202,7 @@
       CHANGED=$(find -L vendor/axp/patches/common/{{ android_shortversion }} -type f -name '*.patch' -exec grep -H project {} \; | tr ' ' '#' | cut -d '#' -f2 | sort -u | tr '\n' ' ')
       if [ ! -z "$CHANGED" ];then
         {{ repo_bin }} forall -j{{ max_processes }} ${CHANGED} -c "git add -A && git commit {{ git_commit_args | d('') }} --author='${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>' -m 'axp.os: applied vendor patches
-      
+
       https://github.com/AXP-OS/vendor_axp/tree/main/patches/common/{{ android_shortversion }}'" >> {{ BUILD_LOG }} 2>&1
       else
         echo "ERROR: no changes found! Seems the patches haven't applied properly"
@@ -218,6 +218,6 @@
     path: "{{ SRCPATH }}/build/make/tools/releasetools/sign_target_files_apks.py"
     regexp: "misc_info\\['avb_avbtool'\\]"
     replace: "'avbtool'"
-  when: 
-      - android_version_int | int > 13
-      - axp_avb_version == 0
+  when:
+    - android_version_int | int > 13
+    - axp_avb_version == 0

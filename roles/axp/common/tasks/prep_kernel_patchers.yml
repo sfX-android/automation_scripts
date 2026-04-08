@@ -15,18 +15,18 @@
     # checkout sec patch date - if avail
     cd $DOS_PATCHES_LINUX_CVES
     git fetch --tags >> {{ BUILD_LOG }} 2>&1
-    git checkout {{ cve_tag | d(cve_tag_auto) | regex_replace('(^.{4})(.{2})','\1-\2-AOS') }} >> {{ BUILD_LOG }} 2>&1 || true 
+    git checkout {{ cve_tag | d(cve_tag_auto) | regex_replace('(^.{4})(.{2})','\1-\2-AOS') }} >> {{ BUILD_LOG }} 2>&1 || true
     git status >> {{ BUILD_LOG }} 2>&1
     cd $CROOT
-    
-    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1    
+
+    startPatcher {{ target_kernel_dir | regex_replace('/','_') }} >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
 
 - name: "Setup CVE kernel patcher: reset (<A14)"
   ansible.builtin.shell: |
     {{ DOS_INIT }}
-    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1 
+    {{ repo_bin }} forall -j{{ max_processes }} {{ target_kernel_dir }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
   when:
@@ -70,7 +70,7 @@
 
 - name: "Setup CVE exclusion list (device)"
   ansible.builtin.template:
-    src: "cve_excludes/{{ target_kernel_dir | regex_replace('/','_') }}.j2"
+    src: "cve_excludes/{{ target_kernel_dir | regex_replace('/', '_') }}.j2"
     dest: "{{ BUILDHOME }}/.cve_excludes.{{ target_model }}"
     mode: "0644"
 
@@ -87,7 +87,7 @@
     set -e
 
     cd {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers
-    
+
     source {{ BUILDHOME }}/.cve_excludes.common >> {{ BUILD_LOG }} 2>&1 \
       && echo "Common CVE excludes processed" | tee -a {{ BUILD_LOG }}
 
@@ -97,6 +97,6 @@
     fi
 
     excluded=$(grep -c '^#' {{ DOSPATH }}/Scripts/LineageOS-{{ los_version }}/CVE_Patchers/android_{{ target_kernel_dir | regex_replace('/','_') }}.sh)
-    echo "CVE kernel patcher fixup FINISHED (exclusions: $excluded)" | tee -a {{ BUILD_LOG }}    
+    echo "CVE kernel patcher fixup FINISHED (exclusions: $excluded)" | tee -a {{ BUILD_LOG }}
   args:
     executable: /bin/bash
