@@ -14,7 +14,7 @@ export HUGO_ISAB="{{ hugo_isab }}"
 export HUGO_ISPIXEL="{% if target_model_name | upper is search('PIXEL.*') %}yes{% else %}no{% endif %}"
 export HUGO_KILINK="{{ hugo_kb_link | d('') }}"
 export HUGO_NAME="{{ target_model_full }}"
-export HUGO_VENDOR="{{ target_model_vendor }}"
+export HUGO_VENDOR="{{ target_model_vendor | regex_replace('LGE','LG') }}"
 export HUGO_XDALINK="{{ hugo_xda_link | d('') }}"
 export HUGO_TRACKER="{{ hugo_tracker_link | d('') }}"
 
