@@ -26,8 +26,10 @@ target_kernel_dir: "kernel/google/msm-4.9"
 # DEPRECATED: patching boardconfig instead
 # custom CLANG override, otherwise it would fallback to ccache
 # see: vendor/lineage/build/tasks/kernel.mk
-#axp_post_build_cmd: >-
-#  export KERNEL_CC="CC=\"$PWD/prebuilts/clang/host/linux-x86/${CLANG_VERSION}/bin/clang\""
+#axp_pre_build_cmd: |-
+#    export KERNEL_CLANG_PATH=$PWD/prebuilts/clang/kernel/linux-x86/clang-r416183b
+#    export PATH=$KERNEL_CLANG_PATH/bin:$PATH
+# export KERNEL_CC="CC=\"$PWD/prebuilts/clang/host/linux-x86/${CLANG_VERSION}/bin/clang\""
 
 # path to the common tree, if none exists then the device tree.
 # used e.g. for git, vendor/axp, release handling etc

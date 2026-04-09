@@ -1,13 +1,17 @@
 ---
 
-# - name: "Apply CLANG fixup for Ubuntu >=24"
-#   ansible.builtin.lineinfile:
-#   args:
-#     chdir: "{{ SRCPATH }}"
-#     executable: /bin/bash
+- name: "Apply CLANG fixup for ultra legacy kernel on >= A15"
+  ansible.builtin.lineinfile:
+    path: "{{ target_kernel_dir }}/Makefile"
+    regexp: "^(KBUILD_CFLAGS \\+= -ftrivial-auto-var-init=zero)"
+    line: '# \\1'
+    backrefs: true
+  args:
+    chdir: "{{ SRCPATH }}"
+    executable: /bin/bash
 
-# - name: "Commit kernel changes"
-#   ansible.builtin.include_tasks: commit_kernel.yml
-#   vars:
-#     custom_commit_message: "AXP.OS: fixup clang build on recent OS"
-#   when: not axp_skip_common_tasks
+- name: "Commit kernel changes"
+  ansible.builtin.include_tasks: commit_kernel.yml
+  vars:
+    custom_commit_message: "AXP.OS: fixup clang build for ultra legacy kernel"
+  when: not axp_skip_common_tasks
