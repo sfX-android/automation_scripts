@@ -2,13 +2,10 @@
 
 - name: "Apply CLANG fixup for ultra legacy kernel on >= A15"
   ansible.builtin.lineinfile:
-    path: "{{ target_kernel_dir }}/Makefile"
+    path: "{{ SRCPATH }}/{{ target_kernel_dir }}/Makefile"
     regexp: "^(KBUILD_CFLAGS \\+= -ftrivial-auto-var-init=zero)"
     line: '# \\1'
     backrefs: true
-  args:
-    chdir: "{{ SRCPATH }}"
-    executable: /bin/bash
 
 - name: "Commit kernel changes"
   ansible.builtin.include_tasks: commit_kernel.yml
