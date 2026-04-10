@@ -78,9 +78,6 @@ target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_m
 # remove disk space reservation (e.g. on product partition)
 remove_space_reservation: 'yes'
 
-# this is a low-end device (optimize for performance)
-axp_lowend_device: true
-
 # set to False to skip force encryption,
 # might be required when "axp_lowend_device: True" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
 #axp_auto_encrypt: False
