@@ -123,73 +123,76 @@
     chdir: "{{ SRCPATH }}"
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
-- name: "Apply AXP.OS adjustments"
-  ansible.builtin.shell: |
-    {{ DOS_INIT }}
+- name: "Include AXP.OS adjustments"  # TODO: will make vendor/axp/axp.sh obsolete once all is working/verified
+  ansible.builtin.include_tasks: patches/axpos.yml
 
-    CPWD="{{ SRCPATH }}"
-    export AXP_KERNEL_PATH="{{ target_kernel_dir }}"
+# - name: "Apply AXP.OS adjustments"
+  # ansible.builtin.shell: |
+  #   {{ DOS_INIT }}
 
-    {% if sub_model is defined %}
-    lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
-    {% else %}
-    lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
-    {% endif %}
+  #   CPWD="{{ SRCPATH }}"
+  #   export AXP_KERNEL_PATH="{{ target_kernel_dir }}"
 
-    export AXP_DEVICE="{{ common_target_model | d(target_model) }}"
-    export AXP_DEVICEVENDOR="{{ target_model_vendor | lower }}"
-    export AXP_LOW_STORAGE="{{ remove_space_reservation | d('no') }}"
-    export AXP_TARGET_VERSION={{ android_version_int }}
+  #   {% if sub_model is defined %}
+  #   lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
+  #   {% else %}
+  #   lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success >> {{ BUILD_LOG }} 2>&1
+  #   {% endif %}
 
-    {% if pixel_kernel_defconfig is defined and pixel_kernel_gki | bool %}
-    export AXP_KERNEL_CONF="{{ pixel_kernel_defconfig }}"
-    {% else %}
-    # get build vars (requires a lunch before!)
-    export AXP_TARGET_ARCH=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH  2>/dev/null)
-    export AXP_KERNEL_CONF_FILE=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG 2>/dev/null | cut -d " " -f 1)
-    export AXP_KERNEL_CONF="$AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF_FILE"
-    {% endif %}
+  #   export AXP_DEVICE="{{ common_target_model | d(target_model) }}"
+  #   export AXP_DEVICEVENDOR="{{ target_model_vendor | lower }}"
+  #   export AXP_LOW_STORAGE="{{ remove_space_reservation | d('no') }}"
+  #   export AXP_TARGET_VERSION={{ android_version_int }}
 
-    # FIXME: legacy handling, should be merged here
-    vendor/axp/axp.sh >> {{ BUILD_LOG }} 2>&1
+  #   {% if pixel_kernel_defconfig is defined and pixel_kernel_gki | bool %}
+  #   export AXP_KERNEL_CONF="{{ pixel_kernel_defconfig }}"
+  #   {% else %}
+  #   # get build vars (requires a lunch before!)
+  #   export AXP_TARGET_ARCH=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH  2>/dev/null)
+  #   export AXP_KERNEL_CONF_FILE=$(build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG 2>/dev/null | cut -d " " -f 1)
+  #   export AXP_KERNEL_CONF="$AXP_KERNEL_PATH/arch/$AXP_TARGET_ARCH/configs/$AXP_KERNEL_CONF_FILE"
+  #   {% endif %}
 
-    {% if not pixel_kernel_gki | bool %}
-      # patch kernel defconfig
-      if [ ! -f "$AXP_KERNEL_PATH/.defconf.patched" ];then
-          for cf in $AXP_DEFCONFIG_GLOBALS; do
-            grep -q "^$cf=y" $AXP_KERNEL_CONF || echo -e "\n$cf=y" >> $AXP_KERNEL_CONF
-            echo "[AXP] .. kernel globals defconfig $cf has been set" >> {{ BUILD_LOG }}
-          done
-          for cfd in $AXP_DEFCONFIG_DEVICE; do
-            grep -q "^$cfd" $AXP_KERNEL_CONF || echo -e "\n$cfd" >> $AXP_KERNEL_CONF
-            echo "[AXP] .. kernel device specific defconfig $cfd has been set" >> {{ BUILD_LOG }}
-          done
-          touch $AXP_KERNEL_PATH/.defconf.patched
+  #   # FIXME: legacy handling, should be merged here
+  #   vendor/axp/axp.sh >> {{ BUILD_LOG }} 2>&1
 
-          {% if pixel_kernel_defconfig is defined %}
-          cp -v $AXP_KERNEL_CONF {{ target_model_common_tree_path }}/ >> {{ BUILD_LOG }} 2>&1
-          cd {{ target_model_common_tree_path }}/
-          {% else %}
-          cd $AXP_KERNEL_PATH
-          {% endif %}
+  #   {% if not pixel_kernel_gki | bool %}
+  #     # patch kernel defconfig
+  #     if [ ! -f "$AXP_KERNEL_PATH/.defconf.patched" ];then
+  #         for cf in $AXP_DEFCONFIG_GLOBALS; do
+  #           grep -q "^$cf=y" $AXP_KERNEL_CONF || echo -e "\n$cf=y" >> $AXP_KERNEL_CONF
+  #           echo "[AXP] .. kernel globals defconfig $cf has been set" >> {{ BUILD_LOG }}
+  #         done
+  #         for cfd in $AXP_DEFCONFIG_DEVICE; do
+  #           grep -q "^$cfd" $AXP_KERNEL_CONF || echo -e "\n$cfd" >> $AXP_KERNEL_CONF
+  #           echo "[AXP] .. kernel device specific defconfig $cfd has been set" >> {{ BUILD_LOG }}
+  #         done
+  #         touch $AXP_KERNEL_PATH/.defconf.patched
 
-          git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "defconfig: applied:
+  #         {% if pixel_kernel_defconfig is defined %}
+  #         cp -v $AXP_KERNEL_CONF {{ target_model_common_tree_path }}/ >> {{ BUILD_LOG }} 2>&1
+  #         cd {{ target_model_common_tree_path }}/
+  #         {% else %}
+  #         cd $AXP_KERNEL_PATH
+  #         {% endif %}
 
-      $AXP_KERNEL_CONF $AXP_DEFCONFIG_DEVICE"
+  #         git add -A && git commit --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "defconfig: applied:
 
-      else
-          echo "[AXP] .. kernel defconfig is already patched (patch indicator exists)" >> {{ BUILD_LOG }}
-      fi
-    {% endif %}
+  #     $AXP_KERNEL_CONF $AXP_DEFCONFIG_DEVICE"
 
-    cd $CPWD
-    # set displayed build id shown in About phone info
-    find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.version=\$(LINEAGE_VERSION)/ro.lineage.version={{ axp_os_build_id }}/g" {} \;
-    find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.display\.version=\$(LINEAGE_DISPLAY_VERSION)/ro.lineage.display.version={{ axp_os_build_id }}/g" {} \;
-    echo "LineageOS version set to: {{ axp_os_build_id }}" | tee -a {{ BUILD_LOG }}
-  args:
-    executable: /bin/bash
-    chdir: "{{ SRCPATH }}"
+  #     else
+  #         echo "[AXP] .. kernel defconfig is already patched (patch indicator exists)" >> {{ BUILD_LOG }}
+  #     fi
+  #   {% endif %}
+
+  #   cd $CPWD
+  #   # set displayed build id shown in About phone info
+  #   find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.version=\$(LINEAGE_VERSION)/ro.lineage.version={{ axp_os_build_id }}/g" {} \;
+  #   find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.display\.version=\$(LINEAGE_DISPLAY_VERSION)/ro.lineage.display.version={{ axp_os_build_id }}/g" {} \;
+  #   echo "LineageOS version set to: {{ axp_os_build_id }}" | tee -a {{ BUILD_LOG }}
+  # args:
+  #   executable: /bin/bash
+  #   chdir: "{{ SRCPATH }}"
 
 - name: "Apply AXP.OS patches (common, < A14)"
   ansible.builtin.shell: |

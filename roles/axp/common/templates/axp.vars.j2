@@ -158,22 +158,22 @@ export AXP_GIT_MAIL=aosbot@axpos.org
 export CVE_GIT_AUTHOR="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>"  # fallback when real author cannot be extracted from a patch
 
 # OTA
-export DOS_BRANDING_LINK_NEWS="https://axpos.org/Changelog"
-export DOS_OTA_SERVER_PRIMARY_NAME="Stable"
-export DOS_OTA_SERVER_PRIMARY="https://sfxota.binbash.rocks:8010"
+export DOS_BRANDING_LINK_NEWS="{{ axp_ota_changelog_uri }}"
+export DOS_OTA_SERVER_PRIMARY_NAME="{{ axp_ota_server_primary_name }}"
+export DOS_OTA_SERVER_PRIMARY="{{ axp_ota_server_primary }}"
 export DOS_OTA_SERVER_EXTENDED=true # Enable to provide multiple choices as set below
 
 # OTA server choices
-export DOS_OTA_SERVER_SECONDARY_NAME="UNSTABLE"
-export DOS_OTA_SERVER_SECONDARY="https://sfxota-beta.binbash.rocks:8010"
-export DOS_OTA_SERVER_ONION_PRIMARY_NAME="Tor:Stable"
-export DOS_OTA_SERVER_ONION_PRIMARY="http://qwmrjjs7mnbys35c6vgs6f47kemobjwynilp6cokjz5gxctfgdjfo7id.onion"
-export DOS_OTA_SERVER_ONION_SECONDARY_NAME="Tor:UNSTABLE"
-export DOS_OTA_SERVER_ONION_SECONDARY="http://qwmrjjs7mnbys35c6vgs6f47kemobjwynilp6cokjz5gxctfgdjfo7id.onion:8080"
+export DOS_OTA_SERVER_SECONDARY_NAME="{{ axp_ota_server_secondary_name }}"
+export DOS_OTA_SERVER_SECONDARY="{{ axp_ota_server_secondary }}"
+export DOS_OTA_SERVER_ONION_PRIMARY_NAME="{{ axp_ota_server_onion_primary_name }}"
+export DOS_OTA_SERVER_ONION_PRIMARY="{{ axp_ota_server_onion_primary }}"
+export DOS_OTA_SERVER_ONION_SECONDARY_NAME="{{ axp_ota_server_onion_secondary_name }}"
+export DOS_OTA_SERVER_ONION_SECONDARY="{{ axp_ota_server_onion_secondary }}"
 
 # OTA allow cleartext traffic via network_security_config.xml
-export DOS_OTA_SERVER_ONION_DOMAIN_PRIMARY="qwmrjjs7mnbys35c6vgs6f47kemobjwynilp6cokjz5gxctfgdjfo7id.onion"
-export DOS_OTA_SERVER_ONION_DOMAIN_SECONDARY="sfxota.binbash.rocks"
+export DOS_OTA_SERVER_ONION_DOMAIN_PRIMARY="{{ axp_ota_server_onion_domain }}"
+export DOS_OTA_SERVER_ONION_DOMAIN_SECONDARY="{{ axp_ota_server_domain_primary }}" # "allow also to connect via Internet to the stable domain"
 
 # git push targets (reproducible builds)
 export AXP_GIT_PUSH_DEVICE_EXCLUDE_GENERIC="device_generic_car|device_generic_goldfish|device_generic_goldfish-opengl|device_generic_trusty|device_generic_uml|device_generic_x86|device_generic_x86_64" # skipped by git push, not used for building AXP.OS

@@ -15,24 +15,24 @@
         {{ DOS_INIT }}    
         upstream_branch="{{ axp_switchMR_upstream_branch }}"; axp_release="{{ axp_switchMR_target_branch }}"; push_req=0; create_req=0
     
-        echo -e "\n###########################################################"  >> {{ BUILD_LOG }}
-        echo -e "# STARTING: {{ device_tree }}"  >> {{ BUILD_LOG }}
-        echo -e "###########################################################"  >> {{ BUILD_LOG }}
+        echo -e "\n###########################################################"  >> {{ INIT_LOG }}
+        echo -e "# STARTING: {{ device_tree }}"  >> {{ INIT_LOG }}
+        echo -e "###########################################################"  >> {{ INIT_LOG }}
     
         if [[ "{{ device_tree }}" =~ vendor_.* ]]; then
             GHORG=TheMuppets; reponame=proprietary_{{ device_tree }}; private=1
         else
             GHORG=LineageOS; reponame={{ device_tree }}; private=0
         fi
-        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ INIT_LOG }}
         
-        git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1 || create_req=1
-        if [ $create_req -eq 0 ];then echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> {{ init_device_temp_path }}" >> {{ BUILD_LOG }}; fi
+        git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ INIT_LOG }} 2>&1 || create_req=1
+        if [ $create_req -eq 0 ];then echo "[GIT] cloned {{ git_axpos_org_private }}/$reponame -> {{ init_device_temp_path }}" >> {{ INIT_LOG }}; fi
     
         if [ $create_req -eq 1 ];then
-          echo "[GIT] repo {{ git_axpos_org_private }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ BUILD_LOG }}
-          echo "[GIT] Forking new repo: {{ git_axpos_org_private }}/$reponame from: github.com/$GHORG/$reponame" >> {{ BUILD_LOG }}
-          tea repo migrate --login {{ git_axpos_org_private_login }} --owner {{ git_axpos_org_name }} --name $reponame --lfs true --service git --clone-url https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT] repo {{ git_axpos_org_private }}/$reponame does not exist within the org yet! Creating $reponame ..." >> {{ INIT_LOG }}
+          echo "[GIT] Forking new repo: {{ git_axpos_org_private }}/$reponame from: github.com/$GHORG/$reponame" >> {{ INIT_LOG }}
+          tea repo migrate --login {{ git_axpos_org_private_login }} --owner {{ git_axpos_org_name }} --name $reponame --lfs true --service git --clone-url https://github.com/$GHORG/$reponame >> {{ INIT_LOG }} 2>&1
 
           # set description & issues
           curl -sX 'PATCH' \
@@ -49,9 +49,9 @@
                     "external_tracker_url": "https://{{ git_axpos_org_private_host }}/AXP.OS-public/issue-tracker/issues",
                     "external_tracker_style": "alphanumeric"
                     }
-                }' >> {{ BUILD_LOG }} 2>&1       
-          git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT] {{ git_axpos_org_private }}/$reponame created..." >> {{ BUILD_LOG }}
+                }' >> {{ INIT_LOG }} 2>&1       
+          git clone {{ git_axpos_org_private }}/$reponame {{ init_device_temp_path }} >> {{ INIT_LOG }} 2>&1
+          echo "[GIT] {{ git_axpos_org_private }}/$reponame created..." >> {{ INIT_LOG }}
         fi
       args:
         executable: /bin/bash
@@ -68,34 +68,34 @@
         else
             GHORG=LineageOS; reponame={{ device_tree }}; private=0
         fi
-        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ INIT_LOG }}
         
-        echo "[GIT] checking out origin/$mapped_branch" >> {{ BUILD_LOG }}
+        echo "[GIT] checking out origin/$mapped_branch" >> {{ INIT_LOG }}
         create_br=0
-        git fetch origin $mapped_branch >> {{ BUILD_LOG }} 2>&1 || true
-        git checkout $mapped_branch  >> {{ BUILD_LOG }} 2>&1 || create_br=1
-        git remote add up https://github.com/$GHORG/$reponame >> {{ BUILD_LOG }} 2>&1
-        git fetch up $upstream_branch >> {{ BUILD_LOG }} 2>&1
+        git fetch origin $mapped_branch >> {{ INIT_LOG }} 2>&1 || true
+        git checkout $mapped_branch  >> {{ INIT_LOG }} 2>&1 || create_br=1
+        git remote add up https://github.com/$GHORG/$reponame >> {{ INIT_LOG }} 2>&1
+        git fetch up $upstream_branch >> {{ INIT_LOG }} 2>&1
 
         if [ $create_br -eq 1 ];then
-            echo "[GIT] checking out up/$upstream_branch instead of origin (does not exist yet)" >> {{ BUILD_LOG }}
-            git checkout -b "$mapped_branch" up/$upstream_branch  >> {{ BUILD_LOG }} 2>&1
+            echo "[GIT] checking out up/$upstream_branch instead of origin (does not exist yet)" >> {{ INIT_LOG }}
+            git checkout -b "$mapped_branch" up/$upstream_branch  >> {{ INIT_LOG }} 2>&1
         fi
         
         git config remote.origin.lfsurl "{{ git_axpos_org_private }}/${reponame}.git/info/lfs"
         git config remote.up.lfsurl "$(git lfs env | awk -F= '/^Endpoint=/{print $2}' | awk '{print $1}')"
 
-        git lfs fetch --all >> {{ BUILD_LOG }} 2>&1 || true
+        git lfs fetch --all >> {{ INIT_LOG }} 2>&1 || true
         if [ -f .lfsconfig ];then
           echo "[GIT] moving upstream lfsconfig"
-          #mv .lfsconfig .lfsconfig_upstream >> {{ BUILD_LOG }}
-          (git add -A .lfsconfig*  >> /dev/null 2>> {{ BUILD_LOG }} \
-            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove conflicting lfsconfig"  >> /dev/null 2>> {{ BUILD_LOG }}) || true
+          #mv .lfsconfig .lfsconfig_upstream >> {{ INIT_LOG }}
+          (git add -A .lfsconfig*  >> /dev/null 2>> {{ INIT_LOG }} \
+            && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: remove conflicting lfsconfig"  >> /dev/null 2>> {{ INIT_LOG }}) || true
         fi
 
-        echo "[GIT] checking out $axp_release" >> {{ BUILD_LOG }}
-        git checkout --track origin/$axp_release >> {{ BUILD_LOG }} 2>&1 || (git checkout $axp_release >> {{ BUILD_LOG }} 2>&1 || git checkout -b $axp_release >> {{ BUILD_LOG }} 2>&1)
-        git remote -v >> {{ BUILD_LOG }} 2>&1
+        echo "[GIT] checking out $axp_release" >> {{ INIT_LOG }}
+        git checkout --track origin/$axp_release >> {{ INIT_LOG }} 2>&1 || (git checkout $axp_release >> {{ INIT_LOG }} 2>&1 || git checkout -b $axp_release >> {{ INIT_LOG }} 2>&1)
+        git remote -v >> {{ INIT_LOG }} 2>&1
       args:
         executable: /bin/bash
         chdir: "{{ init_device_temp_path }}"
@@ -111,10 +111,10 @@
         else
             GHORG=LineageOS; reponame={{ device_tree }}; private=0
         fi
-        echo "[GIT] private = $private" >> {{ BUILD_LOG }}
+        echo "[GIT] private = $private" >> {{ INIT_LOG }}
         
         if [ "{{ target_model_common_tree }}" == "{{ device_tree }}" ];then
-          echo "[GIT] checking AXP.OS common tree include.." >> {{ BUILD_LOG }}
+          echo "[GIT] checking AXP.OS common tree include.." >> {{ INIT_LOG }}
           if [ ! -f {{ target_model_device_tree_mk }} ]; then
               echo "[GIT] ERROR: MISSING COMMON MK! CHECK/SET target_model_device_tree_mk"
               exit 4
@@ -125,9 +125,9 @@
           
           CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
           if [ $CMTL -gt 0 ];then
-              git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
-              git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "board/device: enable AXP.OS" >> {{ BUILD_LOG }} 2>&1
-              echo "[GIT] git commit done" >> {{ BUILD_LOG }}
+              git add -A >> {{ INIT_LOG }} 2>&1 || CMT=1
+              git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "board/device: enable AXP.OS" >> {{ INIT_LOG }} 2>&1
+              echo "[GIT] git commit done" >> {{ INIT_LOG }}
               push_req=$(( push_req + 1))
           fi
         fi
@@ -148,18 +148,18 @@
         else
             GHORG=LineageOS; reponame={{ device_tree }}; private=0
         fi
-        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ INIT_LOG }}
 
         for work in $axp_release $mapped_branch; do
-            git checkout $work >> {{ BUILD_LOG }}
+            git checkout $work >> {{ INIT_LOG }}
             for lf in $(find . -type f -size +2M -name '*.*'| while read file; do f="${file##*.}"; [ ${{ "{" }}{{ "#" }}f} -ge 2 ] && echo "$f" ; done | sort -u);do
-              git lfs track \"*.${lf}\" >> {{ BUILD_LOG }} 
+              git lfs track \"*.${lf}\" >> {{ INIT_LOG }} 
             done
         
             CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
             if [ $CMTL -gt 0 ];then
-              git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-                && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ BUILD_LOG }}
+              git add -A .  >> /dev/null 2>> {{ INIT_LOG }} \
+                && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: track files bigger than 2M"  >> /dev/null 2>> {{ INIT_LOG }}
             fi
         done
       args:
@@ -177,7 +177,7 @@
         else
             GHORG=LineageOS; reponame={{ device_tree }}; private=0
         fi
-        echo "[GIT] GHORG = $GHORG" >> {{ BUILD_LOG }}
+        echo "[GIT] GHORG = $GHORG" >> {{ INIT_LOG }}
               
         git checkout $axp_release
 
@@ -186,7 +186,7 @@
               mkdir -p $workflowpath/workflows/ 2>/dev/null || true
               if [ -f $workflowpath/workflows/sync.yml ];then rm $workflowpath/workflows/sync.yml; fi
               
-              echo "[GIT] adding CI/CD to repo (branch: $axp_release)" >> {{ BUILD_LOG }}
+              echo "[GIT] adding CI/CD to repo (branch: $axp_release)" >> {{ INIT_LOG }}
         {% raw %}
               cat > $workflowpath/workflows/sync_upstream.yml <<EOSYNC
         name: "Sync with upstream"
@@ -211,16 +211,16 @@
               secrets: inherit
         EOSYNC
         {% endraw %}
-              git add -f $workflowpath/ >> {{ BUILD_LOG }} 2>&1 || CMT=1
+              git add -f $workflowpath/ >> {{ INIT_LOG }} 2>&1 || CMT=1
               CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
               if [ $CMTL -gt 0 ];then
-                  git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync" >> {{ BUILD_LOG }} 2>&1
+                  git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "ci: enable upstream sync" >> {{ INIT_LOG }} 2>&1
                   push_req=$(( push_req + 1))
-                  echo "[GIT] git commit added for ci/cd" >> {{ BUILD_LOG }}
-                  git show >> {{ BUILD_LOG }}
+                  echo "[GIT] git commit added for ci/cd" >> {{ INIT_LOG }}
+                  git show >> {{ INIT_LOG }}
               fi
         else
-          echo "Skipped adding CI/CD sync to device tree (already configured)." >> {{ BUILD_LOG }} 2>&1
+          echo "Skipped adding CI/CD sync to device tree (already configured)." >> {{ INIT_LOG }} 2>&1
         fi
       args:
         executable: /bin/bash
@@ -244,20 +244,20 @@
         #git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
         #CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         #if [ $CMTL -gt 0 ];then
-        #    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-        #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
+        #    git add -A .  >> /dev/null 2>> {{ INIT_LOG }} \
+        #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ INIT_LOG }}
         #fi
-        #git lfs fetch up >> {{ BUILD_LOG }} 2>&1
+        #git lfs fetch up >> {{ INIT_LOG }} 2>&1
         
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         REMHASH=$(git log --pretty=oneline --decorate "origin/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }}" | head -n 1 | cut -d ' ' -f1)
         
         if [ "$CURHASH" != "$REMHASH" ]; then
-          echo "[GIT][UPSTREAM-BRANCH] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-          git push --force origin $mapped_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT][UPSTREAM-BRANCH] Pushed $reponame / $mapped_branch!" >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][UPSTREAM-BRANCH] pushing required ($CURHASH != $REMHASH)!" >> {{ INIT_LOG }}
+          git push --force origin $mapped_branch:refs/heads/upstream_{{ axp_switchMR_target_branch | regex_replace('axp-','') }} >> {{ INIT_LOG }} 2>&1
+          echo "[GIT][UPSTREAM-BRANCH] Pushed $reponame / $mapped_branch!" >> {{ INIT_LOG }} 2>&1
         else
-          echo "[GIT][UPSTREAM-BRANCH] Skipped pushing $reponame / $mapped_branch (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][UPSTREAM-BRANCH] Skipped pushing $reponame / $mapped_branch (no changes were made)."  >> {{ INIT_LOG }} 2>&1
         fi
 
         ####### AXP HANDLING #########
@@ -265,32 +265,32 @@
         #git config --file .lfsconfig lfs.pushurl {{ git_axpos_org_private }}/$reponame
         #CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
         #if [ $CMTL -gt 0 ];then
-        #    git add -A .  >> /dev/null 2>> {{ BUILD_LOG }} \
-        #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ BUILD_LOG }}
+        #    git add -A .  >> /dev/null 2>> {{ INIT_LOG }} \
+        #    && git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "lfs: set pushurl"  >> /dev/null 2>> {{ INIT_LOG }}
         #fi
-        git lfs fetch origin >> {{ BUILD_LOG }} 2>&1
+        git lfs fetch origin >> {{ INIT_LOG }} 2>&1
 
         CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
         REMHASH=$(git log --pretty=oneline --decorate | grep "origin/$axp_release" |cut -d ' ' -f1)
 
         if [ "$CURHASH" != "$REMHASH" ]; then
-          echo "[GIT][AXP-BRANCH] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-          git push origin $axp_release >> {{ BUILD_LOG }} 2>&1 || ( echo "pushing incomplete LFS!" && git config lfs.allowincompletepush true && git push origin $axp_release >> {{ BUILD_LOG }} 2>&1 )
-          echo "[GIT][AXP-BRANCH] Pushed $reponame / $axp_release!" >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][AXP-BRANCH] pushing required ($CURHASH != $REMHASH)!" >> {{ INIT_LOG }}
+          git push origin $axp_release >> {{ INIT_LOG }} 2>&1 || ( echo "pushing incomplete LFS!" && git config lfs.allowincompletepush true && git push origin $axp_release >> {{ INIT_LOG }} 2>&1 )
+          echo "[GIT][AXP-BRANCH] Pushed $reponame / $axp_release!" >> {{ INIT_LOG }} 2>&1
         else
-          echo "[GIT][AXP-BRANCH] Skipped pushing $reponame / $axp_release (no changes were made)."  >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][AXP-BRANCH] Skipped pushing $reponame / $axp_release (no changes were made)."  >> {{ INIT_LOG }} 2>&1
         fi
         
         sleep 10              
         curl -siX PATCH -H "Content-Type: application/json" \
               -H "Authorization: token {{ vault_axp_private_repo_token_rw }}" \
               -d '{"default_branch": "{{ axp_switchMR_target_branch }}"}' \
-              "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" >> {{ BUILD_LOG }} 2>&1
-        echo "[GIT] default branch in $reponame set to $axp_release!" >> {{ BUILD_LOG }}
+              "https://{{ git_axpos_org_private_host }}:{{ git_axpos_org_private_host_port | d('443') }}/api/v1/repos/{{ git_axpos_org_name }}/$reponame" >> {{ INIT_LOG }} 2>&1
+        echo "[GIT] default branch in $reponame set to $axp_release!" >> {{ INIT_LOG }}
             
-        echo -e "###########################################################"  >> {{ BUILD_LOG }}
-        echo -e "# ENDED: $reponame"  >> {{ BUILD_LOG }}
-        echo -e "###########################################################\n"  >> {{ BUILD_LOG }}
+        echo -e "###########################################################"  >> {{ INIT_LOG }}
+        echo -e "# ENDED: $reponame"  >> {{ INIT_LOG }}
+        echo -e "###########################################################\n"  >> {{ INIT_LOG }}
       args:
         executable: /bin/bash
         chdir: "{{ init_device_temp_path }}"

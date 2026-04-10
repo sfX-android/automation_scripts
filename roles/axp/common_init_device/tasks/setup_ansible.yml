@@ -25,26 +25,26 @@
 
 - name: "Setup ansible: add & push changes"
   ansible.builtin.shell: |
-      echo "[GIT][ANSIBLE] starting git commit process" >> {{ BUILD_LOG }}
+      echo "[GIT][ANSIBLE] starting git commit process" >> {{ INIT_LOG }}
       source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
     
       CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
-          git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
-          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "axp: {{ sub_model | d(target_model) }}: added/updated vars" >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT][ANSIBLE] git commit done" >> {{ BUILD_LOG }}
+          git add -A >> {{ INIT_LOG }} 2>&1 || CMT=1
+          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "axp: {{ sub_model | d(target_model) }}: added/updated vars" >> {{ INIT_LOG }} 2>&1
+          echo "[GIT][ANSIBLE] git commit done" >> {{ INIT_LOG }}
 
           CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
           REMHASH=$(git log --pretty=oneline --decorate | grep "origin/{{ git_repo_local_manifests_branch }}" |cut -d ' ' -f1)
             
           if [ "$CURHASH" != "$REMHASH" ]; then
-              echo "[GIT][ANSIBLE] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-              git push origin {{ automation_repo_branch }} >> {{ BUILD_LOG }} 2>&1
+              echo "[GIT][ANSIBLE] pushing required ($CURHASH != $REMHASH)!" >> {{ INIT_LOG }}
+              git push origin {{ automation_repo_branch }} >> {{ INIT_LOG }} 2>&1
           else
-              echo "[GIT][ANSIBLE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
+              echo "[GIT][ANSIBLE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ INIT_LOG }}
           fi
       else
-           echo "[GIT][ANSIBLE] git commit skipped (no changes)" >> {{ BUILD_LOG }}
+           echo "[GIT][ANSIBLE] git commit skipped (no changes)" >> {{ INIT_LOG }}
       fi
   args:
       chdir: "{{ init_device_temp_path }}"

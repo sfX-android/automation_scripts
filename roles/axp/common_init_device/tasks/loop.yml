@@ -13,8 +13,8 @@
 
 - name: "(Re)Set build log"
   ansible.builtin.set_fact:
-      BUILD_LOG: >-
-        {% if build_log_init is defined %}{{ build_log_init }}{% else %}{{ BUILD_LOG }}{% endif %}
+      INIT_LOG: >-
+        {% if build_log_init is defined %}{{ build_log_init }}{% else %}{{ init_log }}{% endif %}
 
 - name: Set unfiltered combined device + kernel list
   ansible.builtin.set_fact:
@@ -98,7 +98,7 @@
   ansible.builtin.include_tasks: setup_semaphore.yml
   vars:
     semaphore_aos_template_name: >-
-      AOS {{ git_repo_local_manifests_branch | upper | regex_replace('AXP-', '') }} {{ axp_type | regex_replace('slim', 'Slim') | regex_replace('pro', 'Pro') }}: {{ target_model_full }}
+      AOS {{ git_repo_local_manifests_branch | upper | regex_replace('AXP-', '') }} {{ axp_type | regex_replace('slim', 'Slim') | regex_replace('pro', 'Pro') }}: {{ target_model_full }} ({{ sub_model | d(target_model) }})
   when: not skip_setup_semaphore | bool
 
 - name: "Setup OTA/AVB key repo"

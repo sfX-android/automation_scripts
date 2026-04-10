@@ -9,7 +9,23 @@
     executable: /bin/bash
 
 - name: "Commit kernel changes"
-  ansible.builtin.include_tasks: commit_kernel.yml
+  ansible.builtin.include_tasks: git_commit.yml
   vars:
     custom_commit_message: "AXP.OS: fixup deblob leftovers"
-  when: not axp_skip_common_tasks
+    git_commit_kernel: true
+
+- name: Fix gs201 widevine leftovers
+  when: ansible.builtin.stat(path=SRCPATH + "/device/google/gs201/widevine/device.mk").stat.exists
+  block:
+
+    - name: Ensure PRODUCT_PACKAGES header exists
+      ansible.builtin.lineinfile:
+        path: "{{ SRCPATH }}/device/google/gs201/widevine/device.mk"
+        line: "PRODUCT_PACKAGES += \\"
+        insertbefore: BOF
+
+    - name: "Commit gs201 changes"
+      ansible.builtin.include_tasks: git_commit.yml
+      vars:
+        custom_commit_message: "AXP.OS: gs201: fix divest deblob leftovers"
+        git_commit_path: "{{ SRCPATH }}/device/google/gs201"

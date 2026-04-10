@@ -30,29 +30,29 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
     
-    echo "Factory contains super image(s), building lpunpack ..." | tee -a {{ BUILD_LOG }}
+    echo "Factory contains super image(s), building lpunpack ..." | tee -a {{ INIT_LOG }}
     build_req=0
 
     which lpunpack || build_req=1
 
     if [ $build_req -eq 1 ];then
       {% if sub_model is defined %}
-      lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+      lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ INIT_LOG }} 2>&1 && echo lunch success
       {% else %}
-      lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+      lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ INIT_LOG }} 2>&1 && echo lunch success
       {% endif %}
-      resetEnv >> {{ BUILD_LOG }} 2>&1
+      resetEnv >> {{ INIT_LOG }} 2>&1
       
       # quick workaround for unrecognized property "product_variables.device_has_arm_mte"
       mv external/hardened_malloc/Android.bp hmall.Androidbp
       
       export ALLOW_MISSING_DEPENDENCIES=true
-      m -j{{ max_processes }} lpunpack >> {{ BUILD_LOG }} 2>&1
+      m -j{{ max_processes }} lpunpack >> {{ INIT_LOG }} 2>&1
 
       # revert build workaround
       mv hmall.Androidbp external/hardened_malloc/Android.bp
     else
-      echo "skipping lpunpack build (binary exists already)" | tee -a {{ BUILD_LOG }}
+      echo "skipping lpunpack build (binary exists already)" | tee -a {{ INIT_LOG }}
     fi
   args:
     executable: /bin/bash
@@ -81,7 +81,7 @@
           
           {% if vendor_firmware_persistent_path is defined %}export PERSISTZIP="{{ vendor_firmware_persistent_path }}"{% endif %}
           
-          ./update_firmware.sh >> {{ BUILD_LOG }} 2>&1
+          ./update_firmware.sh >> {{ INIT_LOG }} 2>&1
   environment:
     DOWNLOAD_URL: "{{ vendor_firmware_download_url }}"
     DOWNLOAD_MD5: "{{ vendor_firmware_download_md5 | d('undefined') }}"
@@ -101,11 +101,11 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    echo "Fairphone firmware handling ..." | tee -a {{ BUILD_LOG }}
+    echo "Fairphone firmware handling ..." | tee -a {{ INIT_LOG }}
 
-    lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1 && echo lunch success
+    lunch lineage_{{ sub_model | d(target_model) }}${brf_suffix}-user >> {{ INIT_LOG }} 2>&1 && echo lunch success
     cd vendor/firmware/{{ target_model }}
-    ./update.sh >> {{ BUILD_LOG }} 2>&1
+    ./update.sh >> {{ INIT_LOG }} 2>&1
   environment:
     FACZIP: "{{ vendor_factory_persistent_path | d(vendor_firmware_persistent_path) }}"
     FACTORYID: "{{ vendor_factory_id | d(vendor_firmware_version) }}"
@@ -118,37 +118,37 @@
 
 - name: "Setup firmware: add & push changes"
   ansible.builtin.shell: |
-      echo "[GIT][FIRMWARE] starting git commit process" >> {{ BUILD_LOG }}
+      echo "[GIT][FIRMWARE] starting git commit process" >> {{ INIT_LOG }}
       source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
     
       CMTL=$(git status --porcelain=v1 {{ target_model }}/0SOURCE | wc -l 2>/dev/null)
       if [ $CMTL -gt 0 ];then
-          git add {{ target_model }}/0SOURCE >> {{ BUILD_LOG }} 2>&1 || CMT=1
+          git add {{ target_model }}/0SOURCE >> {{ INIT_LOG }} 2>&1 || CMT=1
           source {{ target_model }}/0SOURCE
-          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "{{ sub_model | d(target_model) }}: add/update patch date: $VENDOR_SECPATCH_DATE" >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT][FIRMWARE] git commit done for 0SOURCE (vars)" >> {{ BUILD_LOG }}
+          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "{{ sub_model | d(target_model) }}: add/update patch date: $VENDOR_SECPATCH_DATE" >> {{ INIT_LOG }} 2>&1
+          echo "[GIT][FIRMWARE] git commit done for 0SOURCE (vars)" >> {{ INIT_LOG }}
       else
-          echo "[GIT][FIRMWARE] git commit skipped for 0SOURCE (no changes)" >> {{ BUILD_LOG }}
+          echo "[GIT][FIRMWARE] git commit skipped for 0SOURCE (no changes)" >> {{ INIT_LOG }}
       fi
       
       CMTLF=$(git status --porcelain=v1 | wc -l 2>/dev/null)
       if [ $CMTLF -gt 0 ];then
-          git add -A >> {{ BUILD_LOG }} 2>&1 || CMT=1
+          git add -A >> {{ INIT_LOG }} 2>&1 || CMT=1
           source {{ target_model }}/0SOURCE
-          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "{{ sub_model | d(target_model) }}: add/update {{ vendor_firmware_version | d(vendor_factory_id) }} ($VENDOR_SECPATCH_DATE)" >> {{ BUILD_LOG }} 2>&1
-          echo "[GIT][FIRMWARE] git commit done for all the rest (vars)" >> {{ BUILD_LOG }}
+          git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "{{ sub_model | d(target_model) }}: add/update {{ vendor_firmware_version | d(vendor_factory_id) }} ($VENDOR_SECPATCH_DATE)" >> {{ INIT_LOG }} 2>&1
+          echo "[GIT][FIRMWARE] git commit done for all the rest (vars)" >> {{ INIT_LOG }}
       else
-          echo "[GIT][FIRMWARE] git commit skipped for all the rest (no changes)" >> {{ BUILD_LOG }}
+          echo "[GIT][FIRMWARE] git commit skipped for all the rest (no changes)" >> {{ INIT_LOG }}
       fi
 
       CURHASH=$(git log -1 --format=oneline | cut -d ' ' -f1)
       REMHASH=$(git log --pretty=oneline --decorate | grep "{{ init_device_remotename | d('origin') }}/{{ git_repo_local_manifests_branch }}" |cut -d ' ' -f1)
         
       if [ "$CURHASH" != "$REMHASH" ]; then
-          echo "[GIT][FIRMWARE] pushing required ($CURHASH != $REMHASH)!" >> {{ BUILD_LOG }}
-          git push "{{ init_device_remotename | d('origin') }}" {{ git_repo_local_manifests_branch }} >> {{ BUILD_LOG }} 2>&1
+          echo "[GIT][FIRMWARE] pushing required ($CURHASH != $REMHASH)!" >> {{ INIT_LOG }}
+          git push "{{ init_device_remotename | d('origin') }}" {{ git_repo_local_manifests_branch }} >> {{ INIT_LOG }} 2>&1
       else
-          echo "[GIT][FIRMWARE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ BUILD_LOG }}
+          echo "[GIT][FIRMWARE] pushing skipped ($CURHASH == $REMHASH)!" >> {{ INIT_LOG }}
       fi
   args:
       chdir: "{{ init_device_temp_path }}"

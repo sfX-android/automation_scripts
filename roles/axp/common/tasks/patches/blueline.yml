@@ -8,7 +8,7 @@
     backrefs: true
 
 - name: "Commit kernel changes"
-  ansible.builtin.include_tasks: commit_kernel.yml
+  ansible.builtin.include_tasks: git_commit.yml
   vars:
     custom_commit_message: "AXP.OS: fixup clang build for ultra legacy kernel"
-  when: not axp_skip_common_tasks
+    git_commit_kernel: true

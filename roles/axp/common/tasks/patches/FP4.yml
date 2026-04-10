@@ -1,0 +1,14 @@
+---
+
+# FIXME: unclear if this is still required at all
+- name: FP4 specific adjustments
+  ansible.builtin.lineinfile:
+    path: "{{ SRCPATH }}/device/{{ target_model_vendor | lower }}/{{ common_target_model | d(target_model) }}/BoardConfig.mk"
+    line: "BOARD_AVB_VBMETA_SYSTEM := system"
+    state: present
+
+- name: "Commit FP4 changes"
+  ansible.builtin.include_tasks: git_commit.yml
+  vars:
+    custom_commit_message: "AXP.OS: set BOARD_AVB_VBMETA_SYSTEM"
+    git_commit_path: "{{ SRCPATH }}/device/{{ target_model_vendor | lower }}/{{ common_target_model | d(target_model) }}"

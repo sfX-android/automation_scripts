@@ -1,0 +1,119 @@
+---
+
+- name: "Apply AXP.OS adjustments"
+  block:
+
+    - name: Set AXP facts
+      ansible.builtin.set_fact:
+        cpwd: "{{ SRCPATH }}"
+        axp_kernel_path: "{{ target_kernel_dir }}"
+        axp_device: "{{ common_target_model | d(target_model) }}"
+        axp_devicevendor: "{{ target_model_vendor | lower }}"
+        axp_low_storage: "{{ remove_space_reservation | d('no') }}"
+        axp_target_version: "{{ android_version_int }}"
+
+    - name: Derive low storage for non-SLIM builds
+      ansible.builtin.set_fact:
+        axp_low_storage: "yes"
+      when: AOS_BRANDING_BUILDTYPE != "SLIM"
+
+    - name: Show AXP variables
+      ansible.builtin.debug:
+        msg:
+          - "AXP_TARGET_VERSION: {{ axp_target_version }}"
+          - "AXP_TARGET_ARCH: {{ AXP_TARGET_ARCH | default('') }}"
+          - "AXP_KERNEL_PATH: {{ axp_kernel_path }}"
+          - "AXP_KERNEL_CONF: {{ AXP_KERNEL_CONF | default('') }}"
+          - "AOS_BRANDING_BUILDTYPE: {{ AOS_BRANDING_BUILDTYPE }}"
+          - "AXP_LOW_STORAGE: {{ axp_low_storage }}"
+          - "device/{{ axp_devicevendor }}/{{ axp_device }}"
+
+    - name: Fail if kernel path is empty
+      ansible.builtin.fail:
+        msg: "[AXP] ERROR: kernel path could not be detected"
+      when: axp_kernel_path | length == 0
+
+    - name: Set OTA server URI
+      ansible.builtin.set_fact:
+        AXP_OTA_SERVER_URI: >-
+          https://{{ DOS_OTA_SERVER_PRIMARY }}/axp{{ '-slim' if AOS_BRANDING_BUILDTYPE == 'SLIM' else '' }}/a{{ axp_target_version }}/api/v1/{device}/{incr}
+      when: CUSTOM_AXP_OTA_SERVER_URI | default('') == ''
+
+    - name: Restore strings.xml from git
+      ansible.builtin.shell: git checkout strings.xml
+      args:
+        chdir: "{{ SRCPATH }}/vendor/axp/overlays/packages/apps/Updater/app/src/main/res/values/"
+
+    - name: Update OTA placeholders in strings.xml
+      ansible.builtin.replace:
+        path: "{{ SRCPATH }}/vendor/axp/overlays/packages/apps/Updater/app/src/main/res/values/strings.xml"
+        regexp: "{{ item.regexp }}"
+        replace: "{{ item.replace }}"
+      loop:
+        - { regexp: '%%AXP_OTA_SERVER_URI%%', replace: "{{ AXP_OTA_SERVER_URI }}" }
+        - { regexp: '%%DOS_OTA_SERVER_PRIMARY_NAME%%', replace: "{{ axp_ota_server_primary_name }}" }
+        - { regexp: '%%DOS_OTA_SERVER_SECONDARY_NAME%%', replace: "{{ axp_ota_server_secondary_name }}" }
+        - { regexp: '%%DOS_OTA_SERVER_ONION_PRIMARY_NAME%%', replace: "{{ axp_ota_server_onion_primary_name }}" }
+        - { regexp: '%%DOS_OTA_SERVER_ONION_SECONDARY_NAME%%', replace: "{{ axp_ota_server_onion_secondary_name }}" }
+
+    - name: Comment OpenEUICC package
+      ansible.builtin.replace:
+        path: "{{ SRCPATH }}/vendor/divested/packages.mk"
+        regexp: '^PRODUCT_PACKAGES.*OpenEUICC'
+        replace: '# OpenEUICC disabled by AXP.OS in favor of extendrom handling'
+
+    - name: Remove legacy OpenEUICC directory
+      ansible.builtin.file:
+        path: "{{ SRCPATH }}/packages/apps/OpenEUICC"
+        state: absent
+
+    - name: Find BoardConfig files
+      ansible.builtin.find:
+        paths: "{{ SRCPATH }}/device/{{ axp_devicevendor }}/"
+        patterns: "Board*.mk"
+      register: boardconfigs
+      when: axp_low_storage == "yes"
+
+    - name: Comment reservation flags
+      ansible.builtin.replace:
+        path: "{{ item.0.path }}"
+        regexp: '^({{ item.1 }})'
+        replace: '#\\1'
+      loop: "{{ boardconfigs.files | product([
+        'BOARD_PRODUCTIMAGE_EXTFS_INODE_COUNT',
+        'BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE',
+        'BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT',
+        'BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE',
+        'BOARD_SYSTEM_EXTIMAGE_EXTFS_INODE_COUNT',
+        'BOARD_SYSTEM_EXTIMAGE_PARTITION_RESERVED_SIZE',
+        '.*vendor/lineage/config/BoardConfigReservedSize.mk'
+        ]) | list }}"
+      when: axp_low_storage == "yes"
+
+    - name: Commit 
+      ansible.builtin.shell: |
+        source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
+        git add -A && git commit --author="{{ AXP_GIT_AUTHOR }} <{{ AXP_GIT_MAIL }}>" -m "{{ axp_device }}: remove reserved space for AXP.OS"
+      args:
+        chdir: "{{ item.path | dirname }}"
+      loop: "{{ boardconfigs.files }}"
+      when: axp_low_storage == "yes"
+
+    - name: "Commit reservation removals"
+      ansible.builtin.include_tasks: git_commit.yml
+      vars:
+        custom_commit_message: "AXP.OS: reservation removals"
+        git_commit_path: "{{ item.path | dirname }}"
+      loop: "{{ boardconfigs.files }}"
+      when: axp_low_storage == "yes"
+
+    - name: Set AXP.OS build id
+      ansible.builtin.shell: |
+        source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
+        find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.version=\$(LINEAGE_VERSION)/ro.lineage.version={{ axp_os_build_id }}/g" {} \;
+        find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.display\.version=\$(LINEAGE_DISPLAY_VERSION)/ro.lineage.display.version={{ axp_os_build_id }}/g" {} \;
+        echo "LineageOS version set to: {{ axp_os_build_id }}" | tee -a {{ BUILD_LOG }}
+        cd vendor/lineage
+        git add -A && git commit --author="{{ AXP_GIT_AUTHOR }} <{{ AXP_GIT_MAIL }}>" -m "AXP.OS: set build id"
+      args:
+        chdir: "{{ SRCPATH }}"

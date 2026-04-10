@@ -4,6 +4,8 @@ build_id: "init_device"
 target_model: "{{ build_id }}"
 telegram_notifications: false
 
+init_log: "{{ BUILDHOME }}/init_{{ sub_model | d(target_model) }}_{{ ROM_FLAVOR }}_{{ build_id }}.log"
+
 init_device_website_repo: "ssh://git@code.binbash.rocks:22443/AXP.OS/axpos-org.git"
 init_device_website_branch: "hugo"
 init_device_website_repo_name: "axpos-org"
