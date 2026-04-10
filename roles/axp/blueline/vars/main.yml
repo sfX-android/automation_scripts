@@ -4,8 +4,8 @@
 ## Device info
 
 # human readable model name
-target_model_vendor: "Google" # e.g. OnePlus
-target_model_name: 'Pixel 3' # e.g. '5T', always ensure single quotes here
+target_model_vendor: "Google"
+target_model_name: 'Pixel 3'
 
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
@@ -74,6 +74,12 @@ target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_m
 # target Android version. This will have drawbacks, details can be found here: 
 # https://axpos.org/docs/knowledge/techdetails/#what-changes-does-axp_lowend_device-make
 #axp_lowend_device: True
+
+# remove disk space reservation (e.g. on product partition)
+remove_space_reservation: 'yes'
+
+# this is a low-end device (optimize for performance)
+axp_lowend_device: true
 
 # set to False to skip force encryption,
 # might be required when "axp_lowend_device: True" and the device supports FDE (https://axpos.org/docs/developer/encryption/) only
