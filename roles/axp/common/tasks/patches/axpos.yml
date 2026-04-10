@@ -15,7 +15,7 @@
     - name: Derive low storage for non-SLIM builds
       ansible.builtin.set_fact:
         axp_low_storage: "yes"
-      when: AOS_BRANDING_BUILDTYPE != "SLIM"
+      when: RELEASE_TYPE != "SLIM"
 
     - name: Show AXP variables
       ansible.builtin.debug:
@@ -24,7 +24,7 @@
           - "AXP_TARGET_ARCH: {{ AXP_TARGET_ARCH | default('') }}"
           - "AXP_KERNEL_PATH: {{ axp_kernel_path }}"
           - "AXP_KERNEL_CONF: {{ AXP_KERNEL_CONF | default('') }}"
-          - "AOS_BRANDING_BUILDTYPE: {{ AOS_BRANDING_BUILDTYPE }}"
+          - "AOS_BRANDING_BUILDTYPE: {{ RELEASE_TYPE }}"
           - "AXP_LOW_STORAGE: {{ axp_low_storage }}"
           - "device/{{ axp_devicevendor }}/{{ axp_device }}"
 
@@ -106,6 +106,103 @@
         git_commit_path: "{{ item.path | dirname }}"
       loop: "{{ boardconfigs.files }}"
       when: axp_low_storage == "yes"
+
+    - name: Dump TARGET_ARCH
+      ansible.builtin.shell: |-
+        {{ DOS_INIT }}
+        {% if sub_model is defined %}
+        lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+        {% else %}
+        lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+        {% endif %}
+        echo "lunch success" >> {{ BUILD_LOG }}
+
+        build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH
+      register: target_arch
+      changed_when: false
+      failed_when: false
+      when: not (pixel_kernel_defconfig is defined and pixel_kernel_gki | bool)
+      args:
+        chdir: "{{ SRCPATH }}"
+
+    - name: Dump TARGET_KERNEL_CONFIG
+      ansible.builtin.shell: |
+        {{ DOS_INIT }}
+        {% if sub_model is defined %}
+        lunch lineage_{{ sub_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+        {% else %}
+        lunch lineage_{{ target_model }}${brf_suffix}-user >> {{ BUILD_LOG }} 2>&1
+        {% endif %}
+        echo "lunch success" >> {{ BUILD_LOG }}
+
+        build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG | cut -d " " -f 1
+      register: kernel_conf_file
+      changed_when: false
+      failed_when: false
+      when: not (pixel_kernel_defconfig is defined and pixel_kernel_gki | bool)
+      args:
+        executable: /bin/bash
+        chdir: "{{ SRCPATH }}"
+
+    - name: Set kernel facts
+      ansible.builtin.set_fact:
+        axp_kernel_conf: >-
+          {% if pixel_kernel_defconfig is defined and pixel_kernel_gki | bool %}
+          {{ pixel_kernel_defconfig }}
+          {% else %}
+          {{ target_kernel_dir }}/arch/{{ target_arch.stdout }}/configs/{{ kernel_conf_file.stdout }}
+          {% endif %}
+
+    - name: Check patch marker
+      ansible.builtin.stat:
+        path: "{{ target_kernel_dir }}/.defconf.patched"
+      register: defconf_marker
+
+    - name: Patch kernel defconfig (globals)
+      ansible.builtin.lineinfile:
+        path: "{{ axp_kernel_conf }}"
+        line: "{{ item }}=y"
+        state: present
+      loop: "{{ AXP_DEFCONFIG_GLOBALS | default([]) }}"
+      when: not defconf_marker.stat.exists and not (pixel_kernel_gki | bool)
+
+    - name: Patch kernel defconfig (device)
+      ansible.builtin.lineinfile:
+        path: "{{ axp_kernel_conf }}"
+        line: "{{ item }}"
+        state: present
+      loop: "{{ AXP_DEFCONFIG_DEVICE | default([]) }}"
+      when: not defconf_marker.stat.exists and not (pixel_kernel_gki | bool)
+
+    - name: Create patch marker
+      ansible.builtin.file:
+        path: "{{ target_kernel_dir }}/.defconf.patched"
+        state: touch
+      when: not defconf_marker.stat.exists and not (pixel_kernel_gki | bool)
+
+    - name: Copy defconfig to common tree (if defined)
+      ansible.builtin.copy:
+        src: "{{ axp_kernel_conf }}"
+        dest: "{{ target_model_common_tree_path }}/"
+        remote_src: true
+      when:
+        - pixel_kernel_defconfig is defined
+        - not (pixel_kernel_gki | bool)
+
+    - name: Commit kernel defconfig changes
+      ansible.builtin.shell: |
+        source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
+        git add -A && git commit --author="{{ AXP_GIT_AUTHOR }} <{{ AXP_GIT_MAIL }}>" -m "defconfig: applied:
+
+        {{ axp_kernel_conf }} {{ AXP_DEFCONFIG_DEVICE | default('') }}
+      args:
+        chdir: >-
+          {% if pixel_kernel_defconfig is defined %}
+          {{ target_model_common_tree_path }}
+          {% else %}
+          {{ target_kernel_dir }}
+          {% endif %}
+      when: not (pixel_kernel_gki | bool)
 
     - name: Set AXP.OS build id
       ansible.builtin.shell: |
