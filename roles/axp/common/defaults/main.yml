@@ -75,6 +75,9 @@ git_private_repos: "axp_versioning"
 release_gpg_signing_keys_links: >-
     \([key](https://axpos.org/axpos_signing.key), [mirror1](https://codeberg.org/AXP-OS/axpos-org/src/branch/hugo/static/axpos_signing.key), [mirror2](https://leech.binbash.rocks:8008/axp/axpos_signing.key), [mirror3](https://keyserver.ubuntu.com/pks/lookup?search=FE4B2FA2B225F0AB903AF4136740E645718A8E47&fingerprint=on&op=index), [mirror4](https://keys.openpgp.org/search?q=FE4B2FA2B225F0AB903AF4136740E645718A8E47)\)
 
+# kernel global defaults
+axp_defconfig_globals: 'CONFIG_NET CONFIG_INET CONFIG_NET_UDP_TUNNEL CONFIG_CRYPTO_ALGAPI CONFIG_WIREGUARD'
+
 # pixel kernels (graphene)
 # https://grapheneos.org/build#kernel-6th-through-9th-generation-pixels
 # https://grapheneos.org/build#kernel-10th-generation-pixels
