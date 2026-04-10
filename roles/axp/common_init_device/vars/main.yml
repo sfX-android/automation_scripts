@@ -13,6 +13,7 @@ init_device_website_repo_name: "axpos-org"
 init_device_vendorfirmware: "ssh://git@code.binbash.rocks:22443/AXP.OS/vendor_firmware.git"
 
 init_device_otaverifier_repo: "git@github.com:sfX-android/update_verifier.git"
+init_device_otaverifier_branch: "main"
 
 android_version: "{{ git_repo_local_manifests_branch | regex_replace('axp-a', '') }}"
 
