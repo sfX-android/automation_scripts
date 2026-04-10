@@ -81,8 +81,7 @@ hugo_firmware: "included"
 hugo_isab: 'yes'
 
 hugo_xda_link: "TBD" # link to the AXP.OS XDA post for that device
-#hugo_kb_link: "" # OPTIONAL: knownissues link, only if there is any
-#hugo_custom_installguide_path: "" # OPTIONAL: custom installation guide
+hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=63"
 
 # one block, either PRO / SLIM depending on your request
 
