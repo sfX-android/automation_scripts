@@ -36,8 +36,8 @@
   ansible.builtin.include_tasks: patches/axpos.yml
 
 - name: Failme
-		fail:
-			msg: debug
+  fail:
+    msg: debug
 
 
 
