@@ -163,8 +163,8 @@
         state: present
       loop: "{{ axp_defconfig_device | default([]) }}"
       when: 
-							- not defconf_marker.stat.exists
-							- not (pixel_kernel_gki | bool)
+	    - not defconf_marker.stat.exists
+	    - not (pixel_kernel_gki | bool)
         - axp_defconfig_device is defined
 
     - name: Create patch marker
