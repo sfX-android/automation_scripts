@@ -36,8 +36,7 @@
     - name: Set OTA server URI
       ansible.builtin.set_fact:
         AXP_OTA_SERVER_URI: >-
-          https://{{ DOS_OTA_SERVER_PRIMARY }}/axp{{ '-slim' if AOS_BRANDING_BUILDTYPE == 'SLIM' else '' }}/a{{ axp_target_version }}/api/v1/{device}/{incr}
-      when: CUSTOM_AXP_OTA_SERVER_URI | default('') == ''
+          https://{{ axp_ota_server_primary }}/axp{{ '-slim' if RELEASE_TYPE == 'SLIM' else '' }}/a{{ axp_target_version }}/api/v1/{device}/{incr}
 
     - name: Restore strings.xml from git
       ansible.builtin.shell: git checkout strings.xml
@@ -88,15 +87,6 @@
         'BOARD_SYSTEM_EXTIMAGE_PARTITION_RESERVED_SIZE',
         '.*vendor/lineage/config/BoardConfigReservedSize.mk'
         ]) | list }}"
-      when: axp_low_storage == "yes"
-
-    - name: Commit 
-      ansible.builtin.shell: |
-        source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
-        git add -A && git commit --author="{{ AXP_GIT_AUTHOR }} <{{ AXP_GIT_MAIL }}>" -m "{{ axp_device }}: remove reserved space for AXP.OS"
-      args:
-        chdir: "{{ item.path | dirname }}"
-      loop: "{{ boardconfigs.files }}"
       when: axp_low_storage == "yes"
 
     - name: "Commit reservation removals"
@@ -163,7 +153,7 @@
         path: "{{ axp_kernel_conf }}"
         line: "{{ item }}=y"
         state: present
-      loop: "{{ AXP_DEFCONFIG_GLOBALS | default([]) }}"
+      loop: "{{ axp_defconfig_globals }}"
       when: not defconf_marker.stat.exists and not (pixel_kernel_gki | bool)
 
     - name: Patch kernel defconfig (device)
@@ -171,8 +161,11 @@
         path: "{{ axp_kernel_conf }}"
         line: "{{ item }}"
         state: present
-      loop: "{{ AXP_DEFCONFIG_DEVICE | default([]) }}"
-      when: not defconf_marker.stat.exists and not (pixel_kernel_gki | bool)
+      loop: "{{ axp_defconfig_device | default([]) }}"
+      when: 
+							- not defconf_marker.stat.exists
+							- not (pixel_kernel_gki | bool)
+        - axp_defconfig_device is defined
 
     - name: Create patch marker
       ansible.builtin.file:
