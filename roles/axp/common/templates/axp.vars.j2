@@ -188,7 +188,7 @@ export DISABLE_ARTIFACT_PATH_REQUIREMENTS="{{ disable_artifact_path_requirements
 {% endif %}
 
 {% if axp_defconfig_device is defined %}
-export AXP_DEFCONFIG_DEVICE="{{ axp_defconfig_device }}"
+export AXP_DEFCONFIG_DEVICE="{{ axp_defconfig_device | join(' ') }}"
 {% endif %}
 
 export DOS_GRAPHENE_MALLOC="{{ axp_graphene_malloc | default('true') }}"
