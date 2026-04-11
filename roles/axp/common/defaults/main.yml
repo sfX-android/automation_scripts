@@ -77,7 +77,8 @@ release_gpg_signing_keys_links: >-
 
 # kernel global defaults
 axp_defconfig_globals:
-  - CONFIG_NET CONFIG_INET
+  - CONFIG_NET
+  - CONFIG_INET
   - CONFIG_NET_UDP_TUNNEL
   - CONFIG_CRYPTO_ALGAPI
   - CONFIG_WIREGUARD
