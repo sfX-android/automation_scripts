@@ -73,7 +73,7 @@ hugo_isab: 'no'
 
 hugo_xda_link: "https://xdaforums.com/t/rom-a11-official-microg-hardened-h815-axp-os-18-1.4708920/" # link to the AXP.OS XDA post for that device
 hugo_kb_link: "g4"
-hugo_custom_installguide_path: "content/devices/install_h815.guide"
+hugo_custom_installguide_path: "content/devices/install_g4.guide"
 hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=74" # "&labels=56" for enchilada
 
 #### PRO block ####
