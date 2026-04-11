@@ -43,7 +43,11 @@ axp_git_push_vendor_include: "vendor_samsung_universal7870-common|vendor_samsung
 
 # CONFIG_ARM64_SW_TTBR0_PAN breaks boot!
 # force-enable dm-verity
-axp_defconfig_device: "CONFIG_ARM64_SW_TTBR0_PAN=n CONFIG_DM_VERITY=y CONFIG_DM_VERITY_FEC=y CONFIG_CRYPTO_AES_ARM64_NEON_BLK=y"
+axp_defconfig_device:
+  - CONFIG_ARM64_SW_TTBR0_PAN=n
+  - CONFIG_DM_VERITY=y
+  - CONFIG_DM_VERITY_FEC=y
+  - CONFIG_CRYPTO_AES_ARM64_NEON_BLK=y
 
 # deblobbing audiofx breaks video recording due to the removal of libLifevibes_lvverx.so + libLifevibes_lvvetx.so
 axp_deblobber_remove_audiofx: 'false'
