@@ -120,6 +120,11 @@
       ansible.builtin.include_tasks: patches/blueline.yml
       when: target_model == "blueline"
 
+    # special handling for klte
+    - name: "Include: patches/klte.yml"
+      ansible.builtin.include_tasks: patches/klte.yml
+      when: target_model == "klte"
+
 - name: "Ensure Kernel isn't dirty"
   ansible.builtin.include_tasks: git_commit.yml
   vars:
