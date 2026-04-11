@@ -101,7 +101,7 @@ pixel_kernel_buildcmd: "./build_{{ axp_pixel_kernel_codename | d(target_model) }
 #pixel_kernel_buildcmd: "./build_{{ target_model }}.sh --config=no_download_gki --config=no_download_gki_fips140 --lto=full"
 
 # set kernel default for pixel vs. non-pixel
-pixel_kernel_gki: >-
+kleaf_kernel_build: >-
     {% if target_model_vendor | d('undef') == "Google"
         and android_version_int | int > 14
         and git_pixel_kernel_manifest_branch is defined %}true{% else %}false{% endif %}
@@ -117,7 +117,7 @@ axp_vendorkernelboot: >-
 
 # set defconfig based on target model or an override
 pixel_kernel_defconfig: >-
-    {% if pixel_kernel_gki | bool %}
+    {% if kleaf_kernel_build | bool %}
     {{ git_pixel_kernel_dir }}/private/devices/google/{{ pixel_kernel_codename | d(target_model) }}/{{ pixel_kernel_codename | d(target_model) }}_defconfig
     {% endif %}
 
@@ -125,7 +125,7 @@ pixel_kernel_defconfig: >-
 # instead we will modify the stamp config which empties it otherwise. there are (maybe) better ways to achieve
 # this but I was not able to find any and this seems to work:
 pixel_kernel_localversion_path: >-
-    {% if pixel_kernel_gki | bool %}{{ git_pixel_kernel_dir }}/build/kernel/kleaf/impl/stamp.bzl{% endif %}
+    {% if kleaf_kernel_build | bool %}{{ git_pixel_kernel_dir }}/build/kernel/kleaf/impl/stamp.bzl{% endif %}
 
 # the login name used in "tea login add" command, you will get the full command in the ansible error.
 # see: roles/axp/common/tasks/prep.yml for details
