@@ -206,3 +206,4 @@
         git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "AXP.OS: set build id ({{ axp_os_build_id }})"
       args:
         chdir: "{{ SRCPATH }}"
+        executable: /bin/bash
