@@ -141,11 +141,11 @@ export AXP_ANDROIDVERSION_INT="{{ android_version_int }}"
 # Kernel
 export AXP_PIXEL_LOCALVER_PATH={{ pixel_kernel_localversion_path | d("") }}
 export AXP_KERNEL_KLEAF="{{ axp_kernel_kleaf | trim }}"
-#export AXP_DISABLE_CVE_PATCHING={{ pixel_kernel_gki | lower() }}
+#export AXP_DISABLE_CVE_PATCHING={{ kleaf_kernel_build | lower() }}
 export AXP_DISABLE_CVE_PATCHING=false
-#export AXP_DISABLE_DEFCONF_HARDENING={{ pixel_kernel_gki | lower() }}
+#export AXP_DISABLE_DEFCONF_HARDENING={{ kleaf_kernel_build | lower() }}
 export AXP_DISABLE_DEFCONF_HARDENING=false
-export AXP_PIXEL_DEFCONF="{% if pixel_kernel_gki | bool %}{{ pixel_kernel_defconfig | trim }}{% else %}undefined{% endif %}"
+export AXP_PIXEL_DEFCONF="{% if kleaf_kernel_build | bool %}{{ pixel_kernel_defconfig | trim }}{% else %}undefined{% endif %}"
 
 
 # git info used for committing changes within the sources
