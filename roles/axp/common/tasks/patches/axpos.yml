@@ -105,7 +105,7 @@
         {% endif %}
         echo "lunch success" >> {{ BUILD_LOG }}
 
-        build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH
+        build/soong/soong_ui.bash --dumpvar-mode TARGET_ARCH 2>> "{{ BUILD_LOG }}"
       register: target_arch
       changed_when: false
       failed_when: false
@@ -123,7 +123,7 @@
         {% endif %}
         echo "lunch success" >> {{ BUILD_LOG }}
 
-        build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG | cut -d " " -f 1
+        build/soong/soong_ui.bash --dumpvar-mode TARGET_KERNEL_CONFIG 2>> "{{ BUILD_LOG }}" | cut -d " " -f 1
       register: kernel_conf_file
       changed_when: false
       failed_when: false
