@@ -16,6 +16,7 @@ axp_ota_server_primary_name: "Stable"
 axp_ota_server_primary: "https://{{ axp_ota_server_domain_primary }}:8010"
 axp_ota_server_onion_primary_name: "Tor:Stable"
 axp_ota_server_onion_primary: "http://{{ axp_ota_server_onion_domain }}"
+
 axp_ota_server_secondary_name: "UNSTABLE"
 axp_ota_server_secondary: "https://{{ axp_ota_server_domain_secondary }}:8010"
 axp_ota_server_onion_secondary_name: "Tor:UNSTABLE"
