@@ -5,7 +5,7 @@
     path: "{{ SRCPATH }}/device/{{ target_model_vendor | lower }}/{{ common_target_model | d(target_model) }}/sepolicy/rild.te"
     line: "allow rild radio_data_file:lnk_file getattr;"
     state: present
-			 create: true
+    create: true
 
 - name: "Commit klte changes"
   ansible.builtin.include_tasks: git_commit.yml
