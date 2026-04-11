@@ -2,7 +2,7 @@
 
 - name: klte specific adjustments
   ansible.builtin.lineinfile:
-    path: "{{ SRCPATH }}/{{ target_model_common_tree_path | d(target_model_device_tree_path) }}/sepolicy/rild.te"
+    path: "{{ SRCPATH }}/{{ target_model_common_tree_path | d(target_model_device_tree_path) }}/sepolicy/common/rild.te"
     line: "allow rild radio_data_file:lnk_file getattr;"
     state: present
     create: true
