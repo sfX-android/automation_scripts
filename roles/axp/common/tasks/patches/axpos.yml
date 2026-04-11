@@ -148,22 +148,22 @@
 
     - name: Patch kernel defconfig (globals)
       ansible.builtin.lineinfile:
-        path: "{{ axp_kernel_conf }}"
+        path: "{{ axp_kernel_conf | trim }}"
         line: "{{ item }}=y"
         state: present
       loop: "{{ axp_defconfig_globals }}"
-      when: not defconf_marker.stat.exists and not (pixel_kernel_gki | bool)
+      when: not defconf_marker.stat.exists # and not (pixel_kernel_gki | bool)
 
     - name: Patch kernel defconfig (device)
       ansible.builtin.lineinfile:
-        path: "{{ axp_kernel_conf }}"
+        path: "{{ axp_kernel_conf | trim }}"
         line: "{{ item }}"
         state: present
       loop: "{{ axp_defconfig_device | default([]) }}"
       when: 
         - not defconf_marker.stat.exists
-        - not (pixel_kernel_gki | bool)
         - axp_defconfig_device is defined
+        #- not (pixel_kernel_gki | bool)
 
     - name: Create patch marker
       ansible.builtin.file:
@@ -173,7 +173,7 @@
 
     - name: Copy defconfig to common tree (if KLEAF)
       ansible.builtin.copy:
-        src: "{{ axp_kernel_conf }}"
+        src: "{{ axp_kernel_conf | trim }}"
         dest: "{{ SRCPATH }}/{{ target_model_common_tree_path }}/"
         remote_src: true
       when:
