@@ -187,6 +187,7 @@
         {% else %}
         cd {{ SRCPATH }}/{{ target_kernel_dir | trim }}
         {% endif %}
+        
         source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
         git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "defconfig: applied:
 
