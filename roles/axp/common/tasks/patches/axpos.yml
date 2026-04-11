@@ -183,7 +183,7 @@
     - name: Commit kernel defconfig changes
       ansible.builtin.shell: |
         source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
-        git add -A && git commit --author="{{ AXP_GIT_AUTHOR }} <{{ AXP_GIT_MAIL }}>" -m "defconfig: applied:
+        git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "defconfig: applied:
 
         {{ axp_kernel_conf }} {{ axp_defconfig_globals | join(' ') }} {{ axp_defconfig_device | join(' ') | default('') }}"
       args:
@@ -202,6 +202,6 @@
         find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.display\.version=\$(LINEAGE_DISPLAY_VERSION)/ro.lineage.display.version={{ axp_os_build_id }}/g" {} \;
         echo "LineageOS version set to: {{ axp_os_build_id }}" | tee -a {{ BUILD_LOG }}
         cd vendor/lineage
-        git add -A && git commit --author="{{ AXP_GIT_AUTHOR }} <{{ AXP_GIT_MAIL }}>" -m "AXP.OS: set build id ({{ axp_os_build_id }})"
+        git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "AXP.OS: set build id ({{ axp_os_build_id }})"
       args:
         chdir: "{{ SRCPATH }}"
