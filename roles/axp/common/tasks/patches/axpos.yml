@@ -188,7 +188,7 @@
         {{ axp_defconfig_globals | join(' ') }} {{ axp_defconfig_device | default('') | join(' ') }}"
       args:
         chdir: >-
-          {% if pixel_kernel_kleaf %}
+          {% if kleaf_kernel_build %}
           {{ SRCPATH }}/{{ target_model_common_tree_path }}
           {% else %}
           {{ SRCPATH }}/{{ target_kernel_dir }}
