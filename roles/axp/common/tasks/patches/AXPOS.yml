@@ -182,7 +182,7 @@
 
     - name: Commit kernel defconfig changes
       ansible.builtin.shell: |
-        {% if kleaf_kernel_build %}
+        {% if kleaf_kernel_build | bool %}
         cd {{ SRCPATH }}/{{ target_model_common_tree_path | trim }}
         {% else %}
         cd {{ SRCPATH }}/{{ target_kernel_dir | trim }}
