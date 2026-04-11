@@ -36,7 +36,7 @@
   ansible.builtin.shell: |
     {{ DOS_INIT }}
 
-    {% if pixel_kernel_gki | bool %}
+    {% if kleaf_kernel_build | bool %}
     cd {{ git_pixel_kernel_source }}
     {% else %}
     cd {{ target_kernel_dir }}
@@ -57,7 +57,7 @@
     path: "{{ git_pixel_kernel_source }}/android/abi_gki_aarch64_imx"
     regexp: '^\s+mctrl_gpio_disable_ms$'
     state: absent
-  when: pixel_kernel_gki | bool
+  when: kleaf_kernel_build | bool
 
 - name: "Clean CVE exclusion lists"
   ansible.builtin.file:
