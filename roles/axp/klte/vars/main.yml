@@ -40,9 +40,6 @@ axp_auto_encrypt: false
 axp_git_push_device_include: "device_samsung_klte|{{ target_model_common_tree }}"
 axp_git_push_vendor_include: "vendor_samsung"
 
-# disable Wireguard patching (unsupported, bc kernel = v3.4)
-axp_defconfig_globals: ''
-
 # special testing area
 extendrom_intercept_installsrc: 'true'
 
