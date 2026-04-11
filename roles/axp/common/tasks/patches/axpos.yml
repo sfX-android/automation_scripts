@@ -192,6 +192,8 @@
         git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "defconfig: applied:
 
         {{ axp_defconfig_globals | join(' ') }} {{ axp_defconfig_device | default('') | join(' ') }}"
+      args:
+        executable: /bin/bash
       when: not (kleaf_kernel_build | bool)
 
     - name: Set AXP.OS build id
