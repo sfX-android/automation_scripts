@@ -35,8 +35,10 @@ axp_git_push_vendor_include: "vendor_oneplus_sm8150-common|vendor_oneplus_hotdog
 
 # overwrite kernel defconfig
 # CONFIG_SECURITY_SELINUX_DEVELOP allows switching to permissive with root, breaks boot if "n"
-axp_defconfig_device: "CONFIG_HIBERNATION=y CONFIG_DEBUG_FS=n CONFIG_SECURITY_SELINUX_DEVELOP=y"
-
+axp_defconfig_device:
+  - CONFIG_HIBERNATION=y
+  - CONFIG_DEBUG_FS=n
+  - CONFIG_SECURITY_SELINUX_DEVELOP=y
 
 #################################################################################################################################
 ## Website info
