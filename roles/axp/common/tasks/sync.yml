@@ -83,7 +83,7 @@
       fi
   when:
     - git_pixel_kernel_manifest_branch is defined
-    - pixel_kernel_gki | bool
+    - kleaf_kernel_build | bool
     - pixel_kernel_gos | d(False) | bool
 
 - name: "activate special recovery manifest if needed"
