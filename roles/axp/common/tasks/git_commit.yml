@@ -59,4 +59,4 @@
           fi
       args:
         executable: /bin/bash
-      when: git_commit_path
+      when: git_commit_path is defined
