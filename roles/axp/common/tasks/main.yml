@@ -120,8 +120,10 @@
       ansible.builtin.include_tasks: patches/blueline.yml
       when: target_model == "blueline"
 
-- name: "Include: commit_kernel.yml"
-  ansible.builtin.include_tasks: commit_kernel.yml
+- name: "Ensure Kernel isn't dirty"
+  ansible.builtin.include_tasks: git_commit.yml
+  vars:
+    git_commit_kernel: true
   when: not axp_skip_common_tasks
 
 - name: "Early git push to AXP.OS org"
