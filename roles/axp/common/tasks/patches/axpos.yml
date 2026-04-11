@@ -109,7 +109,7 @@
       register: target_arch
       changed_when: false
       failed_when: false
-      when: not (pixel_kernel_defconfig is defined and pixel_kernel_gki | bool)
+      when: not kleaf_kernel_build | bool
       args:
         chdir: "{{ SRCPATH }}"
 
@@ -127,7 +127,7 @@
       register: kernel_conf_file
       changed_when: false
       failed_when: false
-      when: not (pixel_kernel_defconfig is defined and pixel_kernel_gki | bool)
+      when: not kleaf_kernel_build | bool
       args:
         executable: /bin/bash
         chdir: "{{ SRCPATH }}"
@@ -135,7 +135,7 @@
     - name: Set kernel facts
       ansible.builtin.set_fact:
         axp_kernel_conf: >-
-          {% if pixel_kernel_defconfig is defined and pixel_kernel_gki | bool %}
+          {% if kleaf_kernel_build | bool %}
           {{ pixel_kernel_defconfig }}
           {% else %}
           {{ SRCPATH }}/{{ target_kernel_dir }}/arch/{{ target_arch.stdout }}/configs/{{ kernel_conf_file.stdout }}
@@ -152,7 +152,7 @@
         line: "{{ item }}=y"
         state: present
       loop: "{{ axp_defconfig_globals }}"
-      when: not defconf_marker.stat.exists # and not (pixel_kernel_gki | bool)
+      when: not defconf_marker.stat.exists # and not (kleaf_kernel_build | bool)
 
     - name: Patch kernel defconfig (device)
       ansible.builtin.lineinfile:
@@ -163,13 +163,13 @@
       when: 
         - not defconf_marker.stat.exists
         - axp_defconfig_device is defined
-        #- not (pixel_kernel_gki | bool)
+        #- not (kleaf_kernel_build | bool)
 
     - name: Create patch marker
       ansible.builtin.file:
         path: "{{ SRCPATH }}/{{ target_kernel_dir }}/.defconf.patched"
         state: touch
-      when: not defconf_marker.stat.exists and not (pixel_kernel_gki | bool)
+      when: not defconf_marker.stat.exists and not (kleaf_kernel_build | bool)
 
     - name: Copy defconfig to common tree (if KLEAF)
       ansible.builtin.copy:
@@ -178,22 +178,22 @@
         remote_src: true
       when:
         - pixel_kernel_defconfig is defined
-        - pixel_kernel_gki | bool
+        - kleaf_kernel_build | bool
 
     - name: Commit kernel defconfig changes
       ansible.builtin.shell: |
         source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
         git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "defconfig: applied:
 
-        {{ axp_kernel_conf }} {{ axp_defconfig_globals | join(' ') }} {{ axp_defconfig_device | default('') | join(' ') }}"
+        {{ axp_defconfig_globals | join(' ') }} {{ axp_defconfig_device | default('') | join(' ') }}"
       args:
         chdir: >-
-          {% if pixel_kernel_defconfig is defined %}
+          {% if pixel_kernel_kleaf %}
           {{ SRCPATH }}/{{ target_model_common_tree_path }}
           {% else %}
           {{ SRCPATH }}/{{ target_kernel_dir }}
           {% endif %}
-      when: not (pixel_kernel_gki | bool)
+      when: not (kleaf_kernel_build | bool)
 
     - name: Set AXP.OS build id
       ansible.builtin.shell: |
