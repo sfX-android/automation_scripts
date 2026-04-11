@@ -27,6 +27,9 @@ target_model_common_tree: "android_device_google_crosshatch" # e.g. device_onepl
 
 target_model_device_tree: device_{{ target_model_vendor | lower() }}_{{ target_model | lower() }}
 
+# add OpenEUICC
+axp_euicc_capable: true
+
 # boot debugger mount point
 # path for boot_debug, must be identified within the device / common tree fstab:
 # - must be a writable partition
