@@ -189,9 +189,17 @@
         {% endif %}
         
         source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
-        git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "defconfig: applied:
+
+        CMT=0
+        git add -A || CMT=1
+        # check for uncommitted changes
+        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+        # commit if required
+        if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
+            git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "defconfig: applied:
 
         {{ axp_defconfig_globals | join(' ') }} {{ axp_defconfig_device | default('') | join(' ') }}"
+        fi
       args:
         executable: /bin/bash
       when: not (kleaf_kernel_build | bool)
@@ -203,7 +211,15 @@
         find vendor/lineage -type f -name '*.mk' -exec sed -i "s/ro\.lineage\.display\.version=\$(LINEAGE_DISPLAY_VERSION)/ro.lineage.display.version={{ axp_os_build_id }}/g" {} \;
         echo "LineageOS version set to: {{ axp_os_build_id }}" | tee -a {{ BUILD_LOG }}
         cd vendor/lineage
-        git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "AXP.OS: set build id ({{ axp_os_build_id }})"
+
+        CMT=0
+        git add -A || CMT=1
+        # check for uncommitted changes
+        CMTL=$(git status --porcelain=v1 | wc -l 2>/dev/null)
+        # commit if required
+        if [ $CMT -eq 1 -o $CMTL -gt 0 ];then
+            git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "AXP.OS: set build id ({{ axp_os_build_id }})"
+        fi
       args:
         chdir: "{{ SRCPATH }}"
         executable: /bin/bash
