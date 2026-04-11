@@ -182,17 +182,15 @@
 
     - name: Commit kernel defconfig changes
       ansible.builtin.shell: |
+        {% if kleaf_kernel_build %}
+        cd {{ SRCPATH }}/{{ target_model_common_tree_path | trim }}
+        {% else %}
+        cd {{ SRCPATH }}/{{ target_kernel_dir | trim }}
+        {% endif %}
         source {{ BUILDHOME }}/.divested.vars.{{ sub_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}
         git add -A && git commit --author="$AXP_GIT_AUTHOR <$AXP_GIT_MAIL>" -m "defconfig: applied:
 
         {{ axp_defconfig_globals | join(' ') }} {{ axp_defconfig_device | default('') | join(' ') }}"
-      args:
-        chdir: >-
-          {% if kleaf_kernel_build %}
-          {{ SRCPATH }}/{{ target_model_common_tree_path }}
-          {% else %}
-          {{ SRCPATH }}/{{ target_kernel_dir }}
-          {% endif %}
       when: not (kleaf_kernel_build | bool)
 
     - name: Set AXP.OS build id
