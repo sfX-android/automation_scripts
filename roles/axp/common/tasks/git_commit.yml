@@ -35,7 +35,7 @@
       loop:
         - "{{ SRCPATH }}/{{ target_kernel_dir }}"
         - "{{ pixel_kernel_defconfig_basepath | d('undef') }}"
-      when: git_commit_kernel
+      when: git_commit_kernel is defined and git_commit_kernel
 
     - name: "Git commit changes in given directory"
       ansible.builtin.shell: |
