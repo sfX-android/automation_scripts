@@ -124,7 +124,7 @@
 
 # AXP.OS adjustments (e.g wireguard, OTA,..)
 - name: "Include AXP.OS adjustments"  # TODO: will make vendor/axp/axp.sh obsolete once all is working/verified
-  ansible.builtin.include_tasks: patches/axpos.yml
+  ansible.builtin.include_tasks: patches/_axpos.yml
 
 # - name: "Apply AXP.OS adjustments"
   # ansible.builtin.shell: |
