@@ -98,4 +98,4 @@
     {{ repo_bin }} forall -j{{ max_processes }} -c "git am --abort; git rebase --abort; git add -A; git reset --hard FETCH_HEAD" >> {{ BUILD_LOG }} 2>&1 
   args:
     executable: /bin/bash
-  when: pixel_kernel_gki | bool
+  when: kleaf_kernel_build | bool
