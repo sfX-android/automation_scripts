@@ -82,15 +82,6 @@
       ansible.builtin.include_tasks: firmware_update.yml
       when: update_vendor_firmware | bool or download_fairphone_firmware | bool
 
-
-    - name: "Include AXP.OS adjustments"  # TODO: will make vendor/axp/axp.sh obsolete once all is working/verified
-      ansible.builtin.include_tasks: patches/axpos.yml
-
-    - name: Failme
-      fail:
-        msg: debug
-
-
     # apply ASB patches if needed
     # currently LOS supports ASB patches up to and including: Android 14
     # - include_tasks: single_secpatch.yml
