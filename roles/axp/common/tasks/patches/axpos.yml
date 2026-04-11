@@ -140,7 +140,7 @@
           {% if pixel_kernel_defconfig is defined and pixel_kernel_gki | bool %}
           {{ pixel_kernel_defconfig }}
           {% else %}
-          {{ target_kernel_dir }}/arch/{{ target_arch.stdout }}/configs/{{ kernel_conf_file.stdout }}
+          {{ SRCPATH }}/{{ target_kernel_dir }}/arch/{{ target_arch.stdout }}/configs/{{ kernel_conf_file.stdout }}
           {% endif %}
 
     - name: Check patch marker
@@ -169,18 +169,18 @@
 
     - name: Create patch marker
       ansible.builtin.file:
-        path: "{{ target_kernel_dir }}/.defconf.patched"
+        path: "{{ SRCPATH }}/{{ target_kernel_dir }}/.defconf.patched"
         state: touch
       when: not defconf_marker.stat.exists and not (pixel_kernel_gki | bool)
 
-    - name: Copy defconfig to common tree (if defined)
+    - name: Copy defconfig to common tree (if KLEAF)
       ansible.builtin.copy:
         src: "{{ axp_kernel_conf }}"
-        dest: "{{ target_model_common_tree_path }}/"
+        dest: "{{ SRCPATH }}/{{ target_model_common_tree_path }}/"
         remote_src: true
       when:
         - pixel_kernel_defconfig is defined
-        - not (pixel_kernel_gki | bool)
+        - pixel_kernel_gki | bool
 
     - name: Commit kernel defconfig changes
       ansible.builtin.shell: |
@@ -191,9 +191,9 @@
       args:
         chdir: >-
           {% if pixel_kernel_defconfig is defined %}
-          {{ target_model_common_tree_path }}
+          {{ SRCPATH }}/{{ target_model_common_tree_path }}
           {% else %}
-          {{ target_kernel_dir }}
+          {{ SRCPATH }}/{{ target_kernel_dir }}
           {% endif %}
       when: not (pixel_kernel_gki | bool)
 
