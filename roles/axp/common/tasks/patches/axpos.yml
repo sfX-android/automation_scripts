@@ -21,9 +21,7 @@
       ansible.builtin.debug:
         msg:
           - "AXP_TARGET_VERSION: {{ axp_target_version }}"
-          - "AXP_TARGET_ARCH: {{ AXP_TARGET_ARCH | default('') }}"
           - "AXP_KERNEL_PATH: {{ axp_kernel_path }}"
-          - "AXP_KERNEL_CONF: {{ AXP_KERNEL_CONF | default('') }}"
           - "AOS_BRANDING_BUILDTYPE: {{ RELEASE_TYPE }}"
           - "AXP_LOW_STORAGE: {{ axp_low_storage }}"
           - "device/{{ axp_devicevendor }}/{{ axp_device }}"
