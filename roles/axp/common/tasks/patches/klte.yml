@@ -2,7 +2,7 @@
 
 - name: klte specific adjustments
   ansible.builtin.lineinfile:
-    path: "{{ SRCPATH }}/device/{{ target_model_vendor | lower }}/{{ common_target_model | d(target_model) }}/sepolicy/rild.te"
+    path: "{{ SRCPATH }}/{{ target_model_common_tree_path | d(target_model_device_tree_path) }}/sepolicy/rild.te"
     line: "allow rild radio_data_file:lnk_file getattr;"
     state: present
     create: true
@@ -11,4 +11,4 @@
   ansible.builtin.include_tasks: git_commit.yml
   vars:
     custom_commit_message: "AXP.OS: set rild policy"
-    git_commit_path: "{{ SRCPATH }}/device/{{ target_model_vendor | lower }}/{{ common_target_model | d(target_model) }}"
+    git_commit_path: "{{ SRCPATH }}/{{ target_model_common_tree_path | d(target_model_device_tree_path) }}"
