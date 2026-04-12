@@ -29,8 +29,8 @@ common_apps_keydir: "{{ keys_base_path }}/{{ os_name }}-{{ axp_type }}/common"
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}-{{ axp_type }}/{{ sub_model | d(target_model) }}/"
 rempath_unstable: "/home/nightlies/roms/{{ ROM_FLAVOR }}-unstable/"
 
-device_cl: |-
-  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() }}\-{{ axp_type }}***
+#device_cl: |-
+#  ***{{ target_model_full | regex_escape() }}*** ***\({{ target_model | regex_escape() }}\)*** \- ***{{ ROM_FLAVOR | regex_escape() }}\-{{ axp_type }}***
 
 dl_links: |-
   ***Download:*** [{{ ROMFILE.stdout | regex_escape() }}]({{ leech_server }}/{{ ROM_FLAVOR | regex_escape() }}\-{{ axp_type }}/{{ target_model }})
