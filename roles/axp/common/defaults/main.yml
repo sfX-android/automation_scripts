@@ -5,20 +5,21 @@ axp_main_website_url: "https://axpos.org"
 axp_issue_tracker: "https://code.binbash.rocks"
 axp_issue_tracker_uri: "{{ axp_issue_tracker }}/AXP.OS-public/issue-tracker"
 axp_issue_tracker_queryall: "{{ axp_issue_tracker_uri }}/issues?q=&type=all&state=all"
+leech_server: "https://download.axpos.org"
 
 # OTA
-axp_ota_server_domain_primary: "sfxota.binbash.rocks"
-axp_ota_server_domain_secondary: "sfxota-beta.binbash.rocks"
+axp_ota_server_domain_primary: "update.axpos.org"
+axp_ota_server_domain_secondary: "update-unstable.axpos.org"
 axp_ota_server_onion_domain: "qwmrjjs7mnbys35c6vgs6f47kemobjwynilp6cokjz5gxctfgdjfo7id.onion"
 axp_ota_changelog_uri: "https://axpos.org/Changelog"
 
 axp_ota_server_primary_name: "Stable"
-axp_ota_server_primary: "https://{{ axp_ota_server_domain_primary }}:8010"
+axp_ota_server_primary: "https://{{ axp_ota_server_domain_primary }}"
 axp_ota_server_onion_primary_name: "Tor:Stable"
 axp_ota_server_onion_primary: "http://{{ axp_ota_server_onion_domain }}"
 
 axp_ota_server_secondary_name: "UNSTABLE"
-axp_ota_server_secondary: "https://{{ axp_ota_server_domain_secondary }}:8010"
+axp_ota_server_secondary: "https://{{ axp_ota_server_domain_secondary }}"
 axp_ota_server_onion_secondary_name: "Tor:UNSTABLE"
 axp_ota_server_onion_secondary: "http://{{ axp_ota_server_onion_domain }}:8080"
 
