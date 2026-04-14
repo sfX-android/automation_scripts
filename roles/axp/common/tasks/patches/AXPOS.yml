@@ -111,6 +111,7 @@
       failed_when: false
       when: not kleaf_kernel_build | bool
       args:
+        executable: /bin/bash
         chdir: "{{ SRCPATH }}"
 
     - name: Dump TARGET_KERNEL_CONFIG
