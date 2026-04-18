@@ -1,0 +1,8 @@
+---
+
+- name: "Apply Sync fixup (18.1)"
+  ansible.builtin.shell: |
+      {{ DOS_INIT }}
+      cd {{ SRCPATH }}/vendor/lineage
+      git revert 3bea2ad4b3bf583840226eff100d77ebf2b674b3 # stupid breaking repopick!
+  when: android_version_int | int == 11
