@@ -74,6 +74,9 @@
     - name: "Include: sync.yml"
       ansible.builtin.include_tasks: sync.yml
 
+    - name: "Include: sync_fixup.yml"
+      ansible.builtin.include_tasks: sync_fixup.yml
+
     - name: "Include: adjust_DOS_options.yml"
       ansible.builtin.include_tasks: adjust_DOS_options.yml
 
