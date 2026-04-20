@@ -27,7 +27,7 @@ target_model_device_tree_mk: common.mk
 axp_release_recovery: true
 
 # disable Wireguard patching (already part of the upstream kernel (>= A15)
-#skip_wireguard: true
+skip_wireguard: true
 
 # git push
 axp_git_push_device_include: "device_oneplus_hotdog|{{ target_model_common_tree }}"
