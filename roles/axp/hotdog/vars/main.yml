@@ -57,7 +57,7 @@ hugo_tracker_link: "{{ axp_issue_tracker_queryall }}&labels=70" # "&labels=56" f
 
 
 #### PRO block ####
-android_version_pro: 13
+android_version_pro: 15
 hugo_relockable_pro: 'no'
 hugo_encryption_pro: "FBEv2" # device encryption type: no|FDE|ICE|FBEv1|FBEv2
 axp_bootloader_id_pro: 'B9C105F3CB6FAFD3' # if AVB: Bootloader ID (first line) for validating build log
