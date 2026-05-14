@@ -383,8 +383,8 @@ DOS_INIT: |
     export AXP_VARS_ID="{{ parent_model | d(target_model) }}-{{ android_shortversion }}-{{ axp_type | upper() }}"
     export PATH="{{ BUILDHOME }}/.local/bin:$HOME/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     export TMPDIR="{{ server_tmp_dir }}"
-    if [ ! -L "$HOME/.local/bin/sh" ];then ln -s /bin/bash $HOME/.local/bin/sh "{{ BUILD_LOG }}" 2>&1; fi
-    if [ ! -L "$HOME/.local/bin/rename" ];then ln -s {{ SRCPATH }}/rename $HOME/.local/bin/rename "{{ BUILD_LOG }}" 2>&1; fi
+    if [ ! -L "$HOME/.local/bin/sh" ];then ln -s /bin/bash $HOME/.local/bin/sh >>  "{{ BUILD_LOG }}" 2>&1; fi
+    if [ ! -L "$HOME/.local/bin/rename" ];then ln -s {{ SRCPATH }}/rename $HOME/.local/bin/rename >> "{{ BUILD_LOG }}" 2>&1; fi
     alias sh=/bin/bash
     alias rename="{{ SRCPATH }}/rename"
     {% if release_gpg_signing_key is defined and release_gpg_signing_key != '' %}
