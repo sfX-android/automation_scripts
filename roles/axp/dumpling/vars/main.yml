@@ -4,9 +4,6 @@ target_model_vendor: "OnePlus"
 target_model_name: '5T'
 target_model_full: "{{ target_model_vendor }} {{ target_model_name }}"
 
-# android version
-android_shortversion: a13
-
 # boot debugger path & config
 extendrom_debug_path_default: /mnt/vendor/persist
 extendrom_debug_path_size_full_default: 500 
@@ -58,7 +55,7 @@ axp_git_push_vendor_include: "vendor_oneplus_msm8998-common|vendor_oneplus_dumpl
 # website info
 hugo_encryption: "ICE"
 hugo_firmware: "included"
-hugo_relockable: "yes (since 2025-12-03)"
+hugo_relockable: "yes" # (since 2025-12-03)
 hugo_state: "stable"
 hugo_supportlevel: "community"
 hugo_isab: "no"
