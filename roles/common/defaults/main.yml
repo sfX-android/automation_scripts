@@ -90,6 +90,7 @@ telegram_notifications: false
 custom_release_script: false
 
 # build vars
+build_timeout_mins: 240 # override in semaphore inventory, default 4 hours before a build gets killed
 BUILDHOME: /home/jenkins
 rempath: "/home/nightlies/roms/{{ ROM_FLAVOR }}/{{ android_shortversion }}/{{ target_model }}/"
 zipdir_mntp: "/home/androidsource/ZIPs"
