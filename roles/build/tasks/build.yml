@@ -2,7 +2,11 @@
 
 - include_tasks: ../../common/tasks/set_keys.yml
 
-- name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: 4 hours)"
+- name: Set build timeout
+  ansible.builtin.set_fact:
+      build_timeout_secs: "{{ build_timeout_mins * 60 }}"
+
+- name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }} (timeout: {{ build_timeout_mins }} minutes)"
   debug:
     msg: |
       #
@@ -11,6 +15,7 @@
       
       Variables in use:
 
+      build_timeout_mins: {{ build_timeout_mins }}
       BDEVICE: {{ BDEVICE }}
       target_model_full: {{ target_model_full }} - target_model: {{ target_model }}{% if sub_model is defined %} - sub_model: {{ sub_model }}{% endif%}
 
@@ -61,12 +66,12 @@
 #      SH_COMMON_PIXEL_CREATE_FACTORY: {{ SH_COMMON_PIXEL_CREATE_FACTORY | d('N/A') }}
 
 - name: "Building: {{ BDEVICE }} - {{ ROM_FLAVOR }}"
-  shell: >
+  ansible.builtin.shell: >
      source {{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh >> {{ BUILD_LOG }} 2>&1
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
-  async: 14400
+  async: "{{ build_timeout_secs }}"
   poll: 30
   register: buildresult
   ignore_errors: true
