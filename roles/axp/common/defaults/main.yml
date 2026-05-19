@@ -616,7 +616,7 @@ SH_COMMON_BUILD_SNIPPET: |
 
         if [ -n "$just_cve_excl" ];then
             echo -e "\ndirty test: revert CVE's and re-test like:"
-            echo -e "\tcd {{ target_kernel_dir }} && for p in $just_cve_excl; do patch -p1 -R < \$DOS_PATCHES_LINUX_CVES/\$p;done; croot; time ~/build_{{ sub_model | d(target_model) }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh | tee ~/LOG"
+            echo -e "\tcd {{ target_kernel_dir }} && for p in $just_cve_excl; do patch -p1 -R < \$DOS_PATCHES_LINUX_CVES/\$p;done && croot && time ~/build_{{ sub_model | d(target_model) }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh | tee ~/LOG"
             echo -e "\nIf you then encounter another error do:\n\tcat ~/LOG >> $build_log"
             echo -e "\tvendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L $build_log"
         fi
