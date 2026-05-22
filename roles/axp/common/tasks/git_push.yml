@@ -300,6 +300,7 @@
     cp -a {{ BUILDHOME }}/build_{{ target_model }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh . || true
     git remote remove up 2>> /dev/null || true
     git remote add up {{ git_axpos_org_private }}/manifest.git
+    git fetch up --tags --force
     git add -A || true
     git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "added/changed $TAG"
     git tag -a "$TAG" -m "axp.os: tagged on $TAG" 2>> /dev/null || (git tag -d "$TAG"; git push up --delete "$TAG" 2>> /dev/null || true ; git tag -a "$TAG" -m "axp.os: tagged on $TAG")
@@ -442,7 +443,7 @@
     git commit {{ git_commit_args | d('') }} --author="${AXP_GIT_AUTHOR} <${AXP_GIT_MAIL}>" -m "add app versions for {{ build_id }}"  >> /dev/null 2>> {{ BUILD_LOG }} || echo "nothing to commit" >> {{ BUILD_LOG }}
 
     TE=0
-    git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1 
+    git tag -a "$TAG" -m "axp.os: tagged on $TAG" >> {{ BUILD_LOG }} 2>&1 || TE=1
     if [ $TE -eq 0 ];then
       echo "[VERSIONING] [GIT] will push else new tag: $TAG" >> {{ BUILD_LOG }}
       git push --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
@@ -455,7 +456,7 @@
       git push --force --set-upstream up $TAG >> {{ BUILD_LOG }} 2>&1
       echo "[VERSIONING] [GIT] FORCE pushed new tag: $TAG" >> {{ BUILD_LOG }}
     fi
-    echo "[VERSIONING] All DONE!"  
+    echo "[VERSIONING] All DONE!"
   args:
     executable: /bin/bash
     chdir: "{{ SRCPATH }}"
