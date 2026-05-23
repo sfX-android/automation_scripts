@@ -14,8 +14,13 @@
     custom_commit_message: "AXP.OS: fixup deblob leftovers"
     git_commit_kernel: true
 
-- name: Fix gs201 widevine leftovers
-  when: ansible.builtin.stat(path=SRCPATH + "/device/google/gs201/widevine/device.mk").stat.exists
+- name: "Check gs201"
+  ansible.builtin.stat:
+    path: "{{ SRCPATH }}/device/google/gs201/widevine/device.mk"
+  register: p201wv
+
+- name: "Fix gs201 widevine leftovers"
+  when: p201wv.stat.exists
   block:
 
     - name: Ensure PRODUCT_PACKAGES header exists
