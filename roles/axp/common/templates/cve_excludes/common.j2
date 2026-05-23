@@ -66,9 +66,11 @@ commentPatchesFromFile() {
         if [[ -z "$pattern" || "$pattern" =~ ^[[:space:]]*# ]]; then
             continue
         fi
-        # Remove surrounding quotes if present
+        # Remove surrounding quotes and spaces if present
         pattern="${pattern#\"}"
         pattern="${pattern%\"}"
+        pattern="${pattern# }"
+        pattern="${pattern% }"
         patterns+=("$pattern")
     done < "$pattern_file"
     
