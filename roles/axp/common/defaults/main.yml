@@ -612,7 +612,7 @@ SH_COMMON_BUILD_SNIPPET: |
         set +e
         resetEnv
         {{ SRCPATH }}/vendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L "$build_log"
-        just_cve_excl=$(grep "PROBLEMATIC_CVES:" "$build_log" | cut -d ':' -f2- | tr '\n' ' ')
+        just_cve_excl=$(grep "PROBLEMATIC_CVES_ONELINE:" "$build_log" | cut -d ':' -f2- | tr '\n' ' ')
 
         if [ -n "$just_cve_excl" ];then
             echo -e "\ndirty test: revert CVE's and re-test like:"
