@@ -95,11 +95,4 @@
   when:
     - axp_build_recovery_only is defined and axp_build_recovery_only
     - target_model == "j5y17lte"
-    
-- name: "Fix syntax issue in repopick on A10"
-  ansible.builtin.lineinfile:
-    path: "{{ SRCPATH }}/vendor/lineage/build/tools/repopick.py"
-    regexp: '(\s+local_branches = re.split\()(.*)'
-    line: '\1r\2'
-    backrefs: yes
-  when: android_version_int | int == 10
+
