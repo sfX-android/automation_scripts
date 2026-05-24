@@ -27,7 +27,8 @@ target_model_device_tree_mk: common.mk
 axp_release_recovery: true
 
 # disable Wireguard patching (already part of the upstream kernel (>= A15)
-skip_wireguard: {% if android_shortversion == "a13" %}false{% else %}true{% endif %}
+skip_wireguard: >-
+   {% if android_shortversion == "a13" %}false{% else %}true{% endif %}
 
 # git push
 axp_git_push_device_include: "device_oneplus_hotdog|{{ target_model_common_tree }}"
