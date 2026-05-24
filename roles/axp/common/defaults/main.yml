@@ -618,7 +618,7 @@ SH_COMMON_BUILD_SNIPPET: |
             echo -e "\ndirty test: revert CVE's and re-test like:"
             echo -e "\n\tOPTIONAL: tune the build script for building the kernel only:\n\tsed -E 's/^(buildDevice.*)/mka bootimage #\1/g' -i ~/build_{{ sub_model | d(target_model) }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh"
             echo -e "\n\tcd {{ target_kernel_dir }} && for p in $just_cve_excl; do patch -p1 -R < \$DOS_PATCHES_LINUX_CVES/\$p;done && croot && time ~/build_{{ sub_model | d(target_model) }}_{{ android_shortversion }}_{{ ROM_FLAVOR }}.sh | tee ~/LOG"
-            echo -e "\nIf you then encounter another error do:\n\tcat ~/LOG >> $build_log"
+            echo -e "\nIf you then encounter another error do:\n\tcat ~/LOG >> $build_log\n"
             echo -e "\tvendor/axp/scripts/find_cve_error.sh --parse -k {{ target_kernel_dir }} -L $build_log"
         fi
         exit 5
