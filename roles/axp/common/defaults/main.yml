@@ -365,7 +365,7 @@ rom_cl: |-
   \- AXP\.OS: [Changelog](https://axpos.org/Changelog)
 
 dl_links: |-
-  ***Download:*** [{{ ROMFILE.stdout | regex_escape() }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }})/
+  ***Download:*** [{{ ROMFILE.stdout | regex_escape() }}]({{ leech_server }}/{{ ROM_FLAVOR }}/{{ target_model }}/)
 
 ota_hint: |-
   ***OTA Update:*** supported
