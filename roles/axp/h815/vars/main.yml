@@ -2,3 +2,11 @@
 
 parent_model: g4
 sub_model: h815
+
+#################################################################################################################################
+## Website info
+#
+
+hugo_supportlevel_pro: "team"  # i.e.: "team" | "community"
+hugo_first_releasedate_pro: "2024-12-20" # first public stable release date (YYYY-MM-DD)
+hugo_state_pro: "BETA" # "stable" | "!! ALPHA !!" | "BETA"
