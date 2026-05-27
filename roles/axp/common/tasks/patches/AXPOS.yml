@@ -9,7 +9,8 @@
         axp_kernel_path: "{{ target_kernel_dir }}"
         axp_device: "{{ common_target_model | d(target_model) }}"
         axp_devicevendor: "{{ target_model_vendor | lower }}"
-        axp_low_storage: "{{ remove_space_reservation | d(false) }}"
+        axp_low_storage: >-
+          {{ remove_space_reservation | d(false) }}
         axp_target_version: "{{ android_version_int }}"
 
     - name: Derive low storage for non-SLIM builds
@@ -71,7 +72,7 @@
         paths: "{{ SRCPATH }}/device/{{ axp_devicevendor }}/"
         patterns: "Board*.mk"
       register: boardconfigs
-      when: axp_low_storage
+      when: axp_low_storage | bool
 
     - name: Comment reservation flags
       ansible.builtin.replace:
@@ -87,7 +88,7 @@
         'BOARD_SYSTEM_EXTIMAGE_PARTITION_RESERVED_SIZE',
         '.*vendor/lineage/config/BoardConfigReservedSize.mk'
         ]) | list }}"
-      when: axp_low_storage
+      when: axp_low_storage | bool
 
     - name: "Commit reservation removals"
       ansible.builtin.include_tasks: git_commit.yml
@@ -95,7 +96,7 @@
         custom_commit_message: "AXP.OS: reservation removals"
         git_commit_path: "{{ item.path | dirname }}"
       loop: "{{ boardconfigs.files }}"
-      when: axp_low_storage
+      when: axp_low_storage | bool
 
     - name: Dump TARGET_ARCH
       ansible.builtin.shell: |-
