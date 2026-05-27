@@ -76,6 +76,7 @@
         recurse: true
         depth: 10
       register: boardconfigs
+      no_log: true
       when: axp_low_storage | bool
 
     - name: Comment reservation flags
