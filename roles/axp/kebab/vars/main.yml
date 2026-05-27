@@ -28,7 +28,7 @@ axp_release_recovery: True
 skip_wireguard: True
 
 # remove disk space reservation (e.g. on product partition)
-remove_space_reservation: 'yes'
+remove_space_reservation: true
 
 # Bootloader ID (first line) for verifying build log
 axp_bootloader_id_pro: 'D588644F0FD3F738'

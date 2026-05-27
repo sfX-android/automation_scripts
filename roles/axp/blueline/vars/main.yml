@@ -52,7 +52,7 @@ axp_git_push_vendor_include: >-
 
 # MIGHT be required for slim?!
 # remove disk space reservation (e.g. on product partition)
-#remove_space_reservation: 'yes'
+#remove_space_reservation: true
 
 #################################################################################################################################
 ## Website info

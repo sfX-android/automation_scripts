@@ -50,7 +50,7 @@ axp_git_push_vendor_include: "{{ target_model_device_tree | replace('android_dev
 axp_bootloader_id_slim: '272DE00712A447F3'
 
 # remove any extra disk space reservation (e.g. on product partition)
-remove_space_reservation: 'yes'
+remove_space_reservation: true
 
 #################################################################################################################################
 ## Website info

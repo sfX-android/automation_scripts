@@ -25,7 +25,7 @@ axp_euicc_capable: true
 custom_build_command: "{{ SH_COMMON_PIXEL_CREATE_FACTORY }}"
 
 # remove disk space reservation (e.g. on product partition)
-remove_space_reservation: 'yes'
+remove_space_reservation: true
 
 # git push
 axp_git_push_device_include: "device_google_sargo|{{ target_model_common_tree }}"
