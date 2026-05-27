@@ -69,8 +69,12 @@
 
     - name: Find BoardConfig files
       ansible.builtin.find:
-        paths: "{{ SRCPATH }}/device/{{ axp_devicevendor }}/"
+        paths:
+          - "{{ SRCPATH }}/device/{{ axp_devicevendor }}/"
+          - "{{ SRCPATH }}/vendor/lineage"
         patterns: "Board*.mk"
+        recurse: true
+        depth: 10
       register: boardconfigs
       when: axp_low_storage | bool
 
