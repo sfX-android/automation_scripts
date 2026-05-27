@@ -14,7 +14,7 @@
 
     - name: Derive low storage for non-SLIM builds
       ansible.builtin.set_fact:
-        axp_low_storage: "yes"
+        axp_low_storage: 'yes'
       when: RELEASE_TYPE != "SLIM"
 
     - name: Show AXP variables
@@ -161,7 +161,7 @@
         line: "{{ item }}"
         state: present
       loop: "{{ axp_defconfig_device | default([]) }}"
-      when: 
+      when:
         - not defconf_marker.stat.exists
         - axp_defconfig_device is defined
         #- not (kleaf_kernel_build | bool)
