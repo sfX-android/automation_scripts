@@ -74,7 +74,7 @@
           - "{{ SRCPATH }}/vendor/lineage"
         patterns: "Board*.mk"
         recurse: true
-        depth: 10
+        depth: 3
       register: boardconfigs
       no_log: true
       when: axp_low_storage | bool
@@ -83,16 +83,16 @@
       ansible.builtin.replace:
         path: "{{ item.0.path }}"
         regexp: '^({{ item.1 }})'
-        replace: '#\\1'
+        replace: '#\1'
       loop: "{{ boardconfigs.files | product([
-        'BOARD_PRODUCTIMAGE_EXTFS_INODE_COUNT',
-        'BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE',
-        'BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT',
-        'BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE',
-        'BOARD_SYSTEM_EXTIMAGE_EXTFS_INODE_COUNT',
-        'BOARD_SYSTEM_EXTIMAGE_PARTITION_RESERVED_SIZE',
-        '.*vendor/lineage/config/BoardConfigReservedSize.mk'
-        ]) | list }}"
+              'BOARD_PRODUCTIMAGE_EXTFS_INODE_COUNT',
+              'BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE',
+              'BOARD_SYSTEMIMAGE_EXTFS_INODE_COUNT',
+              'BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE',
+              'BOARD_SYSTEM_EXTIMAGE_EXTFS_INODE_COUNT',
+              'BOARD_SYSTEM_EXTIMAGE_PARTITION_RESERVED_SIZE',
+              '.*vendor/lineage/config/BoardConfigReservedSize.mk'
+              ]) | list }}"
       when: axp_low_storage | bool
 
     - name: "Commit reservation removals"
